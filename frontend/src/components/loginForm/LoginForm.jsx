@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { TextField, Button } from '@mui/material';
 import { Box } from '@mui/system';
-import { REDIRECT_URI, REST_API_KEY } from './kakaoLoginData';
+import KakaoLogin from './KakaoLogin';
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
@@ -61,7 +61,7 @@ export default function LoginForm() {
       <Box sx={{ display: 'flex', gap: '1.5vw' }}>
         {socialBtn('images/naver_login.png')}
         {socialBtn('images/google_login.png')}
-        {socialBtn1({ src: 'images/kakao_login.png', handle: handleLogin })}
+        <KakaoLogin/>
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -97,23 +97,4 @@ const socialBtn = (src) => {
       }}
     ></img>
   );
-};
-
-const socialBtn1 = (data) => {
-  return (
-    <img
-      src={data.src}
-      alt="왜안돼"
-      onClick={data.handle}
-      style={{
-        height: '2rem',
-      }}
-    />
-  );
-};
-
-const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
-const handleLogin = () => {
-  window.location.href = KAKAO_AUTH_URL;
 };
