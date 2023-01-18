@@ -23,6 +23,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
 	implementation("com.google.guava:guava:29.0-jre")
 	annotationProcessor("com.google.guava:guava:29.0-jre")
 
@@ -31,6 +34,9 @@ dependencies {
 	implementation("io.springfox:springfox-data-rest:3.0.0")
 	implementation("io.springfox:springfox-bean-validators:3.0.0")
 	implementation("io.springfox:springfox-boot-starter:3.0.0")
+
+
+
 
 
 	compileOnly 'org.projectlombok:lombok'
