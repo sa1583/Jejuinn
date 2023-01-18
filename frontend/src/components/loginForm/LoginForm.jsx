@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { TextField } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import { Box } from '@mui/system';
 import { REDIRECT_URI, REST_API_KEY } from './kakaoLoginData';
 const CustomTextField = styled(TextField)({
@@ -15,6 +15,8 @@ const CustomTextField = styled(TextField)({
       borderColor: '#FF7600',
     },
   },
+  marginTop: '2vh',
+  width: '80%',
 });
 
 export default function LoginForm() {
@@ -30,30 +32,29 @@ export default function LoginForm() {
       }}
     >
       <h1>로그인</h1>
-      <CustomTextField
-        label="아이디"
-        style={{ width: '80%', marginTop: '6vh' }}
-      />
-      <CustomTextField
-        label="비밀번호"
-        style={{ width: '80%', marginTop: '4vh' }}
-      />
+      <CustomTextField label="아이디" />
+      <CustomTextField label="비밀번호" />
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
-      <input
-        type="submit"
-        value={'로그인'}
-        style={{
+      <Button
+        href="/signup1"
+        sx={{
           width: '80%',
           height: '6vh',
-          marginTop: '6vh',
           background: '#FF7600',
           borderRadius: '38px',
           color: 'white',
+          '&:hover': {
+            color: 'white',
+            background: '#FF7600',
+          },
           border: 'none',
           fontSize: '1.5vw',
+          marginTop: '6vh',
         }}
-      />
+      >
+        로그인
+      </Button>
 
       {/* 소셜 로그인 부분 */}
       <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
