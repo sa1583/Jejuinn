@@ -42,7 +42,7 @@ export default function ButtonAppBar() {
             LOGO
           </Typography>
           {pages.map((page) => (
-            <Typography sx={{ flexGrow: 1 }}>
+            <Typography sx={{ flexGrow: 1 }} key={page}>
               <Box sx={{ fontSize: '24px' }}>{page}</Box>
             </Typography>
           ))}
