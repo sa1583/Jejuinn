@@ -1,4 +1,4 @@
-package com.tamnara.backend.utills;
+package com.tamnara.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-
                 // enalbe h2-console
                 .headers()
                 .frameOptions()
