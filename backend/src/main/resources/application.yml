@@ -12,7 +12,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        show_sql: true
+        show_sql: false
     defer-datasource-initialization: true
 
   mvc:
@@ -24,7 +24,7 @@ spring:
       mode: always
 
 logging.level:
-  org.hibernate.SQL: debug
+  org.hibernate.SQL: error
 # org.hibernate.type: trace
 
 # swagger setting

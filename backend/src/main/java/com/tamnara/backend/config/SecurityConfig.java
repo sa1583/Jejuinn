@@ -66,7 +66,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근 제한을 설정하겠다는 의미
                 .antMatchers("/authenticate","/v2/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/auth/**").authenticated()
+                .anyRequest().permitAll()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

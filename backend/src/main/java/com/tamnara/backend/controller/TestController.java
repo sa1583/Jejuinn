@@ -29,30 +29,21 @@ public class TestController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-        System.out.println("1");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-        System.out.println(authenticationToken);
-        Authentication authentication = null;
-        try {
-            authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
 
-        System.out.println(authentication);
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken); // CustomUserDetailsService.loadUserByUsername 실행 시점
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println("4");
         String jwt = tokenProvider.createToken(authentication);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        System.out.println("???");
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(new TokenDto("Bearer " + jwt), httpHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/auth/test")
     public String test(){
         return "hi";
     }
