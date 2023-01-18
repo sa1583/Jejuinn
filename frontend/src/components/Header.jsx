@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const pages = ['게스트 하우스', '일하기', '놀고먹기'];
+const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const settings = [''];
 
 export default function ButtonAppBar() {
@@ -25,29 +25,33 @@ export default function ButtonAppBar() {
   };
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ background: '#FF7600' }}>
-        <Toolbar sx={{ width: '70%', alignSelf: 'center' }}>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          ></IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 30 }}>
+      <AppBar
+        position="static"
+        sx={{ background: '#FF7600', height: '10.7421875vh' }}
+      >
+        <Toolbar sx={{ width: '85%', margin: 'auto' }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flexGrow: 25,
+              fontSize: '40px',
+              fontStyle: 'normal',
+            }}
+          >
             LOGO
           </Typography>
           {pages.map((page) => (
             <Typography sx={{ flexGrow: 1 }}>
-              <Box sx={{ fontSize: '16px' }}>{page}</Box>
+              <Box sx={{ fontSize: '24px' }}>{page}</Box>
             </Typography>
           ))}
           {!isLogin && (
-            <Typography sx={{ flexGrow: 1 }}>
+            <Typography sx={{ flexGrow: 2 }}>
               <Box
                 sx={{
                   fontWeight: 'bold',
-                  fontSize: '16px',
+                  fontSize: '24px',
                 }}
               >
                 로그인
