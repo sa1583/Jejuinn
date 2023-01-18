@@ -7,6 +7,7 @@ import SignUp from './routes/signUp/SignUp';
 import SignUpAgree from './components/signUp/SignUpAgree';
 import SignUpInfo from './components/signUp/SignUpInfo';
 import SignUpComplete from './components/signUp/SignUpComplete';
+import KakaoLogin from './routes/kakaoLogin/KakaoLogin';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: 'signup3/',
         element: <SignUp content={signUp3} />,
+      },
+      {
+        path: 'login/kakao/',
+        element: <KakaoLogin />,
       },
     ],
   },
