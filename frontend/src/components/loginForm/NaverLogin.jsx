@@ -39,7 +39,7 @@ export default function NaverLogin() {
     if (response.status === 200) {
       // 토큰 저장
       console.log(response.data);
-      dispatch(getAccessToken(response.data.accessToken));
+      dispatch(login(response.data.accessToken));
       localStorage.setItem('refreshToken', response.data.refreshToken);
       return navigate('/');
     } else {
