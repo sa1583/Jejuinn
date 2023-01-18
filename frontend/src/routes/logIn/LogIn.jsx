@@ -6,7 +6,7 @@ export default function LogIn() {
   return (
     <div
       style={{
-        background: '#FF973E',
+        background: '#FF7600',
         width: '100%',
         height: '100vh',
         display: 'flex',
