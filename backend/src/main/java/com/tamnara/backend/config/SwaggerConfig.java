@@ -1,4 +1,4 @@
-package com.tamnara.backend.utills;
+package com.tamnara.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
