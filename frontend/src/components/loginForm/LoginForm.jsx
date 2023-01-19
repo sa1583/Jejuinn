@@ -16,6 +16,8 @@ const CustomTextField = styled(TextField)({
       borderColor: '#FF7600',
     },
   },
+  marginTop: '2vh',
+  width: '80%',
 });
 
 export default function LoginForm() {
@@ -31,30 +33,29 @@ export default function LoginForm() {
       }}
     >
       <h1>로그인</h1>
-      <CustomTextField
-        label="아이디"
-        style={{ width: '80%', marginTop: '6vh' }}
-      />
-      <CustomTextField
-        label="비밀번호"
-        style={{ width: '80%', marginTop: '4vh' }}
-      />
+      <CustomTextField label="아이디" />
+      <CustomTextField label="비밀번호" />
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
-      <input
-        type="submit"
-        value={'로그인'}
-        style={{
+      <Button
+        href="/signup1"
+        sx={{
           width: '80%',
           height: '6vh',
-          marginTop: '6vh',
           background: '#FF7600',
           borderRadius: '38px',
           color: 'white',
+          '&:hover': {
+            color: 'white',
+            background: '#FF7600',
+          },
           border: 'none',
           fontSize: '1.5vw',
+          marginTop: '6vh',
         }}
-      />
+      >
+        로그인
+      </Button>
 
       {/* 소셜 로그인 부분 */}
       <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
@@ -63,6 +64,7 @@ export default function LoginForm() {
         <NaverLoginBtn />
         {socialBtn('images/kakao_login.png')}
         {socialBtn('images/google_login.png')}
+        {socialBtn1({ src: 'images/kakao_login.png', handle: handleLogin })}
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -100,4 +102,23 @@ const socialBtn = (src, onClickMethod) => {
       />
     </Button>
   );
+};
+
+const socialBtn1 = (data) => {
+  return (
+    <img
+      src={data.src}
+      alt="왜안돼"
+      onClick={data.handle}
+      style={{
+        height: '2rem',
+      }}
+    />
+  );
+};
+
+const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+const handleLogin = () => {
+  window.location.href = KAKAO_AUTH_URL;
 };

@@ -1,8 +1,6 @@
 import BoxLoginSignup from '../../components/boxLoginSignup/BoxLoginSignup';
-import LoginForm from '../../components/loginForm/LoginForm';
 
-export default function LogIn() {
-  const content = <LoginForm />;
+export default function signUp({ content }) {
   return (
     <div
       style={{
@@ -14,7 +12,7 @@ export default function LogIn() {
         alignItems: 'center',
       }}
     >
-      <BoxLoginSignup content={content}></BoxLoginSignup>
+      <BoxLoginSignup content={content} />
     </div>
   );
 }
