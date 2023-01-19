@@ -1,6 +1,8 @@
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUpComplete() {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -21,7 +23,9 @@ export default function SignUpComplete() {
         가입을 환영합니다
       </div>
       <Button
-        href="/"
+        onClick={() => {
+          navigate('../');
+        }}
         sx={{
           width: '80%',
           height: '6vh',

@@ -2,6 +2,8 @@ import { styled } from '@mui/material/styles';
 import { TextField, Button } from '@mui/material';
 import { Box } from '@mui/system';
 import { REDIRECT_URI, REST_API_KEY } from './kakaoLoginData';
+import { Link, useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
@@ -20,6 +22,27 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function LoginForm() {
+  const findBtn = (inp) => {
+    return <p style={{ fontSize: '1vw' }}>{inp}</p>;
+  };
+
+  const bottonData = [
+    {
+      name: '회원가입',
+      url: '../signup1/',
+    },
+    null,
+    {
+      name: '아이디 찾기',
+      url: '',
+    },
+    null,
+    {
+      name: '비밀번호 찾기',
+      url: '',
+    },
+  ];
+
   return (
     <form
       action=""
@@ -37,7 +60,6 @@ export default function LoginForm() {
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
       <Button
-        href="/signup1"
         sx={{
           width: '80%',
           height: '6vh',
@@ -73,19 +95,28 @@ export default function LoginForm() {
           marginTop: '4vh',
         }}
       >
-        {findBtn('회원가입')}
-        <p style={{ margin: '1rem', fontSize: '1vw' }}>|</p>
-        {findBtn('아이디 찾기')}
-        <p style={{ margin: '1rem', fontSize: '1vw' }}>|</p>
-        {findBtn('비밀번호 찾기')}
+        {bottonData.map((data) => {
+          if (data !== null) {
+            return (
+              <Link
+                to={data.url}
+                style={{
+                  fontSize: '1vw',
+                  textDecoration: 'none',
+                  color: 'black',
+                }}
+              >
+                {data.name}
+              </Link>
+            );
+          } else {
+            return <p style={{ margin: '1rem', fontSize: '1vw' }}>|</p>;
+          }
+        })}
       </Box>
     </form>
   );
 }
-
-const findBtn = (inp) => {
-  return <p style={{ fontSize: '1vw' }}>{inp}</p>;
-};
 
 const socialBtn = (src) => {
   return (

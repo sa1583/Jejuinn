@@ -1,5 +1,6 @@
 import { TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -19,6 +20,7 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function SignUpInfo() {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -43,7 +45,9 @@ export default function SignUpInfo() {
       <CustomTextField required multiline label="비밀번호 확인" />
       <br />
       <Button
-        href="/signup3"
+        onClick={() => {
+          navigate('../signup3/');
+        }}
         sx={{
           width: '80%',
           height: '6vh',

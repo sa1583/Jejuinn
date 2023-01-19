@@ -8,8 +8,10 @@ import {
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignAgree() {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -107,7 +109,9 @@ export default function SignAgree() {
         이에 동의함을 의미합니다.
       </div>
       <Button
-        href="/signup2"
+        onClick={() => {
+          navigate('../signup2/');
+        }}
         sx={{
           width: '80%',
           height: '6vh',
