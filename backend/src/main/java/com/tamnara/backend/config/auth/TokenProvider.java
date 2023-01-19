@@ -72,7 +72,7 @@ public class TokenProvider implements InitializingBean {
             .collect(Collectors.toList());
 
       User principal = new User(claims.getSubject(), "", authorities);
-      return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+      return new UsernamePasswordAuthenticationToken(principal, token, authorities); //
    }
 
    public boolean validateToken(String token) { // 토큰을 받아 유효성 검사를 실행

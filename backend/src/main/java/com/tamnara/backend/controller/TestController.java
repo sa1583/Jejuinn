@@ -46,7 +46,7 @@ public class TestController {
     }
 
     @GetMapping("/auth/test")
-    public String test(HttpServletRequest request){
+    public ResponseEntity<?> test(HttpServletRequest request){
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
         Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
         System.out.println("=============================================");
@@ -55,8 +55,10 @@ public class TestController {
         System.out.println("getPrincipal");
         System.out.println(authentication.getPrincipal());
         System.out.println("authorities");
-        System.out.println(authentication.getAuthorities().iterator().next().getClass().getName());
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            System.out.println(authority.toString());
+        }
         System.out.println("=============================================");
-        return accessToken;
+        return new ResponseEntity<String>(accessToken, HttpStatus.ACCEPTED);
     }
 }

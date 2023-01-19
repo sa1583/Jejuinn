@@ -38,7 +38,11 @@ springfox:
 jwt:
   header: Authorization
   #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
-  #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  #echo 'ssafy-8th-generation-class-6-team-3-jungmin-youngcha-yejin-yutae-jaewook-daeun-project-fighting-jwt-secret-with-nossi-teabong-secret-jwt-token'|base64
+  secret: c3NhZnktOHRoLWdlbmVyYXRpb24tY2xhc3MtNi10ZWFtLTMtanVuZ21pbi15b3VuZ2NoYS15ZWppbi15dXRhZS1qYWV3b29rLWRhZXVuLXByb2plY3QtZmlnaHRpbmctand0LXNlY3JldC13aXRoLW5vc3NpLXRlYWJvbmctc2VjcmV0LWp3dC10b2tlbgo=
   token-validity-in-seconds: 86400
 
+# loggin level
+logging:
+  level:
+    root: info  # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR
