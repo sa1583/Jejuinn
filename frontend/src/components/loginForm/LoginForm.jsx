@@ -80,11 +80,9 @@ export default function LoginForm() {
       {/* 소셜 로그인 부분 */}
       <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
       <Box sx={{ display: 'flex', gap: '1.5vw' }}>
-        {/* {socialBtn('images/naver_login.png', initializeNaverLogin)} */}
         <NaverLoginBtn />
-        {socialBtn('images/kakao_login.png')}
-        {socialBtn('images/google_login.png')}
-        <KakaoLogin/>
+
+        <KakaoLogin />
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -106,44 +104,20 @@ export default function LoginForm() {
                   textDecoration: 'none',
                   color: 'black',
                 }}
+                key={uuidv4()}
               >
                 {data.name}
               </Link>
             );
           } else {
-            return <p style={{ margin: '1rem', fontSize: '1vw' }}>|</p>;
+            return (
+              <p style={{ margin: '1rem', fontSize: '1vw' }} key={uuidv4()}>
+                |
+              </p>
+            );
           }
         })}
       </Box>
     </form>
   );
 }
-
-
-const socialBtn = (src) => {
-  return (
-    <img
-      src={src}
-      alt=""
-      style={{
-        height: '2rem',
-      }}
-    ></img>
-  );
-};
-
-
-
-const socialBtn = (src, onClickMethod) => {
-  return (
-    <Button onClick={onClickMethod}>
-      <img
-        src={src}
-        alt=""
-        style={{
-          height: '2rem',
-        }}
-      />
-    </Button>
-  );
-};
