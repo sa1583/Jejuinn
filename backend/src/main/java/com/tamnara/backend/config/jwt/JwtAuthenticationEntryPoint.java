@@ -1,4 +1,4 @@
-package com.tamnara.backend.config.auth;
+package com.tamnara.backend.config.jwt;
 
 /*
 유효한 자격 검증을 통과하지 못했을때 401 status를 발생시키는 코드

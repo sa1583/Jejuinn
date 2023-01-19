@@ -1,9 +1,9 @@
 package com.tamnara.backend.config;
 
-import com.tamnara.backend.config.auth.JwtAccessDeniedHandler;
-import com.tamnara.backend.config.auth.JwtAuthenticationEntryPoint;
-import com.tamnara.backend.config.auth.JwtSecurityConfig;
-import com.tamnara.backend.config.auth.TokenProvider;
+import com.tamnara.backend.config.jwt.JwtAccessDeniedHandler;
+import com.tamnara.backend.config.jwt.JwtAuthenticationEntryPoint;
+import com.tamnara.backend.config.jwt.JwtSecurityConfig;
+import com.tamnara.backend.config.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

@@ -1,4 +1,4 @@
-package com.tamnara.backend.config.auth;
+package com.tamnara.backend.config.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,8 @@ import java.io.IOException;
 public class JwtFilter extends GenericFilterBean {
 
    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
-   public static final String ACCESS_HEADER = "access-token";
+   public static final String ACCESS_HEADER = "accessToken";
+   public static final String REFRESH_HEADER = "refreshToken";
    private TokenProvider tokenProvider;
    public JwtFilter(TokenProvider tokenProvider) {
       this.tokenProvider = tokenProvider;

@@ -10,11 +10,11 @@ import javax.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDto {
+public class LoginPostReq {
 
     @NotNull
-    @Size(min = 3, max = 50)
-    private String username;
+    @Size(min = 3)
+    private String email;
 
     @NotNull
     @Size(min = 3, max = 100)

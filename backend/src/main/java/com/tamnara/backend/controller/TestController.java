@@ -1,9 +1,11 @@
 package com.tamnara.backend.controller;
 
-import com.tamnara.backend.config.auth.JwtFilter;
-import com.tamnara.backend.config.auth.TokenProvider;
-import com.tamnara.backend.dto.request.LoginDto;
+import com.tamnara.backend.config.jwt.JwtFilter;
+import com.tamnara.backend.config.jwt.TokenProvider;
+import com.tamnara.backend.dto.request.LoginPostReq;
 import com.tamnara.backend.dto.response.TokenDto;
+import com.tamnara.backend.entity.User;
+import com.tamnara.backend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
@@ -23,42 +25,50 @@ import javax.validation.Valid;
 public class TestController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserRepository userRepository;
 
-    public TestController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public TestController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder,
+                          UserRepository userRepository) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken); // CustomUserDetailsService.loadUserByUsername 실행 시점
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + jwt);
-
-        return new ResponseEntity<>(new TokenDto("Bearer " + jwt), httpHeaders, HttpStatus.OK);
+    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginPostReq loginDto) {
+//        UsernamePasswordAuthenticationToken authenticationToken =
+//                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+//
+//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken); // CustomUserDetailsService.loadUserByUsername 실행 시점
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        String jwt = tokenProvider.createToken(authentication);
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + jwt);
+//
+//        return new ResponseEntity<>(new TokenDto("Bearer " + jwt), httpHeaders, HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("/auth/test")
     public ResponseEntity<?> test(HttpServletRequest request){
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
         Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
+        String uid = authentication.getName();
+        System.out.println(userRepository.findById(Long.parseLong(uid)));
         System.out.println("=============================================");
         System.out.println("getCredentials");
         System.out.println(authentication.getCredentials());
         System.out.println("getPrincipal");
+        System.out.println(authentication.getName());
         System.out.println(authentication.getPrincipal());
         System.out.println("authorities");
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             System.out.println(authority.toString());
         }
         System.out.println("=============================================");
-        return new ResponseEntity<String>(accessToken, HttpStatus.ACCEPTED);
+        return ResponseEntity.status(200).build();
     }
 }

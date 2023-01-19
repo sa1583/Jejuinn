@@ -1,4 +1,4 @@
-package com.tamnara.backend.config.auth;
+package com.tamnara.backend.config.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -31,9 +31,9 @@ public class TokenProvider implements InitializingBean {
 
    public TokenProvider(
       @Value("${jwt.secret}") String secret,
-      @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+      @Value("${jwt.token-validity-in-minutes}") long tokenValidityInMinutes) {
       this.secret = secret;
-      this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+      this.tokenValidityInMilliseconds = tokenValidityInMinutes * 60 * 1000;
    }
 
    @Override
@@ -42,20 +42,18 @@ public class TokenProvider implements InitializingBean {
       this.key = Keys.hmacShaKeyFor(keyBytes);
    }
 
-   public String createToken(Authentication authentication) {
-      String authorities = authentication.getAuthorities().stream()
-         .map(GrantedAuthority::getAuthority)
-         .collect(Collectors.joining(",")); // 권한들을 가져온다.
-
+   public String createToken(com.tamnara.backend.entity.User user, long times) {
       long now = (new Date()).getTime();
-      Date validity = new Date(now + this.tokenValidityInMilliseconds); // 만료 일자를 계산한다.
+      Date validity = new Date(now + this.tokenValidityInMilliseconds * times); // 만료 일자를 계산한다.
+
+      String authorities = user.getAuthorities().stream().map(authority -> authority.getAuthorityName()).collect(Collectors.joining(","));
 
       return Jwts.builder()
-         .setSubject(authentication.getName())
-         .claim(AUTHORITIES_KEY, authorities)
-         .signWith(key, SignatureAlgorithm.HS512)
-         .setExpiration(validity)
-         .compact();
+              .setSubject(String.valueOf(user.getUid()))
+              .claim(AUTHORITIES_KEY, authorities)
+              .signWith(key, SignatureAlgorithm.HS512)
+              .setExpiration(validity)
+              .compact();
    }
 
    public Authentication getAuthentication(String token) { // 토큰을 입력받아 권한 정보를 리턴한다.
@@ -89,5 +87,13 @@ public class TokenProvider implements InitializingBean {
          logger.info("JWT 토큰이 잘못되었습니다.");
       }
       return false;
+   }
+
+   public String createAccessToken(com.tamnara.backend.entity.User user) {
+      return createToken(user, 1);
+   }
+
+   public String createRefreshToken(com.tamnara.backend.entity.User user) {
+      return createToken(user, 14*24*2);
    }
 }

@@ -1,4 +1,4 @@
-package com.tamnara.backend.config.auth;
+package com.tamnara.backend.config.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

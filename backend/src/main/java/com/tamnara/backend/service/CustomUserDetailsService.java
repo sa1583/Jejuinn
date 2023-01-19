@@ -1,7 +1,8 @@
 package com.tamnara.backend.service;
 
-import com.tamnara.backend.entity.Users;
+import com.tamnara.backend.entity.User;
 import com.tamnara.backend.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,23 +24,22 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(final String username) {
-        return userRepository.findOneWithAuthoritiesByUsername(username)
-                .map(users -> createUser(username, users))
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+    public UserDetails loadUserByUsername(final String email) {
+        return (UserDetails) userRepository.findOneWithAuthoritiesByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email + " -> 데이터베이스에서 찾을 수 없습니다."));
     }
 
-    private org.springframework.security.core.userdetails.User createUser(String username, Users user) {
-        if (!user.isActivated()) {
-            throw new RuntimeException(username + " -> 활성화되어 있지 않습니다.");
-        }
-
-        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
-                .collect(Collectors.toList());
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),
-                grantedAuthorities);
-    }
+//    private org.springframework.security.core.userdetails.User createUser(String userId, User user) {
+////        if (!user.isActivated()) {
+////            throw new RuntimeException(userId + " -> 활성화되어 있지 않습니다.");
+////        }
+//
+//        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+//                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
+//                .collect(Collectors.toList());
+//
+//        return new org.springframework.security.core.userdetails.User(user.getEmail(),
+//                "",
+//                grantedAuthorities);
+//    }
 }
