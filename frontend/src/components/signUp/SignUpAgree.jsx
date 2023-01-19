@@ -110,7 +110,7 @@ export default function SignAgree() {
       </div>
       <Button
         onClick={() => {
-          navigate('../signup2/');
+          navigate('../signup2');
         }}
         sx={{
           width: '80%',

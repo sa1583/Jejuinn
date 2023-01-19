@@ -24,7 +24,7 @@ export default function SignUpComplete() {
       </div>
       <Button
         onClick={() => {
-          navigate('../');
+          navigate('..');
         }}
         sx={{
           width: '80%',

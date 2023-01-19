@@ -22,14 +22,10 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function LoginForm() {
-  const findBtn = (inp) => {
-    return <p style={{ fontSize: '1vw' }}>{inp}</p>;
-  };
-
   const bottonData = [
     {
       name: '회원가입',
-      url: '../signup1/',
+      url: '../signup1',
     },
     null,
     {

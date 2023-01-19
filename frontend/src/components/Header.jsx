@@ -11,9 +11,9 @@ import { Link } from 'react-router-dom';
 
 // const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const pages = [
-  { name: '게스트하우스', url: 'guesthouselist/' },
-  { name: '일하기', url: 'worklist/' },
-  { name: '놀고먹기', url: 'staffpicklist/' },
+  { name: '게스트하우스', url: 'guesthouselist' },
+  { name: '일하기', url: 'worklist' },
+  { name: '놀고먹기', url: 'staffpicklist' },
 ];
 const settings = [''];
 
@@ -37,7 +37,7 @@ export default function ButtonAppBar() {
       >
         <Toolbar sx={{ width: '85%', margin: 'auto' }}>
           <Link
-            to={'/'}
+            to={''}
             style={{
               flexGrow: 25,
               fontSize: '40px',
@@ -71,7 +71,7 @@ export default function ButtonAppBar() {
               }}
             >
               <Link
-                to={'login/'}
+                to={'login'}
                 style={{ textDecoration: 'none', color: 'white' }}
               >
                 로그인

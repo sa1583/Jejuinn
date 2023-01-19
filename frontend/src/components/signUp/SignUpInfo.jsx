@@ -46,7 +46,7 @@ export default function SignUpInfo() {
       <br />
       <Button
         onClick={() => {
-          navigate('../signup3/');
+          navigate('../signup3');
         }}
         sx={{
           width: '80%',
