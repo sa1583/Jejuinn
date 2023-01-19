@@ -1,13 +1,15 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from './routes/Root';
-import Header from './components/Header';
 import LogIn from './routes/logIn/LogIn';
 import SignUp from './routes/signUp/SignUp';
 import SignUpAgree from './components/signUp/SignUpAgree';
 import SignUpInfo from './components/signUp/SignUpInfo';
 import SignUpComplete from './components/signUp/SignUpComplete';
 import KakaoLogin from './routes/kakaoLogin/KakaoLogin';
+import GuestHoseList from './routes/guestHoseList/GuestHoseList';
+import WorkList from './routes/workList/WorkList';
+import StaffPickList from './routes/staffPickList/StaffPickList';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -37,6 +39,18 @@ const router = createBrowserRouter([
         path: 'login/kakao/',
         element: <KakaoLogin />,
       },
+      {
+        path: 'guesthouselist/',
+        element: <GuestHoseList />,
+      },
+      {
+        path: 'worklist/',
+        element: <WorkList />,
+      },
+      {
+        path: 'staffpicklist/',
+        element: <StaffPickList />,
+      },
     ],
   },
 ]);
@@ -44,7 +58,6 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <Header />
       <RouterProvider router={router} />
     </>
   );

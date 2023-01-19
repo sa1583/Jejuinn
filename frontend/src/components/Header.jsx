@@ -7,8 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { Link } from 'react-router-dom';
 
-const pages = ['게스트하우스', '일하기', '놀고먹기'];
+// const pages = ['게스트하우스', '일하기', '놀고먹기'];
+const pages = [
+  { name: '게스트하우스', url: 'guesthouselist' },
+  { name: '일하기', url: 'worklist' },
+  { name: '놀고먹기', url: 'staffpicklist' },
+];
 const settings = [''];
 
 export default function ButtonAppBar() {
@@ -30,32 +36,46 @@ export default function ButtonAppBar() {
         sx={{ background: '#FF7600', height: '10.7421875vh' }}
       >
         <Toolbar sx={{ width: '85%', margin: 'auto' }}>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
+          <Link
+            to={''}
+            style={{
               flexGrow: 25,
               fontSize: '40px',
               fontStyle: 'normal',
+              color: 'white',
+              textDecoration: 'none',
             }}
           >
-            LOGO
-          </Typography>
+            Logo
+          </Link>
+
           {pages.map((page) => (
-            <Typography sx={{ flexGrow: 1 }} key={page}>
-              <Box sx={{ fontSize: '24px' }}>{page}</Box>
+            <Typography
+              sx={{ flexGrow: 1, fontSize: '24px', fontWeight: 'bold' }}
+              key={page.name}
+            >
+              <Link
+                to={page.url}
+                style={{ textDecoration: 'none', color: 'white' }}
+              >
+                {page.name}
+              </Link>
             </Typography>
           ))}
           {!isLogin && (
-            <Typography sx={{ flexGrow: 2 }}>
-              <Box
-                sx={{
-                  fontWeight: 'bold',
-                  fontSize: '24px',
-                }}
+            <Typography
+              sx={{
+                flexGrow: 2,
+                fontWeight: 'bold',
+                fontSize: '24px',
+              }}
+            >
+              <Link
+                to={'login'}
+                style={{ textDecoration: 'none', color: 'white' }}
               >
                 로그인
-              </Box>
+              </Link>
             </Typography>
           )}
           {isLogin && (
