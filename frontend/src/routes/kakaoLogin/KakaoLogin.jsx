@@ -62,7 +62,7 @@ export default function KakaoLogin() {
   useEffect(() => {
     if (!location.search) return;
     getKakaoToken();
-  }, []);
+  });
 
   return (
     <div>
