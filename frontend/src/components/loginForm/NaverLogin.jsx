@@ -3,8 +3,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginNaver } from '../../api/user';
-import { login } from '../../store/user';
+import { getNaverAuthToken } from '../../store/user';
 
 export default function NaverLogin() {
   const { naver } = window;
@@ -29,22 +28,13 @@ export default function NaverLogin() {
   };
 
   const userAccessToken = () => {
-    window.location.href.includes('access_token') && getToken();
+    window.location.href.includes('access_token') && fetchToken();
   };
 
-  const getToken = async () => {
+  const fetchToken = async () => {
     const token = window.location.href.split('=')[1].split('&')[0];
-    console.log('token', token);
-    const response = await loginNaver(token);
-    if (response.status === 200) {
-      // 토큰 저장
-      console.log(response.data);
-      dispatch(login(response.data.accessToken));
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      return navigate('/');
-    } else {
-      alert('로그인 중 에러가 발생하였습니다.');
-    }
+    dispatch(getNaverAuthToken(token));
+    return navigate('/');
   };
 
   useEffect(() => {

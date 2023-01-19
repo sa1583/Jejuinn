@@ -1,17 +1,21 @@
-import { apiInstance } from '.';
+import { apiInstance } from './index';
 
 const api = apiInstance();
 
-async function loginNaver(token) {
-  return api.post(
-    '/api/users/social/naver',
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+const getTokenHeader = (token) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  };
+};
+
+async function loginNaver(token) {
+  return api.post('/api/users/social/naver', {}, getTokenHeader(token));
 }
 
-export { loginNaver };
+async function getUserInfo(token) {
+  return await api.post('/auth/users', {}, getTokenHeader(token));
+}
+
+export { loginNaver, getUserInfo };
