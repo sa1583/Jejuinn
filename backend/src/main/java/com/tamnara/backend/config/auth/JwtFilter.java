@@ -17,7 +17,7 @@ import java.io.IOException;
 public class JwtFilter extends GenericFilterBean {
 
    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
-   public static final String AUTHORIZATION_HEADER = "Authorization";
+   public static final String ACCESS_HEADER = "access-token";
    private TokenProvider tokenProvider;
    public JwtFilter(TokenProvider tokenProvider) {
       this.tokenProvider = tokenProvider;
@@ -46,7 +46,7 @@ public class JwtFilter extends GenericFilterBean {
    }
 
    private String resolveToken(HttpServletRequest request) { // request header에서 token 정보를 가져옴
-      String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+      String bearerToken = request.getHeader(ACCESS_HEADER);
       System.out.println(bearerToken);
 
       if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {

@@ -5,6 +5,7 @@ import com.tamnara.backend.config.auth.TokenProvider;
 import com.tamnara.backend.dto.request.LoginDto;
 import com.tamnara.backend.dto.response.TokenDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -38,13 +40,23 @@ public class TestController {
         String jwt = tokenProvider.createToken(authentication);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + jwt);
 
         return new ResponseEntity<>(new TokenDto("Bearer " + jwt), httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/auth/test")
-    public String test(){
-        return "hi";
+    public String test(HttpServletRequest request){
+        String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+        Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
+        System.out.println("=============================================");
+        System.out.println("getCredentials");
+        System.out.println(authentication.getCredentials());
+        System.out.println("getPrincipal");
+        System.out.println(authentication.getPrincipal());
+        System.out.println("authorities");
+        System.out.println(authentication.getAuthorities().iterator().next().getClass().getName());
+        System.out.println("=============================================");
+        return accessToken;
     }
 }
