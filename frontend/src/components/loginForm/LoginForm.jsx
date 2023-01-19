@@ -1,9 +1,12 @@
 import { styled } from '@mui/material/styles';
-import { TextField, Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { REDIRECT_URI, REST_API_KEY } from './kakaoLoginData';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import KakaoLogin from './KakaoLogin';
+import NaverLoginBtn from './NaverLogin';
+
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
@@ -77,9 +80,11 @@ export default function LoginForm() {
       {/* 소셜 로그인 부분 */}
       <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
       <Box sx={{ display: 'flex', gap: '1.5vw' }}>
-        {socialBtn('images/naver_login.png')}
+        {/* {socialBtn('images/naver_login.png', initializeNaverLogin)} */}
+        <NaverLoginBtn />
+        {socialBtn('images/kakao_login.png')}
         {socialBtn('images/google_login.png')}
-        {socialBtn1({ src: 'images/kakao_login.png', handle: handleLogin })}
+        <KakaoLogin/>
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -114,6 +119,7 @@ export default function LoginForm() {
   );
 }
 
+
 const socialBtn = (src) => {
   return (
     <img
@@ -126,21 +132,18 @@ const socialBtn = (src) => {
   );
 };
 
-const socialBtn1 = (data) => {
+
+
+const socialBtn = (src, onClickMethod) => {
   return (
-    <img
-      src={data.src}
-      alt="왜안돼"
-      onClick={data.handle}
-      style={{
-        height: '2rem',
-      }}
-    />
+    <Button onClick={onClickMethod}>
+      <img
+        src={src}
+        alt=""
+        style={{
+          height: '2rem',
+        }}
+      />
+    </Button>
   );
-};
-
-const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
-const handleLogin = () => {
-  window.location.href = KAKAO_AUTH_URL;
 };
