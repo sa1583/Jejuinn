@@ -32,7 +32,7 @@ public class SocialLogin {
     @Column(name = "access_token")
     private String accessToken;
 
-    @Enumerated(EnumType.ORDINAL)
-    private SocialType type;
+    @Column(name = "type")
+    private int type;
 
 }
