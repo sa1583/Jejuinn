@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import KakaoLoginBtn from './KakaoLogin';
 import NaverLoginBtn from './NaverLogin';
 import GoogleLogin from './GoogleLogin';
+import { useState } from 'react';
+import axios from 'axios';
 
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -42,6 +44,34 @@ export default function LoginForm() {
     },
   ];
 
+  // 페이지 자체 로그인 로직
+  const [logInForm, setLogInForm] = useState({ email: '', password: '' });
+
+  const handleLogInForm = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setLogInForm({ ...logInForm, [name]: value });
+  };
+
+  // 베이스 url 고쳐야함
+  const handleLogInBTN = (e) => {
+    console.log(logInForm);
+    e.preventDefault();
+    axios({
+      method: 'post',
+      url: 'baseurl/api/users/login',
+      data: {
+        email: logInForm.email,
+        password: logInForm.password,
+      },
+    }).then((res) => {
+      // 로그인 버튼 클릭 후 백으로부터 token이 오면 이를 redux에 저장하고,
+      // backend에 access token 으로 유저 정보 요청을 한다.
+      const accessToken = res.headers.accessToken;
+      const refreshToken = res.headers.refreshToken;
+    });
+  };
+
   return (
     <form
       action=""
@@ -54,11 +84,22 @@ export default function LoginForm() {
       }}
     >
       <h1>로그인</h1>
-      <CustomTextField label="아이디" />
-      <CustomTextField label="비밀번호" />
+      <CustomTextField
+        onChange={handleLogInForm}
+        label="이메일"
+        name="email"
+        value={logInForm.email}
+      />
+      <CustomTextField
+        onChange={handleLogInForm}
+        label="비밀번호"
+        name="password"
+        value={logInForm.password}
+      />
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
       <Button
+        onClick={handleLogInBTN}
         sx={{
           width: '80%',
           height: '6vh',
@@ -82,7 +123,7 @@ export default function LoginForm() {
       <Box sx={{ display: 'flex', gap: '1.5vw' }}>
         <NaverLoginBtn />
         <GoogleLogin />
-        <KakaoLogin />
+        <KakaoLoginBtn />
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -111,7 +152,7 @@ export default function LoginForm() {
             );
           } else {
             return (
-              <p style={{ margin: '1rem', fontSize: '1vw' }} key={uuidv4()}>
+              <p style={{ margin: '1vw', fontSize: '1vw' }} key={uuidv4()}>
                 |
               </p>
             );
