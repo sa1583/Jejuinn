@@ -36,15 +36,13 @@ public class UserService {
                 .authorityName("ROLE_USER")
                 .build();
 
-        User user = User.builder()
+        return User.builder()
                 .email(userRegisterPostReq.getEmail())
                 .emailReceiveAllow(userRegisterPostReq.isEmailReceiveAllow())
                 .nickname(userRegisterPostReq.getNickname())
                 .password(passwordEncoder.encode(userRegisterPostReq.getPassword()))
                 .authorities(Collections.singleton(authority))
                 .build();
-
-        return user;
     }
 
     @Transactional
