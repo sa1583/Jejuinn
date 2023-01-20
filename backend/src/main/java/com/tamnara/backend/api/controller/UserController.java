@@ -6,6 +6,7 @@ import com.tamnara.backend.api.service.UserService;
 import com.tamnara.backend.config.jwt.JwtFilter;
 import com.tamnara.backend.config.jwt.TokenProvider;
 import com.tamnara.backend.db.entity.User;
+import com.tamnara.backend.db.enums.SocialType;
 import com.tamnara.backend.db.repository.UserRepository;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -67,25 +68,18 @@ public class UserController {
             @ApiParam(value = "email, password")
             @Valid @RequestBody LoginPostReq loginPostReq){
 
-        Optional<User> user = userRepository.findOneWithAuthoritiesByEmail(loginPostReq.getEmail());
+        // email로 social 로그인이 아닌 user 가져오기
+        Optional<User> user = userRepository.findOneByEmailAndSocialLogin(loginPostReq.getEmail(), null);
 
         // 해당 email의 아이디가 없거나 패스워드가 다른 경우
         if(user.isEmpty() || !passwordEncoder.matches(loginPostReq.getPassword(), user.get().getPassword())){
             return ResponseEntity.status(400).build();
         }
 
-        String accessToken = tokenProvider.createAccessToken(user.get());
-        String refreshToken = tokenProvider.createRefreshToken(user.get());
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
-        httpHeaders.add(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken);
-
-        userService.saveRefreshToken(refreshToken, user.get());
-
-
-        System.out.println(httpHeaders.get(JwtFilter.REFRESH_HEADER));
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
+
+
 }
