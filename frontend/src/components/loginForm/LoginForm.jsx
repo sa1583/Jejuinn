@@ -1,10 +1,9 @@
 import { styled } from '@mui/material/styles';
 import { Button, TextField } from '@mui/material';
 import { Box } from '@mui/system';
-import { REDIRECT_URI, REST_API_KEY } from './kakaoLoginData';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import KakaoLogin from './KakaoLogin';
+import KakaoLoginBtn from './KakaoLogin';
 import NaverLoginBtn from './NaverLogin';
 
 const CustomTextField = styled(TextField)({
@@ -25,7 +24,7 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function LoginForm() {
-  const bottonData = [
+  const bottomData = [
     {
       name: '회원가입',
       url: '../signup1',
@@ -81,8 +80,7 @@ export default function LoginForm() {
       <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
       <Box sx={{ display: 'flex', gap: '1.5vw' }}>
         <NaverLoginBtn />
-
-        <KakaoLogin />
+        <KakaoLoginBtn />
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -94,7 +92,7 @@ export default function LoginForm() {
           marginTop: '4vh',
         }}
       >
-        {bottonData.map((data) => {
+        {bottomData.map((data) => {
           if (data !== null) {
             return (
               <Link
