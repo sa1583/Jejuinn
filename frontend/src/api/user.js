@@ -10,12 +10,12 @@ const getTokenHeader = (token) => {
   };
 };
 
-async function loginNaver(token) {
+function loginNaver(token) {
   return api.post('/api/users/social/naver', {}, getTokenHeader(token));
 }
 
-async function getUserInfo(token) {
-  return await api.post('/auth/users', {}, getTokenHeader(token));
+function getUserInfo(token) {
+  return api.post('/auth/users', {}, getTokenHeader(token));
 }
 
 export { loginNaver, getUserInfo };
