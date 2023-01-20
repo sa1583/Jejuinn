@@ -33,8 +33,8 @@ export default function NaverLogin() {
 
   const fetchToken = async () => {
     const token = window.location.href.split('=')[1].split('&')[0];
-    const { accessToken } = dispatch(getNaverAuthToken(token));
-    dispatch(getUserInfoByToken(accessToken));
+    const data = dispatch(getNaverAuthToken(token));
+    dispatch(getUserInfoByToken(data));
     return navigate('/');
   };
 
