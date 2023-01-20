@@ -1,6 +1,6 @@
-package com.tamnara.backend.repository;
+package com.tamnara.backend.db.repository;
 
-import com.tamnara.backend.entity.User;
+import com.tamnara.backend.db.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -42,7 +42,7 @@ public class TokenProvider implements InitializingBean {
       this.key = Keys.hmacShaKeyFor(keyBytes);
    }
 
-   public String createToken(com.tamnara.backend.entity.User user, long times) {
+   public String createToken(com.tamnara.backend.db.entity.User user, long times) {
       long now = (new Date()).getTime();
       Date validity = new Date(now + this.tokenValidityInMilliseconds * times); // 만료 일자를 계산한다.
 
@@ -89,11 +89,11 @@ public class TokenProvider implements InitializingBean {
       return false;
    }
 
-   public String createAccessToken(com.tamnara.backend.entity.User user) {
+   public String createAccessToken(com.tamnara.backend.db.entity.User user) {
       return createToken(user, 1);
    }
 
-   public String createRefreshToken(com.tamnara.backend.entity.User user) {
+   public String createRefreshToken(com.tamnara.backend.db.entity.User user) {
       return createToken(user, 14*24*2);
    }
 }

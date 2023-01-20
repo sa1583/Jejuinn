@@ -1,21 +1,16 @@
-package com.tamnara.backend.controller;
+package com.tamnara.backend.api.controller;
 
 import com.tamnara.backend.config.jwt.JwtFilter;
 import com.tamnara.backend.config.jwt.TokenProvider;
-import com.tamnara.backend.dto.request.LoginPostReq;
-import com.tamnara.backend.dto.response.TokenDto;
-import com.tamnara.backend.entity.User;
-import com.tamnara.backend.repository.UserRepository;
+import com.tamnara.backend.api.dto.request.LoginPostReq;
+import com.tamnara.backend.api.dto.response.TokenDto;
+import com.tamnara.backend.db.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
