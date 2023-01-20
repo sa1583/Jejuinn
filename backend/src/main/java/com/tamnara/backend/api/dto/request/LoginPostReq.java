@@ -1,4 +1,4 @@
-package com.tamnara.backend.dto.request;
+package com.tamnara.backend.api.dto.request;
 
 import lombok.*;
 

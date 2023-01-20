@@ -1,8 +1,8 @@
-package com.tamnara.backend.dto.request;
+package com.tamnara.backend.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.tamnara.backend.dto.AuthorityDto;
-import com.tamnara.backend.entity.User;
+import com.tamnara.backend.api.dto.AuthorityDto;
+import com.tamnara.backend.db.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

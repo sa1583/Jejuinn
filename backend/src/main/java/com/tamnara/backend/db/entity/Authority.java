@@ -1,4 +1,4 @@
-package com.tamnara.backend.entity;
+package com.tamnara.backend.db.entity;
 
 import lombok.*;
 

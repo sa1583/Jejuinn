@@ -1,7 +1,7 @@
-package com.tamnara.backend.service;
+package com.tamnara.backend.api.service;
 
-import com.tamnara.backend.entity.User;
-import com.tamnara.backend.repository.UserRepository;
+import com.tamnara.backend.db.entity.User;
+import com.tamnara.backend.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
