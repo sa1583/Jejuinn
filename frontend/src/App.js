@@ -7,7 +7,7 @@ import SignUpAgree from './components/signUp/SignUpAgree';
 import SignUpInfo from './components/signUp/SignUpInfo';
 import SignUpComplete from './components/signUp/SignUpComplete';
 import KakaoLogin from './routes/kakaoLogin/KakaoLogin';
-import GuestHoseList from './routes/guestHoseList/GuestHoseList';
+import GuestHouseList from './routes/guestHouseList/GuestHouseList';
 import WorkList from './routes/workList/WorkList';
 import StaffPickList from './routes/staffPickList/StaffPickList';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'guesthouselist/',
-        element: <GuestHoseList />,
+        element: <GuestHouseList />,
       },
       {
         path: 'worklist/',
