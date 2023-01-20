@@ -1,18 +1,13 @@
 import { Box, Button } from '@mui/material';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getNaverAuthToken, getUserInfoByToken } from '../../store/user';
 
 export default function NaverLogin() {
   const { naver } = window;
   const naverRef = useRef();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
-  const NAVER_CALLBACK_URL = 'http://localhost:3000/login';
+  const NAVER_CALLBACK_URL = 'http://localhost:3000/login/naver';
 
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
@@ -27,20 +22,8 @@ export default function NaverLogin() {
     naverLogin.init();
   };
 
-  const userAccessToken = () => {
-    window.location.href.includes('access_token') && fetchToken();
-  };
-
-  const fetchToken = async () => {
-    const token = window.location.href.split('=')[1].split('&')[0];
-    const data = dispatch(getNaverAuthToken(token));
-    dispatch(getUserInfoByToken(data));
-    return navigate('/');
-  };
-
   useEffect(() => {
     initializeNaverLogin();
-    userAccessToken();
   }, []);
 
   const handleNaverLogin = () => {
