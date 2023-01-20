@@ -10,6 +10,8 @@ import KakaoLogin from './routes/kakaoLogin/KakaoLogin';
 import GuestHoseList from './routes/guestHoseList/GuestHoseList';
 import WorkList from './routes/workList/WorkList';
 import StaffPickList from './routes/staffPickList/StaffPickList';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from './store/index';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -58,7 +60,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
     </>
   );
 }
