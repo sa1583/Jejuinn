@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import KakaoLogin from './KakaoLogin';
 import NaverLoginBtn from './NaverLogin';
+import GoogleLogin from './GoogleLogin';
 
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -81,7 +82,7 @@ export default function LoginForm() {
       <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
       <Box sx={{ display: 'flex', gap: '1.5vw' }}>
         <NaverLoginBtn />
-
+        <GoogleLogin />
         <KakaoLogin />
       </Box>
 
