@@ -1,5 +1,6 @@
 package com.tamnara.backend.api.dto.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -14,9 +15,11 @@ public class LoginPostReq {
 
     @NotNull
     @Size(min = 3)
+    @ApiModelProperty(name="유저 Email", example="admin@example.com")
     private String email;
 
     @NotNull
     @Size(min = 3, max = 100)
+    @ApiModelProperty(name="유저 Password", example="admin")
     private String password;
 }
