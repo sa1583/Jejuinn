@@ -24,7 +24,7 @@ public class User {
    @Id
    @Column(name = "uid")
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @NotNull
+//   @NotNull
    private Long uid;
 
    @Column(name = "email", length = 50)
