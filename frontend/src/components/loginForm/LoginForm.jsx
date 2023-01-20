@@ -82,7 +82,7 @@ export default function LoginForm() {
       <Box sx={{ display: 'flex', gap: '1.5vw' }}>
         <NaverLoginBtn />
         <GoogleLogin />
-        <KakaoLogin />
+        <KakaoLoginBtn />
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -111,7 +111,7 @@ export default function LoginForm() {
             );
           } else {
             return (
-              <p style={{ margin: '1rem', fontSize: '1vw' }} key={uuidv4()}>
+              <p style={{ margin: '1vw', fontSize: '1vw' }} key={uuidv4()}>
                 |
               </p>
             );

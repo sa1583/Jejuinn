@@ -17,7 +17,6 @@ export default function KakaoLogin() {
         alt="카카오 로그인"
         onClick={handleLogin}
         style={{
-          height: '2rem',
           marginTop: 'auto',
           marginBottom: 'auto',
           height: '4rem',
