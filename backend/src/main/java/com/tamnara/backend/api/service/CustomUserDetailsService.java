@@ -1,18 +1,12 @@
-package com.tamnara.backend.service;
+package com.tamnara.backend.api.service;
 
-import com.tamnara.backend.entity.User;
-import com.tamnara.backend.repository.UserRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.tamnara.backend.db.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component("userDetailService")
 public class CustomUserDetailsService implements UserDetailsService {

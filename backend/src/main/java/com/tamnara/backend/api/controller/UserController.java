@@ -1,12 +1,12 @@
-package com.tamnara.backend.controller;
+package com.tamnara.backend.api.controller;
 
+import com.tamnara.backend.api.dto.request.LoginPostReq;
+import com.tamnara.backend.api.dto.request.SignupPostReq;
+import com.tamnara.backend.api.service.UserService;
 import com.tamnara.backend.config.jwt.JwtFilter;
 import com.tamnara.backend.config.jwt.TokenProvider;
-import com.tamnara.backend.dto.request.LoginPostReq;
-import com.tamnara.backend.dto.request.SignupPostReq;
-import com.tamnara.backend.entity.User;
-import com.tamnara.backend.repository.UserRepository;
-import com.tamnara.backend.service.UserService;
+import com.tamnara.backend.db.entity.User;
+import com.tamnara.backend.db.repository.UserRepository;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

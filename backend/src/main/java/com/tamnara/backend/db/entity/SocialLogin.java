@@ -1,6 +1,6 @@
-package com.tamnara.backend.entity;
+package com.tamnara.backend.db.entity;
 
-import com.tamnara.backend.enums.SocialType;
+import com.tamnara.backend.db.enums.SocialType;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
