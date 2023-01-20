@@ -18,6 +18,9 @@ export default function KakaoLogin() {
         onClick={handleLogin}
         style={{
           height: '2rem',
+          marginTop: 'auto',
+          marginBottom: 'auto',
+          height: '4rem',
           cursor: 'pointer',
         }}
       />
