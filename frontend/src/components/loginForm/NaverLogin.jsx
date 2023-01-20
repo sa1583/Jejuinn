@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getNaverAuthToken } from '../../store/user';
+import { getNaverAuthToken, getUserInfoByToken } from '../../store/user';
 
 export default function NaverLogin() {
   const { naver } = window;
@@ -33,7 +33,8 @@ export default function NaverLogin() {
 
   const fetchToken = async () => {
     const token = window.location.href.split('=')[1].split('&')[0];
-    dispatch(getNaverAuthToken(token));
+    const { accessToken } = dispatch(getNaverAuthToken(token));
+    dispatch(getUserInfoByToken(accessToken));
     return navigate('/');
   };
 
