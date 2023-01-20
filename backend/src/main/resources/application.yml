@@ -45,4 +45,4 @@ jwt:
 # loggin level
 logging:
   level:
-    root: info  # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR
+    root: debug  # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR

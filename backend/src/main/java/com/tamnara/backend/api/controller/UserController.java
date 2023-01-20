@@ -53,9 +53,10 @@ public class UserController {
 
         // email로 social 로그인이 아닌 user 가져오기
         User user = userService.signup(userRegisterPostReq);
-        System.out.println(user);
 
-        return null;
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user);
+
+        return ResponseEntity.status(200).headers(httpHeaders).build();
     }
 
     /**
@@ -82,7 +83,7 @@ public class UserController {
             return ResponseEntity.status(400).build();
         }
 
-        HttpHeaders httpHeaders = userService.getHttpHeaders(user);
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get());
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
