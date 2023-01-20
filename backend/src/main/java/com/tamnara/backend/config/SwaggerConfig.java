@@ -21,7 +21,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * API 문서 관련 swagger2 설정 정의.
- * h
  */
 @Configuration
 @EnableSwagger2
@@ -39,7 +38,7 @@ public class SwaggerConfig {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey(SECURITY_SCHEMA_NAME, "Authorization", "header");
+        return new ApiKey(SECURITY_SCHEMA_NAME, "accessToken", "header");
     }
 
     private SecurityContext securityContext() {
