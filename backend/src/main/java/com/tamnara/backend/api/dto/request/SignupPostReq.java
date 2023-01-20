@@ -36,8 +36,6 @@ public class SignupPostReq {
     @NotNull
     boolean emailReceiveAllow;
 
-    private Set<AuthorityDto> authorityDtoSet;
-
     public static SignupPostReq from(User user) {
         if(user == null) return null;
 
@@ -45,9 +43,9 @@ public class SignupPostReq {
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .emailReceiveAllow(user.isEmailReceiveAllow())
-                .authorityDtoSet(user.getAuthorities().stream()
-                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
-                        .collect(Collectors.toSet()))
+//                .authorityDtoSet(user.getAuthorities().stream()
+//                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
+//                        .collect(Collectors.toSet()))
                 .build();
     }
 }

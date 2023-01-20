@@ -3,10 +3,8 @@ package com.tamnara.backend.api.controller;
 import com.tamnara.backend.api.dto.request.LoginPostReq;
 import com.tamnara.backend.api.dto.request.SignupPostReq;
 import com.tamnara.backend.api.service.UserService;
-import com.tamnara.backend.config.jwt.JwtFilter;
 import com.tamnara.backend.config.jwt.TokenProvider;
 import com.tamnara.backend.db.entity.User;
-import com.tamnara.backend.db.enums.SocialType;
 import com.tamnara.backend.db.repository.UserRepository;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +46,11 @@ public class UserController {
     public ResponseEntity<?> signUp(
             @ApiParam(value = "userId, password, nickname, email, emailReceiveAllow")
             @Valid @RequestBody SignupPostReq userRegisterPostReq){
-        System.out.println(userRegisterPostReq);
+
+        // email로 social 로그인이 아닌 user 가져오기
+        User user = userService.signup(userRegisterPostReq);
+        System.out.println(user);
+
         return null;
     }
 
