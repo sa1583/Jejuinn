@@ -59,17 +59,28 @@ export default function LoginForm() {
     e.preventDefault();
     axios({
       method: 'post',
-      url: 'baseurl/api/users/login',
+      // url: 'baseurl/api/users/login',
+      url: 'https://3a3081d4-b5a8-4f0f-a8ca-cee23e10ec3c.mock.pstmn.io/api/users/login',
       data: {
         email: logInForm.email,
         password: logInForm.password,
       },
-    }).then((res) => {
-      // 로그인 버튼 클릭 후 백으로부터 token이 오면 이를 redux에 저장하고,
-      // backend에 access token 으로 유저 정보 요청을 한다.
-      const accessToken = res.headers.accessToken;
-      const refreshToken = res.headers.refreshToken;
-    });
+    })
+      .then((res) => {
+        // 로그인 버튼 클릭 후 백으로부터 token이 오면 이를 redux에 저장하고,
+        // backend에 access token 으로 유저 정보 요청을 한다. (다시 axios)
+        //
+        // const accessToken = res.headers.accessToken;
+        // const refreshToken = res.headers.refreshToken;
+        const acc = res.data.accessToken;
+        const ref = res.data.refreshToken;
+        console.log(acc);
+        console.log(ref);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
