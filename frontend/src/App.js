@@ -6,12 +6,12 @@ import SignUp from './routes/signUp/SignUp';
 import SignUpAgree from './components/signUp/SignUpAgree';
 import SignUpInfo from './components/signUp/SignUpInfo';
 import SignUpComplete from './components/signUp/SignUpComplete';
-import KakaoLogin from './routes/kakaoLogin/KakaoLogin';
 import GuestHouseList from './routes/guestHouseList/GuestHouseList';
 import WorkList from './routes/workList/WorkList';
 import StaffPickList from './routes/staffPickList/StaffPickList';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
+import KakaoRedirect from './routes/logIn/KakaoRedirect';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -22,35 +22,35 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path: 'login/',
+        path: 'login',
         element: <LogIn />,
       },
       {
-        path: 'signup1/',
+        path: 'signup1',
         element: <SignUp content={signUp1} />,
       },
       {
-        path: 'signup2/',
+        path: 'signup2',
         element: <SignUp content={signUp2} />,
       },
       {
-        path: 'signup3/',
+        path: 'signup3',
         element: <SignUp content={signUp3} />,
       },
       {
-        path: 'login/kakao/',
-        element: <KakaoLogin />,
+        path: 'login/kakao',
+        element: <KakaoRedirect />,
       },
       {
-        path: 'guesthouselist/',
+        path: 'guesthouselist',
         element: <GuestHouseList />,
       },
       {
-        path: 'worklist/',
+        path: 'worklist',
         element: <WorkList />,
       },
       {
-        path: 'staffpicklist/',
+        path: 'staffpicklist',
         element: <StaffPickList />,
       },
     ],

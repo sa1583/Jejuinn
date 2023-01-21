@@ -2,7 +2,7 @@
 // import { useEffect } from 'react';
 // import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function KakaoLogin() {
+export default function KakaoRedirect() {
   // const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   // const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
   // const location = useLocation();
