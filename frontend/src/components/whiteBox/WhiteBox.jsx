@@ -1,6 +1,6 @@
 import { Box } from '@mui/system';
 
-export default function BigBox({ cpn }) {
+export default function WhiteBox({ cpn }) {
   return (
     <Box
       sx={{
