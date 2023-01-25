@@ -11,6 +11,7 @@ import WorkList from './routes/workList/WorkList';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
+import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 
 const signUp1 = <SignUpAgree />;
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <Root />,
     children: [
+      {
+        path: '',
+        element: <Main />,
+      },
       {
         path: 'login',
         element: <LogIn />,
