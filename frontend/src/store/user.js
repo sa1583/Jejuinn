@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { loginNaver, getUserInfo } from '../api/user';
+import { loginNaver, getUserInfo, loginGoogle } from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
@@ -26,7 +26,18 @@ export const getNaverAuthToken = createAsyncThunk(
     }
   },
 );
-
+export const getGoogleAuthToken = createAsyncThunk(
+  'user/getNaverAuthToken',
+  async (token, thunkAPI) => {
+    console.log('token', token);
+    try {
+      const { data } = (await loginGoogle(token)).headers;
+      return data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
+    }
+  },
+);
 const userSlice = createSlice({
   name: 'user',
   initialState: {
