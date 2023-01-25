@@ -7,6 +7,7 @@ export default function KakaoLogin() {
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleLogin = () => {
+    console.log(REST_API_KEY)
     window.location.href = KAKAO_AUTH_URL;
   };
 
