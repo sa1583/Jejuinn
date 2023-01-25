@@ -21,13 +21,11 @@ export default function GoogleLogin({ onGoogleSignIn = () => {} }) {
 
   useScript('https://accounts.google.com/gsi/client', () => {
     window.google.accounts.id.initialize({
-      client_id:
-        '1008073384484-a3je9dqdn459bdeeg3i5ehupsu31d4su.apps.googleusercontent.com',
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: onGoogleSignIn,
     });
     window.google.accounts.id.renderButton(googleSignInButton.current, {
       type: 'icon',
-      shape: 'circle',
     });
   });
 
