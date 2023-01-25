@@ -6,7 +6,7 @@ import SignUp from './routes/signUp/SignUp';
 import SignUpAgree from './components/signUp/SignUpAgree';
 import SignUpInfo from './components/signUp/SignUpInfo';
 import SignUpComplete from './components/signUp/SignUpComplete';
-import GuestHouseList from './routes/guestHouseList/GuestHouseList';
+import GuestHouse from './routes/guestHouse/GuestHouse';
 import WorkList from './routes/workList/WorkList';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
@@ -47,8 +47,8 @@ const router = createBrowserRouter([
         element: <KakaoRedirect />,
       },
       {
-        path: 'guesthouselist',
-        element: <GuestHouseList />,
+        path: 'guesthouse',
+        element: <GuestHouse />,
       },
       {
         path: 'worklist',
