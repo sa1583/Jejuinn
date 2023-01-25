@@ -52,9 +52,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public HttpHeaders getHttpHeaders(User user) {
+    public HttpHeaders getHttpHeaders(User user, String token) {
         String accessToken = tokenProvider.createAccessToken(user);
-        String refreshToken = tokenProvider.createRefreshToken(user);
+        String refreshToken = token;
+        if(refreshToken == null){
+            refreshToken = tokenProvider.createRefreshToken(user);
+        }
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
