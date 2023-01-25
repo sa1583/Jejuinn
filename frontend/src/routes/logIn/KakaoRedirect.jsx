@@ -1,13 +1,22 @@
 // import axios from 'axios';
-// import { useEffect } from 'react';
-// import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getKakaoAuthToken, getUserInfoByToken } from '../../store/user';
 
 export default function KakaoRedirect() {
   // const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   // const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-  // const location = useLocation();
-  // const AUTHORIZE_CODE = location.search.split('=')[1];
-  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const getKakaoAccess = async () => {
+    const token = location.search.split('=')[1];
+    const data = dispatch(getKakaoAuthToken(token))
+    dispatch(getUserInfoByToken(data))
+    navigate('/')
+  }
 
   // 이거 이제 로직 바꿔서 나중에 redux로 사용하자
   // const getKakaoToken = () => {
@@ -57,15 +66,12 @@ export default function KakaoRedirect() {
   //     });
   // };
 
-  // useEffect(() => {
-  //   if (!location.search) return;
-  //   getKakaoToken();
-  // });
+  useEffect(() => {
+    if (!location.search) return;
+    getKakaoAccess()
+  });
 
   return (
-    <div>
-      카카오 로그인
-      {/* <button onClick={logout}>로그아웃</button> */}
-    </div>
+    <></>
   );
 }
