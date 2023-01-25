@@ -1,13 +1,14 @@
 import { styled } from '@mui/material/styles';
 import { Button, TextField } from '@mui/material';
 import { Box } from '@mui/system';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import KakaoLoginBtn from './KakaoLogin';
 import NaverLoginBtn from './NaverLogin';
 import GoogleLogin from './GoogleLogin';
 import { useState } from 'react';
-import axios from 'axios';
+import { getNormalAuthToken, getUserInfoByToken } from '../../store/user';
+import { useDispatch } from 'react-redux';
 
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -27,6 +28,8 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function LoginForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const bottomData = [
     {
       name: '회원가입',
@@ -53,34 +56,12 @@ export default function LoginForm() {
     setLogInForm({ ...logInForm, [name]: value });
   };
 
-  // 베이스 url 고쳐야함
-  const handleLogInBTN = (e) => {
-    console.log(logInForm);
+  const login = (e) => {
     e.preventDefault();
-    axios({
-      method: 'post',
-      // url: 'baseurl/api/users/login',
-      url: 'https://3a3081d4-b5a8-4f0f-a8ca-cee23e10ec3c.mock.pstmn.io/api/users/login',
-      data: {
-        email: logInForm.email,
-        password: logInForm.password,
-      },
-    })
-      .then((res) => {
-        // 로그인 버튼 클릭 후 백으로부터 token이 오면 이를 redux에 저장하고,
-        // backend에 access token 으로 유저 정보 요청을 한다. (다시 axios)
-        //
-        // const accessToken = res.headers.accessToken;
-        // const refreshToken = res.headers.refreshToken;
-        const acc = res.data.accessToken;
-        const ref = res.data.refreshToken;
-        console.log(acc);
-        console.log(ref);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const body = { email: logInForm.email, password: logInForm.password };
+    const data = dispatch(getNormalAuthToken(body));
+    dispatch(getUserInfoByToken(data));
+    return navigate('');
   };
 
   return (
@@ -100,17 +81,19 @@ export default function LoginForm() {
         label="이메일"
         name="email"
         value={logInForm.email}
+        type="email"
       />
       <CustomTextField
         onChange={handleLogInForm}
         label="비밀번호"
         name="password"
         value={logInForm.password}
+        type="password"
       />
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
       <Button
-        onClick={handleLogInBTN}
+        onClick={login}
         sx={{
           width: '80%',
           height: '6vh',
