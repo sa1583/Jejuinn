@@ -1,13 +1,14 @@
 import { Box, Button } from '@mui/material';
 import { useRef } from 'react';
 import { useEffect } from 'react';
+import { images } from '../../assets/images';
 
 export default function NaverLogin() {
   const { naver } = window;
   const naverRef = useRef();
 
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
-  const NAVER_CALLBACK_URL = 'http://localhost:3000/login/naver';
+  const NAVER_CALLBACK_URL = process.env.REACT_APP_NAVER_CALLBACK_URL;
 
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
@@ -33,14 +34,16 @@ export default function NaverLogin() {
   return (
     <>
       <Box id="naverIdLogin" ref={naverRef} sx={{ display: 'none' }} />
-      <Button onClick={handleNaverLogin}>
-        <img
-          src="images/naver_login.png"
-          style={{
-            height: '4rem',
-          }}
-        />
-      </Button>
+      <img
+        onClick={handleNaverLogin}
+        src={images.naver_login}
+        style={{
+          marginTop: 'auto',
+          marginBottom: 'auto',
+          height: '4rem',
+          cursor: 'pointer',
+        }}
+      />
     </>
   );
 }
