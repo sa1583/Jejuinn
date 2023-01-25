@@ -110,5 +110,36 @@ public class UserController {
         return ResponseEntity.status(200).body(GetUserInfoPostRes.from(user.get()));
     }
 
+    /**
+     * Refresh Token을 통한 Access 토큰 재발급
+     * @return
+     */
+    @PostMapping("/auth/users")
+    @ApiOperation(value = "Access 토큰 재발급", notes = "<strong>헤더의 refresh 토큰 정보</strong>를 통해 access 토큰을 재발급한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그인 성공"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED(정보조회 실패)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> refreshAccessToken(HttpServletRequest request){
+        String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
+        Authentication authentication = tokenProvider.getAuthentication(refreshToken.substring(7));
+        String uid = authentication.getName();
+        Optional<User> user = userRepository.findById(Long.parseLong(uid));
+
+
+        if(user.isEmpty() // 검색 결과가 없거나
+                || !tokenProvider.validateToken(refreshToken) // refresh 토큰이 유효하지 않거나
+                || !user.get().getRefreshToken().equals(refreshToken)) // refresh 토큰이 동일하지 않다면
+            return ResponseEntity.status(401).build();
+
+        String accessToken = tokenProvider.createAccessToken(user.get());
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
+
+        return ResponseEntity.status(200).headers(httpHeaders).build();
+    }
+
 
 }
