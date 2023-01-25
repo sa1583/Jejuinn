@@ -12,6 +12,7 @@ import StaffPickList from './routes/staffPickList/StaffPickList';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
+import NaverRedirect from './routes/logIn/NaverRedirect';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: 'login/kakao',
         element: <KakaoRedirect />,
+      },
+      {
+        path: 'login/naver',
+        element: <NaverRedirect />,
       },
       {
         path: 'guesthouselist',
