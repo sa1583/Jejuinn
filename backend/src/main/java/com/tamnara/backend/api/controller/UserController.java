@@ -54,7 +54,7 @@ public class UserController {
         // email로 social 로그인이 아닌 user 가져오기
         User user = userService.signup(userRegisterPostReq);
 
-        HttpHeaders httpHeaders = userService.getHttpHeaders(user);
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
@@ -83,7 +83,7 @@ public class UserController {
             return ResponseEntity.status(400).build();
         }
 
-        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get());
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get(), null);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
@@ -115,11 +115,12 @@ public class UserController {
      * Refresh Token을 통한 Access 토큰 재발급
      * @return
      */
-    @PostMapping("/auth/users")
+    @PostMapping("/api/users/refresh")
     @ApiOperation(value = "Access 토큰 재발급", notes = "<strong>헤더의 refresh 토큰 정보</strong>를 통해 access 토큰을 재발급한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "로그인 성공"),
-            @ApiResponse(code = 401, message = "UNAUTHORIZED(정보조회 실패)"),
+            @ApiResponse(code = 200, message = "Access Token 재발급 성공"),
+            @ApiResponse(code = 400, message = "기타 오류"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED(재발급 실패, 로그아웃)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request){
@@ -134,13 +135,9 @@ public class UserController {
                 || !user.get().getRefreshToken().equals(refreshToken)) // refresh 토큰이 동일하지 않다면
             return ResponseEntity.status(401).build();
 
-        String accessToken = tokenProvider.createAccessToken(user.get());
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get(), refreshToken); // access 토큰만 재발급
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
-
 
 }
