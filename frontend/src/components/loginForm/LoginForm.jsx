@@ -28,8 +28,8 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function LoginForm() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const bottomData = [
     {
       name: '회원가입',
@@ -58,10 +58,10 @@ export default function LoginForm() {
 
   const login = (e) => {
     e.preventDefault();
-    const body = {email: logInForm.email, password: logInForm.password}
-    const data = dispatch(getNormalAuthToken(body))
-    dispatch(getUserInfoByToken(data))
-    return navigate('')
+    const body = { email: logInForm.email, password: logInForm.password };
+    const data = dispatch(getNormalAuthToken(body));
+    dispatch(getUserInfoByToken(data));
+    return navigate('');
   };
 
   return (
@@ -81,14 +81,14 @@ export default function LoginForm() {
         label="이메일"
         name="email"
         value={logInForm.email}
-        type='email'
+        type="email"
       />
       <CustomTextField
         onChange={handleLogInForm}
         label="비밀번호"
         name="password"
         value={logInForm.password}
-        type='password'
+        type="password"
       />
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
