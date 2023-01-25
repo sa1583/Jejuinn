@@ -17,10 +17,12 @@ export const getUserInfoByToken = createAsyncThunk(
 export const getNaverAuthToken = createAsyncThunk(
   'user/getNaverAuthToken',
   async (token, thunkAPI) => {
-    console.log('token', token);
     try {
-      const { data } = (await loginNaver(token)).headers;
-      return data;
+      const { accesstoken, refreshtoken } = (await loginNaver(token)).headers;
+      return {
+        accessToken: accesstoken,
+        refreshToken: refreshtoken,
+      };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
@@ -38,16 +40,16 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getNaverAuthToken.fulfilled, (state, action) => {
-        state.userInfo = action.payload;
+      .addCase(getNaverAuthToken.fulfilled, (state, { payload }) => {
+        state.accessToken = payload.accessToken;
+        state.refreshToken = payload.refreshToken;
         state.isLogin = true;
       })
       .addCase(getNaverAuthToken.rejected, () => {
         alert('실패!');
       })
-      .addCase(getUserInfoByToken.pending, (state, { payload }) => {
-        state.accessToken = payload.accessToken;
-        state.refreshToken = payload.refreshToken;
+      .addCase(getUserInfoByToken.fulfilled, (state, action) => {
+        state.userInfo = action.payload;
       });
   },
 });
