@@ -1,49 +1,61 @@
 // import axios from 'axios';
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getKakaoAuthToken, getUserInfoByToken } from '../../store/user';
 
 export default function KakaoRedirect() {
-  // const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
-  // const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  
-  const getKakaoAccess = async () => {
-    const token = location.search.split('=')[1];
-    const data = dispatch(getKakaoAuthToken(token))
-    dispatch(getUserInfoByToken(data))
-    navigate('/')
-  }
+  const token = location.search.split('=')[1];
+
+  // const getKakaoAccess = async () => {
+  //   const data = dispatch(getKakaoAuthToken(token));
+  //   dispatch(getUserInfoByToken(data));
+  //   navigate('/');
+  // };
 
   // 이거 이제 로직 바꿔서 나중에 redux로 사용하자
-  // const getKakaoToken = () => {
-  //   axios({
-  //     method: 'post',
-  //     url: 'https://kauth.kakao.com/oauth/token',
-  //     headers: {
-  //       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-  //     },
-  //     data: `grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${AUTHORIZE_CODE}`,
-  //   })
-  //     .then((res) => {
-  //       return res.data;
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       if (data.access_token) {
-  //         // localStorage.setItem('token', data.access_token);
-  //       } else {
-  //         navigate('/');
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       navigate('/');
-  //     });
-  // };
+  // 여기서 then에서 api(dispatch)로 백엔드에 accesstoken 보내쟝
+
+  const getKakaoToken = () => {
+    axios({
+      method: 'post',
+      url: 'https://kauth.kakao.com/oauth/token',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+      },
+      data: `grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${token}`,
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.access_token) {
+          // localStorage.setItem('token', data.access_token);
+        } else {
+          navigate('/');
+        }
+        axios({
+          method: 'post',
+          url: 'api/users/social/kakao',
+          headers: {
+            access_token: data.access_token,
+          },
+        }).then((res) => {
+          console.log(res);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/');
+      });
+  };
 
   // 로그아웃 버튼도 밖으로 빼고 리덕스 사용해서 관리하자
   // const logout = () => {
@@ -68,10 +80,9 @@ export default function KakaoRedirect() {
 
   useEffect(() => {
     if (!location.search) return;
-    getKakaoAccess()
+    // getKakaoAccess()
+    getKakaoToken();
   });
 
-  return (
-    <></>
-  );
+  return <></>;
 }

@@ -15,11 +15,11 @@ function loginNaver(token) {
 }
 
 function loginKakao(token) {
-  return api.post('/api/users/social/kakao', {}, getTokenHeader(token))
+  return api.post('/api/users/social/kakao', {}, getTokenHeader(token));
 }
 
 function loginNormal(body) {
-  return api.post('/api/users/login', body)
+  return api.post('/api/users/login', body);
 }
 
 function getUserInfo(token) {

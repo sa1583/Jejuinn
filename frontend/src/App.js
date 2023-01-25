@@ -13,6 +13,7 @@ import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
 import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
+import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: 'staffpicklist',
         element: <StaffPick />,
+      },
+      {
+        path: 'staffpicklist/detail/:id',
+        element: <StaffPickDetail />,
       },
     ],
   },
