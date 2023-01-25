@@ -47,7 +47,7 @@ export default function StaffPickList() {
       <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}>
         <ImageList variant="masonry" cols={3} gap={8}>
           {data.map((item) => (
-            <ImageListItem key={item.img_url}>
+            <ImageListItem key={uuidv4()}>
               <img
                 src={`${item.img_url}?w=248&fit=crop&auto=format`}
                 srcSet={`${item.img_url}?w=248&fit=crop&auto=format&dpr=2 2x`}
