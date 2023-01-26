@@ -27,7 +27,9 @@ export const getNaverAuthToken = createAsyncThunk(
   },
 );
 
-export const getKakaoAuthToken = createAsyncThunk(
+// 카카오에서 발급한 access_token을 BE 서버에 보냄
+// BE 서버에서 새로 발급한 acces_token과 refresh_token을 받는 로직
+export const getKakaoToken = createAsyncThunk(
   'user/getKakaoAuthToken',
   async (token, thunkAPI) => {
     try {
@@ -74,13 +76,13 @@ const userSlice = createSlice({
         state.accessToken = payload.accessToken;
         state.refreshToken = payload.refreshToken;
       })
-      .addCase(getKakaoAuthToken.fulfilled, (state, action) => {
+      .addCase(getKakaoToken.fulfilled, (state, action) => {
         // state.userInfo = action.payload;
         // state.isLogin = true;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
       })
-      .addCase(getKakaoAuthToken.rejected, () => {
+      .addCase(getKakaoToken.rejected, () => {
         alert('실패!');
       })
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
