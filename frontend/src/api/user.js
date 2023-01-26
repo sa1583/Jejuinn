@@ -5,7 +5,7 @@ const api = apiInstance();
 const getTokenHeader = (token) => {
   return {
     headers: {
-      Authorization: `Bearer ${token}`,
+      access_token: `Bearer ${token}`,
     },
   };
 };

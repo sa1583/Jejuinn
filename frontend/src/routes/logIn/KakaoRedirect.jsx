@@ -3,7 +3,11 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getKakaoAuthToken, getUserInfoByToken } from '../../store/user';
+import {
+  getKakaoAuthToken,
+  getKakaoUserInfo,
+  getUserInfoByToken,
+} from '../../store/user';
 
 export default function KakaoRedirect() {
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
@@ -16,7 +20,6 @@ export default function KakaoRedirect() {
   // const getKakaoAccess = async () => {
   //   const data = dispatch(getKakaoAuthToken(token));
   //   dispatch(getUserInfoByToken(data));
-  //   navigate('/');
   // };
 
   // 이거 이제 로직 바꿔서 나중에 redux로 사용하자
@@ -34,22 +37,21 @@ export default function KakaoRedirect() {
       .then((res) => {
         return res.data;
       })
-      .then((data) => {
-        console.log(data);
-        if (data.access_token) {
-          // localStorage.setItem('token', data.access_token);
-        } else {
-          navigate('/');
-        }
-        axios({
-          method: 'post',
-          url: 'api/users/social/kakao',
-          headers: {
-            access_token: data.access_token,
-          },
-        }).then((res) => {
-          console.log(res);
-        });
+      .then((res) => {
+        const access_token = res.access_token;
+        const data = dispatch(getKakaoAuthToken(access_token));
+        dispatch(getUserInfoByToken(data));
+        navigate('/');
+
+        // axios({
+        //   method: 'post',
+        //   url: 'http://localhost:8080/api/users/social/kakao',
+        //   headers: {
+        //     access_token: `BEARER ${data.access_token}`,
+        //   },
+        // }).then((res) => {
+        //   console.log(res);
+        // });
       })
       .catch((err) => {
         console.log(err);

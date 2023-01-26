@@ -31,26 +31,25 @@ export const getKakaoAuthToken = createAsyncThunk(
   'user/getKakaoAuthToken',
   async (token, thunkAPI) => {
     try {
-      const { data } = (await loginKakao(token)).headers
-      return data
+      const { data } = (await loginKakao(token)).headers;
+      return data;
     } catch (e) {
-      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패'})
+      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
-  }
-  
-)
+  },
+);
 
 export const getNormalAuthToken = createAsyncThunk(
   'user/getNormalAuthToken',
   async (body, thunkAPI) => {
     try {
-      const {data} = (await loginNormal(body)).headers
-      return data
+      const { data } = (await loginNormal(body)).headers;
+      return data;
     } catch (e) {
-      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패'})
+      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
-  }
-)
+  },
+);
 
 // userInfo에는 유저 인가코드가 들어가는건가?
 const userSlice = createSlice({
@@ -78,20 +77,20 @@ const userSlice = createSlice({
       .addCase(getKakaoAuthToken.fulfilled, (state, action) => {
         // state.userInfo = action.payload;
         // state.isLogin = true;
-        state.accessToken = action.payload.accessToken
-        state.refreshToken = action.payload.refreshToken
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
       })
       .addCase(getKakaoAuthToken.rejected, () => {
         alert('실패!');
       })
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
-        state.accessToken = action.payload.accessToken
-        state.refreshToken = action.payload.refreshToken
-      })
-      // .addCase(getUserInfoByToken.fulfilled, (state, action) => {
-      //   state.userInfo = action.payload;
-      //   state.isLogin = true;
-      // })
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+      });
+    // .addCase(getUserInfoByToken.fulfilled, (state, action) => {
+    //   state.userInfo = action.payload;
+    //   state.isLogin = true;
+    // })
   },
 });
 
