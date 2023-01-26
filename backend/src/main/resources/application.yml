@@ -45,4 +45,8 @@ jwt:
 # loggin level
 logging:
   level:
-    root: debug  # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR
+    root: info  # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR
+
+social:
+  KAKAO_REST_API_KEY: 09696fd9847d1b1b34b6e603bd1df373
+

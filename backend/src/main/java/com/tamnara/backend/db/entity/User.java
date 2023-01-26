@@ -24,11 +24,9 @@ public class User {
    @Id
    @Column(name = "uid")
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//   @NotNull
    private Long uid;
 
    @Column(name = "email", length = 50)
-   @NotNull
    private String email;
 
    @Column(name = "password", length = 100)
@@ -41,7 +39,6 @@ public class User {
    @NotNull
    private String nickname;
 
-
    @Column(name = "email_receive_allow")
    @NotNull
    @ColumnDefault("true")
@@ -49,6 +46,9 @@ public class User {
 
    @Column(name = "phone", length = 25, unique = true)
    private String phone;
+
+   @Column(name = "age")
+   private String age;
 
 //   @Column(name = "date_created", columnDefinition = "DATETIME CURRENT_TIMESTAMP")
 //   private Date dateCreated;

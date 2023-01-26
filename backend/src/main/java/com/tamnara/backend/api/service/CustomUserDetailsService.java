@@ -19,6 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String email) {
+        System.out.println("?????");
         return (UserDetails) userRepository.findOneByEmailAndSocialLogin(email, null)
                 .orElseThrow(() -> new UsernameNotFoundException(email + " -> 데이터베이스에서 찾을 수 없습니다."));
     }

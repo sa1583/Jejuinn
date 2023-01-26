@@ -53,7 +53,9 @@ public class UserService {
     }
 
     public HttpHeaders getHttpHeaders(User user, String token) {
+        System.out.println("엥?");
         String accessToken = tokenProvider.createAccessToken(user);
+        System.out.println("hihihihih");
         String refreshToken = token;
         if(refreshToken == null){
             refreshToken = tokenProvider.createRefreshToken(user);
