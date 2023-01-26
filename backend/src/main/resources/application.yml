@@ -1,22 +1,30 @@
 spring:
   datasource:
-    url: jdbc:mysql://database-tamra.cryffwvzpqtt.ap-northeast-2.rds.amazonaws.com:3306/tamnaradb?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/tamnaradb?serverTimezone=UTC
     username: admin
     password: tamnarapwd
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create # auto table drop
+      ddl-auto: create-drop
     properties:
       hibernate:
-        # show_sql: true
         format_sql: true
+        show_sql: false
+    defer-datasource-initialization: true
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  sql:
+    init:
+      data-locations: classpath:data.sql
+      mode: always
 
 logging.level:
-  org.hibernate.SQL: debug
+  org.hibernate.SQL: error
 # org.hibernate.type: trace
 
 # swagger setting
@@ -25,4 +33,20 @@ springfox:
     swagger:
       v2:
         use-model-v3: false
+
+
+jwt:
+  header: Authorization
+  #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+  #echo 'ssafy-8th-generation-class-6-team-3-jungmin-youngcha-yejin-yutae-jaewook-daeun-project-fighting-jwt-secret-with-nossi-teabong-secret-jwt-token'|base64
+  secret: c3NhZnktOHRoLWdlbmVyYXRpb24tY2xhc3MtNi10ZWFtLTMtanVuZ21pbi15b3VuZ2NoYS15ZWppbi15dXRhZS1qYWV3b29rLWRhZXVuLXByb2plY3QtZmlnaHRpbmctand0LXNlY3JldC13aXRoLW5vc3NpLXRlYWJvbmctc2VjcmV0LWp3dC10b2tlbgo=
+  token-validity-in-minutes: 30
+
+# loggin level
+logging:
+  level:
+    root: info  # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR
+
+social:
+  KAKAO_REST_API_KEY: 09696fd9847d1b1b34b6e603bd1df373
 
