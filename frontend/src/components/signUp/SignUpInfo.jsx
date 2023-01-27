@@ -38,7 +38,7 @@ export default function SignUpInfo() {
         style={{ width: '80%' }}
       />
       <br />
-      <CustomTextField required multiline label="아이디" />
+      {/* <CustomTextField required multiline label="아이디" /> */}
       <CustomTextField required multiline label="이메일" />
       <CustomTextField required multiline label="닉네임" />
       <CustomTextField required multiline label="비밀번호" />
