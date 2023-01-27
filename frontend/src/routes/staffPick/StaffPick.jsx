@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
-import StaffPickList from '../../components/staffPickComponent/StaffPickList';
+import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
 import StaffPickRank from '../../components/staffPickComponent/StaffPickRank';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { Grid } from '@mui/material';
@@ -18,6 +18,9 @@ export default function StaffPick() {
     setFilter(pickForm);
     // 여기엔 이제 api 통신
   };
+  const [selectedSpot, setSelectedSpot] = useState({});
+
+  const getReviews = (id) => {};
 
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
@@ -35,11 +38,15 @@ export default function StaffPick() {
         <Box component={Grid} item md={4} display={{ xs: 'none', md: 'block' }}>
           <WhiteBox cpn={<StaffPickRank />} />
         </Box>
-        {/* <Grid item xs={12} md={4}>
-          <WhiteBox cpn={<StaffPickRank />} />
-        </Grid> */}
         <Grid item xs={12} md={8}>
-          <WhiteBox cpn={<StaffPickList />} />
+          {selectedSpot !== {} && (
+            <Grid item xs={12} md={12}>
+              <WhiteBox />
+            </Grid>
+          )}
+          <Grid item xs={12} md={12}>
+            <WhiteBox cpn={<StaffPickSpotList />} />
+          </Grid>
         </Grid>
       </Grid>
     </Box>
