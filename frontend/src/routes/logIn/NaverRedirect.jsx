@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getNaverTokens, getUserInfoByToken } from '../../store/user';
+import { getUserInfoByToken, getOurTokensFromServer } from '../../store/user';
 
 export default function NaverRedirect() {
   const navigate = useNavigate();
@@ -12,10 +12,10 @@ export default function NaverRedirect() {
   };
 
   const fetchToken = async () => {
-    const code = window.location.href.split('=')[1].split('&')[0];
-    const accessToken = dispatch(getNaverTokens(code));
-    dispatch(getOurTokens(accessToken));
-    dispatch(getUserInfoByToken(data));
+    const token = window.location.href.split('=')[1].split('&')[0];
+    const state = window.location.href.split('&')[1].split('=')[1];
+    const { accessToken } = dispatch(getOurTokensFromServer({ token, state }));
+    dispatch(getUserInfoByToken(accessToken));
     return navigate('/');
   };
 
