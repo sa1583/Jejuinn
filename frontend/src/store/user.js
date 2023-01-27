@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { loginNaver, getUserInfo, loginKakao, loginNormal } from '../api/user';
+import { getOurTokens, getUserInfo, loginGoogle , loginKakao, loginNormal } from '../api/user';
+
 
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
@@ -14,12 +15,27 @@ export const getUserInfoByToken = createAsyncThunk(
   },
 );
 
-export const getNaverAuthToken = createAsyncThunk(
-  'user/getNaverAuthToken',
-  async (token, thunkAPI) => {
-    console.log('token', token);
+export const getOurTokensFromServer = createAsyncThunk(
+  'user/getOurTokensFromServer',
+  async (data, thunkAPI) => {
     try {
-      const { data } = (await loginNaver(token)).headers;
+      const { token, state } = data;
+      const { accessToken, refreshToken } = (await getOurTokens(token, state))
+        .headers;
+      return {
+        accessToken,
+        refreshToken,
+      };
+    } catch (e) {
+      return thunkAPI.rejectWithValue({ errorMessage: '서버 로그인 실패' });
+    }
+  },
+);
+export const getGoogleToken = createAsyncThunk(
+  'user/getGoogleToken',
+  async (token, thunkAPI) => {
+    try {
+      const { data } = (await loginGoogle(token)).headers;
       return data;
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
@@ -27,30 +43,31 @@ export const getNaverAuthToken = createAsyncThunk(
   },
 );
 
-export const getKakaoAuthToken = createAsyncThunk(
+// 카카오에서 발급한 access_token을 BE 서버에 보냄
+// BE 서버에서 새로 발급한 acces_token과 refresh_token을 받는 로직
+export const getKakaoToken = createAsyncThunk(
   'user/getKakaoAuthToken',
   async (token, thunkAPI) => {
     try {
-      const { data } = (await loginKakao(token)).headers
-      return data
+      const { data } = (await loginKakao(token)).headers;
+      return data;
     } catch (e) {
-      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패'})
+      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
-  }
-  
-)
+  },
+);
 
 export const getNormalAuthToken = createAsyncThunk(
   'user/getNormalAuthToken',
   async (body, thunkAPI) => {
     try {
-      const {data} = (await loginNormal(body)).headers
-      return data
+      const { data } = (await loginNormal(body)).headers;
+      return data;
     } catch (e) {
-      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패'})
+      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
-  }
-)
+  },
+);
 
 // userInfo에는 유저 인가코드가 들어가는건가?
 const userSlice = createSlice({
@@ -64,34 +81,30 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getNaverAuthToken.fulfilled, (state, action) => {
+      .addCase(getUserInfoByToken.fulfilled, (state, action) => {
         state.userInfo = action.payload;
-        state.isLogin = true;
       })
-      .addCase(getNaverAuthToken.rejected, () => {
-        alert('실패!');
-      })
-      .addCase(getUserInfoByToken.pending, (state, { payload }) => {
+      .addCase(getOurTokensFromServer.fulfilled, (state, { payload }) => {
         state.accessToken = payload.accessToken;
         state.refreshToken = payload.refreshToken;
       })
-      .addCase(getKakaoAuthToken.fulfilled, (state, action) => {
+      .addCase(getKakaoToken.fulfilled, (state, action) => {
         // state.userInfo = action.payload;
         // state.isLogin = true;
-        state.accessToken = action.payload.accessToken
-        state.refreshToken = action.payload.refreshToken
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
       })
-      .addCase(getKakaoAuthToken.rejected, () => {
+      .addCase(getKakaoToken.rejected, () => {
         alert('실패!');
       })
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
-        state.accessToken = action.payload.accessToken
-        state.refreshToken = action.payload.refreshToken
-      })
-      // .addCase(getUserInfoByToken.fulfilled, (state, action) => {
-      //   state.userInfo = action.payload;
-      //   state.isLogin = true;
-      // })
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+      });
+    // .addCase(getUserInfoByToken.fulfilled, (state, action) => {
+    //   state.userInfo = action.payload;
+    //   state.isLogin = true;
+    // })
   },
 });
 

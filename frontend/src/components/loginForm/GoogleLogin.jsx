@@ -1,35 +1,28 @@
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import React from 'react';
+import { images } from '../../assets/images';
 
-const useScript = (url, onload) => {
-  useEffect(() => {
-    const script = document.createElement('script');
+export default function GoogleLogin() {
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
 
-    script.src = url;
-    script.onload = onload;
+  const handleLogin = () => {
+    window.location.href = GOOGLE_AUTH_URL;
+  };
 
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, [url, onload]);
-};
-
-export default function GoogleLogin({ onGoogleSignIn = () => {} }) {
-  const googleSignInButton = useRef(null);
-
-  useScript('https://accounts.google.com/gsi/client', () => {
-    window.google.accounts.id.initialize({
-      client_id:
-        '1008073384484-a3je9dqdn459bdeeg3i5ehupsu31d4su.apps.googleusercontent.com',
-      callback: onGoogleSignIn,
-    });
-    window.google.accounts.id.renderButton(googleSignInButton.current, {
-      type: 'icon',
-      shape: 'circle',
-    });
-  });
-
-  return <div ref={googleSignInButton}></div>;
+  return (
+    <>
+      <img
+        src={images.google_login}
+        alt="구글로그인"
+        onClick={handleLogin}
+        style={{
+          marginTop: 'auto',
+          marginBottom: 'auto',
+          height: '4rem',
+          cursor: 'pointer',
+        }}
+      />
+    </>
+  );
 }

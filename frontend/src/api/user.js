@@ -10,20 +10,30 @@ const getTokenHeader = (token) => {
   };
 };
 
-function loginNaver(token) {
-  return api.post('/api/users/social/naver', {}, getTokenHeader(token));
+const getOurTokens = (token, state) => {
+  const config = {
+    headers: {
+      access_token: `Bearer ${token}`,
+      state,
+    },
+  };
+  return api.post('/api/users/social/naver', {}, config);
+};
+
+const getUserInfo = (token) => {
+  return api.post('/auth/users', {}, getTokenHeader(token));
+};
+
+function loginGoogle(token) {
+  return api.post('/api/users/social/google', {}, getTokenHeader(token));
 }
 
 function loginKakao(token) {
-  return api.post('/api/users/social/kakao', {}, getTokenHeader(token))
+  return api.post('/api/users/social/kakao', {}, getTokenHeader(token));
 }
 
 function loginNormal(body) {
-  return api.post('/api/users/login', body)
+  return api.post('/api/users/login', body);
 }
 
-function getUserInfo(token) {
-  return api.post('/auth/users', {}, getTokenHeader(token));
-}
-
-export { loginNaver, getUserInfo, loginKakao, loginNormal };
+export { getOurTokens, getUserInfo, loginGoogle, loginKakao, loginNormal };
