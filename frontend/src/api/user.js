@@ -2,17 +2,27 @@ import { apiInstance } from './index';
 
 const api = apiInstance();
 
-const getTokenHeader = (token) => {
-  return {
+const getOurTokens = (token, state) => {
+  const config = {
     headers: {
       access_token: `Bearer ${token}`,
+      state,
     },
   };
+  return api.post('/api/users/social/naver', {}, config);
 };
 
-function loginNaver(token) {
-  return api.post('/api/users/social/naver', {}, getTokenHeader(token));
-}
+const getUserInfo = (token) => {
+  const config = () => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  };
+  return api.post('/auth/users', {}, config);
+};
+
 function loginGoogle(token) {
   return api.post('/api/users/social/google', {}, getTokenHeader(token));
 }
@@ -29,4 +39,4 @@ function getUserInfo(token) {
   return api.post('/auth/users', {}, getTokenHeader(token));
 }
 
-export { loginNaver, getUserInfo, loginGoogle, loginKakao, loginNormal };
+export { getOurTokens, getUserInfo, loginGoogle, loginKakao, loginNormal };
