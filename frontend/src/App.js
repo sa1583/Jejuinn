@@ -12,6 +12,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
 import NaverRedirect from './routes/logIn/NaverRedirect';
+import GoogleRedirect from './routes/logIn/GoogleRedirect';
 import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: 'login/naver',
         element: <NaverRedirect />,
+      },
+      {
+        path: 'login/google',
+        element: <GoogleRedirect />,
       },
       {
         path: 'guesthouselist',

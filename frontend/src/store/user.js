@@ -31,10 +31,9 @@ export const getOurTokensFromServer = createAsyncThunk(
     }
   },
 );
-export const getGoogleAuthToken = createAsyncThunk(
-  'user/getNaverAuthToken',
+export const getGoogleToken = createAsyncThunk(
+  'user/getGoogleToken',
   async (token, thunkAPI) => {
-    console.log('token', token);
     try {
       const { data } = (await loginGoogle(token)).headers;
       return data;
