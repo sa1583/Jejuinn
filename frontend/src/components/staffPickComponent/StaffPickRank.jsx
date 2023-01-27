@@ -5,7 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 export default function StaffPickRank() {
   return (
     <Box sx={{ padding: '3vh', maxHeight: '60rem' }}>
-      <h2>명소 TOP10</h2>
+      <h2>
+        <span style={{ color: '#FF7600' }}>제주도</span> 명소 TOP10
+      </h2>
       <Box
         sx={{
           display: 'flex',
