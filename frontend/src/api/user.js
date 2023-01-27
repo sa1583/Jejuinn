@@ -2,6 +2,14 @@ import { apiInstance } from './index';
 
 const api = apiInstance();
 
+const getTokenHeader = (token) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
+
 const getOurTokens = (token, state) => {
   const config = {
     headers: {
@@ -13,14 +21,7 @@ const getOurTokens = (token, state) => {
 };
 
 const getUserInfo = (token) => {
-  const config = () => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-  };
-  return api.post('/auth/users', {}, config);
+  return api.post('/auth/users', {}, getTokenHeader(token));
 };
 
 function loginGoogle(token) {
@@ -33,10 +34,6 @@ function loginKakao(token) {
 
 function loginNormal(body) {
   return api.post('/api/users/login', body);
-}
-
-function getUserInfo(token) {
-  return api.post('/auth/users', {}, getTokenHeader(token));
 }
 
 export { getOurTokens, getUserInfo, loginGoogle, loginKakao, loginNormal };
