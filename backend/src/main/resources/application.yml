@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/tamnaradb?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/jejuinndb?serverTimezone=UTC
     username: admin
-    password: tamnarapwd
+    password: jejuinnpwd
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -49,4 +49,6 @@ logging:
 
 social:
   KAKAO_REST_API_KEY: 09696fd9847d1b1b34b6e603bd1df373
+  NAVER_CLIENT_ID : ruYgozBWsd_4RHLnrTn2
+  NAVER_CLIENT_SECRET : BoQyWXUhdY
 
