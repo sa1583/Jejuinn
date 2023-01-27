@@ -14,9 +14,7 @@ export default function NaverLogin() {
     const naverLogin = new naver.LoginWithNaverId({
       clientId: NAVER_CLIENT_ID,
       callbackUrl: NAVER_CALLBACK_URL,
-      // 팝업창으로 로그인을 진행할 것인지?
       isPopup: false,
-      // 버튼 타입 ( 색상, 타입, 크기 변경 가능 )
       loginButton: { color: 'green', type: 3, height: 58 },
       callbackHandle: true,
     });
@@ -43,6 +41,7 @@ export default function NaverLogin() {
           height: '4rem',
           cursor: 'pointer',
         }}
+        alt="naver login"
       />
     </>
   );
