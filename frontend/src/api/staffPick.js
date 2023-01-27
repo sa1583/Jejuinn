@@ -13,4 +13,8 @@ function getSpots() {
   return api.get('/api/spot');
 }
 
-export { getSpots };
+function getReviews(uid) {
+  return api.get(`/api/spot/${uid}`);
+}
+
+export { getSpots, getReviews };

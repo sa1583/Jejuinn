@@ -6,6 +6,7 @@ import StaffPickRank from '../../components/staffPickComponent/StaffPickRank';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
+import StaffPickReviews from '../../components/staffPickComponent/StaffPickReviews';
 
 export default function StaffPick() {
   const [filter, setFilter] = useState({
@@ -18,9 +19,26 @@ export default function StaffPick() {
     setFilter(pickForm);
     // 여기엔 이제 api 통신
   };
-  const [selectedSpot, setSelectedSpot] = useState({});
+  const [selectedSpot, setSelectedSpot] = useState({ uid: '', name: '' });
 
-  const getReviews = (id) => {};
+  const [spotReviews, setSpotReviews] = useState([]);
+
+  // 클릭한 명소의 uid, name을 받고
+  // uid를 이용해 해당 명소의 리뷰 리스트를 받아오는 로직
+  // 나중에 fetch 우리서버랑 통신으로 바꿔줘야함
+  const selectSpot = (e) => {
+    const uid = e.target.id;
+    const name = e.target.name;
+    setSelectedSpot({ uid, name });
+    fetch(`dataPractice/reviews_${uid}.json`)
+      .then((res) => res.json())
+      .then((json) => setSpotReviews(json));
+  };
+
+  const deleteSelected = () => {
+    setSelectedSpot({ uid: '', name: '' });
+    setSpotReviews([]);
+  };
 
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
@@ -39,13 +57,21 @@ export default function StaffPick() {
           <WhiteBox cpn={<StaffPickRank />} />
         </Box>
         <Grid item xs={12} md={8}>
-          {selectedSpot !== {} && (
-            <Grid item xs={12} md={12}>
-              <WhiteBox />
-            </Grid>
-          )}
           <Grid item xs={12} md={12}>
-            <WhiteBox cpn={<StaffPickSpotList />} />
+            {spotReviews.length > 0 && (
+              <WhiteBox
+                cpn={
+                  <StaffPickReviews
+                    spotReviews={spotReviews}
+                    selectedSpot={selectedSpot}
+                    deleteSelected={deleteSelected}
+                  />
+                }
+              />
+            )}
+            {spotReviews.length === 0 && (
+              <WhiteBox cpn={<StaffPickSpotList selectSpot={selectSpot} />} />
+            )}
           </Grid>
         </Grid>
       </Grid>

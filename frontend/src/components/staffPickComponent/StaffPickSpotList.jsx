@@ -1,16 +1,16 @@
 import { Box } from '@mui/system';
-import { data } from '../../practiceApi/staffPickList';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { data } from '../../practiceApi/staffPickList';
+// import { useNavigate } from 'react-router-dom';
 // import { getSpots } from '../../api/staffPick';
 // import { useState } from 'react';
 
-export default function StaffPickSpotList() {
-  const navigate = useNavigate();
-  const goDetail = (id) => {
-    navigate(`detail/${id}`);
-  };
+export default function StaffPickSpotList({ selectSpot }) {
+  // const navigate = useNavigate();
+  // const goDetail = (id) => {
+  //   navigate(`detail/${id}`);
+  // };
 
   // 나중에 여기서 받아온 data를 map 돌려서 리스트 출력해야함
   // const [spotList, setSpotList] = useState({});
@@ -24,7 +24,6 @@ export default function StaffPickSpotList() {
   //     }
   //   };
   // };
-
   return (
     <Box sx={{ padding: '3vh' }}>
       <h2>
@@ -37,11 +36,13 @@ export default function StaffPickSpotList() {
               <img
                 src={`${item.img_url}?w=248&fit=crop&auto=format`}
                 srcSet={`${item.img_url}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.title}
+                alt={item.name}
                 loading="lazy"
-                onClick={() => goDetail(item.id)}
+                id={item.uid}
+                onClick={selectSpot}
+                name={item.name}
               />
-              <ImageListItemBar title={item.title} />
+              <ImageListItemBar title={item.name} />
             </ImageListItem>
           ))}
         </ImageList>

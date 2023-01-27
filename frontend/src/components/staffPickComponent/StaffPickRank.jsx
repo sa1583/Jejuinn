@@ -41,7 +41,7 @@ export default function StaffPickRank() {
                   marginRight: '1rem',
                 }}
               />
-              <p>{article.title}</p>
+              <p>{article.name}</p>
             </Box>
           );
         })}
