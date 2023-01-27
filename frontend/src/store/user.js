@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getUserInfo, getNaverAccessToken, getOurTokens } from '../api/user';
+import { getUserInfo, getOurTokens } from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
@@ -16,25 +16,17 @@ export const getUserInfoByToken = createAsyncThunk(
 
 export const getOurTokensFromServer = createAsyncThunk(
   'user/getOurTokensFromServer',
-  async (token, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      const { accessToken, refreshToken } = (await getOurTokens(token)).headers;
+      const { token, state } = data;
+      const { accessToken, refreshToken } = (await getOurTokens(token, state))
+        .headers;
       return {
         accessToken,
         refreshToken,
       };
-    } catch (e) {}
-  },
-);
-
-export const getNaverTokens = createAsyncThunk(
-  'user/getNaverTokens',
-  async (token, thunkAPI) => {
-    try {
-      const { access_token } = (await getNaverAccessToken(token)).data;
-      return access_token;
     } catch (e) {
-      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
+      return thunkAPI.rejectWithValue({ errorMessage: '서버 로그인 실패' });
     }
   },
 );
@@ -49,9 +41,14 @@ const userSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getUserInfoByToken.fulfilled, (state, action) => {
-      state.userInfo = action.payload;
-    });
+    builder
+      .addCase(getUserInfoByToken.fulfilled, (state, action) => {
+        state.userInfo = action.payload;
+      })
+      .addCase(getOurTokensFromServer.fulfilled, (state, { payload }) => {
+        state.accessToken = payload.accessToken;
+        state.refreshToken = payload.refreshToken;
+      });
   },
 });
 
