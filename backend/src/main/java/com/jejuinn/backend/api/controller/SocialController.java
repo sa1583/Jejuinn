@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.service.oauth.GoogleService;
 import com.jejuinn.backend.db.repository.SocialLoginRepository;
 import com.jejuinn.backend.api.service.oauth.KakaoService;
 import com.jejuinn.backend.api.service.UserService;
@@ -32,6 +33,7 @@ public class SocialController {
     private final UserRepository userRepository;
     private final KakaoService kakaoService;
     private final NaverService naverService;
+    private final GoogleService googleService;
     private static final Logger logger = LoggerFactory.getLogger(SocialController.class);
 
     /**
@@ -101,4 +103,38 @@ public class SocialController {
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
 
+    /**
+     * 구글 로그인 및 JWT 발급
+     * @return
+     */
+    @PostMapping("/google")
+    @ApiOperation(value = "구글 로그인", notes = "<strong>OAuth2.0 access-token을 통해</strong> 구글 소셜 로그인을 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 가입 성공"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(소셜 로그인 실패)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> GoogleLogin(HttpServletRequest request) {
+        // 1. 코드 전달
+        String access_token = request.getHeader(TOKEN_HEADER);
+        if(access_token == null) return ResponseEntity.status(400).build();
+        logger.debug("Google LOGIN START");
+        logger.debug("Access Token : {}", access_token);
+
+        //2. 인증코드로 토큰 전달
+        SocialLogin socialInfo = googleService.getUserInfoFromGoogle(access_token);
+
+        if(socialInfo == null) return ResponseEntity.status(400).build();
+
+        if(userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(), SocialType.valueOf("GOOGLE").ordinal()).isEmpty()){
+            userRepository.save(socialInfo.getUser());
+            socialLoginRepository.save(socialInfo);
+        }
+
+        User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("GOOGLE").ordinal()).get();
+
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
+
+        return ResponseEntity.status(200).headers(httpHeaders).build();
+    }
 }
