@@ -181,6 +181,12 @@ public class UserController {
         return ResponseEntity.status(200).build();
     }
 
+    /**
+     *
+     * @param simpleEmailReq
+     * @return simpleCodeRes
+     */
+
     @PostMapping("/api/users/pw/reset")
     @ApiOperation(value = "비밀번호 재설정을 위한 인증코드 발급", notes = "<string>이메일</strong>을 입력받아 사용자 여부를 확인 후, 해당 사용자의 비밀번호 재설정을 위한 코드를 입력받은 이메일로 보냅니다.")
     @ApiResponses({
