@@ -1,22 +1,23 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.LoginPostReq;
+import com.jejuinn.backend.api.dto.request.SimpleEmailReq;
 import com.jejuinn.backend.api.dto.response.GetUserInfoPostRes;
 import com.jejuinn.backend.api.dto.request.SignupPostReq;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.entity.User;
+import com.jejuinn.backend.db.enums.SocialType;
 import com.jejuinn.backend.db.repository.UserRepository;
+import com.jejuinn.backend.db.repository.UserRepositorySupport;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
+    private final UserRepositorySupport userRepositorySupport;
     private final UserService userService;
 
     /**
@@ -137,5 +139,78 @@ public class UserController {
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
+
+    /**
+     *
+     * @param simpleEmailReq
+     * @return
+     */
+
+    @PostMapping("/api/users/email-check")
+    @ApiOperation(value = "이메일 중복 확인", notes = "<strong>이메일 텍스트</strong>를 받아 중복 여부를 리턴합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(중복되지 않는 이메일)"),
+            @ApiResponse(code = 409, message = "Conflict(중복되는 이메일)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> checkDuplicateEmail(@Valid @RequestBody SimpleEmailReq simpleEmailReq){
+        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null) == null){
+            return ResponseEntity.status(409).build();
+        }
+        return ResponseEntity.status(200).build();
+    }
+
+    /**
+     *
+     * @param uid
+     * @return
+     */
+
+    @PostMapping("/auth/users/logout/{uid}")
+    @ApiOperation(value = "로그아웃", notes = "<string>사용자의 uid를 입력받아</strong> 해당 사용자를 로그아웃처리 합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(로그아웃 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(로그아웃 실패)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> logout(@PathVariable String uid){
+        userRepositorySupport.saveRefreshToken(Long.parseLong(uid), null);
+        return ResponseEntity.status(200).build();
+    }
+
+    /**
+     *
+     * @param request
+     * @return
+     */
+
+    @PostMapping("/auth/users/pw-check")
+    @ApiOperation(value = "개인정보 수정 페이지로 이등 시 비밀번호 확인", notes = "<string>비밀번호</strong>를 입력받아 일치하는지 확인합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(비밀번호 일치)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(비밀번호 불일치)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> checkPassword(HttpServletRequest request){
+        String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+        Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
+        String uid = authentication.getName();
+        Optional<User> user = userRepository.findById(Long.parseLong(uid));
+        if(user.isEmpty()
+                ||passwordEncoder.matches(request.getHeader("password"), user.get().getPassword()))
+            return ResponseEntity.status(400).build();
+
+        return ResponseEntity.status(200).build();
+    }
+
+//    @PostMapping("/auth/users/pw-check")
+//    @ApiOperation(value = "개인정보 수정 페이지로 이등 시 비밀번호 확인", notes = "<string>비밀번호</strong>를 입력받아 일치하는지 확인합니다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK(비밀번호 일치)"),
+//            @ApiResponse(code = 400, message = "BAD REQUEST(비밀번호 불일치)"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+
+
 
 }
