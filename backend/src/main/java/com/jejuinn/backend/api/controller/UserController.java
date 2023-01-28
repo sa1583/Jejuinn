@@ -4,6 +4,8 @@ import com.jejuinn.backend.api.dto.request.LoginPostReq;
 import com.jejuinn.backend.api.dto.request.SimpleEmailReq;
 import com.jejuinn.backend.api.dto.response.GetUserInfoPostRes;
 import com.jejuinn.backend.api.dto.request.SignupPostReq;
+import com.jejuinn.backend.api.dto.response.SimpleCodeRes;
+import com.jejuinn.backend.api.service.EmailService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
@@ -33,6 +35,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserRepositorySupport userRepositorySupport;
     private final UserService userService;
+    private final EmailService emailService;
 
     /**
      * 회원가입 및 JWT 발급
@@ -180,11 +183,43 @@ public class UserController {
 
     /**
      *
+     * @param simpleEmailReq
+     * @return simpleCodeRes
+     */
+
+    @PostMapping("/api/users/pw/reset")
+    @ApiOperation(value = "비밀번호 재설정을 위한 인증코드 발급", notes = "<string>이메일</strong>을 입력받아 사용자 여부를 확인 후, 해당 사용자의 비밀번호 재설정을 위한 코드를 입력받은 이메일로 보냅니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(비밀번호 초키화 코드를 email로 발급)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(존재하지 않는 이메일)"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED(메일 전송 실패)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getPasswordResetCode(@Valid @RequestBody SimpleEmailReq simpleEmailReq){
+
+        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null) == null){
+            return ResponseEntity.status(400).build();
+        }
+
+        SimpleCodeRes res;
+        try {
+            res = SimpleCodeRes.builder()
+                    .code(emailService.sendMessage(simpleEmailReq.getEmail()))
+                    .build();
+        } catch (Exception e) {
+            return ResponseEntity.status(401).build();
+        }
+
+        return ResponseEntity.status(200).body(res);
+    }
+
+    /**
+     *현
      * @param request
      * @return
      */
 
-    @PostMapping("/auth/users/pw-check")
+    @PostMapping("/auth/users/pw/check")
     @ApiOperation(value = "개인정보 수정 페이지로 이등 시 비밀번호 확인", notes = "<string>비밀번호</strong>를 입력받아 일치하는지 확인합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(비밀번호 일치)"),
@@ -202,15 +237,5 @@ public class UserController {
 
         return ResponseEntity.status(200).build();
     }
-
-//    @PostMapping("/auth/users/pw-check")
-//    @ApiOperation(value = "개인정보 수정 페이지로 이등 시 비밀번호 확인", notes = "<string>비밀번호</strong>를 입력받아 일치하는지 확인합니다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK(비밀번호 일치)"),
-//            @ApiResponse(code = 400, message = "BAD REQUEST(비밀번호 불일치)"),
-//            @ApiResponse(code = 500, message = "서버 오류")
-//    })
-
-
 
 }
