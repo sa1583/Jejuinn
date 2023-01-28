@@ -190,8 +190,9 @@ public class UserController {
     @PostMapping("/api/users/pw/reset")
     @ApiOperation(value = "비밀번호 재설정을 위한 인증코드 발급", notes = "<string>이메일</strong>을 입력받아 사용자 여부를 확인 후, 해당 사용자의 비밀번호 재설정을 위한 코드를 입력받은 이메일로 보냅니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(로그아웃 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(로그아웃 실패)"),
+            @ApiResponse(code = 200, message = "OK(비밀번호 초키화 코드를 email로 발급)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(존재하지 않는 이메일)"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED(메일 전송 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getPasswordResetCode(@Valid @RequestBody SimpleEmailReq simpleEmailReq){
