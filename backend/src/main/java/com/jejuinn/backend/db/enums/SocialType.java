@@ -9,7 +9,10 @@ package com.jejuinn.backend.db.enums;
  *   - index = 1 -> NAVER
  *
  * 2. String str -> int index 변환
- * int idex = SocialType.valueOf(str).ordinal()
+ * int index = SocialType.valueOf(str).ordinal()
+ * or
+ * int index = SocialType.KAKAO.orinal()
+ *           = SocialType.valueOf("KAKAO").ordinal()
  *   - str = KAKAO -> 0
  *   - str = NAVER -> 1
  */
