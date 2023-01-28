@@ -94,8 +94,12 @@ public class NaverService {
         Map<String, String> result = getMapFromNaverProfile(fields, responseElement);
         NaverProfileDto naverProfileDto = NaverProfileDto.init(result);
 
-         User user = userRepository.findOneByEmailAndSocialLogin_Type(result.get("email"), SocialType.NAVER.ordinal())
-                        .orElse(User.from(naverProfileDto, Authority.init()));
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(Authority.user());
+        authorities.add(Authority.auth());
+
+        User user = userRepository.findOneByEmailAndSocialLogin_Type(result.get("email"), SocialType.NAVER.ordinal())
+                        .orElse(User.from(naverProfileDto, authorities));
 
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
                                     .orElse(SocialLogin.from(user, accessToken, SocialType.NAVER.ordinal()));

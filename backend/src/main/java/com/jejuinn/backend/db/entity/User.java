@@ -75,7 +75,7 @@ public class User {
    private SocialLogin socialLogin;
 
 
-   public static User from(NaverProfileDto naverProfileDto, Authority authority) {
+   public static User from(NaverProfileDto naverProfileDto, Set<Authority> authorities) {
       if(naverProfileDto == null) return null;
 
       return User.builder()
@@ -86,7 +86,7 @@ public class User {
               .username(naverProfileDto.getName())
               .profileImageUrl(naverProfileDto.getProfileImage())
               .phone(naverProfileDto.getMobile())
-              .authorities(Collections.singleton(authority))
+              .authorities(authorities)
               .build();
    }
 }

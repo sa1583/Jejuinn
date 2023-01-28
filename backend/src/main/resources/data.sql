@@ -12,6 +12,7 @@ values (2, 0);
 -- values ('$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'userN', 'user@example.com');
 
 insert into authority (authority_name) values ('ROLE_USER');
+insert into authority (authority_name) values ('ROLE_AUTH');
 insert into authority (authority_name) values ('ROLE_ADMIN');
 
 insert into user_authority (user_uid, authority_name) values (1, 'ROLE_USER');
