@@ -1,6 +1,8 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.service.oauth.GoogleService;
+import com.jejuinn.backend.config.jwt.JwtFilter;
+import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.repository.SocialLoginRepository;
 import com.jejuinn.backend.api.service.oauth.KakaoService;
 import com.jejuinn.backend.api.service.UserService;
@@ -15,11 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @RestController
 @Api(tags = "소셜 로그인 관련 API")
@@ -34,6 +39,7 @@ public class SocialController {
     private final KakaoService kakaoService;
     private final NaverService naverService;
     private final GoogleService googleService;
+    private final TokenProvider tokenProvider;
     private static final Logger logger = LoggerFactory.getLogger(SocialController.class);
 
     /**
@@ -136,5 +142,25 @@ public class SocialController {
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
+    }
+
+    @PostMapping("/auth/users/naver-auth")
+    @ApiOperation(value = "네이버 인증", notes = "<strong>사용자의 네이버 정보</strong>를 받아 인증 계정으로 전환한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(인증 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(기타 오류)"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED(인증 실패)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getNaverAuth(HttpServletRequest request){
+        String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+        Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
+        String uid = authentication.getName();
+
+        Optional<User> user = userRepository.findById(Long.parseLong(uid));
+        if (user.isEmpty()) return ResponseEntity.status(400).build();
+        naverService.getUserInfoFromNaver(request.getHeader(TOKEN_HEADER), request.getHeader("state"));
+
+        return ResponseEntity.status(200).build();
     }
 }
