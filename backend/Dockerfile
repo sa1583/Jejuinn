@@ -1,7 +1,12 @@
 # JDK11 이미지 사용
 FROM openjdk:11-jdk
 
+# add author info
+LABEL maintainer="ssafy.jaewook@gmail.com"
+
 VOLUME /tmp
+
+EXPOSE 8080
 
 # JAR_FILE 변수에 값을 저장
 ARG JAR_FILE=./build/libs/backend-0.0.1-SNAPSHOT.jar
