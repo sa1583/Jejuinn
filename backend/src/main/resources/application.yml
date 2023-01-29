@@ -18,6 +18,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
   sql:
     init:
       data-locations: classpath:data.sql
