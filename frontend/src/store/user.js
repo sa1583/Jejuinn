@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getOurTokens, getUserInfo, loginGoogle , loginKakao, loginNormal } from '../api/user';
-
+import {
+  getOurTokens,
+  getUserInfo,
+  loginGoogle,
+  loginKakao,
+  loginNormal,
+  loginFacebook,
+} from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
@@ -50,6 +56,18 @@ export const getKakaoToken = createAsyncThunk(
   async (token, thunkAPI) => {
     try {
       const { data } = (await loginKakao(token)).headers;
+      return data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
+    }
+  },
+);
+
+export const getFacebookToken = createAsyncThunk(
+  'user/getFacebookToken',
+  async (token, thunkAPI) => {
+    try {
+      const { data } = (await loginFacebook(token)).headers;
       return data;
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
