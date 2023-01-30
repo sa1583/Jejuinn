@@ -63,7 +63,7 @@ public class SocialController {
         logger.debug("Access Token : {}", access_token);
 
         //2. 인증코드로 토큰 전달
-        SocialLogin socialInfo = kakaoService.getUserInfoFromKakao(access_token);
+        SocialLogin socialInfo = kakaoService.getUserInfoFromKakao(access_token.substring(7));
 
         if(socialInfo == null) return ResponseEntity.status(400).build();
 
