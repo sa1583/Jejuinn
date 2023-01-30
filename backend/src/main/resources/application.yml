@@ -1,5 +1,6 @@
 spring:
   datasource:
+#    url: jdbc:mysql://localhost:3306/jejuinndb?serverTimezone=UTC
     url: jdbc:mysql://jejuinn.cryffwvzpqtt.ap-northeast-2.rds.amazonaws.com:3306/jejuinndb?serverTimezone=UTC
     username: admin
     password: jejuinnpwd
@@ -23,6 +24,11 @@ spring:
     init:
       data-locations: classpath:data.sql
       mode: always
+
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 30MB
 
 logging.level:
   org.hibernate.SQL: error
@@ -52,3 +58,17 @@ social:
   KAKAO_REST_API_KEY: 09696fd9847d1b1b34b6e603bd1df373
   NAVER_CLIENT_ID : ruYgozBWsd_4RHLnrTn2
   NAVER_CLIENT_SECRET : BoQyWXUhdY
+
+
+# s3
+cloud:
+  aws:
+    s3:
+      bucket: jejuinnawsbucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      accessKey: AKIAZI4P42UQNX5AILCC
+      secretKey: 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
