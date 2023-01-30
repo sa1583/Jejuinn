@@ -60,6 +60,13 @@ export default function StaffPick() {
     { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
 
+  const spots = [
+    { id: 1, lat: 33.4485, lng: 126.5631 },
+    { id: 2, lat: 33.478, lng: 126.4948 },
+    { id: 3, lat: 33.4664, lng: 126.6694 },
+    { id: 4, lat: 33.2856, lng: 126.4449 },
+  ];
+
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
     <div>
@@ -73,7 +80,7 @@ export default function StaffPick() {
             />
           </Grid>
           <Grid item xs={12} md={8}>
-            <WhiteBox cpn={<MapApi />} />
+            <WhiteBox cpn={<MapApi spots={spots} />} />
           </Grid>
 
           <Box
