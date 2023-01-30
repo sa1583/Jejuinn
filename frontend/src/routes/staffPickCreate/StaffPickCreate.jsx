@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
+import MapApi from '../../components/mapApi/MapApi';
 import StaffPickCreateForm from '../../components/staffPickCreateComponent/StaffPickCreateForm';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 
@@ -9,7 +10,7 @@ export default function StaffPickCreate() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Grid item xs={12}>
-            <WhiteBox />
+            <WhiteBox cpn={<MapApi />} />
           </Grid>
           <Grid item xs={12}>
             <WhiteBox />

@@ -4,8 +4,8 @@ import axios from 'axios';
 // 카카오로 부터 access_token을 받는 로직
 
 export async function getKakaoAccessToken(authToken) {
-  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
-  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   return await axios({
     method: 'post',
     url: 'https://kauth.kakao.com/oauth/token',
