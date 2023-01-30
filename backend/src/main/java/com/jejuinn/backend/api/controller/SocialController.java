@@ -124,8 +124,8 @@ public class SocialController {
         // 1. 코드 전달
         String access_token = request.getHeader(TOKEN_HEADER);
         if(access_token == null) return ResponseEntity.status(400).build();
-        logger.debug("Google LOGIN START");
-        logger.debug("Access Token : {}", access_token);
+        logger.info("Google LOGIN START");
+        logger.info("Access Token : {}", access_token);
 
         //2. 인증코드로 토큰 전달
         SocialLogin socialInfo = googleService.getUserInfoFromGoogle(access_token);
@@ -140,6 +140,7 @@ public class SocialController {
         User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("GOOGLE").ordinal()).get();
 
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
+        logger.info("KAKAO_USER_INFO : {}", user);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
