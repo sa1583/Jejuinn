@@ -2,7 +2,7 @@ import { images } from '../../assets/images';
 
 export default function FacebookLogin() {
   const FACEBOOK_CLIENT_ID = process.env.REACT_APP_FACEBOOK_CLIENT_ID;
-  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const REDIRECT_URI = process.env.REACT_APP_FACEBOOK_REDIRECT_URI;
   const FACEBOOK_AUTH_URL = `https://www.facebook.com/v15.0/dialog/oauth?client_id=${FACEBOOK_CLIENT_ID}&redirect_uri=${REDIRECT_URI}`;
 
   const handleLogin = () => {

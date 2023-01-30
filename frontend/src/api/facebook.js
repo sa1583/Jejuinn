@@ -6,7 +6,7 @@ import axios from 'axios';
 export async function getFacebookAccessToken(auth_code) {
   const FACEBOOK_CLIENT_ID = process.env.REACT_APP_FACEBOOK_CLIENT_ID;
   const FACEBOOK_CLIENT_SECRET = process.env.REACT_APP_FACEBOOK_CLIENT_SECRET;
-  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const REDIRECT_URI = process.env.REACT_APP_FACEBOOK_REDIRECT_URI;
 
   return await axios({
     method: 'post',
