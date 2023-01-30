@@ -1,4 +1,4 @@
-package com.tamnara.backend;
+package com.jejuinn.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
