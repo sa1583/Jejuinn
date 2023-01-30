@@ -23,7 +23,7 @@ public class TestController {
     public ResponseEntity<?> test2(){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("yutae", "999");
-        return ResponseEntity.status(200).headers(httpHeaders).build();
+        return ResponseEntity.status(200).headers(httpHeaders).body("hello");
     }
 
     @GetMapping("/auth/test")
