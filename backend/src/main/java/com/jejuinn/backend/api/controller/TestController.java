@@ -4,6 +4,7 @@ import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 public class TestController {
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
+
+    @GetMapping("/api/test")
+    public ResponseEntity<?> test2(){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("yutae", "999");
+        return ResponseEntity.status(200).headers(httpHeaders).build();
+    }
 
     @GetMapping("/auth/test")
     public ResponseEntity<?> test(HttpServletRequest request){
