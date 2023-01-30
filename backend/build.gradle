@@ -73,6 +73,12 @@ dependencies {
 	implementation 'com.sun.mail:javax.mail:1.6.2'
 
 //	implementation "org.springframework.boot:spring-boot-starter-actuator"
+
+
+	implementation 'org.kurento:kurento-client:6.18.0'
+	implementation 'org.kurento:kurento-utils-js:6.18.0'
+
+	implementation 'org.springframework:spring-websocket:5.2.22.RELEASE'
 }
 
 tasks.named('test') {
