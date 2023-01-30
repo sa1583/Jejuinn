@@ -73,7 +73,7 @@ export default function LoginForm() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '6vh',
+        marginTop: '3vh',
       }}
     >
       <h1>로그인</h1>
@@ -106,7 +106,7 @@ export default function LoginForm() {
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5vw',
+          fontSize: '1.2vw',
           marginTop: '6vh',
         }}
       >

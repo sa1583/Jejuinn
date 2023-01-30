@@ -1,9 +1,9 @@
 import { Box } from '@mui/system';
-import { data } from '../../practiceApi/staffPickList';
+import { data } from '../../practiceApi/guestHouseList';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 
-export default function GuestHouseList() {
+export default function GuestHouseList({ selectGuestHouse }) {
   return (
     <Box sx={{ padding: '4vh' }}>
       <h3 style={{ marginTop: '0' }}>
@@ -16,12 +16,15 @@ export default function GuestHouseList() {
               <img
                 src={`${item.img_url}?w=248&fit=crop&auto=format`}
                 srcSet={`${item.img_url}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.title}
+                alt={item.name}
                 loading="lazy"
+                id={item.uid}
+                onClick={selectGuestHouse}
+                name={item.name}
               />
               <ImageListItemBar
-                title={item.title}
-                subtitle={<span>최고의 게하</span>}
+                title={item.name}
+                subtitle={<span>따봉따따봉</span>}
               />
             </ImageListItem>
           ))}

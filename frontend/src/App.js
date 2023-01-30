@@ -7,6 +7,7 @@ import SignUpAgree from './components/signUp/SignUpAgree';
 import SignUpInfo from './components/signUp/SignUpInfo';
 import SignUpComplete from './components/signUp/SignUpComplete';
 import GuestHouse from './routes/guestHouse/GuestHouse';
+import GuestHouseDetail from './routes/guestHouseDetail/GuestHouseDetail';
 import WorkList from './routes/workList/WorkList';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: 'guesthouse',
         element: <GuestHouse />,
+      },
+      {
+        path: 'guesthouse/detail/:id',
+        element: <GuestHouseDetail />,
       },
       {
         path: 'worklist',

@@ -6,7 +6,7 @@ export default function signUp({ content }) {
       style={{
         background: '#FF7600',
         width: '100%',
-        height: '100vh',
+        height: '92vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
