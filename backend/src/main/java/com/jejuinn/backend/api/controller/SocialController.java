@@ -56,14 +56,15 @@ public class SocialController {
     public ResponseEntity<?> kakaoLogin(HttpServletRequest request){
 
         //1. 코드전달
+        logger.info("KAKAO LOGIN START");
         String access_token = request.getHeader(TOKEN_HEADER);
 
         if(access_token == null) return ResponseEntity.status(400).build();
-        logger.debug("KAKAO LOGIN START");
-        logger.debug("Access Token : {}", access_token);
+
+        logger.info("Access Token : {}", access_token);
 
         //2. 인증코드로 토큰 전달
-        SocialLogin socialInfo = kakaoService.getUserInfoFromKakao(access_token);
+        SocialLogin socialInfo = kakaoService.getUserInfoFromKakao(access_token.substring(7));
 
         if(socialInfo == null) return ResponseEntity.status(400).build();
 
@@ -74,6 +75,7 @@ public class SocialController {
 
         User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("KAKAO").ordinal()).get();
 
+        logger.info("User info : {}", user);
 
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
 
@@ -124,8 +126,8 @@ public class SocialController {
         // 1. 코드 전달
         String access_token = request.getHeader(TOKEN_HEADER);
         if(access_token == null) return ResponseEntity.status(400).build();
-        logger.debug("Google LOGIN START");
-        logger.debug("Access Token : {}", access_token);
+        logger.info("Google LOGIN START");
+        logger.info("Access Token : {}", access_token);
 
         //2. 인증코드로 토큰 전달
         SocialLogin socialInfo = googleService.getUserInfoFromGoogle(access_token);
@@ -140,6 +142,7 @@ public class SocialController {
         User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("GOOGLE").ordinal()).get();
 
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
+        logger.info("KAKAO_USER_INFO : {}", user);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
