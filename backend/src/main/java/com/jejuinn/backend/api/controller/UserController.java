@@ -15,6 +15,8 @@ import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.db.repository.UserRepositorySupport;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -36,6 +38,7 @@ public class UserController {
     private final UserRepositorySupport userRepositorySupport;
     private final UserService userService;
     private final EmailService emailService;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     /**
      * 회원가입 및 JWT 발급
@@ -103,6 +106,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getUserInfo(HttpServletRequest request){
+        logger.info(" CALL : GET USER INFO");
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
         Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
         String uid = authentication.getName();
@@ -110,7 +114,7 @@ public class UserController {
 
         // 검색 결과가 없다면
         if(user.isEmpty()) return ResponseEntity.status(401).build();
-
+        logger.info(" RESPONSE USER iNFO {} ", user.get());
         return ResponseEntity.status(200).body(GetUserInfoPostRes.from(user.get()));
     }
 
