@@ -13,6 +13,7 @@ import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
 import NaverRedirect from './routes/logIn/NaverRedirect';
 import GoogleRedirect from './routes/logIn/GoogleRedirect';
+import FacebookRedirect from './routes/logIn/FacebookRedirect';
 import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: 'login/google',
         element: <GoogleRedirect />,
+      },
+      {
+        path: 'login/facebook',
+        element: <FacebookRedirect />,
       },
       {
         path: 'guesthouse',
