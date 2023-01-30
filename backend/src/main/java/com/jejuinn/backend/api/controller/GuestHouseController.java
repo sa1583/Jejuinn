@@ -1,6 +1,10 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.response.GuestHouseWithImageRes;
+import com.jejuinn.backend.db.entity.GuestHouse;
 import com.jejuinn.backend.db.repository.GuestHouseRepository;
+import com.jejuinn.backend.db.repository.GuestHouseRepositorySupport;
+import com.jejuinn.backend.db.repository.ImageRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class GuestHouseController {
     private final GuestHouseRepository guestHouseRepository;
+    private final GuestHouseRepositorySupport guestHouseRepositorySupport;
+    private final ImageRepository imageRepository;
 
     /**
      *
@@ -37,8 +45,17 @@ public class GuestHouseController {
         int count = guestHouseRepository.countBy().intValue();
         if(count != 0 || start > count) return ResponseEntity.status(204).build();
 
+        List<GuestHouse> guestHouseList = guestHouseRepositorySupport.getGuestHouseList(start, limit);
 
-        return null;
+        System.out.println(guestHouseList.size());
+        List<GuestHouseWithImageRes> guestHouseWithImageResList = new ArrayList<>();
+        for (GuestHouse guestHouse : guestHouseList) {
+            guestHouseWithImageResList
+                    .add(GuestHouseWithImageRes.of(guestHouse,
+                            imageRepository.findAllByPostTypeAndPostUid("GUEST_HOUSE", guestHouse.getUid())));
+        }
+
+        return ResponseEntity.status(200).body(guestHouseWithImageResList);
     }
 
 }
