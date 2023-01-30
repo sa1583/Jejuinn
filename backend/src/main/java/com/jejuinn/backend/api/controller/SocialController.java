@@ -56,11 +56,12 @@ public class SocialController {
     public ResponseEntity<?> kakaoLogin(HttpServletRequest request){
 
         //1. 코드전달
+        logger.info("KAKAO LOGIN START");
         String access_token = request.getHeader(TOKEN_HEADER);
 
         if(access_token == null) return ResponseEntity.status(400).build();
-        logger.debug("KAKAO LOGIN START");
-        logger.debug("Access Token : {}", access_token);
+
+        logger.info("Access Token : {}", access_token);
 
         //2. 인증코드로 토큰 전달
         SocialLogin socialInfo = kakaoService.getUserInfoFromKakao(access_token.substring(7));
@@ -74,6 +75,7 @@ public class SocialController {
 
         User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("KAKAO").ordinal()).get();
 
+        logger.info("User info : {}", user);
 
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
 
