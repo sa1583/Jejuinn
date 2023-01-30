@@ -31,6 +31,13 @@ public class TestController {
         return ResponseEntity.status(200).headers(httpHeaders).body("hello");
     }
 
+    @GetMapping("/api/test")
+    public ResponseEntity<?> test2(){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("yutae", "999");
+        return ResponseEntity.status(200).headers(httpHeaders).body("hello");
+    }
+
     @GetMapping("/auth/test")
     public ResponseEntity<?> test(HttpServletRequest request){
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);

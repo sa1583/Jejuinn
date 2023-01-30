@@ -70,6 +70,8 @@ public class SecurityConfig {
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().permitAll()
 
+
+
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
