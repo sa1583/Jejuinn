@@ -73,6 +73,12 @@ dependencies {
 	implementation 'com.sun.mail:javax.mail:1.6.2'
 
 //	implementation "org.springframework.boot:spring-boot-starter-actuator"
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+
+
+
 }
 
 tasks.named('test') {
