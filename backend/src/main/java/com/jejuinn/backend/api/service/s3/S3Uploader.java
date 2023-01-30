@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 @Service
 @NoArgsConstructor
@@ -43,10 +46,15 @@ public class S3Uploader {
     }
 
     public String upload(MultipartFile file, String type) throws IOException {
-        String fileName =  "image/"+type+"/"+ file.getOriginalFilename();
+        String fileName =  generateRandomFileName(file.getOriginalFilename(), type);
+
 
         s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         return s3Client.getUrl(bucket, fileName).toString();
+    }
+
+    private String generateRandomFileName(String value, String type) throws IOException{
+        return "image/"+type+"/"+UUID.randomUUID()+"_"+value;
     }
 }

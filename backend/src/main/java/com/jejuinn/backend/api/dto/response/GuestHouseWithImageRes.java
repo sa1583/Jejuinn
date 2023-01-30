@@ -6,6 +6,7 @@ import com.jejuinn.backend.db.entity.Image;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -15,12 +16,14 @@ import java.util.List;
 @ToString
 public class GuestHouseWithImageRes {
     private GuestHouse guestHouse;
-    private List<Image> images;
+    private List<SimpleImgRes> images;
 
     public static GuestHouseWithImageRes of(GuestHouse guestHouse, List<Image> images){
         return GuestHouseWithImageRes.builder()
                 .guestHouse(guestHouse)
-                .images(images)
+                .images(images.stream()
+                        .map(image -> SimpleImgRes.of(image))
+                        .collect(Collectors.toList()))
                 .build();
     }
 }
