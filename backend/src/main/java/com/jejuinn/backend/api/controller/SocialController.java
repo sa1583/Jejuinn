@@ -74,7 +74,6 @@ public class SocialController {
 
         User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("KAKAO").ordinal()).get();
 
-
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();

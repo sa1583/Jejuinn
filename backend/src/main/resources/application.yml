@@ -70,5 +70,5 @@ cloud:
     stack:
       auto: false
     credentials:
-      access-key: AKIAZI4P42UQNX5AILCC
-      secret-key: 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
+      accessKey: AKIAZI4P42UQNX5AILCC
+      secretKey: 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
