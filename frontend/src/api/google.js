@@ -6,7 +6,7 @@ import axios from 'axios';
 export async function getGoogleAccessToken(auth_code) {
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const GOOGLE_CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
-  const GOOGLE_REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const GOOGLE_REDIRECT_URI = process.env.REACT_APP_GOOGLE_REDIRECT_URI;
 
   return await axios({
     method: 'post',
