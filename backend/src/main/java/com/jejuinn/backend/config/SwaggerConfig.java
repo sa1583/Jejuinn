@@ -1,4 +1,4 @@
-package com.tamnara.backend.config;
+package com.jejuinn.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.tamnara.backend"))
+                .apis(RequestHandlerSelectors.basePackage("com.jejuinn.backend"))
                 .paths(PathSelectors.any())
                 .build()
                 .securityContexts(newArrayList(securityContext()))
@@ -38,7 +38,7 @@ public class SwaggerConfig {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey(SECURITY_SCHEMA_NAME, "Authorization", "header");
+        return new ApiKey(SECURITY_SCHEMA_NAME, "accessToken", "header");
     }
 
     private SecurityContext securityContext() {
