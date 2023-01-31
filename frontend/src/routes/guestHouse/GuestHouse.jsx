@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 export default function GuestHouse() {
   const [filter, setFilter] = useState({
-    type: '전체',
+    style: '전체',
     section: '전체',
     inp: '',
   });
@@ -16,9 +16,10 @@ export default function GuestHouse() {
     setFilter(pickForm);
     // 여기엔 이제 api 통신
   };
+
   return (
     <div>
-      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <WhiteBox

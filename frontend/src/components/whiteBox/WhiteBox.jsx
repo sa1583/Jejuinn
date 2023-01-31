@@ -6,7 +6,7 @@ export default function WhiteBox({ cpn }) {
       sx={{
         width: '100%',
         borderRadius: '39px',
-        boxShadow: '0px 2px 15px 0px rgba(0,0,0,0.75)',
+        boxShadow: '0px 2px 74px 2px rgba(0, 0, 0, 0.1)',
       }}
     >
       {cpn}

@@ -43,7 +43,7 @@ const CustomButton = styled(Button)({
 });
 
 export default function GuestHouseFilter({ getFilter, filter }) {
-  const selectedTypes = [
+  const selectedStyles = [
     '전체',
     '조용한 게하',
     '파티가 있는 게하',
@@ -66,7 +66,7 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         flexDirection: 'column',
         padding: '5vh 3vh 3vh 3vh',
         gap: '3vh',
-        height: '26rem',
+        height: '21rem',
       }}
     >
       <CustomTextField
@@ -88,7 +88,7 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         // 근데 라벨 들어가는 칸은 조정이 안됨 ㅋ
         // InputLabelProps={{ style: { fontSize: '18px' } }}
       >
-        {selectedTypes.map((selectedtype) => (
+        {selectedStyles.map((selectedtype) => (
           <MenuItem key={uuidv4()} value={selectedtype}>
             {selectedtype}
           </MenuItem>
@@ -99,28 +99,6 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         id="outlined-select-currency"
         select
         label="선호하는 지역"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start" style={{ color: '#FF7600' }}>
-              <FmdGoodOutlinedIcon />
-            </InputAdornment>
-          ),
-        }}
-        value={pickForm.section}
-        onChange={handlePickForm}
-        name="section"
-      >
-        {selectedSections.map((selectedSection) => (
-          <MenuItem key={uuidv4()} value={selectedSection}>
-            {selectedSection}
-          </MenuItem>
-        ))}
-      </CustomTextField>
-
-      <CustomTextField
-        id="outlined-select-currency"
-        select
-        label="입도 가능 날짜"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start" style={{ color: '#FF7600' }}>
