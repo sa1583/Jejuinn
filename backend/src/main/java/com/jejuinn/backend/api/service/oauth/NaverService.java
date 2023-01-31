@@ -68,19 +68,19 @@ public class NaverService {
         User user = userRepository.findOneByEmailAndSocialLogin_Type(result.get("email"), SocialType.NAVER.ordinal())
                         .orElse(User.from(naverProfileDto, authorities));
 
-        log.info("User 정보! : {}", user);
+        // log.info("User 정보! : {}", user);
 
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
                                     .orElse(SocialLogin.from(user, code, SocialType.NAVER.ordinal()));
 
-        log.info("socialLogin 정보! : {}", socialLogin);
+        // log.info("socialLogin 정보! : {}",);
 
-        System.out.println(user);
-        System.out.println(socialLogin);
+        // System.out.println(user);
+        // System.out.println(socialLogin);
 
         userRepository.save(user);
         socialLoginRepository.save(socialLogin);
-
+        log.info("저장 완료");
         return user;
     }
 
