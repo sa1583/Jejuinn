@@ -23,7 +23,7 @@ export default function WorkFilterBox() {
         height: '15vh',
       }}
     >
-      <Grid container spacing={1}>
+      <Grid container spacing={1} justifyContent="space-between">
         <Grid item md={4}>
           <FilterName />
         </Grid>
@@ -37,6 +37,7 @@ export default function WorkFilterBox() {
         <Grid item md={7}>
           <FilterStyle />
         </Grid>
+
         <Grid item md={4}>
           <CustomButton
             variant="contained"

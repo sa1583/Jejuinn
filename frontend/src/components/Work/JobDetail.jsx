@@ -1,12 +1,19 @@
 import { Box, styled, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function WorkDetailJob() {
+  const navigate = useNavigate();
   const CustomButton = styled(Button)({
     height: '5vh',
     '&:hover': {
       backgroundColor: '#FF7600',
     },
   });
+
+  const onClick = () => {
+    navigate(`/worklist/detail`);
+  };
 
   return (
     <>
@@ -31,6 +38,7 @@ export default function WorkDetailJob() {
                 fontFamily: 'border',
               }}
               size="large"
+              onClick={onClick}
             >
               지원하기
             </CustomButton>

@@ -18,7 +18,6 @@ import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
 
-
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
 const signUp3 = <SignUpComplete />;
@@ -68,7 +67,7 @@ const router = createBrowserRouter([
         element: <WorkList />,
       },
       {
-        path: 'worklist/detail/:recruitmentUid',
+        path: 'worklist/detail',
         element: <WorkDetail />,
       },
       {
