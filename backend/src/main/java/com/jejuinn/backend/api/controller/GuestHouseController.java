@@ -1,7 +1,10 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.InsertGuestHousePostReq;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
+import com.jejuinn.backend.api.service.s3.S3Uploader;
+import com.jejuinn.backend.db.entity.GuestHouse;
 import com.jejuinn.backend.db.repository.CommentRepository;
 import com.jejuinn.backend.db.repository.GuestHouseRepository;
 import com.jejuinn.backend.db.repository.GuestHouseRepositorySupport;
@@ -14,9 +17,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @Api(tags = "게스트 하우스 관련 기능 API")
@@ -26,6 +31,7 @@ public class GuestHouseController {
     private final GuestHouseRepositorySupport guestHouseRepositorySupport;
     private final ImageRepository imageRepository;
     private final CommentRepository commentRepository;
+    private final S3Uploader s3Uploader;
     private static final String GUEST_TYPE = "GUEST_HOUSE";
 
     /**
@@ -64,6 +70,29 @@ public class GuestHouseController {
                                 GetGuestHouseDetailPostRes.of(guestHouse,
                                         imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()),
                                         commentRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()))));
+    }
+
+    @PostMapping("/auth/guest-house")
+    @ApiOperation(value = "게스트하우스 추가", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(작성 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> insertGuestHouse(@PathVariable List<MultipartFile> images,
+                                              @RequestBody InsertGuestHousePostReq req){
+
+        // 게스트 하우스 저장
+        GuestHouse guestHouse = guestHouseRepository.save(req.toGuestHouse());
+
+        // 사진 저장
+        try {
+            s3Uploader.uploadImages(images, GUEST_TYPE, guestHouse.getUid());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).build();
+        }
+        return ResponseEntity.status(200).build();
     }
 
 //    @PostConstruct

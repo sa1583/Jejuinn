@@ -12,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
 @Service
@@ -73,5 +75,13 @@ public class UserService {
         userRepositorySupport.saveRefreshToken(user.getUid(), refreshToken);
 
         return httpHeaders;
+    }
+
+    public Long getUserUidFromAccessToken(HttpServletRequest request){
+        String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+        Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
+        String uid = authentication.getName();
+        if(uid == null) return null;
+        return Long.parseLong(uid);
     }
 }
