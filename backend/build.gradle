@@ -81,6 +81,14 @@ dependencies {
 	implementation 'org.springframework:spring-websocket:5.2.22.RELEASE'
 	implementation 'org.kurento:kurento-client:6.18.0'
 
+	// WebRTC Javascript 딴을 위한 dependencies
+	implementation 'org.webjars:webjars-locator:0.45'
+	implementation 'org.kurento:kurento-utils-js:6.18.0'
+	implementation 'org.webjars.bower:bootstrap:5.2.2'
+	implementation 'org.webjars.bower:demo-console:1.5.1'
+	implementation 'org.webjars.bower:adapter.js:6.4.0'
+	implementation 'org.webjars.bower:jquery:3.6.2'
+	implementation 'org.webjars.bower:ekko-lightbox:5.2.0'
 }
 
 tasks.named('test') {
