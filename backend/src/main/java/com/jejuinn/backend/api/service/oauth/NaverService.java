@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -53,7 +52,7 @@ public class NaverService {
         // 프로필 정보 요청
         String tmp = profileSearch(code);
 
-        log.info("Get Profile Info ! : {}", tmp);
+        log.info("Get Profile Info !");
 
         // 응답 결과를 NaverProfileDto로 형태로 변환
         String[] fields = {"nickname", "name", "email", "gender", "age", "profile_image", "mobile"};
@@ -80,6 +79,7 @@ public class NaverService {
 
         userRepository.save(user);
         socialLoginRepository.save(socialLogin);
+
         log.info("저장 완료");
         return user;
     }
@@ -91,8 +91,7 @@ public class NaverService {
                         Optional.ofNullable(
                                 responseElement.getAsJsonObject().get(field)
                                 )
-                                .orElse(new JsonObject()).toString());
-            System.out.println(result.get(field));
+                                .orElse(new JsonObject()).toString()).replaceAll("\\\"","");
         }
         return result;
     }
