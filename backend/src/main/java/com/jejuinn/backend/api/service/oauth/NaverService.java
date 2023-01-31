@@ -12,6 +12,7 @@ import com.jejuinn.backend.db.repository.SocialLoginRepository;
 import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.api.dto.NaverProfileDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NaverService {
 
     @Value("${social.NAVER_CLIENT_ID}")
@@ -44,49 +46,14 @@ public class NaverService {
      */
 
     public User getUserInfoFromNaver(String code, String state){
-        // Set url
-        String apiURL;
-        apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
-        apiURL += "client_id=" + NAVER_CLIENT_ID;
-        apiURL += "&client_secret=" + NAVER_CLIENT_SECRET;
-        apiURL += "&code=" + code;
-        apiURL += "&state=" + state;
-
-        // initailize variable
-        String accessToken = "";
-        String refreshToken = "";
-        StringBuffer res = new StringBuffer();
-        int responseCode = 0;
-
-        try {
-            URL url = new URL(apiURL);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            responseCode = con.getResponseCode();
-            BufferedReader br;
-
-            if (responseCode == 200) { // 정상 호출
-                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            } else {  // 에러 발생
-                throw new RuntimeException();
-            }
-
-            String inputLine;
-            while ((inputLine = br.readLine()) != null) {
-                res.append(inputLine);
-            }
-            br.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         JsonParser parser = new JsonParser();
-        JsonElement accessElement = parser.parse(res.toString());
-        accessToken = accessElement.getAsJsonObject().get("access_token").getAsString();
 
+        log.info("access token : {}", code);
 
         // 프로필 정보 요청
-        String tmp = profileSearch(accessToken);
+        String tmp = profileSearch(code);
+
+        log.info("Get Profile Info ! : {}", tmp);
 
         // 응답 결과를 NaverProfileDto로 형태로 변환
         String[] fields = {"nickname", "name", "email", "gender", "age", "profile_image", "mobile"};
@@ -101,8 +68,12 @@ public class NaverService {
         User user = userRepository.findOneByEmailAndSocialLogin_Type(result.get("email"), SocialType.NAVER.ordinal())
                         .orElse(User.from(naverProfileDto, authorities));
 
+        log.info("User 정보! : {}", user);
+
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
-                                    .orElse(SocialLogin.from(user, accessToken, SocialType.NAVER.ordinal()));
+                                    .orElse(SocialLogin.from(user, code, SocialType.NAVER.ordinal()));
+
+        log.info("socialLogin 정보! : {}", socialLogin);
 
         System.out.println(user);
         System.out.println(socialLogin);
