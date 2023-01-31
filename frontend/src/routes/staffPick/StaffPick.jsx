@@ -2,7 +2,7 @@ import { useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
 import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
-import StaffPickRank from '../../components/staffPickComponent/StaffPickRank';
+// import StaffPickRank from '../../components/staffPickComponent/StaffPickRank';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -10,7 +10,8 @@ import StaffPickReviews from '../../components/staffPickComponent/StaffPickRevie
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import { getReviews } from '../../api/staffPick';
+// import { getSpots } from '../../api/staffPick';
 export default function StaffPick() {
   const navigate = useNavigate();
 
@@ -31,6 +32,7 @@ export default function StaffPick() {
   // 클릭한 명소의 uid, name을 받고
   // uid를 이용해 해당 명소의 리뷰 리스트를 받아오는 로직
   // 나중에 fetch 우리서버랑 통신으로 바꿔줘야함
+  //
   const selectSpot = (e) => {
     const uid = e.target.id;
     const name = e.target.name;
@@ -38,6 +40,9 @@ export default function StaffPick() {
     fetch(`dataPractice/reviews_${uid}.json`)
       .then((res) => res.json())
       .then((json) => setSpotReviews(json));
+    // 위에 패치 지우고 아래 주석 해제  -> 전체함수 selectSpot 에 async 붙여줘야함
+    // const reviews = await getReviews()
+    // setSpotReviews(reviews)
   };
 
   const deleteSelected = () => {
@@ -48,16 +53,16 @@ export default function StaffPick() {
     navigate('create');
   };
 
-  const testapi = () => {
-    axios({
-      method: 'get',
-      url: 'http://i8a603.p.ssafy.io:8080/api/test',
-    }).then(console.log);
-  };
+  // const testapi = () => {
+  //   axios({
+  //     method: 'get',
+  //     url: 'http://i8a603.p.ssafy.io:8080/api/test',
+  //   }).then(console.log);
+  // };
 
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
-    { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
+    // { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
 
   const spots = [
@@ -67,12 +72,22 @@ export default function StaffPick() {
     { id: 4, lat: 33.2856, lng: 126.4449 },
   ];
 
+  // spots 정보 저장할 함수
+  // const [spots, setSpots] = useState([])
+  /**
+   * 놀고먹기 처음 들어갔을 때 전체 명소 리스트 받는 함수
+   */
+  // const getSpotsList = async () => {
+  //   const SpotsList = await getSpots();
+  //   setSpots(SpotsList)
+  // };
+
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
     <div>
       <SpeedDialComponent actions={actions} />
 
-      <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
+      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <WhiteBox
