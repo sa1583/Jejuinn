@@ -1,13 +1,15 @@
 package com.jejuinn.backend.db.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "guest_house")
+@Table(name = "comment")
 @Getter
 @Setter
 @Builder
@@ -20,27 +22,22 @@ public class Comment {
     Long uid;
 
     @Column(name = "post_type")
-    @NotNull
     private String postType; // GUEST_HOUSE or STAFF_PICK
 
     @Column(name = "post_uid")
-    @NotNull
     private Long postUid;
 
     @Column(name = "user_uid")
-    @NotNull
     private Long userUid;
 
     @Column(name = "content")
-    @NotNull
     private String content ;
 
     @Column(name = "is_staff")
-    @NotNull
     private boolean isStaff;
 
-    @Column(name = "dateCreated")
-    private Date dateCreated;
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
 
 
 
