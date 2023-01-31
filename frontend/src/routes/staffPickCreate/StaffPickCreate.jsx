@@ -1,23 +1,37 @@
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
+import getAddressBySpot from '../../api/map';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickCreateForm from '../../components/staffPickCreateComponent/StaffPickCreateForm';
 import StaffPickCreateInfo from '../../components/staffPickCreateComponent/StaffPickCreateInfo';
+import StaffPickCreateNewSpot from '../../components/staffPickCreateComponent/StaffPickCreateNewSpot';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 
 export default function StaffPickCreate() {
   const [nowPick, setNowPick] = useState('');
+  const [area, setArea] = useState('');
+  const [isNew, setIsNew] = useState(true);
 
-  const handlePinClick = (id) => {
-    console.log(id);
-    setNowPick(id);
+  const [newSpotName, setNewSpotName] = useState('');
+  const handleNewSpotName = (e) => {
+    setNewSpotName(e.target.value);
   };
 
-  const setNewPin = (e) => {
+  const handlePinClick = (id) => {
+    setNowPick(id);
+    setIsNew(false);
+  };
+
+  const setNewPin = async (e) => {
+    setIsNew(true);
     const lat = e._lat;
     const lng = e._lng;
     setNowPick([lat, lng]);
+    const data = await getAddressBySpot(lng, lat);
+    const address = data.data.documents[0].address_name;
+    setArea(address);
+    setNewSpotName('');
   };
 
   const spots = [
@@ -31,7 +45,19 @@ export default function StaffPickCreate() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Grid item xs={12}>
-            <WhiteBox cpn={<StaffPickCreateInfo nowPick={nowPick} />} />
+            <WhiteBox
+              cpn={
+                isNew ? (
+                  <StaffPickCreateNewSpot
+                    handleNewSpotName={handleNewSpotName}
+                    newSpotName={newSpotName}
+                    area={area}
+                  />
+                ) : (
+                  <StaffPickCreateInfo nowPick={nowPick} />
+                )
+              }
+            />
           </Grid>
         </Grid>
 
@@ -39,7 +65,7 @@ export default function StaffPickCreate() {
           <WhiteBox
             cpn={
               <MapApi
-                HandlePinClick={handlePinClick}
+                handlePinClick={handlePinClick}
                 spots={spots}
                 setNewPin={setNewPin}
               />

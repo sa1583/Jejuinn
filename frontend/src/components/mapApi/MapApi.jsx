@@ -2,7 +2,12 @@ import { Box } from '@mui/system';
 import { useEffect, useRef } from 'react';
 
 // HandlePinClick: 지도에 있는 핀을 클릭했을 때 발생시키고 싶은 매서드 넣으면 됨
-export default function MapApi({ handlePinClick, spots, setNewPin }) {
+export default function MapApi({
+  handlePinClick,
+  spots,
+  setNewPin,
+  startSpot,
+}) {
   const mapElement = useRef(null);
 
   /// 여기 spots를 axois로 전체 리스트 받아오면 됨
@@ -24,7 +29,11 @@ export default function MapApi({ handlePinClick, spots, setNewPin }) {
     );
 
     // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
-    const location = new naver.maps.LatLng(33.3793, 126.5497);
+    let location = new naver.maps.LatLng(33.3793, 126.5497);
+    if (startSpot) {
+      location = new naver.maps.LatLng(startSpot[0].lat, startSpot[0].lng);
+    }
+
     const mapOptions: naver.maps.MapOptions = {
       center: location,
       zoom: 10,
@@ -33,6 +42,7 @@ export default function MapApi({ handlePinClick, spots, setNewPin }) {
       zoomControlOptions: {
         position: naver.maps.Position.TOP_RIGHT,
       },
+      zIndex: 100,
       maxBounds: jeju,
       // mapTypeId: naver.maps.MapTypeId.SATELLITE,
     };
@@ -51,14 +61,13 @@ export default function MapApi({ handlePinClick, spots, setNewPin }) {
         animation: naver.maps.Animation.DROP,
       });
       markers.push(marker);
-      console.log(markers);
     }
 
-    // props로 받은 HandlePinClick 수행
     function getClickHandler(seq) {
       return function () {
-        let marker = markers[seq];
         if (handlePinClick) {
+          var marker = markers[seq];
+
           handlePinClick(marker.id);
         }
       };

@@ -6,7 +6,7 @@ import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import SpotInfo from '../../components/staffPickDetailComponent/SpotInfo';
 import ReviewContent from '../../components/staffPickDetailComponent/ReviewContent';
-import ReviewMap from '../../components/staffPickDetailComponent/ReviewMap';
+import MapApi from '../../components/mapApi/MapApi';
 
 export default function StaffPickDetail() {
   // 여기서 useEffect로 url 끝 번호를 따서
@@ -16,6 +16,8 @@ export default function StaffPickDetail() {
   useEffect(() => {
     setId(location.pathname.split('detail/')[1]);
   }, []);
+
+  const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <Grid container spacing={4}>
@@ -24,7 +26,7 @@ export default function StaffPickDetail() {
             <WhiteBox cpn={<SpotInfo />} />
           </Grid>
           <Grid item xs={12}>
-            <WhiteBox cpn={<ReviewMap />} />
+            <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
           </Grid>
         </Grid>
 

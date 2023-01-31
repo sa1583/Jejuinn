@@ -30,7 +30,7 @@ export default function StaffPickSpotList({ selectSpot }) {
         <span style={{ color: '#FF7600' }}>{data.length}건</span>의 명소
       </h2>
       <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}>
-        <ImageList variant="masonry" cols={3} gap={8}>
+        <ImageList variant="masonry" cols={4} gap={8}>
           {data.map((item) => (
             <ImageListItem key={uuidv4()}>
               <img

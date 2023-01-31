@@ -83,32 +83,32 @@ export default function StaffPick() {
             <WhiteBox cpn={<MapApi spots={spots} />} />
           </Grid>
 
-          <Box
+          {/* <Box
             component={Grid}
             item
             md={4}
             display={{ xs: 'none', md: 'block' }}
           >
             <WhiteBox cpn={<StaffPickRank />} />
-          </Box>
-          <Grid item xs={12} md={8}>
-            <Grid item xs={12} md={12}>
-              {spotReviews.length > 0 && (
-                <WhiteBox
-                  cpn={
-                    <StaffPickReviews
-                      spotReviews={spotReviews}
-                      selectedSpot={selectedSpot}
-                      deleteSelected={deleteSelected}
-                    />
-                  }
-                />
-              )}
-              {spotReviews.length === 0 && (
-                <WhiteBox cpn={<StaffPickSpotList selectSpot={selectSpot} />} />
-              )}
-            </Grid>
+          </Box> */}
+          {/* <Grid item xs={12} md={8}> */}
+          <Grid item xs={12} md={12}>
+            {spotReviews.length > 0 && (
+              <WhiteBox
+                cpn={
+                  <StaffPickReviews
+                    spotReviews={spotReviews}
+                    selectedSpot={selectedSpot}
+                    deleteSelected={deleteSelected}
+                  />
+                }
+              />
+            )}
+            {spotReviews.length === 0 && (
+              <WhiteBox cpn={<StaffPickSpotList selectSpot={selectSpot} />} />
+            )}
           </Grid>
+          {/* </Grid> */}
         </Grid>
       </Box>
     </div>

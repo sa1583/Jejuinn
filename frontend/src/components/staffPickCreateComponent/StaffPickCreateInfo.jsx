@@ -11,7 +11,7 @@ export default function StaffPickCreateInfo({ nowPick }) {
         flexDirection: 'column',
       }}
     >
-      <h1 style={{ margin: 0 }}>위치를 지정해주세요.</h1>
+      <h1 style={{ margin: 0 }}>기존 명소에 리뷰 등록</h1>
       <h2>{nowPick}</h2>
     </Box>
   );
