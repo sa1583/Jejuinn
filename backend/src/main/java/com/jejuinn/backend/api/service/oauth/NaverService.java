@@ -91,7 +91,7 @@ public class NaverService {
                         Optional.ofNullable(
                                 responseElement.getAsJsonObject().get(field)
                                 )
-                                .orElse(new JsonObject()).toString()).replaceAll("\\\"","");
+                                .orElse(new JsonObject()).toString().replaceAll("\\\"",""));
         }
         return result;
     }
