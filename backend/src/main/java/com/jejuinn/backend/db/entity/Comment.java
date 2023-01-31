@@ -36,9 +36,8 @@ public class Comment {
     @Column(name = "is_staff")
     private boolean isStaff;
 
-    @Column(name = "dateCreated")
     @CreationTimestamp
-    private LocalDate dateCreated;
+    private LocalDateTime dateCreated;
 
 
 
