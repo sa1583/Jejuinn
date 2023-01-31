@@ -1,4 +1,4 @@
-package com.jejuinn.backend.config;
+package com.jejuinn.backend.config.webrtc;
 
 
 import com.jejuinn.backend.api.dto.RoomManagerDto;
@@ -13,7 +13,7 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 
 @Configuration
 @EnableWebSocket
-public class WebRTCConfig implements WebSocketConfigurer {
+public class WebrtcConfig implements WebSocketConfigurer {
 
     @Bean
     public UserRegistryDto registry() {
@@ -30,6 +30,11 @@ public class WebRTCConfig implements WebSocketConfigurer {
         return KurentoClient.create();
     }
 
+    @Bean
+    public CallHandler webrtcCallHandler() {
+        return new CallHandler();
+    }
+
     // WebSocket의 런타임 특성 제어
     @Bean
     public ServletServerContainerFactoryBean createServletServerContainerFactoryBean() {
@@ -40,6 +45,6 @@ public class WebRTCConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-
+        registry.addHandler(webrtcCallHandler(), "/groupcall");
     }
 }
