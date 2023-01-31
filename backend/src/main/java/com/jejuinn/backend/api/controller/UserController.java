@@ -114,7 +114,7 @@ public class UserController {
 
         // 검색 결과가 없다면
         if(user.isEmpty()) return ResponseEntity.status(401).build();
-        logger.info(" RESPONSE USER iNFO {} ", user.get());
+//        logger.info(" RESPONSE USER iNFO {} ", user.get());
         return ResponseEntity.status(200).body(GetUserInfoPostRes.from(user.get()));
     }
 

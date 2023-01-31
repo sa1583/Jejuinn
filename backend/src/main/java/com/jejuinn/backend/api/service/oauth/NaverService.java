@@ -92,8 +92,7 @@ public class NaverService {
                         Optional.ofNullable(
                                 responseElement.getAsJsonObject().get(field)
                                 )
-                                .orElse(new JsonObject()).toString());
-            System.out.println(result.get(field));
+                                .orElse(new JsonObject()).toString()).toString();
         }
         return result;
     }

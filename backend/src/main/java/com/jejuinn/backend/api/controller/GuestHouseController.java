@@ -95,6 +95,15 @@ public class GuestHouseController {
         return ResponseEntity.status(200).build();
     }
 
+    /**
+     *
+     * @param images
+     * @param req
+     * @param list
+     * @param guestHouseUid
+     * @return
+     */
+
     @PutMapping("/auth/guest-house/{guestHouseUid}")
     @ApiOperation(value = "게스트하우스 수정", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
     @ApiResponses({
@@ -129,6 +138,17 @@ public class GuestHouseController {
         return ResponseEntity.status(200).build();
     }
 
+    @DeleteMapping("/auth/guest-house/{guestHouseUid}")
+    @ApiOperation(value = "게스트하우스 수정", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> deleteGuestHouse(@PathVariable String guestHouseUid){
+        guestHouseRepository.deleteById(Long.parseLong(guestHouseUid));
+        return ResponseEntity.status(200).build();
+    }
 
 //    @PostConstruct
 //    public void init(){
