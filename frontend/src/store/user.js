@@ -10,8 +10,8 @@ import {
 
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
-  async (data, thunkAPI) => {
-    const token = data.split(' ')[1];
+  async (token, thunkAPI) => {
+    console.log('token', token);
     try {
       return (await getUserInfo(token)).data;
     } catch (e) {
