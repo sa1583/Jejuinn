@@ -42,8 +42,23 @@ const CustomButton = styled(Button)({
 });
 
 export default function StaffPickFilter({ getFilter, filter }) {
-  const selectedTypes = ['전체', '음식점', '바다', '산', '박물관', '공원'];
-  const selectedSections = ['전체', '서귀포시', '제주시', '서울시 엌'];
+  const selectedTypes = ['전체', '자연', '놀거리', '볼거리', '먹거리'];
+  const selectedSections = [
+    '전체',
+    '서귀포시',
+    '제주시',
+    '한경면',
+    '한림읍',
+    '애월읍',
+    '조천읍',
+    '구좌읍',
+    '성산읍',
+    '표선면',
+    '남원읍',
+    '안덕면',
+    '대정읍',
+    '우도면',
+  ];
 
   const [pickForm, setPickForm] = useState(filter);
   const handlePickForm = (e) => {
