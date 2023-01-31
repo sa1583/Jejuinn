@@ -95,6 +95,40 @@ public class GuestHouseController {
         return ResponseEntity.status(200).build();
     }
 
+    @PutMapping("/auth/guest-house/{guestHouseUid}")
+    @ApiOperation(value = "게스트하우스 수정", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateGuestHouse(@RequestPart("upload-images") List<MultipartFile> images,
+                                              @RequestPart("guest-house") InsertGuestHousePostReq req,
+                                              @RequestPart("delete-images") List<Long> list,
+                                              @PathVariable String guestHouseUid){
+
+        // 게스트 하우스 저장
+        GuestHouse guestHouse = guestHouseRepository.save(req.toGuestHouse(guestHouseUid));
+
+        // 사진 삭제
+        try {
+            s3Uploader.deleteImages(list);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).build();
+        }
+
+        // 사진 저장
+        try {
+            s3Uploader.uploadImages(images, GUEST_TYPE, guestHouse.getUid());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).build();
+        }
+
+        return ResponseEntity.status(200).build();
+    }
+
 //    @PostConstruct
 //    public void init(){
 //        for (int i = 0; i < 100; i++) {

@@ -35,4 +35,17 @@ public class InsertGuestHousePostReq {
                 .introduction(this.getIntroduction())
                 .build();
     }
+
+    public GuestHouse toGuestHouse(String guestHouseUid) {
+        return GuestHouse.builder()
+                .uid(Long.parseLong(guestHouseUid))
+                .guestHouseName(this.getGuestHouseName())
+                .representativeUid(this.getRepresentativeUid())
+                .email(this.getEmail())
+                .phone(this.getPhone())
+                .address(this.getAddress())
+                .addressDetail(this.getAddressDetail())
+                .introduction(this.getIntroduction())
+                .build();
+    }
 }

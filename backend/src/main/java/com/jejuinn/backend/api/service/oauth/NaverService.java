@@ -12,6 +12,7 @@ import com.jejuinn.backend.db.repository.SocialLoginRepository;
 import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.api.dto.NaverProfileDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NaverService {
 
     @Value("${social.NAVER_CLIENT_ID}")
@@ -65,6 +67,8 @@ public class NaverService {
             responseCode = con.getResponseCode();
             BufferedReader br;
 
+            log.info("코드 : {}",responseCode);
+
             if (responseCode == 200) { // 정상 호출
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             } else {  // 에러 발생
@@ -84,9 +88,12 @@ public class NaverService {
         JsonElement accessElement = parser.parse(res.toString());
         accessToken = accessElement.getAsJsonObject().get("access_token").getAsString();
 
+        log.info("access token : {}", accessToken);
 
         // 프로필 정보 요청
         String tmp = profileSearch(accessToken);
+
+        log.info("Get Profile Info ! : {}", tmp);
 
         // 응답 결과를 NaverProfileDto로 형태로 변환
         String[] fields = {"nickname", "name", "email", "gender", "age", "profile_image", "mobile"};
@@ -101,8 +108,12 @@ public class NaverService {
         User user = userRepository.findOneByEmailAndSocialLogin_Type(result.get("email"), SocialType.NAVER.ordinal())
                         .orElse(User.from(naverProfileDto, authorities));
 
+        log.info("User 정보! : {}", user);
+
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
                                     .orElse(SocialLogin.from(user, accessToken, SocialType.NAVER.ordinal()));
+
+        log.info("socialLogin 정보! : {}", socialLogin);
 
         System.out.println(user);
         System.out.println(socialLogin);

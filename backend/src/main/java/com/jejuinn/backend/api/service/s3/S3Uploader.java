@@ -10,7 +10,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.jejuinn.backend.db.entity.Image;
 import com.jejuinn.backend.db.repository.ImageRepository;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +63,15 @@ public class S3Uploader {
         return fileName;
     }
 
+    public void delete(Long uid) throws IOException{
+        String fileName = imageRepository.findImgPathByUid(uid);
+        imageRepository.deleteById(uid);
+        s3Client.deleteObject(bucket, fileName);
+//        imageRepository.
+//
+//        s3Client.deleteObject(bucket, fileName);
+    }
+
     private String generateRandomFileName(String value, String type) throws IOException{
         return "image/"+type+"/"+UUID.randomUUID()+"_"+value;
     }
@@ -74,6 +80,12 @@ public class S3Uploader {
         for (MultipartFile image : images) {
             String imgPath= upload(image, guestType);
             imageRepository.save(Image.init(guestType, uid, imgPath));
+        }
+    }
+
+    public void deleteImages(List<Long> list) throws IOException {
+        for (Long uid : list) {
+            delete(uid);
         }
     }
 }
