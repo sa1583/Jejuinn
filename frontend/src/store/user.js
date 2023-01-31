@@ -10,9 +10,10 @@ import {
 
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
-  async (data, thunkAPI) => {
+  async (token, thunkAPI) => {
+    console.log('token', token);
     try {
-      return (await getUserInfo(data.accessToken))?.data;
+      return (await getUserInfo(token)).data;
     } catch (e) {
       return thunkAPI.rejectWithValue({
         errorMessage: '유저 정보 가져오기 실패',
@@ -26,11 +27,11 @@ export const getOurTokensFromServer = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const { token, state } = data;
-      const { accessToken, refreshToken } = (await getOurTokens(token, state))
+      const { accesstoken, refreshtoken } = (await getOurTokens(token, state))
         .headers;
       return {
-        accessToken,
-        refreshToken,
+        accessToken: accesstoken.split(' ')[1],
+        refreshToken: refreshtoken.split(' ')[1],
       };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '서버 로그인 실패' });
@@ -55,8 +56,12 @@ export const getKakaoToken = createAsyncThunk(
   'user/getKakaoAuthToken',
   async (token, thunkAPI) => {
     try {
-      const { data } = (await loginKakao(token)).headers;
-      return data;
+      let { accesstoken, refreshtoken } = (await loginKakao(token)).headers;
+      accesstoken = accesstoken.split(' ')[1];
+      refreshtoken = refreshtoken.split(' ')[1];
+      // const token = data.accesstoken.split(' ')[1];
+      console.log(accesstoken, refreshtoken);
+      return { accesstoken, refreshtoken };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
@@ -80,6 +85,7 @@ export const getNormalAuthToken = createAsyncThunk(
   async (body, thunkAPI) => {
     try {
       const { data } = (await loginNormal(body)).headers;
+      console.log(data);
       return data;
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
@@ -99,8 +105,9 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUserInfoByToken.fulfilled, (state, action) => {
-        state.userInfo = action.payload;
+      .addCase(getUserInfoByToken.fulfilled, (state, { payload }) => {
+        state.userInfo = payload;
+        state.isLogin = true;
       })
       .addCase(getOurTokensFromServer.fulfilled, (state, { payload }) => {
         state.accessToken = payload.accessToken;
@@ -109,8 +116,8 @@ const userSlice = createSlice({
       .addCase(getKakaoToken.fulfilled, (state, action) => {
         // state.userInfo = action.payload;
         // state.isLogin = true;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
+        state.accessToken = action.payload.accesstoken;
+        state.refreshToken = action.payload.refreshtoken;
       })
       .addCase(getKakaoToken.rejected, () => {
         alert('실패!');

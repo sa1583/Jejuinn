@@ -10,6 +10,7 @@ import StaffPickReviews from '../../components/staffPickComponent/StaffPickRevie
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 export default function StaffPick() {
   const navigate = useNavigate();
 
@@ -46,8 +47,17 @@ export default function StaffPick() {
   const goCreate = () => {
     navigate('create');
   };
+
+  const testapi = () => {
+    axios({
+      method: 'get',
+      url: 'http://i8a603.p.ssafy.io:8080/api/test',
+    }).then(console.log);
+  };
+
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
+    { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
 
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨

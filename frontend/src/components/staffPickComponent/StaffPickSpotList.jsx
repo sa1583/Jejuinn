@@ -25,9 +25,14 @@ export default function StaffPickSpotList({ selectSpot }) {
   //   };
   // };
   return (
-    <Box sx={{ padding: '3vh' }}>
+    <Box sx={{
+      width: '100%',
+      height:'500px',
+      borderRadius: '39px',
+      boxShadow: '0px 2px 15px 0px rgba(0,0,0,0.75)',
+    }}>
       <h2>
-        <span style={{ color: '#FF7600' }}>{data.length}건</span>의 검색결과
+        <span style={{ color: '#FF7600' }}>{data.length}건</span>의 명소
       </h2>
       <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}>
         <ImageList variant="masonry" cols={3} gap={8}>
