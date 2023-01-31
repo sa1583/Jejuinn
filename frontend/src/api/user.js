@@ -5,7 +5,7 @@ const api = apiInstance();
 const getTokenHeader = (token) => {
   return {
     headers: {
-      Authorization: `Bearer ${token}`,
+      accessToken: `Bearer ${token}`,
     },
   };
 };
@@ -29,11 +29,27 @@ function loginGoogle(token) {
 }
 
 function loginKakao(token) {
-  return api.post('/api/users/social/kakao', {}, getTokenHeader(token));
+  let header = {
+    headers: {
+      access_token: `Bearer ${token}`,
+    },
+  };
+  return api.post('/api/users/social/kakao', {}, header);
+}
+
+function loginFacebook(token) {
+  return api.post('/api/users/social/facebook', {}, getTokenHeader(token));
 }
 
 function loginNormal(body) {
   return api.post('/api/users/login', body);
 }
 
-export { getOurTokens, getUserInfo, loginGoogle, loginKakao, loginNormal };
+export {
+  getOurTokens,
+  getUserInfo,
+  loginGoogle,
+  loginKakao,
+  loginFacebook,
+  loginNormal,
+};

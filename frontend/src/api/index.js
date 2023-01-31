@@ -2,8 +2,8 @@ import axios from 'axios';
 
 function apiInstance() {
   const instance = axios.create({
-    // postman mock server url 추후 수정
-    baseURL: 'https://1c03ef54-8003-470e-852c-9f2591a18909.mock.pstmn.io',
+    // ec2 주소
+    baseURL: 'http://i8a603.p.ssafy.io:8080',
     headers: {
       'Content-Type': 'application/json:charset=utf-8',
     },

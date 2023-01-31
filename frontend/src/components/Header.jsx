@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 // const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const pages = [
-  { name: '게스트하우스', url: 'guesthouselist' },
+  { name: '게스트하우스', url: 'guesthouse' },
   { name: '일하기', url: 'worklist' },
   { name: '놀고먹기', url: 'staffpicklist' },
 ];
