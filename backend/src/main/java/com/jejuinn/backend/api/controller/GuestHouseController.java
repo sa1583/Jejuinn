@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.InsertCommentPostReq;
 import com.jejuinn.backend.api.dto.request.InsertGuestHousePostReq;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
@@ -105,7 +106,7 @@ public class GuestHouseController {
      */
 
     @PutMapping("/auth/guest-house/{guestHouseUid}")
-    @ApiOperation(value = "게스트하우스 수정", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
+    @ApiOperation(value = "게스트하우스 수정", notes = "<strong>이미지 파일과 게스트 하우스 정보, 게스트하우스 uid</strong>를 입력받아 저장합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(수정 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
@@ -138,11 +139,16 @@ public class GuestHouseController {
         return ResponseEntity.status(200).build();
     }
 
+    /**
+     *
+     * @param guestHouseUid
+     * @return
+     */
     @DeleteMapping("/auth/guest-house/{guestHouseUid}")
-    @ApiOperation(value = "게스트하우스 수정", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
+    @ApiOperation(value = "게스트하우스 삭제", notes = "<strong>게스트하우스 uid</strong>를 입력받아 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(수정 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(수정 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteGuestHouse(@PathVariable String guestHouseUid){
