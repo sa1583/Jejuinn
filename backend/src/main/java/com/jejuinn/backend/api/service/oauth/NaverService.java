@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -92,7 +91,7 @@ public class NaverService {
                         Optional.ofNullable(
                                 responseElement.getAsJsonObject().get(field)
                                 )
-                                .orElse(new JsonObject()).toString()).toString();
+                                .orElse(new JsonObject()).toString()).replaceAll("\\\"","");
         }
         return result;
     }
