@@ -161,7 +161,7 @@ public class SocialController {
 
         Optional<User> user = userRepository.findById(Long.parseLong(uid));
         if (user.isEmpty()) return ResponseEntity.status(400).build();
-        naverService.getUserInfoFromNaver(request.getHeader(TOKEN_HEADER), request.getHeader("state"));
+        naverService.getUserInfoFromNaver(request.getHeader(TOKEN_HEADER).substring(7), request.getHeader("state"));
 
         return ResponseEntity.status(200).build();
     }
