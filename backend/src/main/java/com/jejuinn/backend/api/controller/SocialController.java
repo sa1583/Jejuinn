@@ -102,7 +102,6 @@ public class SocialController {
 
         if(code == null || state == null) return ResponseEntity.status(400).build();
 
-
         //2. 인증코드로 토큰 전달
         User user = naverService.getUserInfoFromNaver(code, state);
 
