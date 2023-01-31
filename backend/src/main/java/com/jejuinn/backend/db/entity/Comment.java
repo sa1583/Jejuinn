@@ -1,13 +1,15 @@
 package com.jejuinn.backend.db.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "guest_house")
+@Table(name = "comment")
 @Getter
 @Setter
 @Builder
@@ -35,7 +37,8 @@ public class Comment {
     private boolean isStaff;
 
     @Column(name = "dateCreated")
-    private Date dateCreated;
+    @CreationTimestamp
+    private LocalDate dateCreated;
 
 
 

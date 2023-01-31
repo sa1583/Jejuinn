@@ -21,6 +21,14 @@ public class GuestHouse {
 
     private Long representativeUid;
 
+    private String email;
+
+    private String phone;
+
+    private String introduction;
+
+    private String tags;
+
     private String address;
 
     private String addressDetail;

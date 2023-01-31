@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.dto.response;
+package com.jejuinn.backend.api.dto;
 
 import com.jejuinn.backend.db.entity.Image;
 import lombok.*;
@@ -11,13 +11,13 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SimpleImgRes {
+public class SimpleImgDto {
     @NotNull
     String imgPath;
 
-    public static SimpleImgRes of(Image image){
+    public static SimpleImgDto of(Image image){
         if(image == null) return null;
-        return SimpleImgRes.builder()
+        return SimpleImgDto.builder()
                 .imgPath(image.getImgPath())
                 .build();
     }
