@@ -56,7 +56,7 @@ public class GuestHouseController {
     }
 
     @GetMapping("/api/guest-house/{guestHouseUid}")
-    @ApiOperation(value = "게스트하우스 리스트 보기", notes = "<strong> page를 입력받아</strong> 게스트하우스를 15개씩 보여줍니다.")
+    @ApiOperation(value = "게스트하우스 상세 보기", notes = "<strong>게스트하우스 uid</strong>를 입력받아 게스트하우스 상세 정보를 응답합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "NO CONTENT(데이터가 없습니다)"),
@@ -73,14 +73,14 @@ public class GuestHouseController {
     }
 
     @PostMapping("/auth/guest-house")
-    @ApiOperation(value = "게스트하우스 추가", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
+    @ApiOperation(value = "게스트하우스 등록", notes = "<strong>이미지 파일과 게스트 하우스 정보</strong>를 입력받아 저장합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(작성 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertGuestHouse(@PathVariable List<MultipartFile> images,
-                                              @RequestBody InsertGuestHousePostReq req){
+    public ResponseEntity<?> insertGuestHouse(@RequestPart("images") List<MultipartFile> images,
+                                              @RequestPart("guest-house") InsertGuestHousePostReq req){
 
         // 게스트 하우스 저장
         GuestHouse guestHouse = guestHouseRepository.save(req.toGuestHouse());
