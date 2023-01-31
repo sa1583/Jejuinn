@@ -72,6 +72,10 @@ const router = createBrowserRouter([
         element: <WorkList />,
       },
       {
+        path: 'worklist/detail',
+        element: <WorkDetail />,
+      },
+      {
         path: 'staffpicklist',
         element: <StaffPick />,
       },
