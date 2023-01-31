@@ -14,8 +14,10 @@ export default function NaverRedirect() {
   const fetchToken = async () => {
     const token = window.location.href.split('=')[1].split('&')[0];
     const state = window.location.href.split('&')[1].split('=')[1];
-    const { accessToken } = dispatch(getOurTokensFromServer({ token, state }));
-    dispatch(getUserInfoByToken(accessToken));
+    const { payload } = await dispatch(
+      getOurTokensFromServer({ token, state }),
+    );
+    dispatch(getUserInfoByToken(payload.accessToken));
     return navigate('/');
   };
 
