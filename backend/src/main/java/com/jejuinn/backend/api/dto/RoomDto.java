@@ -165,7 +165,6 @@ public class RoomDto implements Closeable {
         }
 
         participants.clear();
-
         pipeline.release(new Continuation<Void>() {
 
             @Override

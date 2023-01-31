@@ -46,52 +46,12 @@ public class NaverService {
      */
 
     public User getUserInfoFromNaver(String code, String state){
-        // Set url
-        String apiURL;
-        apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
-        apiURL += "client_id=" + NAVER_CLIENT_ID;
-        apiURL += "&client_secret=" + NAVER_CLIENT_SECRET;
-        apiURL += "&code=" + code;
-        apiURL += "&state=" + state;
-
-        // initailize variable
-        String accessToken = "";
-        String refreshToken = "";
-        StringBuffer res = new StringBuffer();
-        int responseCode = 0;
-
-        try {
-            URL url = new URL(apiURL);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            responseCode = con.getResponseCode();
-            BufferedReader br;
-
-            log.info("코드 : {}",responseCode);
-
-            if (responseCode == 200) { // 정상 호출
-                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            } else {  // 에러 발생
-                throw new RuntimeException();
-            }
-
-            String inputLine;
-            while ((inputLine = br.readLine()) != null) {
-                res.append(inputLine);
-            }
-            br.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         JsonParser parser = new JsonParser();
-        JsonElement accessElement = parser.parse(res.toString());
-        accessToken = accessElement.getAsJsonObject().get("access_token").getAsString();
 
-        log.info("access token : {}", accessToken);
+        log.info("access token : {}", code);
 
         // 프로필 정보 요청
-        String tmp = profileSearch(accessToken);
+        String tmp = profileSearch(code);
 
         log.info("Get Profile Info ! : {}", tmp);
 
@@ -111,7 +71,7 @@ public class NaverService {
         log.info("User 정보! : {}", user);
 
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
-                                    .orElse(SocialLogin.from(user, accessToken, SocialType.NAVER.ordinal()));
+                                    .orElse(SocialLogin.from(user, code, SocialType.NAVER.ordinal()));
 
         log.info("socialLogin 정보! : {}", socialLogin);
 
