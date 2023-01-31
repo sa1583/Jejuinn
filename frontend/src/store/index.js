@@ -10,13 +10,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
-// export const store = configureStore({
-//   reducer: {
-//     counter: counterReducer,
-//   },
-// });
+import storage from 'redux-persist/lib/storage/session';
 
 const persistConfig = {
   key: 'root',

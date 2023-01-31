@@ -11,8 +11,9 @@ import {
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
   async (data, thunkAPI) => {
+    const token = data.split(' ')[1];
     try {
-      return (await getUserInfo(data.accesstoken))?.data;
+      return (await getUserInfo(token)).data;
     } catch (e) {
       return thunkAPI.rejectWithValue({
         errorMessage: '유저 정보 가져오기 실패',
@@ -26,11 +27,11 @@ export const getOurTokensFromServer = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const { token, state } = data;
-      const { accessToken, refreshToken } = (await getOurTokens(token, state))
+      const { accesstoken, refreshtoken } = (await getOurTokens(token, state))
         .headers;
       return {
-        accessToken,
-        refreshToken,
+        accessToken: accesstoken.split(' ')[1],
+        refreshToken: refreshtoken.split(' ')[1],
       };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '서버 로그인 실패' });
@@ -104,9 +105,9 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUserInfoByToken.fulfilled, (state, action) => {
-        state.userInfo = action.payload;
-        alert('로그인 완료');
+      .addCase(getUserInfoByToken.fulfilled, (state, { payload }) => {
+        state.userInfo = payload;
+        state.isLogin = true;
       })
       .addCase(getOurTokensFromServer.fulfilled, (state, { payload }) => {
         state.accessToken = payload.accessToken;
