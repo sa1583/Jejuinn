@@ -6,10 +6,11 @@ import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import GuestHouseInfo from '../../components/guestHouseDetail/GuestHouseInfo';
 import GuestHouseContent from '../../components/guestHouseDetail/GuestHouseContent';
-import GuestHouseReview from '../../components/guestHouseDetail/GuestHouseReview';
 import GuestHouseMap from '../../components/guestHouseDetail/GuestHouseMap';
 
 export default function GuestHouseDetail() {
+  // 여기서 useEffect로 url 끝 번호를 따서
+  // 글 번호로 axios 요청보내서 글 디테일 정보 받아와야함
   const location = useLocation();
   const [id, setId] = useState('');
   useEffect(() => {
@@ -17,7 +18,8 @@ export default function GuestHouseDetail() {
   }, []);
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
+    <Box sx={{ paddingY: '2rem', paddingX: '20%' }}>
+      <h1 style={{ color: '#FF7600' }}>| 간장남게스트하우스</h1>
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Grid item xs={12}>
@@ -31,9 +33,6 @@ export default function GuestHouseDetail() {
         <Grid item xs={12} md={8}>
           <Grid item xs={12}>
             <WhiteBox cpn={<GuestHouseContent />} />
-          </Grid>
-          <Grid item xs={12}>
-            <WhiteBox cpn={<GuestHouseReview />} />
           </Grid>
         </Grid>
       </Grid>

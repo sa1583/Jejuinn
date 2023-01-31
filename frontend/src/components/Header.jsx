@@ -8,7 +8,6 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
-import { NoEncryption } from '@mui/icons-material';
 
 // const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const pages = [

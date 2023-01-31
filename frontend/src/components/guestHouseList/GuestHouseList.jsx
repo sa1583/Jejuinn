@@ -2,8 +2,14 @@ import { Box } from '@mui/system';
 import { data } from '../../practiceApi/guestHouseList';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function GuestHouseList({ selectGuestHouse }) {
+  const navigate = useNavigate();
+  const goDetail = (id) => {
+    navigate(`detail/${id}`);
+  };
+
   return (
     <Box sx={{ padding: '4vh' }}>
       <h3 style={{ marginTop: '0' }}>
@@ -19,7 +25,7 @@ export default function GuestHouseList({ selectGuestHouse }) {
                 alt={item.name}
                 loading="lazy"
                 id={item.uid}
-                onClick={selectGuestHouse}
+                onClick={() => goDetail(item.uid)}
                 name={item.name}
               />
               <ImageListItemBar
