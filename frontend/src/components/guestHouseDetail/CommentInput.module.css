@@ -1,0 +1,12 @@
+.commentInp {
+  border: none;
+  width: 80%;
+  font-size: 0.9rem;
+  height: 2rem;
+  padding: 0;
+  padding-top: 3px;
+}
+
+.commentInp:focus {
+  outline: none;
+}
