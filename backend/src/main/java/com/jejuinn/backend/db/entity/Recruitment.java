@@ -1,10 +1,15 @@
 package com.jejuinn.backend.db.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 구인글 엔티티
@@ -23,4 +28,23 @@ public class Recruitment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
+
+    private String title;
+
+    private String welfare;
+
+    private String addInfo;
+
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    @UpdateTimestamp
+    private LocalDateTime dateUpdated;
+
+    @ManyToMany
+    @JoinTable(
+            name = "recruitment_person_type_join",
+            joinColumns = {@JoinColumn(name = "recruitment_uid", referencedColumnName = "uid")},
+            inverseJoinColumns = {@JoinColumn(name = "type", referencedColumnName = "type")})
+    private List<PersonType> wanted;
 }

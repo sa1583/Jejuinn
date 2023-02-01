@@ -8,13 +8,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 스태프 기록 엔티티
  */
 @Entity
-@Table(name = "staff_logs")
+@Table(name = "staff_records")
 @Getter
 @Setter
 @Builder
@@ -22,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class Staff {
+public class StaffRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

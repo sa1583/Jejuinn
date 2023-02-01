@@ -66,9 +66,9 @@ public class User {
 
    @ManyToMany
    @JoinTable(
-      name = "user_authority",
+      name = "user_authority_join",
       joinColumns = {@JoinColumn(name = "user_uid", referencedColumnName = "uid")},
-      inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+   inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
    private Set<Authority> authorities;
 
    @OneToOne(mappedBy = "user")
