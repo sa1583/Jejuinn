@@ -10,8 +10,11 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 스태프 기록 엔티티
+ */
 @Entity
-@Table(name = "staff")
+@Table(name = "staff_logs")
 @Getter
 @Setter
 @Builder
@@ -27,16 +30,19 @@ public class Staff {
 
     private Long guestHouseUid;
 
+    private Long userUid;
+
+    @Column(length = 50)
     private String guestHouseName;
 
     private String guestHouseAddress;
 
     private String guestHouseAddressDetail;
 
-    private String userUid;
+    @Column(name = "username", length = 25)
+    private String username;
 
-    private String userName;
-
+    @Column(length = 50)
     private String userEmail;
 
     @CreationTimestamp
@@ -45,5 +51,6 @@ public class Staff {
     @UpdateTimestamp
     private LocalDate endDate;
 
+    @Column(length = 25)
     private String workName;
 }

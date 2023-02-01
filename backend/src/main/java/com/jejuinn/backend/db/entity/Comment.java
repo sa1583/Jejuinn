@@ -10,6 +10,9 @@ import javax.persistence.*;
 //import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 댓글 엔티티
+ */
 @Entity
 @Table(name = "comment")
 @Getter
@@ -36,9 +39,6 @@ public class Comment {
 
     @Column(name = "content")
     private String content ;
-
-    @Column(name = "is_staff")
-    private boolean isStaff;
 
     @CreationTimestamp
     private LocalDateTime dateCreated;

@@ -11,6 +11,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * 사용자 엔티티
+ */
 @Entity
 @Table(name = "users")
 @Getter
@@ -28,7 +31,7 @@ public class User {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long uid;
 
-   @Column(name = "email", length = 50)
+   @Column(name = "email", length = 50, unique = true)
    private String email;
 
    @Column(name = "password", length = 100)
@@ -37,11 +40,11 @@ public class User {
    @Column(name = "username", length = 25)
    private String username;
 
-   @Column(name = "nickname", length = 25)
+   @Column(name = "nickname", length = 10)
    @NotNull
    private String nickname;
 
-   @Column(name = "phone", length = 25, unique = true)
+   @Column(name = "phone", length = 25)
    private String phone;
 
    @Column(name = "age")
@@ -57,6 +60,9 @@ public class User {
 
    @Column(name = "refresh_token")
    private String refreshToken;
+
+   @NotNull
+   private int sugarContent; //감귤당도 : 1 ~ 20, start: 8 단위 브릭스
 
    @ManyToMany
    @JoinTable(
@@ -80,6 +86,7 @@ public class User {
               .username(naverProfileDto.getName())
               .profileImageUrl(naverProfileDto.getProfileImage())
               .phone(naverProfileDto.getMobile())
+              .isStaff(false)
               .authorities(authorities)
               .build();
    }

@@ -5,6 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 이미지 엔티티
+ */
 @Entity
 @Table(name = "images")
 @Getter
