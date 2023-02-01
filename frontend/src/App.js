@@ -20,10 +20,11 @@ import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
 import StaffPickCreate from './routes/staffPickCreate/StaffPickCreate';
+import MyPage from './routes/myPage/MyPage';
+import MyMain from './components/myPage/MyMain';
+import MyResume from './components/myPage/MyResume';
+import MyGuestHouse from './components/myPage/MyGuestHouse';
 
-const signUp1 = <SignUpAgree />;
-const signUp2 = <SignUpInfo />;
-const signUp3 = <SignUpComplete />;
 const router = createBrowserRouter([
   {
     path: '/',
@@ -39,15 +40,15 @@ const router = createBrowserRouter([
       },
       {
         path: 'signup1',
-        element: <SignUp content={signUp1} />,
+        element: <SignUp content={<SignUpAgree />} />,
       },
       {
         path: 'signup2',
-        element: <SignUp content={signUp2} />,
+        element: <SignUp content={<SignUpInfo />} />,
       },
       {
         path: 'signup3',
-        element: <SignUp content={signUp3} />,
+        element: <SignUp content={<SignUpComplete />} />,
       },
       {
         path: 'login/kakao',
@@ -92,6 +93,18 @@ const router = createBrowserRouter([
       {
         path: 'staffpicklist/create',
         element: <StaffPickCreate />,
+      },
+      {
+        path: 'mypage',
+        element: <MyPage content={<MyMain />} />,
+      },
+      {
+        path: 'mypage/resume',
+        element: <MyPage content={<MyResume />} />,
+      },
+      {
+        path: 'mypage/guesthouse',
+        element: <MyPage content={<MyGuestHouse />} />,
       },
     ],
   },
