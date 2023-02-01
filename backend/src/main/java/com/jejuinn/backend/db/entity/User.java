@@ -41,11 +41,6 @@ public class User {
    @NotNull
    private String nickname;
 
-   @Column(name = "email_receive_allow")
-   @NotNull
-   @ColumnDefault("true")
-   private boolean emailReceiveAllow;
-
    @Column(name = "phone", length = 25, unique = true)
    private String phone;
 
@@ -55,13 +50,10 @@ public class User {
    @Column(name = "gender")
    private String gender;
 
-   private String isStaff;
+   private boolean isStaff;
 
    @Column(name = "profile_image_url")
    private String profileImageUrl;
-
-//   @Column(name = "date_created", columnDefinition = "DATETIME CURRENT_TIMESTAMP")
-//   private Date dateCreated;
 
    @Column(name = "refresh_token")
    private String refreshToken;
