@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
+import java.nio.file.Paths;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.*;
@@ -27,6 +28,7 @@ class CommentRepositoryTest {
 
     @Test
     public void dateTest(){
+
         Comment c1 = Comment.builder()
                 .postType("GUSE_HOUSE")
                 .postUid(1L)
