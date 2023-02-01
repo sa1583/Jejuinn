@@ -45,6 +45,10 @@ function loginNormal(body) {
   return api.post('/api/users/login', body);
 }
 
+function checkEmail(body) {
+  return api.post('/api/users/email-check', body);
+}
+
 export {
   getOurTokens,
   getUserInfo,
@@ -52,4 +56,5 @@ export {
   loginKakao,
   loginFacebook,
   loginNormal,
+  checkEmail,
 };

@@ -57,11 +57,11 @@ export default function LoginForm() {
     setLogInForm({ ...logInForm, [name]: value });
   };
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
     const body = { email: logInForm.email, password: logInForm.password };
-    const data = dispatch(getNormalAuthToken(body));
-    dispatch(getUserInfoByToken(data));
+    const data = await dispatch(getNormalAuthToken(body));
+    dispatch(getUserInfoByToken(data.payload.accesstoken));
     return navigate('');
   };
 

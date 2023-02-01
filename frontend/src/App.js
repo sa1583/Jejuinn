@@ -20,10 +20,12 @@ import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
 import StaffPickCreate from './routes/staffPickCreate/StaffPickCreate';
+import SignUpBox from './components/signUp/SignUpBox';
 import MyPage from './routes/myPage/MyPage';
 import MyMain from './components/myPage/MyMain';
 import MyResume from './components/myPage/MyResume';
 import MyGuestHouse from './components/myPage/MyGuestHouse';
+
 
 const router = createBrowserRouter([
   {
@@ -38,9 +40,13 @@ const router = createBrowserRouter([
         path: 'login',
         element: <LogIn />,
       },
+      // {
+      //   path: 'signup1',
+      //   element: <SignUp content={signUp1} />,
+      // },
       {
         path: 'signup1',
-        element: <SignUp content={<SignUpAgree />} />,
+        element: <SignUp content={<SignUpBox />} />,
       },
       {
         path: 'signup2',

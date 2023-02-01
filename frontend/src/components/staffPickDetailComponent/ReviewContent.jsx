@@ -2,10 +2,11 @@ import { Avatar } from '@mui/material';
 import { Box } from '@mui/system';
 import { deepOrange } from '@mui/material/colors';
 import ImageSlider from '../imageSlider/ImageSlider';
-import CommentBox from '../commentBox/CommentBox';
-import CommentInput from './CommentInput';
-import CommentList from './CommentList';
+import CommentBox from '../commentComponent/CommentBox';
+import CommentInput from '../commentComponent/CommentInput';
+import CommentList from '../commentComponent/CommentList';
 import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
 export default function ReviewContent() {
   const images = [
     'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254__340.jpg',
@@ -19,7 +20,8 @@ export default function ReviewContent() {
     {
       img: 'J',
       name: 'JangJeongMin',
-      comment: '나는 코로나의 황제다 후하하하하',
+      comment:
+        '나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하',
     },
     {
       img: 'L',
@@ -27,6 +29,12 @@ export default function ReviewContent() {
       comment: '정민이 케익 개꿀맛 엌',
     },
   ];
+
+  // 리뷰에서 댓글만 뽑아서 comments로 저장하는 로직
+  // const [comments, setComments] = useState([])
+  // useEffect(() => {
+  //   setComments(review.comments)
+  // },[review])
   return (
     <Box sx={{ padding: '5%' }}>
       <ImageSlider images={images} />
