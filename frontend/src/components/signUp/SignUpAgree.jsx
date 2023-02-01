@@ -4,14 +4,20 @@ import {
   FormControlLabel,
   Checkbox,
   IconButton,
+  Box,
 } from '@mui/material';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-export default function SignAgree() {
-  const navigate = useNavigate();
+export default function SignAgree({ handleNext }) {
+  const [agree, setAgree] = useState({ first: false, second: false });
+  const handleAgree = (e) => {
+    const name = e.target.name;
+    setAgree((prev) => ({ ...agree, [name]: !prev[name] }));
+  };
+
   return (
     <div
       style={{
@@ -20,20 +26,14 @@ export default function SignAgree() {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '6vh',
+        gap: '3vh',
       }}
     >
-      <h1>회원가입</h1>
-      <img
-        src="images/signUpStep1.png"
-        alt="회원가입 진척도 표시하는 바 1칸짜리 들어갈거임~~~~"
-        style={{ width: '80%' }}
-      />{' '}
-      <br />
       <FormGroup>
-        <div>
+        <Box sx={{ display: 'flex' }}>
           <FormControlLabel
             sx={{
-              width: '270px',
+              width: '100%',
             }}
             control={
               <Checkbox
@@ -45,6 +45,9 @@ export default function SignAgree() {
                     color: '#FF7600',
                   },
                 }}
+                value={agree.first}
+                name="first"
+                onChange={handleAgree}
               />
             }
             label="[필수] 개인정보 이용약관 동의"
@@ -56,11 +59,11 @@ export default function SignAgree() {
           >
             <ArrowForwardIosIcon />
           </IconButton>
-        </div>
-        <div>
+        </Box>
+        <Box sx={{ display: 'flex' }}>
           <FormControlLabel
             sx={{
-              width: '270px',
+              width: '100%',
             }}
             control={
               <Checkbox
@@ -75,6 +78,9 @@ export default function SignAgree() {
               />
             }
             label="[필수] 서비스 이용약관 동의"
+            value={agree.second}
+            name="second"
+            onChange={handleAgree}
           />
           <IconButton
             sx={{
@@ -83,7 +89,7 @@ export default function SignAgree() {
           >
             <ArrowForwardIosIcon />
           </IconButton>
-        </div>
+        </Box>
       </FormGroup>
       <div
         style={{
@@ -94,26 +100,16 @@ export default function SignAgree() {
           fontSize: '14px',
         }}
       >
-        약관 동의 체크는 해당 약관을 모두 숙지하였으며,
-      </div>
-      <div
-        style={{
-          width: '65%',
-          marginTop: '1vh',
-          textAlign: 'center',
-          color: '#FF7600',
-          fontSize: '14px',
-        }}
-      >
-        {' '}
-        이에 동의함을 의미합니다.
+        약관 동의 체크는 해당 약관을 모두 숙지하였으며, 이에 동의함을
+        의미합니다.
       </div>
       <Button
         onClick={() => {
-          navigate('../signup2');
+          // navigate('../signup2');
+          handleNext();
         }}
         sx={{
-          width: '80%',
+          width: '100%',
           height: '6vh',
           background: '#FF7600',
           borderRadius: '38px',
@@ -126,6 +122,7 @@ export default function SignAgree() {
           fontSize: '1.5vw',
           marginTop: '2vh',
         }}
+        disabled={agree.first === true && agree.second === true ? false : true}
       >
         다음
       </Button>

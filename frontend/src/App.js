@@ -20,6 +20,7 @@ import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
 import StaffPickCreate from './routes/staffPickCreate/StaffPickCreate';
+import SignUpBox from './components/signUp/SignUpBox';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -37,9 +38,13 @@ const router = createBrowserRouter([
         path: 'login',
         element: <LogIn />,
       },
+      // {
+      //   path: 'signup1',
+      //   element: <SignUp content={signUp1} />,
+      // },
       {
         path: 'signup1',
-        element: <SignUp content={signUp1} />,
+        element: <SignUp content={<SignUpBox />} />,
       },
       {
         path: 'signup2',
