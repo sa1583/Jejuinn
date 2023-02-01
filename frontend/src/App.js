@@ -20,6 +20,8 @@ import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
 import StaffPickCreate from './routes/staffPickCreate/StaffPickCreate';
+import SendSMS from './components/sendSMS/SendSMS';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const signUp1 = <SignUpAgree />;
 const signUp2 = <SignUpInfo />;
@@ -93,15 +95,32 @@ const router = createBrowserRouter([
         path: 'staffpicklist/create',
         element: <StaffPickCreate />,
       },
+      {
+        path: 'sendSMS',
+        element: <SendSMS />,
+      },
     ],
   },
 ]);
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#FF7600',
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+  },
+});
 
 function App() {
   return (
     <>
       <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
       </PersistGate>
     </>
   );
