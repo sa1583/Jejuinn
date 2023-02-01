@@ -78,7 +78,7 @@ export default function StaffPickFilter({ getFilter, filter }) {
           display: 'flex',
           flexDirection: 'column',
           padding: '3vh 3vh 3vh 3vh',
-          gap: '5vh',
+          gap: '4vh',
         }}
       >
         <CustomTextField

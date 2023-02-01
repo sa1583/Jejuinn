@@ -2,6 +2,14 @@ import { Box } from '@mui/system';
 import { useEffect, useRef } from 'react';
 
 // HandlePinClick: 지도에 있는 핀을 클릭했을 때 발생시키고 싶은 매서드 넣으면 됨
+/**
+ *
+ * @param {} param0 spots로 핀에 표시할 장소 위치정보 상속
+ * handlePinClick 으로 표시된 spots의 마커를 누르면 실행할 함수를 상속 (상속 안하면 마커 클릭 기능 없음)
+ * setNewPin 으로 새로운 핀을 찍을 때 실행할 함수를 상속 (상속 안하면 새로운 핀 찍기 기능 없음)
+ * startSpot 으로 페이지 랜더링 됐을 때 지도 화면 위치 상속 (상속 안하면 미리 지정한 제주도 중앙으로 위치)
+ * @returns
+ */
 export default function MapApi({
   handlePinClick,
   spots,

@@ -1,6 +1,5 @@
-import { allWorkList, filteredWorkList } from '../../api/work';
-import WorkFilterBox from '../../components/work/WorkFilterBox';
-import WorkListBox from '../../components/work/WorkListBox';
+import WorkFilterBox from '../../components/Work/WorkFilterBox';
+import WorkListBox from '../../components/Work/WorkListBox';
 import { Grid, Box, Button } from '@mui/material';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 
