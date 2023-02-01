@@ -14,7 +14,11 @@ function getSpots() {
 }
 
 function getReviews(uid) {
-  return api.get(`/api/spot/${uid}`);
+  return api.get(`/api/all-spot/${uid}`);
 }
 
-export { getSpots, getReviews };
+function getReview(uid) {
+  return api.get(`/api/spot/{uid}`);
+}
+
+export { getSpots, getReviews, getReview };

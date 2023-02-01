@@ -11,7 +11,6 @@ import {
 export const getUserInfoByToken = createAsyncThunk(
   'user/getUserInfoByToken',
   async (token, thunkAPI) => {
-    console.log('token', token);
     try {
       return (await getUserInfo(token)).data;
     } catch (e) {
@@ -59,8 +58,6 @@ export const getKakaoToken = createAsyncThunk(
       let { accesstoken, refreshtoken } = (await loginKakao(token)).headers;
       accesstoken = accesstoken.split(' ')[1];
       refreshtoken = refreshtoken.split(' ')[1];
-      // const token = data.accesstoken.split(' ')[1];
-      console.log(accesstoken, refreshtoken);
       return { accesstoken, refreshtoken };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
@@ -83,10 +80,12 @@ export const getFacebookToken = createAsyncThunk(
 export const getNormalAuthToken = createAsyncThunk(
   'user/getNormalAuthToken',
   async (body, thunkAPI) => {
+    console.log(body);
     try {
-      const { data } = (await loginNormal(body)).headers;
-      console.log(data);
-      return data;
+      let { accesstoken, refreshtoken } = (await loginNormal(body)).headers;
+      accesstoken = accesstoken.split(' ')[1];
+      refreshtoken = refreshtoken.split(' ')[1];
+      return { accesstoken, refreshtoken };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
@@ -123,8 +122,8 @@ const userSlice = createSlice({
         alert('실패!');
       })
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
+        state.accessToken = action.payload.accesstoken;
+        state.refreshToken = action.payload.refreshtoken;
       });
     // .addCase(getUserInfoByToken.fulfilled, (state, action) => {
     //   state.userInfo = action.payload;

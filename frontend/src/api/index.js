@@ -5,7 +5,7 @@ function apiInstance() {
     // ec2 주소
     baseURL: 'http://i8a603.p.ssafy.io:8080',
     headers: {
-      'Content-Type': 'application/json:charset=utf-8',
+      'Content-Type': 'application/json',
     },
   });
   return instance;

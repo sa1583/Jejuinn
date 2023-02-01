@@ -19,18 +19,19 @@ export default function CommentList({ comment }) {
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              width: '100%',
             }}
           >
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                height: '2rem',
+                minHeight: '2rem',
                 justifyContent: 'center',
               }}
             >
-              <p style={{ margin: 0, fontSize: '0.8rem' }}>{comment.comment}</p>
+              <p style={{ margin: 0, fontSize: '0.8rem', width: '80%' }}>
+                {comment.comment}
+              </p>
             </div>
           </Box>
         </Box>
