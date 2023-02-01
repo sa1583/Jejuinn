@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class TestController {
 
     @GetMapping("/api/test")
     public ResponseEntity<?> test2(){
+        System.out.println(Paths.get(System.getProperty("user.home"), ".kurento","config.properties"));
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("yutae", "999");
         return ResponseEntity.status(200).headers(httpHeaders).body("hello");
