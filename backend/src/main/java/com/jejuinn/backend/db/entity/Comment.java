@@ -2,10 +2,12 @@ package com.jejuinn.backend.db.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+//import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,6 +17,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 public class Comment {
     @Id
     @Column(name = "uid")
