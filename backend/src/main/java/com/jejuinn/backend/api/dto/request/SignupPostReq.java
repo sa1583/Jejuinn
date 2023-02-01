@@ -39,7 +39,6 @@ public class SignupPostReq {
         return SignupPostReq.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .emailReceiveAllow(user.isEmailReceiveAllow())
 //                .authorityDtoSet(user.getAuthorities().stream()
 //                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
 //                        .collect(Collectors.toSet()))
