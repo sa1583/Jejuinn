@@ -4,12 +4,14 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "guest_house")
+@Table(name = "staff")
 @Getter
 @Setter
 @Builder
@@ -17,28 +19,31 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class GuestHouse {
+public class Staff {
+
     @Id
-    @Column(name = "uid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
+    private Long guestHouseUid;
+
     private String guestHouseName;
 
-    private Long representativeUid;
+    private String guestHouseAddress;
 
-    private String email;
+    private String guestHouseAddressDetail;
 
-    private String phone;
+    private String userUid;
 
-    private String introduction;
+    private String userName;
 
-    private String tags;
-
-    private String address;
-
-    private String addressDetail;
+    private String userEmail;
 
     @CreationTimestamp
-    private LocalDate dateCreated;
+    private LocalDate startDate;
+
+    @UpdateTimestamp
+    private LocalDate endDate;
+
+    private String workName;
 }
