@@ -11,8 +11,6 @@ import java.nio.file.Paths;
 public class BackendApplication {
 
 	public static void main(String[] args) {
-		System.out.println(Paths.get(System.getProperty("user.home"), ".kurento","config.properties"));
 		SpringApplication.run(BackendApplication.class, args);
 	}
-
 }

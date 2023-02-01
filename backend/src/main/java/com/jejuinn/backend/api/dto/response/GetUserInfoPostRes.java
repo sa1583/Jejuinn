@@ -33,7 +33,6 @@ public class GetUserInfoPostRes {
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .nickname(user.getNickname())
-                .emailReceiveAllow(user.isEmailReceiveAllow())
                 .phone(user.getPhone()).build();
     }
 }
