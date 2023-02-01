@@ -20,12 +20,12 @@ import Main from './routes/main/Main';
 import StaffPick from './routes/staffPick/StaffPick';
 import StaffPickDetail from './routes/staffPickDetail/StaffPickDetail';
 import StaffPickCreate from './routes/staffPickCreate/StaffPickCreate';
-import SignUpBox from './components/signUp/SignUpBox';
+import SendSMS from './components/sendSMS/SendSMS';
+import { createTheme, ThemeProvider } from '@mui/material';
 import MyPage from './routes/myPage/MyPage';
 import MyMain from './components/myPage/MyMain';
 import MyResume from './components/myPage/MyResume';
 import MyGuestHouse from './components/myPage/MyGuestHouse';
-
 
 const router = createBrowserRouter([
   {
@@ -40,13 +40,9 @@ const router = createBrowserRouter([
         path: 'login',
         element: <LogIn />,
       },
-      // {
-      //   path: 'signup1',
-      //   element: <SignUp content={signUp1} />,
-      // },
       {
         path: 'signup1',
-        element: <SignUp content={<SignUpBox />} />,
+        element: <SignUp content={<SignUpAgree />} />,
       },
       {
         path: 'signup2',
@@ -101,6 +97,10 @@ const router = createBrowserRouter([
         element: <StaffPickCreate />,
       },
       {
+        path: 'sendSMS',
+        element: <SendSMS />,
+      },
+      {
         path: 'mypage',
         element: <MyPage content={<MyMain />} />,
       },
@@ -116,11 +116,24 @@ const router = createBrowserRouter([
   },
 ]);
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#FF7600',
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+  },
+});
+
 function App() {
   return (
     <>
       <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
       </PersistGate>
     </>
   );
