@@ -42,7 +42,6 @@ public class UserService {
 
         return User.builder()
                 .email(userRegisterPostReq.getEmail())
-                .emailReceiveAllow(userRegisterPostReq.isEmailReceiveAllow())
                 .nickname(userRegisterPostReq.getNickname())
                 .password(passwordEncoder.encode(userRegisterPostReq.getPassword()))
                 .authorities(Collections.singleton(authority))
