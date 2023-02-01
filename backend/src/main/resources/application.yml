@@ -1,7 +1,6 @@
 spring:
   datasource:
-#    url: jdbc:mysql://localhost:3306/jejuinndb?serverTimezone=UTC
-    url: jdbc:mysql://jejuinn.cryffwvzpqtt.ap-northeast-2.rds.amazonaws.com:3306/jejuinndb?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/jejuinndb?serverTimezone=UTC
     username: admin
     password: jejuinnpwd
     driver-class-name: com.mysql.cj.jdbc.Driver
