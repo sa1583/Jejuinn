@@ -8,10 +8,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+/**
+ * 스태프 기록 엔티티
+ */
 @Entity
-@Table(name = "staff")
+@Table(name = "staff_records")
 @Getter
 @Setter
 @Builder
@@ -19,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class Staff {
+public class StaffRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,16 +29,21 @@ public class Staff {
 
     private Long guestHouseUid;
 
+    private Long userUid;
+
+    @Column(length = 50)
     private String guestHouseName;
 
+    @Column(length = 50)
     private String guestHouseAddress;
 
+    @Column(length = 50)
     private String guestHouseAddressDetail;
 
-    private String userUid;
+    @Column(name = "username", length = 25)
+    private String username;
 
-    private String userName;
-
+    @Column(length = 50)
     private String userEmail;
 
     @CreationTimestamp
@@ -45,5 +52,6 @@ public class Staff {
     @UpdateTimestamp
     private LocalDate endDate;
 
+    @Column(length = 25)
     private String workName;
 }

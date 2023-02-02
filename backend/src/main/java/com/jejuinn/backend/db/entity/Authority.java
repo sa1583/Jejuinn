@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 인증 엔티티
+ * ROLE_USER, ROLE_ADMIN, ROLE_AUTH
+ */
 @Entity
 @Table(name = "authority")
 @Getter

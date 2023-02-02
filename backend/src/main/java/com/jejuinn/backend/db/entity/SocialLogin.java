@@ -6,6 +6,9 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
+/**
+ * 소셜 로그인 엔티티
+ */
 @Entity
 @Table(name = "social_logins")
 @Getter
@@ -29,7 +32,7 @@ public class SocialLogin {
     @Column(name = "access_token")
     private String accessToken;
 
-    @Column(name = "type")
+    @Column(name = "type", length = 25)
     private int type;
 
 
