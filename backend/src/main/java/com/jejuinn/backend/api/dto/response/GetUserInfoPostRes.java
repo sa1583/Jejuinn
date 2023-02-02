@@ -22,8 +22,6 @@ public class GetUserInfoPostRes {
 
     private String nickname;
 
-    private boolean emailReceiveAllow;
-
     private String phone;
 
 

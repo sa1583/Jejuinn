@@ -1,11 +1,13 @@
 package com.jejuinn.backend.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jejuinn.backend.db.entity.Authority;
 import com.jejuinn.backend.db.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 /**
  * 회원가입 요청 DTO ([Post] : /api/users)
@@ -30,18 +32,14 @@ public class SignupPostReq {
     @Size(min = 3, max = 50)
     String nickname;
 
-    @NotNull
-    boolean emailReceiveAllow;
+    public static User from(SignupPostReq req, Set<Authority> authorities) {
+        if(req == null) return null;
 
-    public static SignupPostReq from(User user) {
-        if(user == null) return null;
-
-        return SignupPostReq.builder()
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-//                .authorityDtoSet(user.getAuthorities().stream()
-//                        .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
-//                        .collect(Collectors.toSet()))
+        return User.builder()
+                .nickname(req.getNickname())
+                .email(req.getEmail())
+                .password(req.getPassword())
+                .authorities(authorities)
                 .build();
     }
 }

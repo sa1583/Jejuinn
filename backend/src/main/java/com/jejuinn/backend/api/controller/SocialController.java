@@ -1,12 +1,12 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.service.oauth.GoogleService;
+import com.jejuinn.backend.api.service.social.GoogleService;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.repository.SocialLoginRepository;
-import com.jejuinn.backend.api.service.oauth.KakaoService;
+import com.jejuinn.backend.api.service.social.KakaoService;
 import com.jejuinn.backend.api.service.UserService;
-import com.jejuinn.backend.api.service.oauth.NaverService;
+import com.jejuinn.backend.api.service.social.NaverService;
 import com.jejuinn.backend.db.entity.SocialLogin;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.enums.SocialType;
@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -54,7 +54,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> signUp(
-            @ApiParam(value = "userId, password, nickname, email, emailReceiveAllow")
+            @ApiParam(value = "email, password, nickname")
             @Valid @RequestBody SignupPostReq userRegisterPostReq){
 
         // email로 social 로그인이 아닌 user 가져오기

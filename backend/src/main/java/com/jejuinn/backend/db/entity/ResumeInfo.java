@@ -49,6 +49,8 @@ public class ResumeInfo {
     @CreatedDate
     private LocalDate dateCreated;
 
+    private boolean isDeleted;
+
     @ManyToMany
     @JoinTable(
             name = "user_authority_join",
