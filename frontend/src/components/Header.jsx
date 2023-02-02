@@ -8,6 +8,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import { useRef, useState } from 'react';
+import { selectIsLogin, selectUserInfo } from '../store/user';
+import { useSelector } from 'react-redux';
 
 // const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const pages = [
@@ -19,9 +21,10 @@ const settings = ['마이페이지', '로그아웃'];
 
 export default function ButtonAppBar() {
   const toolbarRef = useRef();
-  // 로그인 상태를 저장하는 임시 state
-  const [isLogin, setIsLogin] = useState();
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const isLogin = useSelector(selectIsLogin);
+  const userInfo = useSelector(selectUserInfo);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -99,7 +102,13 @@ export default function ButtonAppBar() {
           )}
           {isLogin && (
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, flexGrow: 1 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              {userInfo.profileImg ? (
+                <Avatar alt="Remy Sharp" src={userInfo.profileImg} />
+              ) : (
+                <Avatar sx={{ backgroundColor: 'primary.main' }}>
+                  {userInfo.nickname[0].toUpperCase()}
+                </Avatar>
+              )}
             </IconButton>
           )}
 
