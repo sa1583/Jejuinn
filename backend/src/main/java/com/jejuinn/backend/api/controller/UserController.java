@@ -160,10 +160,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> checkDuplicateEmail(@Valid @RequestBody SimpleEmailReq simpleEmailReq){
-        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null) == null){
-            return ResponseEntity.status(409).build();
+        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null).isEmpty()){
+            return ResponseEntity.status(200).build();
         }
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(409).build();
     }
 
     /**

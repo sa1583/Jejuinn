@@ -29,7 +29,7 @@ public class SignupPostReq {
     String password;
 
     @NotNull
-    @Size(min = 3, max = 50)
+    @Size(min = 2, max = 50)
     String nickname;
 
     public static User from(SignupPostReq req, Set<Authority> authorities) {
