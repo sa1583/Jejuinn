@@ -1,8 +1,13 @@
 import { TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { checkEmail, signUpApi } from '../../api/user';
+import { checkEmail } from '../../api/user';
+import {
+  getNormalAuthTokenInSignUp,
+  getUserInfoByToken,
+} from '../../store/user';
 
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -24,15 +29,19 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function SignUpInfo({ handleNext }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [signUpForm, setSignUpForm] = useState({
     email: '',
     password: '',
     nickname: '',
   });
   const handleSignUp = async () => {
-    const data = await signUpApi(signUpForm);
-    console.log(data);
-
+    const body = signUpForm;
+    const data = await dispatch(getNormalAuthTokenInSignUp(body));
+    dispatch(getUserInfoByToken(data.payload.accesstoken));
+    handleNext();
     // 여기에 data 받은후에 200이면 dispatch getuserinfo 하고
     // 에러면 그에따라 alert
   };
@@ -77,7 +86,7 @@ export default function SignUpInfo({ handleNext }) {
   const nickNameTest = /^[A-Za-z가-힣0-9]{2,10}$/;
   const nickNameTestResult = () => nickNameTest.test(signUpForm.nickname);
   // 비밀번호 형식
-  const passwordTest = /^[a-z0-9]{7,15}$/;
+  const passwordTest = /^(?=.*?[a-z])(?=.*?[0-9]).{7,15}$/;
   const passwordTestResult = () => passwordTest.test(signUpForm.password);
 
   // 비밀번호 체크
@@ -131,7 +140,9 @@ export default function SignUpInfo({ handleNext }) {
       <CustomTextField
         sx={completedBoxStyle(emailReceiveAllow)}
         required
-        error={signUpForm.email.length > 0 && emailReceiveAllow}
+        error={Boolean(
+          signUpForm.email.length > 0 && emailReceiveAllow === false,
+        )}
         label="이메일"
         type="email"
         name="email"
@@ -176,12 +187,12 @@ export default function SignUpInfo({ handleNext }) {
         onChange={handleSignUpForm}
         size="small"
         helperText="2글자 ~ 10글자"
-        error={signUpForm.nickname.length > 0 && nickNameTestResult()}
+        error={Boolean(
+          signUpForm.nickname.length > 0 && nickNameTestResult() === false,
+        )}
       />
       <CustomTextField
-        sx={completedBoxStyle(
-          passwordTestResult() && signUpForm.password.length > 0,
-        )}
+        sx={completedBoxStyle(passwordTestResult())}
         InputLabelProps={{
           sx: completedLabelStyle(passwordTestResult()),
         }}
@@ -193,12 +204,12 @@ export default function SignUpInfo({ handleNext }) {
         onChange={handleSignUpForm}
         helperText="소문자, 숫자 포함 7 ~ 15글자"
         size="small"
-        error={signUpForm.password && !passwordTestResult()}
+        error={Boolean(
+          signUpForm.password.length > 0 && passwordTestResult() === false,
+        )}
       />
       <CustomTextField
-        sx={completedBoxStyle(
-          passwordCheckResult() && checkPassword.length > 0,
-        )}
+        sx={completedBoxStyle(passwordCheckResult())}
         InputLabelProps={{
           sx: completedLabelStyle(passwordCheckResult()),
         }}
@@ -210,7 +221,9 @@ export default function SignUpInfo({ handleNext }) {
         onChange={handleCheckPassword}
         size="small"
         helperText="소문자, 숫자 포함 7 ~ 15글자"
-        error={checkPassword.length > 0 && !passwordCheckResult()}
+        error={Boolean(
+          checkPassword.length > 0 && passwordCheckResult() === false,
+        )}
       />
       <Button
         onClick={handleSignUp}

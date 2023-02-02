@@ -110,7 +110,7 @@ export default function SignAgree({ handleNext }) {
         }}
         sx={{
           width: '100%',
-          height: '6vh',
+          height: '3rem',
           background: '#FF7600',
           borderRadius: '38px',
           color: 'white',
