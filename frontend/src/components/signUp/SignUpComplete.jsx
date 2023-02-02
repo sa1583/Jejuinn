@@ -11,14 +11,10 @@ export default function SignUpComplete() {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '6vh',
+        width: '100%',
       }}
     >
       <h1>가입완료</h1>
-      <img
-        src="images/signUpStep3.png"
-        alt="회원가입 진척도 표시하는 바 3칸짜리 들어갈거임~~~~"
-        style={{ width: '80%' }}
-      />{' '}
       <div style={{ width: '80%', marginTop: '3vh', textAlign: 'center' }}>
         가입을 환영합니다
       </div>
@@ -38,7 +34,7 @@ export default function SignUpComplete() {
           },
           border: 'none',
           fontSize: '1.5vw',
-          marginTop: '2vh',
+          marginTop: '20%',
         }}
       >
         홈으로 이동
