@@ -10,6 +10,7 @@ import StaffPickReviews from '../../components/staffPickComponent/StaffPickRevie
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 // import { getReviews } from '../../api/staffPick';
 // import { getSpots } from '../../api/staffPick';
 export default function StaffPick() {
@@ -53,16 +54,18 @@ export default function StaffPick() {
     navigate('create');
   };
 
-  // const testapi = () => {
-  //   axios({
-  //     method: 'get',
-  //     url: 'http://i8a603.p.ssafy.io:8080/api/test',
-  //   }).then(console.log);
-  // };
+  const testapi = () => {
+    const data = { msg: 'aaaa' };
+    axios({
+      method: 'post',
+      url: 'http://i8a603.p.ssafy.io:8080/api/test3',
+      data,
+    }).then(console.log);
+  };
 
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
-    // { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
+    { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
 
   const spots = [

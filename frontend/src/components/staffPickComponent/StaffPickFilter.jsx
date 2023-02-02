@@ -36,8 +36,9 @@ const CustomTextField = styled(TextField)({
 
 const CustomButton = styled(Button)({
   height: '3rem',
+  color: 'white',
   '&:hover': {
-    backgroundColor: '#ac002b',
+    backgroundColor: '#006992',
   },
 });
 
