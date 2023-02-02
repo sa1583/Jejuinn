@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,20 +6,47 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { logout, selectIsLogin, selectUserInfo } from '../store/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-// const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const pages = [
   { name: '게스트하우스', url: 'guesthouse' },
   { name: '일하기', url: 'worklist' },
   { name: '놀고먹기', url: 'staffpicklist' },
 ];
-const settings = [''];
+const settings = ['마이페이지', '로그아웃'];
 
 export default function ButtonAppBar() {
-  // 로그인 상태를 저장하는 임시 state
-  const [isLogin, setIsLogin] = React.useState();
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const toolbarRef = useRef();
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const isLogin = useSelector(selectIsLogin);
+  const userInfo = useSelector(selectUserInfo);
+
+  useEffect(() => {
+    const name = location.pathname.split('/')[1];
+    for (let i = 1; i <= 3; i++) {
+      toolbarRef.current.childNodes[i].childNodes[0].style.color = 'black';
+    }
+    switch (name) {
+      case 'guesthouse':
+        toolbarRef.current.childNodes[1].childNodes[0].style.color = '#FF7600';
+        break;
+      case 'worklist':
+        toolbarRef.current.childNodes[2].childNodes[0].style.color = '#FF7600';
+        break;
+      case 'staffpicklist':
+        toolbarRef.current.childNodes[3].childNodes[0].style.color = '#FF7600';
+        break;
+    }
+  });
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -28,6 +54,17 @@ export default function ButtonAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleMoveToMyPage = () => {
+    handleCloseUserMenu();
+    return navigate('mypage');
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleCloseUserMenu();
+    return navigate('/');
   };
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -39,20 +76,26 @@ export default function ButtonAppBar() {
           boxShadow: '0px 2px 6px -1px rgb(0 0 0 / 10%)',
         }}
       >
-        <Toolbar sx={{ width: '80%', margin: 'auto' }}>
-          <Link
-            to={''}
+        <Toolbar sx={{ width: '80%', margin: 'auto' }} ref={toolbarRef}>
+          <div
             style={{
               flexGrow: 25,
-              fontSize: '35px',
-              fontStyle: 'normal',
-              fontFamily: 'SBAggroB',
-              color: '#FF7600',
               textDecoration: 'none',
             }}
           >
-            JEJUINN
-          </Link>
+            <Link
+              to={''}
+              style={{
+                fontSize: '35px',
+                fontStyle: 'normal',
+                fontFamily: 'SBAggroB',
+                textDecoration: 'none',
+                color: '#FF7600',
+              }}
+            >
+              JEJUINN
+            </Link>
+          </div>
 
           {pages.map((page) => (
             <Typography
@@ -92,7 +135,13 @@ export default function ButtonAppBar() {
           )}
           {isLogin && (
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, flexGrow: 1 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              {userInfo.profileImg ? (
+                <Avatar alt="Remy Sharp" src={userInfo.profileImg} />
+              ) : (
+                <Avatar sx={{ backgroundColor: 'primary.main' }}>
+                  {userInfo.nickname[0].toUpperCase()}
+                </Avatar>
+              )}
             </IconButton>
           )}
 
@@ -112,11 +161,12 @@ export default function ButtonAppBar() {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
-              </MenuItem>
-            ))}
+            <MenuItem onClick={handleMoveToMyPage}>
+              <Typography textAlign="center">마이페이지</Typography>
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <Typography textAlign="center">로그아웃</Typography>
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
