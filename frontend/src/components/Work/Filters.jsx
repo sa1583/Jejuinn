@@ -1,22 +1,11 @@
 import { useState } from 'react';
-import Chip from '@mui/material/Chip';
-import {
-  Box,
-  styled,
-  TextField,
-  Button,
-  InputAdornment,
-  MenuItem,
-} from '@mui/material';
+import { styled, TextField, InputAdornment, MenuItem } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { v4 as uuidv4 } from 'uuid';
-
-import GroupsIcon from '@mui/icons-material/Groups';
 import SearchIcon from '@mui/icons-material/Search';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useEffect } from 'react';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -30,7 +19,7 @@ const CustomTextField = styled(TextField)({
     '& fieldset': {
       borderColor: '#d1d1d1',
       opacity: '83%',
-      height: '6vh',
+      height: '100%',
       borderRadius: '62px',
       margin: 'auto',
     },
@@ -60,6 +49,23 @@ const selectedSections = [
   '우도면',
 ];
 
+function FilterName({ onName }) {
+  return (
+    <CustomTextField
+      label="게스트하우스 이름"
+      placeholder="입력"
+      onInput={onName}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start" style={{ color: '#FF7600' }}>
+            <SearchIcon />
+          </InputAdornment>
+        ),
+      }}
+    ></CustomTextField>
+  );
+}
+
 function FilterArea({ onArea }) {
   return (
     <CustomTextField
@@ -81,23 +87,6 @@ function FilterArea({ onArea }) {
         </MenuItem>
       ))}
     </CustomTextField>
-  );
-}
-
-function FilterName({ onName }) {
-  return (
-    <CustomTextField
-      label="게스트하우스 이름"
-      placeholder="입력"
-      onInput={onName}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start" style={{ color: '#FF7600' }}>
-            <SearchIcon />
-          </InputAdornment>
-        ),
-      }}
-    ></CustomTextField>
   );
 }
 
@@ -124,12 +113,26 @@ function FilterDate({ onStartDate }) {
   );
 }
 
-function FilterStyle(onStyleTags) {
+function FilterStyle({ onStyleTags }) {
+  const wishStyles = ['파티', '조용한', '술', '나혼자'];
+  const [value, setValue] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
   return (
     <Autocomplete
       multiple
+      limitTags={3}
       options={wishStyles.map((option) => option)}
       freeSolo
+      value={value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+        onStyleTags(newValue);
+      }}
+      inputValue={inputValue}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
       renderInput={(params) => (
         <CustomTextField
           {...params}
@@ -142,6 +145,3 @@ function FilterStyle(onStyleTags) {
 }
 
 export { FilterDate, FilterArea, FilterName, FilterStyle };
-
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const wishStyles = ['파티', '조용한', '술', '나혼자'];

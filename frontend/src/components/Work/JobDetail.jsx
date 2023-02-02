@@ -1,7 +1,5 @@
 import { Box, styled, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import WhiteBox from '../whiteBox/WhiteBox';
 
 const CustomButton = styled(Button)({
   height: '5vh',
@@ -10,20 +8,23 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkDetailJob() {
+export default function JobDetail({ work }) {
   const navigate = useNavigate();
 
   const onJobDetail = () => {
-    navigate('/worklist/detail');
+    navigate(`/worklist/detail/${work.uid}`);
+  };
+  const onApply = () => {
+    navigate('지원서 제출 api로 연결~');
   };
 
   return (
     <>
       <Box sx={{ padding: '3vh', height: '100%' }}>
         <h2 onClick={onJobDetail} style={{ color: '#FF7600' }}>
-          Title
+          {work.title}
         </h2>
-        <div>모집 상세 </div>
+        <div>{work.detail}내용 나오는거 보고 구성하면 됨~~</div>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <CustomButton
             variant="contained"
@@ -34,6 +35,7 @@ export default function WorkDetailJob() {
               fontFamily: 'border',
             }}
             size="large"
+            onClick={onApply}
           >
             지원하기
           </CustomButton>

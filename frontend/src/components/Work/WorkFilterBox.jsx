@@ -3,16 +3,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import { FilterDate, FilterArea, FilterStyle, FilterName } from './Filters';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { filteredWorkList } from '../../api/work';
 
 const CustomButton = styled(Button)({
   variant: 'contained',
-  width: '80%',
+  width: '100%',
+  height: '7vh',
   color: '#FFFFFF',
   borderRadius: '62px',
   backgroundColor: '#FF7600',
   fontFamily: 'border',
   size: 'large',
-  height: '5vh',
   '&:hover': {
     backgroundColor: '#FF7600',
     borderColor: '#FF7600',
@@ -23,38 +24,32 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkFilterBox() {
-  // 필터 정보가 있으면 filteredWorkList 호출
-
-  const onSearch = () => {
-    // '/api/job-offer/filter' 로 데이터 요청
-  };
-
-  // 이름 저장할 변수
+export default function WorkFilterBox({ onSearch }) {
   const [name, setName] = useState('');
+  const [area, setArea] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [styleTags, setStyleTags] = useState([]);
+  const [filterValue, setFilterValue] = useState([]);
+
+  const onClick = () => {
+    setFilterValue({ name, area, startDate, styleTags });
+  };
+  useEffect(() => {
+    onSearch(filterValue);
+  }, [filterValue]);
+
   const onName = (imp) => {
     setName(imp.target.value);
   };
-
-  // 지역 저장할 변수
-  const [area, setArea] = useState('');
   const onArea = (imp) => {
     setArea(imp.target.value);
   };
-  // 날짜 저장할 변수
-  const [startDate, setStartDate] = useState('');
   const onStartDate = (imp) => {
     setStartDate(imp.$d.toISOString().split('T')[0]);
-    console.log(imp.$d.toISOString().split('T')[0]);
   };
-
-  // 스타일 저장할 변수
-  const [styleTags, setStyleTags] = useState([]);
   const onStyleTags = (imp) => {
-    //
-    console.log('되나되나되나/?');
+    setStyleTags(imp);
   };
-
   useEffect(() => {
     console.log(name, area, startDate, styleTags);
   }, [name, area, startDate, styleTags]);
@@ -80,7 +75,7 @@ export default function WorkFilterBox() {
           </Grid>
 
           <Grid item md={4}>
-            <CustomButton startIcon={<SearchIcon />} onClick={onSearch}>
+            <CustomButton startIcon={<SearchIcon />} onClick={onClick}>
               조건 검색
             </CustomButton>
           </Grid>
