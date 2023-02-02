@@ -101,7 +101,14 @@ const userSlice = createSlice({
     accessToken: null,
     refreshToken: null,
   },
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.isLogin = false;
+      state.userInfo = null;
+      state.accessToken = null;
+      state.refreshToken = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserInfoByToken.fulfilled, (state, { payload }) => {
@@ -135,4 +142,4 @@ const userSlice = createSlice({
 export default userSlice;
 export const selectIsLogin = (state) => state.user.isLogin;
 export const selectUserInfo = (state) => state.user.userInfo;
-export const { login } = userSlice.actions;
+export const { logout } = userSlice.actions;

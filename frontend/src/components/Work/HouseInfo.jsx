@@ -10,7 +10,7 @@ export default function HouseInfo() {
         <Grid item md={4}>
           <Box>게하 이름</Box>
           <Box>게하기본정보</Box>
-          <WhiteBox cpn={<MapApi />} />
+          {/* <WhiteBox cpn={<MapApi />} /> */}
           <Box>#태그1 # 파티게하 #조용한 #인싸</Box>
         </Grid>
         <Grid item md={8}>

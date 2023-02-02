@@ -6,10 +6,10 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
-import { selectIsLogin, selectUserInfo } from '../store/user';
-import { useSelector } from 'react-redux';
+import { logout, selectIsLogin, selectUserInfo } from '../store/user';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 const pages = [
@@ -21,6 +21,9 @@ const settings = ['마이페이지', '로그아웃'];
 
 export default function ButtonAppBar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const toolbarRef = useRef();
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -29,9 +32,9 @@ export default function ButtonAppBar() {
 
   useEffect(() => {
     const name = location.pathname.split('/')[1];
-    toolbarRef.current.childNodes[1].childNodes[0].style.color = 'black';
-    toolbarRef.current.childNodes[2].childNodes[0].style.color = 'black';
-    toolbarRef.current.childNodes[3].childNodes[0].style.color = 'black';
+    for (let i = 1; i <= 3; i++) {
+      toolbarRef.current.childNodes[i].childNodes[0].style.color = 'black';
+    }
     switch (name) {
       case 'guesthouse':
         toolbarRef.current.childNodes[1].childNodes[0].style.color = '#FF7600';
@@ -43,7 +46,6 @@ export default function ButtonAppBar() {
         toolbarRef.current.childNodes[3].childNodes[0].style.color = '#FF7600';
         break;
     }
-    console.log(toolbarRef.current.childNodes);
   });
 
   const handleOpenUserMenu = (event) => {
@@ -52,6 +54,17 @@ export default function ButtonAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleMoveToMyPage = () => {
+    handleCloseUserMenu();
+    return navigate('mypage');
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleCloseUserMenu();
+    return navigate('/');
   };
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -148,11 +161,12 @@ export default function ButtonAppBar() {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
-              </MenuItem>
-            ))}
+            <MenuItem onClick={handleMoveToMyPage}>
+              <Typography textAlign="center">마이페이지</Typography>
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <Typography textAlign="center">로그아웃</Typography>
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
