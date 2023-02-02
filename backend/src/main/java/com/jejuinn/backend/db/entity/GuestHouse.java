@@ -12,7 +12,7 @@ import java.time.LocalDate;
  * 게스트 하우스 엔티티
  */
 @Entity
-@Table(name = "guest_house")
+@Table(name = "guest_houses")
 @Getter
 @Setter
 @Builder
@@ -31,19 +31,27 @@ public class GuestHouse {
 
     private Long representativeUid;
 
+    @Column(length = 50)
     private String email;
 
+    @Column(length = 25)
     private String phone;
 
     @Column(columnDefinition = "TEXT")
     private String introduction;
 
+    @Column(length = 100)
     private String tags;
 
+    @Column(length = 50)
     private String address;
 
-    @Column(length = 255)
+    @Column(length = 50)
     private String addressDetail;
+
+    @OneToOne
+    @JoinColumn(name = "area_uid")
+    private Area area;
 
     @CreationTimestamp
     private LocalDate dateCreated;

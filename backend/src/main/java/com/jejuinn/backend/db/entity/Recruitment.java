@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -29,10 +30,13 @@ public class Recruitment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
+    @Column(length = 50)
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String welfare;
 
+    @Column(columnDefinition = "TEXT")
     private String addInfo;
 
     @CreationTimestamp

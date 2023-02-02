@@ -4,17 +4,15 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-//import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-//import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
  * 댓글 엔티티
  */
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 @Getter
 @Setter
 @Builder
@@ -28,7 +26,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long uid;
 
-    @Column(name = "post_type")
+    @Column(name = "post_type", length = 25)
     private String postType; // GUEST_HOUSE or STAFF_PICK
 
     @Column(name = "post_uid")
@@ -37,16 +35,9 @@ public class Comment {
     @Column(name = "user_uid")
     private Long userUid;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content ;
 
     @CreationTimestamp
     private LocalDateTime dateCreated;
-
-
-
-
-
-
-
 }

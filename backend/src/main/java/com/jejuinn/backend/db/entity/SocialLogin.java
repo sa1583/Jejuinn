@@ -32,7 +32,7 @@ public class SocialLogin {
     @Column(name = "access_token")
     private String accessToken;
 
-    @Column(name = "type")
+    @Column(name = "type", length = 25)
     private int type;
 
 

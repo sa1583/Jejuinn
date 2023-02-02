@@ -46,7 +46,7 @@ public class CommentController {
 
         // userUid 정보를 통해 staff 여부를 확인 차후 구현
         boolean isStaff = false;
-        commentRepository.save(req.toComment(userUid, isStaff));
+        commentRepository.save(req.toComment(userUid));
 
         return ResponseEntity.status(200).build();
     }

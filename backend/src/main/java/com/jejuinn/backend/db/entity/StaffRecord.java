@@ -34,8 +34,10 @@ public class StaffRecord {
     @Column(length = 50)
     private String guestHouseName;
 
+    @Column(length = 50)
     private String guestHouseAddress;
 
+    @Column(length = 50)
     private String guestHouseAddressDetail;
 
     @Column(name = "username", length = 25)

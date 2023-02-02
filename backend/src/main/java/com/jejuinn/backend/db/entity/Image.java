@@ -21,7 +21,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
-    @Column(name = "post_type")
+    @Column(name = "post_type", length = 25)
     @NotNull
     private String postType;
 
