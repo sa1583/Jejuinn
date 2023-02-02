@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,6 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
 
 // const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const pages = [
@@ -15,12 +15,13 @@ const pages = [
   { name: '일하기', url: 'worklist' },
   { name: '놀고먹기', url: 'staffpicklist' },
 ];
-const settings = [''];
+const settings = ['마이페이지', '로그아웃'];
 
 export default function ButtonAppBar() {
+  const toolbarRef = useRef();
   // 로그인 상태를 저장하는 임시 state
-  const [isLogin, setIsLogin] = React.useState();
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isLogin, setIsLogin] = useState();
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -39,20 +40,26 @@ export default function ButtonAppBar() {
           boxShadow: '0px 2px 6px -1px rgb(0 0 0 / 10%)',
         }}
       >
-        <Toolbar sx={{ width: '80%', margin: 'auto' }}>
-          <Link
-            to={''}
+        <Toolbar sx={{ width: '80%', margin: 'auto' }} ref={toolbarRef}>
+          <div
             style={{
               flexGrow: 25,
-              fontSize: '35px',
-              fontStyle: 'normal',
-              fontFamily: 'SBAggroB',
-              color: '#FF7600',
               textDecoration: 'none',
             }}
           >
-            JEJUINN
-          </Link>
+            <Link
+              to={''}
+              style={{
+                fontSize: '35px',
+                fontStyle: 'normal',
+                fontFamily: 'SBAggroB',
+                textDecoration: 'none',
+                color: '#FF7600',
+              }}
+            >
+              JEJUINN
+            </Link>
+          </div>
 
           {pages.map((page) => (
             <Typography
