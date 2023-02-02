@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,6 +24,21 @@ public class TravelPlaceController {
     private final TravelPlaceRepository travelPlaceRepository;
     private static final String TRAVEL_PLACE = "TRAVEL_PLACE";
     private final ImageRepository imageRepository;
+
+    @PostMapping("/api/travelPlace")
+    @ApiOperation(value = "관광지 추가", notes = "<strong>관광지</strong>를 추가합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> insertTravelPlacePins(){
+        return ResponseEntity.status(200)
+                .body(travelPlaceRepository.findAll()
+                        .stream()
+                        .map(travelPlace
+                                -> TravelPlacePinsRes.of(travelPlace)));
+    }
 
     @GetMapping("/api/travelPlace/pins")
     @ApiOperation(value = "모든 관광지 위치 보기(지도에 핀 찍을 때)", notes = "관광지의 위치 정보를 리턴합니다.")
