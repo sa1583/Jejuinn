@@ -19,7 +19,7 @@ export default function GuestHouse() {
 
   return (
     <div>
-      <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
+      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <WhiteBox
