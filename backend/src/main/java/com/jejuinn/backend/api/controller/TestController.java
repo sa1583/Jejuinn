@@ -39,7 +39,7 @@ public class TestController {
         return ResponseEntity.status(200).body(testReq.getMsg());
     }
 
-    @GetMapping("/auth/test")
+    @PostMapping("/auth/test")
     public ResponseEntity<?> test(HttpServletRequest request){
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
         Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
