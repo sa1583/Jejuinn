@@ -1,6 +1,7 @@
-package com.jejuinn.backend.api.service.oauth;
+package com.jejuinn.backend.api.service.social;
 
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -122,5 +123,13 @@ public class NaverService {
             System.err.println(e);
             return "Err";
         }
+    }
+
+
+    public List<String> getSearchResult(String query){
+        String url = "https://openapi.naver.com/v1/search/local.json";
+        ObjectNode node = null;
+
+        return null;
     }
 }
