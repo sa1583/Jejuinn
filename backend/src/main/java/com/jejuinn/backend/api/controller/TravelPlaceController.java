@@ -39,7 +39,7 @@ public class TravelPlaceController {
                                 -> TravelPlacePinsRes.of(travelPlace)));
     }
 
-    @GetMapping("/api/travelPlace/pins")
+    @GetMapping("/api/travelPlace")
     @ApiOperation(value = "관광지 조회(리뷰 최신순)", notes = "<strong>페이지네이션 정보를 받아</strong> 15개씩 사진, 카테고리, 관광지명, uid를 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),

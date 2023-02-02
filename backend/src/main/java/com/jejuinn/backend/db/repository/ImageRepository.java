@@ -13,6 +13,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query("select i.imgPath from Image i where i.uid = :uid")
     String findImgPathByUid(@Param("uid") Long uid);
 
-    @Query("select i.imgPath from Image i where i.postType = :postType and i.postUid = :postUid limit 1")
+    @Query("select i.imgPath from Image i where i.postType = :postType and i.postUid = :postUid")
     String findImgPathByPostTypeAndPostUid(@Param("postType") String postType, @Param("postUid") Long postUid);
 }
