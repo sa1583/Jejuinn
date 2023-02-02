@@ -1,18 +1,23 @@
-import SearchForm from '../../components/main/SearchForm';
+import { SectionsContainer, Section } from 'react-fullpage';
+import MainOne from '../../components/main/MainOne';
 
 export default function Main() {
+  let options = {
+    anchors: ['sectionOne', 'sectionTwo', 'sectionThree'],
+    navigation: false,
+  };
+
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '92vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <img src="images/main.png" style={{ height: '400px' }} alt="main img" />
-      <SearchForm />
-    </div>
+    <SectionsContainer {...options} style={{ paddingTop: '80' }}>
+      <Section>
+        <MainOne />
+      </Section>
+      <Section>
+        <p>소개 페이지</p>
+      </Section>
+      <Section>
+        <p>테마 및 기능 설명</p>
+      </Section>
+    </SectionsContainer>
   );
 }
