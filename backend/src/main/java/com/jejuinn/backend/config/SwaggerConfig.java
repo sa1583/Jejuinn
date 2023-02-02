@@ -34,11 +34,19 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .securityContexts(newArrayList(securityContext()))
-                .securitySchemes(newArrayList(apiKey()));
+                .securitySchemes(newArrayList(apiKey(), apiKeySocial(), apiKeyRefresh()));
     }
 
     private ApiKey apiKey() {
-        return new ApiKey(SECURITY_SCHEMA_NAME, "Authorization", "header");
+        return new ApiKey(SECURITY_SCHEMA_NAME, "accessToken", "header");
+    }
+
+    private ApiKey apiKeySocial() {
+        return new ApiKey(SECURITY_SCHEMA_NAME+" SOCIAL", "access_token", "header");
+    }
+
+    private ApiKey apiKeyRefresh() {
+        return new ApiKey(SECURITY_SCHEMA_NAME+" REFRESH", "refreshToken", "header");
     }
 
     private SecurityContext securityContext() {
