@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.TestReq;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
@@ -31,6 +32,11 @@ public class TestController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("yutae", "999");
         return ResponseEntity.status(200).headers(httpHeaders).body("hello");
+    }
+
+    @GetMapping("/api/test3")
+    public ResponseEntity<?> test3(@RequestBody TestReq testReq){
+        return ResponseEntity.status(200).body(testReq.getMsg());
     }
 
     @GetMapping("/auth/test")
