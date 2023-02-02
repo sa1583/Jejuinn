@@ -21,7 +21,7 @@ const CustomTextField = styled(TextField)({
     '& fieldset': {
       borderColor: '#d1d1d1',
       opacity: '83%',
-      height: '6vh',
+      height: '4rem',
       borderRadius: '62px',
       margin: 'auto',
     },
@@ -35,7 +35,7 @@ const CustomTextField = styled(TextField)({
 });
 
 const CustomButton = styled(Button)({
-  height: '5vh',
+  height: '3rem',
   '&:hover': {
     backgroundColor: '#ac002b',
   },
@@ -78,7 +78,7 @@ export default function StaffPickFilter({ getFilter, filter }) {
           display: 'flex',
           flexDirection: 'column',
           padding: '3vh 3vh 3vh 3vh',
-          gap: '4vh',
+          gap: '2rem',
         }}
       >
         <CustomTextField
