@@ -1,5 +1,7 @@
 import WorkFilterBox from '../../components/work/WorkFilterBox';
 import WorkListBox from '../../components/work/WorkListBox';
+
+import { allWorkList, filteredWorkList } from '../../api/work';
 import { Box } from '@mui/material';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useEffect, useState } from 'react';
