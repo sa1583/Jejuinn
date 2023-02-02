@@ -1,58 +1,86 @@
-import { styled, Button, Grid } from '@mui/material';
+import { styled, Button, Grid, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { FilterDate, FilterArea, FilterName, FilterStyle } from './Filters';
+import { FilterDate, FilterArea, FilterStyle, FilterName } from './Filters';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { filteredWorkList } from '../../api/work';
+
 const CustomButton = styled(Button)({
-  height: '5vh',
+  variant: 'contained',
+  width: '100%',
+  height: '7vh',
+  color: '#FFFFFF',
+  borderRadius: '62px',
+  backgroundColor: '#FF7600',
+  fontFamily: 'border',
+  size: 'large',
   '&:hover': {
     backgroundColor: '#FF7600',
+    borderColor: '#FF7600',
+  },
+  '&:active': {
+    backgroundColor: '#FF7600',
+    borderColor: '#FF7600',
   },
 });
 
-export default function WorkFilterBox() {
-  // 필터 정보 담을 변수필요
-  // 필터 정보가 비어있으면 allWorkList 호출
-  // 필터 정보가 있으면 filteredWorkList 호출
+export default function WorkFilterBox({ onSearch }) {
+  const [name, setName] = useState('');
+  const [area, setArea] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [styleTags, setStyleTags] = useState([]);
+  const [filterValue, setFilterValue] = useState([]);
+
+  const onClick = () => {
+    setFilterValue({ name, area, startDate, styleTags });
+  };
+  useEffect(() => {
+    onSearch(filterValue);
+  }, [filterValue]);
+
+  const onName = (imp) => {
+    setName(imp.target.value);
+  };
+  const onArea = (imp) => {
+    setArea(imp.target.value);
+  };
+  const onStartDate = (imp) => {
+    setStartDate(imp.$d.toISOString().split('T')[0]);
+  };
+  const onStyleTags = (imp) => {
+    setStyleTags(imp);
+  };
+  useEffect(() => {
+    console.log(name, area, startDate, styleTags);
+  }, [name, area, startDate, styleTags]);
 
   return (
-    <form
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '3vh 3vh 3vh 3vh',
-        gap: '5vh',
-        height: '15vh',
-      }}
-    >
-      <Grid container spacing={1} justifyContent="space-between">
-        <Grid item md={4}>
-          <FilterName />
-        </Grid>
-        <Grid item md={4}>
-          <FilterArea />
-        </Grid>
-        <Grid item md={4}>
-          <FilterDate />
-        </Grid>
+    <Box sx={{ padding: '3vh', height: '100%' }}>
+      <form>
+        <Grid container spacing={1} justifyContent="space-between">
+          <Grid item md={4}>
+            <FilterName onName={onName} />
+          </Grid>
 
-        <Grid item md={7}>
-          <FilterStyle />
-        </Grid>
+          <Grid item md={4}>
+            <FilterArea onArea={onArea} />
+          </Grid>
 
-        <Grid item md={4}>
-          <CustomButton
-            variant="contained"
-            sx={{
-              borderRadius: '62px',
-              backgroundColor: '#FF7600',
-              fontFamily: 'border',
-            }}
-            size="large"
-            startIcon={<SearchIcon />}
-          >
-            조건 검색
-          </CustomButton>
+          <Grid item md={4}>
+            <FilterDate onStartDate={onStartDate} />
+          </Grid>
+
+          <Grid item md={7}>
+            <FilterStyle onStyleTags={onStyleTags} />
+          </Grid>
+
+          <Grid item md={4}>
+            <CustomButton startIcon={<SearchIcon />} onClick={onClick}>
+              조건 검색
+            </CustomButton>
+          </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+    </Box>
   );
 }
