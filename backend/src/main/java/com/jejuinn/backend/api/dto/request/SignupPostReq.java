@@ -30,9 +30,6 @@ public class SignupPostReq {
     @Size(min = 3, max = 50)
     String nickname;
 
-    @NotNull
-    boolean emailReceiveAllow;
-
     public static SignupPostReq from(User user) {
         if(user == null) return null;
 
