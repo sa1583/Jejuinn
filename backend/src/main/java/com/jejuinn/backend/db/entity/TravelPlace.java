@@ -2,9 +2,11 @@ package com.jejuinn.backend.db.entity;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "travel_places")
@@ -41,4 +43,7 @@ public class TravelPlace {
     private int reviewCount;
 
     private double starRatingAvg;
+
+    @UpdateTimestamp
+    private LocalDateTime dateUpdated;
 }
