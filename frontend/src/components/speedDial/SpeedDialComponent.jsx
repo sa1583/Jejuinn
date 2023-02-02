@@ -9,9 +9,10 @@ export default function SpeedDialComponent({ actions }) {
       icon={<SpeedDialIcon />}
       FabProps={{
         sx: {
-          bgcolor: '#FF7600',
+          bgcolor: 'primary.main',
+          color: 'secondary.main',
           '&:hover': {
-            bgcolor: '#FF7600',
+            bgcolor: 'primary.main',
           },
         },
       }}

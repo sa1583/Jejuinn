@@ -51,6 +51,11 @@ function checkEmail(body) {
   return api.post('/api/users/email-check', body);
 }
 
+// 회원가입
+function signUpApi(body) {
+  return api.post('/api/users', body);
+}
+
 // 비밀번호 찾기 인증 코드 발급
 function getPasswordCode(body) {
   return api.post('/api/users/pw/reset', body);
@@ -65,4 +70,5 @@ export {
   loginNormal,
   checkEmail,
   getPasswordCode,
+  signUpApi,
 };

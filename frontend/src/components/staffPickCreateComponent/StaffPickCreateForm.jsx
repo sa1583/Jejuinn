@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import axios from 'axios';
+import MarkDownInput from '../articleCreateComponent/MarkDownInput';
+import { Box } from '@mui/system';
+import { Button } from '@mui/material';
+import ImageUploader from '../articleCreateComponent/ImageUploader';
 export default function StaffPickCreateForm() {
-  const [form, setForm] = useState({ imgs: '', content: '' });
+  const [form, setForm] = useState({ imgs: [], content: '' });
 
   const handleForm = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setForm({ ...form, [name]: value });
+    console.log(value);
   };
 
   const submit = (e) => {
@@ -16,6 +21,11 @@ export default function StaffPickCreateForm() {
       method: 'post',
       data: form,
     });
+  };
+
+  const getContent = (value) => {
+    setForm({ ...form, content: value });
+    console.log(form.content);
   };
   return (
     <form
@@ -33,16 +43,33 @@ export default function StaffPickCreateForm() {
         value={form.imgs}
         onChange={handleForm}
       />
+      <ImageUploader />
 
       <label htmlFor="content">내용</label>
-      <input
+      {/* <input
         name="content"
         id="content"
         type="text"
         value={form.content}
         onChange={handleForm}
+      /> */}
+      <MarkDownInput
+        name="content"
+        id="content"
+        type="text"
+        value={form.content}
+        getContent={getContent}
       />
-      <input type="submit" value="글 작성" onClick={submit} />
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          type="submit"
+          onClick={submit}
+          sx={{ marginTop: '5rem', width: '40%', fontColor: 'white' }}
+          variant="contained"
+        >
+          글 작성
+        </Button>
+      </Box>
     </form>
   );
 }

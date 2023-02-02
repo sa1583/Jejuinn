@@ -106,7 +106,7 @@ export default function LoginForm() {
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.2vw',
+          fontSize: '1.5rem',
           marginTop: '6vh',
         }}
       >

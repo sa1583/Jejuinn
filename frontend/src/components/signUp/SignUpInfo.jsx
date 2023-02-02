@@ -1,43 +1,41 @@
 import { TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkEmail } from '../../api/user';
-import DoNotDisturbAltOutlinedIcon from '@mui/icons-material/DoNotDisturbAltOutlined';
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import { checkEmail, signUpApi } from '../../api/user';
+
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
+      // borderColor: nickNameTestResult() ? '#0011ff' : '#535353',
       borderColor: '#535353',
+      // borderColor: '#3bd643',
       opacity: '83%',
-      // height: '5vh',
     },
     '&:hover fieldset': {
-      borderColor: '#FF7600',
+      // borderColor: '#FF7600',
     },
     '&.Mui-focused fieldset': {
       borderColor: '#FF7600',
     },
   },
 
-  width: '70%',
+  width: '80%',
 });
-
-const inputBox = {
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginTop: '1.3vh',
-};
 
 export default function SignUpInfo({ handleNext }) {
   const [signUpForm, setSignUpForm] = useState({
     email: '',
     password: '',
     nickname: '',
-    emailReceiveAllow: false,
   });
+  const handleSignUp = async () => {
+    const data = await signUpApi(signUpForm);
+    console.log(data);
+
+    // 여기에 data 받은후에 200이면 dispatch getuserinfo 하고
+    // 에러면 그에따라 alert
+  };
 
   const handleSignUpForm = (e) => {
     const name = e.target.name;
@@ -55,22 +53,20 @@ export default function SignUpInfo({ handleNext }) {
   const [emailReceiveAllow, setEmailReceiveAllow] = useState(false);
 
   const getEmailCheck = async () => {
-    // const emailAllowed = await checkEmail(signUpForm.email);
-    // console.log(emailAllowed);
-    setEmailReceiveAllow(true);
+    const emailAllowed = (await checkEmail(signUpForm.email)).status;
+    switch (emailAllowed) {
+      case 200:
+        setEmailReceiveAllow(true);
+        alert('중복 확인 완료');
+        break;
+      case 409:
+        alert('이미 존재하는 이메일입니다.');
+        break;
+      case 400:
+        alert('에러');
+        break;
+    }
   };
-
-  // 유효성 검사 불통과
-  const notPassed = (
-    <DoNotDisturbAltOutlinedIcon style={{ marginTop: '8px', color: 'red' }} />
-  );
-
-  // 유효성 검사 통과
-  const Passed = (
-    <CheckCircleOutlineOutlinedIcon
-      style={{ marginTop: '8px', color: 'green' }}
-    />
-  );
 
   // 정규표현식
   // 이메일 형식
@@ -88,6 +84,38 @@ export default function SignUpInfo({ handleNext }) {
   const passwordCheckResult = () =>
     checkPassword === signUpForm.password && passwordTest.test(checkPassword);
 
+  // 유효성 검사 완료시 TextArea 색깔 변경
+  const completedBoxStyle = (condition) => ({
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: condition ? '#41ff7a' : '#535353',
+        opacity: '83%',
+      },
+      '&:hover fieldset': {
+        borderColor: condition ? '#41ff7a' : '#535353',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: condition ? '#41ff7a' : 'primary.main',
+      },
+      '&.Mui-error fieldset': {
+        borderColor: !condition && '#ff0000',
+      },
+    },
+    width: '80%',
+  });
+
+  // 유효성 검사 완료시 TextArea 라벨 색깔 변경
+  const completedLabelStyle = (condition) => ({
+    color: condition ? '#41ff7a' : '#535353',
+    '&.Mui-focused': {
+      color: condition ? '#41ff7a' : 'primary.main',
+    },
+    '&.Mui-error': {
+      color: !condition && '#ff0000',
+      fontWeight: 'bolder',
+    },
+  });
+
   return (
     <div
       style={{
@@ -97,87 +125,98 @@ export default function SignUpInfo({ handleNext }) {
         alignItems: 'center',
         marginTop: '3vh',
         width: '90%',
+        gap: '1rem',
       }}
     >
-      <Box sx={inputBox}>
-        <CustomTextField
-          required
-          label="이메일"
-          type="email"
-          name="email"
-          value={signUpForm.email}
-          onChange={handleSignUpForm}
-          placeholder="example@example.com"
-          size="small"
-          helperText="이메일 형식 / 중복확인 필요"
-        />
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            height: '40px',
-            fontSize: '10px',
-            fontWeight: '900',
-          }}
-          onClick={getEmailCheck}
-          disabled={!emailTestResult()}
-        >
-          중복확인
-        </Button>
-        {emailReceiveAllow ? Passed : notPassed}
-      </Box>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '1.3vh',
+      <CustomTextField
+        sx={completedBoxStyle(emailReceiveAllow)}
+        required
+        error={signUpForm.email.length > 0 && emailReceiveAllow}
+        label="이메일"
+        type="email"
+        name="email"
+        value={signUpForm.email}
+        onChange={handleSignUpForm}
+        placeholder="example@example.com"
+        size="small"
+        helperText="이메일 형식 / 중복확인 필요"
+        InputLabelProps={{
+          sx: completedLabelStyle(emailReceiveAllow),
         }}
-      >
-        <Box sx={inputBox}>
-          <CustomTextField
-            required
-            label="닉네임"
-            name="nickname"
-            value={signUpForm.nickname}
-            onChange={handleSignUpForm}
-            size="small"
-            helperText="2글자 ~ 10글자"
-          />
-          {nickNameTestResult() ? Passed : notPassed}
-        </Box>
-      </Box>
-      <Box sx={inputBox}>
-        <CustomTextField
-          required
-          label="비밀번호"
-          type="password"
-          name="password"
-          value={signUpForm.password}
-          onChange={handleSignUpForm}
-          helperText="소문자, 숫자 포함 7 ~ 15글자"
-          size="small"
-        />
-        {passwordTestResult() ? Passed : notPassed}
-      </Box>
-      <Box sx={inputBox}>
-        <CustomTextField
-          required
-          label="비밀번호 확인"
-          type="password"
-          name="checkPassword"
-          value={checkPassword}
-          onChange={handleCheckPassword}
-          size="small"
-          helperText="소문자, 숫자 포함 7 ~ 15글자"
-        />
-        {passwordCheckResult() ? Passed : notPassed}
-      </Box>
+        InputProps={{
+          endAdornment: (
+            <Button
+              position="end"
+              variant="contained"
+              size="small"
+              sx={{
+                fontSize: '0.6rem',
+                // fontWeight: 'bo',
+              }}
+              onClick={getEmailCheck}
+              disabled={!emailTestResult()}
+            >
+              중복확인
+            </Button>
+          ),
+        }}
+      />
+
+      <CustomTextField
+        sx={completedBoxStyle(
+          nickNameTestResult() && signUpForm.nickname.length > 0,
+        )}
+        InputLabelProps={{
+          sx: completedLabelStyle(nickNameTestResult()),
+        }}
+        required
+        label="닉네임"
+        name="nickname"
+        value={signUpForm.nickname}
+        onChange={handleSignUpForm}
+        size="small"
+        helperText="2글자 ~ 10글자"
+        error={signUpForm.nickname.length > 0 && nickNameTestResult()}
+      />
+      <CustomTextField
+        sx={completedBoxStyle(
+          passwordTestResult() && signUpForm.password.length > 0,
+        )}
+        InputLabelProps={{
+          sx: completedLabelStyle(passwordTestResult()),
+        }}
+        required
+        label="비밀번호"
+        type="password"
+        name="password"
+        value={signUpForm.password}
+        onChange={handleSignUpForm}
+        helperText="소문자, 숫자 포함 7 ~ 15글자"
+        size="small"
+        error={signUpForm.password && !passwordTestResult()}
+      />
+      <CustomTextField
+        sx={completedBoxStyle(
+          passwordCheckResult() && checkPassword.length > 0,
+        )}
+        InputLabelProps={{
+          sx: completedLabelStyle(passwordCheckResult()),
+        }}
+        required
+        label="비밀번호 확인"
+        type="password"
+        name="checkPassword"
+        value={checkPassword}
+        onChange={handleCheckPassword}
+        size="small"
+        helperText="소문자, 숫자 포함 7 ~ 15글자"
+        error={checkPassword.length > 0 && !passwordCheckResult()}
+      />
       <Button
-        onClick={handleNext}
+        onClick={handleSignUp}
         sx={{
           width: '80%',
-          height: '6vh',
+          height: '3rem',
           background: '#FF7600',
           borderRadius: '38px',
           color: 'white',
