@@ -40,39 +40,37 @@ public class UserService {
                 .authorityName("ROLE_USER")
                 .build();
 
-        return User.builder()
-                .email(userRegisterPostReq.getEmail())
-                .nickname(userRegisterPostReq.getNickname())
-                .password(passwordEncoder.encode(userRegisterPostReq.getPassword()))
-                .authorities(Collections.singleton(authority))
-                .build();
-    }
+        userRegisterPostReq.setPassword(passwordEncoder.encode(userRegisterPostReq.getPassword()));
 
-//    @Transactional
-//    public User saveRefreshToken(String refreshToken, User user){
-//        user.setRefreshToken(refreshToken);
-//        logger.info("save this : {}", user);
-//        return userRepository.save(user);
-//    }
+
+        User user = userRepository.save(SignupPostReq.from(userRegisterPostReq, Collections.singleton(authority)));
+        logger.info("USER UID : {}",user.getUid());
+
+        return user;
+    }
 
     public HttpHeaders getHttpHeaders(User user, String token) {
 
         String accessToken = tokenProvider.createAccessToken(user);
+        System.out.println("????1");
 
         String refreshToken = token;
         if(refreshToken == null){
             refreshToken = tokenProvider.createRefreshToken(user);
         }
 
+        System.out.println("????2");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
         httpHeaders.add(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken);
 
         logger.info("ACCESS : {}",accessToken);
         logger.info("REFRESH : {}", refreshToken);
+        logger.info("user UID : {}", user.getUid());
 
         userRepositorySupport.saveRefreshToken(user.getUid(), refreshToken);
 
+        logger.info("save refresh token");
         return httpHeaders;
     }
 
