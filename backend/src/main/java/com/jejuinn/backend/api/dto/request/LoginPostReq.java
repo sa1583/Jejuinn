@@ -15,7 +15,7 @@ public class LoginPostReq {
 
     @NotNull
     @Size(min = 3)
-    @ApiModelProperty(name="유저 Email", example="admin@example.com")
+    @ApiModelProperty(name="유저 Email", example="ssafy.jaewook@gmail.com")
     private String email;
 
     @NotNull

@@ -19,13 +19,12 @@ public class InsertCommentPostReq {
     @NotNull
     private String content;
 
-    public Comment toComment(Long userUid, boolean isStaff){
+    public Comment toComment(Long userUid){
         return Comment.builder()
                 .postType(this.getPostType())
                 .postUid(Long.parseLong(this.getPostUid()))
                 .content(this.getContent())
                 .userUid(userUid)
-                .isStaff(isStaff)
                 .build();
     }
 }

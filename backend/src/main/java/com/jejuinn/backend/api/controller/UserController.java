@@ -80,12 +80,11 @@ public class UserController {
     public ResponseEntity<?> login(
             @ApiParam(value = "email, password")
             @Valid @RequestBody LoginPostReq loginPostReq){
-
         // email로 social 로그인이 아닌 user 가져오기
         Optional<User> user = userRepository.findOneByEmailAndSocialLogin(loginPostReq.getEmail(), null);
 
-        // 해당 email의 아이디가 없거나 패스워드가 다른 경우
         if(user.isEmpty() || !passwordEncoder.matches(loginPostReq.getPassword(), user.get().getPassword())){
+            logger.info("로그인 실패 : 아이디 일치 여부 = {}", user.isEmpty());
             return ResponseEntity.status(400).build();
         }
 
