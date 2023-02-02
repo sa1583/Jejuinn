@@ -47,9 +47,7 @@ public class TokenProvider implements InitializingBean {
       long now = (new Date()).getTime();
       Date validity = new Date(now + this.tokenValidityInMilliseconds * times); // 만료 일자를 계산한다.
 
-
       String authorities = user.getAuthorities().stream().map(authority -> authority.getAuthorityName()).collect(Collectors.joining(","));
-
       return Jwts.builder()
               .setSubject(String.valueOf(user.getUid()))
               .claim(AUTHORITIES_KEY, authorities)
