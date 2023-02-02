@@ -1,8 +1,10 @@
+import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
+import { images } from '../../assets/images';
 
 export default function BoxLoginSignup(props) {
   return (
-    <Box
+    <Grid
       sx={{
         width: '60%',
         background: 'white',
@@ -11,16 +13,26 @@ export default function BoxLoginSignup(props) {
         overflow: 'hidden',
         display: 'flex',
       }}
+      container
     >
-      <Box
+      <Grid
+        item
+        xs={12}
+        lg={6}
         sx={{
-          width: '50%',
+          width: '100%',
           height: '100%',
         }}
       >
         {props.content}
+      </Grid>
+      <Box component={Grid} item lg={6} display={{ xs: 'none', lg: 'block' }}>
+        <img
+          src={images.default_image}
+          alt=""
+          style={{ width: '100%', height: '100%' }}
+        />
       </Box>
-      <img src="images/Default_Image.jpg" alt="" style={{ width: '50%' }} />
-    </Box>
+    </Grid>
   );
 }

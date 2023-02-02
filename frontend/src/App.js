@@ -3,9 +3,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from './routes/Root';
 import LogIn from './routes/logIn/LogIn';
 import SignUp from './routes/signUp/SignUp';
-import SignUpAgree from './components/signUp/SignUpAgree';
-import SignUpInfo from './components/signUp/SignUpInfo';
-import SignUpComplete from './components/signUp/SignUpComplete';
 import GuestHouse from './routes/guestHouse/GuestHouse';
 import GuestHouseDetail from './routes/guestHouseDetail/GuestHouseDetail';
 import WorkList from './routes/work/WorkList';
@@ -26,6 +23,8 @@ import MyPage from './routes/myPage/MyPage';
 import MyMain from './components/myPage/MyMain';
 import MyResume from './components/myPage/MyResume';
 import MyGuestHouse from './components/myPage/MyGuestHouse';
+import SignUpBox from './components/signUp/SignUpBox';
+import FindPassword from './routes/logIn/FindPassword';
 
 const router = createBrowserRouter([
   {
@@ -42,15 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'signup1',
-        element: <SignUp content={<SignUpAgree />} />,
-      },
-      {
-        path: 'signup2',
-        element: <SignUp content={<SignUpInfo />} />,
-      },
-      {
-        path: 'signup3',
-        element: <SignUp content={<SignUpComplete />} />,
+        element: <SignUp content={<SignUpBox />} />,
       },
       {
         path: 'login/kakao',
@@ -111,6 +102,10 @@ const router = createBrowserRouter([
       {
         path: 'mypage/guesthouse',
         element: <MyPage content={<MyGuestHouse />} />,
+      },
+      {
+        path: 'login/findpassword',
+        element: <FindPassword />,
       },
     ],
   },

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import SignAgree from './SignUpAgree';
 import StepLabel from '@mui/material/StepLabel';
 import SignUpInfo from './SignUpInfo';
-
+import SignUpComplete from './SignUpComplete';
 const steps = ['약관 동의', '정보 입력', '완료'];
 
 export default function SignUpBox() {
@@ -21,7 +21,9 @@ export default function SignUpBox() {
       case 0:
         return <SignAgree handleNext={handleNext} />;
       case 1:
-        return <SignUpInfo />;
+        return <SignUpInfo handleNext={handleNext} />;
+      case 2:
+        return <SignUpComplete />;
     }
   };
 
@@ -42,7 +44,30 @@ export default function SignUpBox() {
         <Box sx={{ width: '100%', marginTop: '1%' }}>
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((label) => (
-              <Step key={label}>
+              <Step
+                key={label}
+                sx={{
+                  '& .MuiStepLabel-root .Mui-completed': {
+                    color: '#FF7600', // circle color (COMPLETED)
+                  },
+                  '& .MuiStepLabel-label.Mui-completed.MuiStepLabel-alternativeLabel':
+                    {
+                      color: 'black', // Just text label (COMPLETED)
+                      fontWeight: 'bolder',
+                    },
+                  '& .MuiStepLabel-root .Mui-active': {
+                    color: 'primary', // circle color (ACTIVE)
+                  },
+                  '& .MuiStepLabel-label.Mui-active.MuiStepLabel-alternativeLabel':
+                    {
+                      color: '#FF7600', // Just text label (ACTIVE)
+                      fontWeight: 'bolder',
+                    },
+                  '& .MuiStepLabel-root .Mui-active .MuiStepIcon-text': {
+                    fill: 'white', // circle's number (ACTIVE)
+                  },
+                }}
+              >
                 <StepLabel>{label}</StepLabel>
               </Step>
             ))}
