@@ -6,12 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import { selectIsLogin, selectUserInfo } from '../store/user';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-// const pages = ['게스트하우스', '일하기', '놀고먹기'];
 const pages = [
   { name: '게스트하우스', url: 'guesthouse' },
   { name: '일하기', url: 'worklist' },
@@ -20,11 +20,31 @@ const pages = [
 const settings = ['마이페이지', '로그아웃'];
 
 export default function ButtonAppBar() {
+  const location = useLocation();
   const toolbarRef = useRef();
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const isLogin = useSelector(selectIsLogin);
   const userInfo = useSelector(selectUserInfo);
+
+  useEffect(() => {
+    const name = location.pathname.split('/')[1];
+    toolbarRef.current.childNodes[1].childNodes[0].style.color = 'black';
+    toolbarRef.current.childNodes[2].childNodes[0].style.color = 'black';
+    toolbarRef.current.childNodes[3].childNodes[0].style.color = 'black';
+    switch (name) {
+      case 'guesthouse':
+        toolbarRef.current.childNodes[1].childNodes[0].style.color = '#FF7600';
+        break;
+      case 'worklist':
+        toolbarRef.current.childNodes[2].childNodes[0].style.color = '#FF7600';
+        break;
+      case 'staffpicklist':
+        toolbarRef.current.childNodes[3].childNodes[0].style.color = '#FF7600';
+        break;
+    }
+    console.log(toolbarRef.current.childNodes);
+  });
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
