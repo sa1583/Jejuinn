@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.service.oauth;
+package com.jejuinn.backend.api.service.social;
 
 
 import com.google.gson.JsonElement;
