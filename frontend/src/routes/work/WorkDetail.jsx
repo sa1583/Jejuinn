@@ -1,6 +1,6 @@
 import { Grid, Box } from '@mui/material';
-import JobDetail from '../../components/Work/JobDetail';
-import HouseInfo from '../../components/Work/HouseInfo';
+import JobDetail from '../../components/work/JobDetail';
+import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 
 export default function WorkDetail() {

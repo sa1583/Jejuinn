@@ -32,20 +32,21 @@ export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position="static"
+        position="fixed"
         sx={{
           background: '#FFFFFF',
-          height: '80px',
+          height: '95px',
           boxShadow: '0px 2px 6px -1px rgb(0 0 0 / 10%)',
         }}
       >
-        <Toolbar sx={{ width: '60%', margin: 'auto' }}>
+        <Toolbar sx={{ width: '80%', margin: 'auto' }}>
           <Link
             to={''}
             style={{
               flexGrow: 25,
-              fontSize: '28px',
+              fontSize: '35px',
               fontStyle: 'normal',
+              fontFamily: 'SBAggroB',
               color: '#FF7600',
               textDecoration: 'none',
             }}
@@ -55,12 +56,16 @@ export default function ButtonAppBar() {
 
           {pages.map((page) => (
             <Typography
-              sx={{ flexGrow: 1.3, fontSize: '16px' }}
+              sx={{
+                flexGrow: 1.3,
+                fontSize: '21px',
+                fontFamily: 'SBAggroB',
+              }}
               key={page.name}
             >
               <Link
                 to={page.url}
-                style={{ textDecoration: 'none', color: '#FF7600' }}
+                style={{ textDecoration: 'none', color: 'black' }}
               >
                 {page.name}
               </Link>
@@ -69,7 +74,8 @@ export default function ButtonAppBar() {
           {!isLogin && (
             <Typography
               sx={{
-                fontSize: '17px',
+                fontSize: '21px',
+                fontFamily: 'SBAggroB',
               }}
             >
               <Link
