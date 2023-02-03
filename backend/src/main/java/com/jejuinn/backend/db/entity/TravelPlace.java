@@ -33,10 +33,8 @@ public class TravelPlace {
     @Column(length = 50)
     private String address;
 
-    @OneToOne
-    @JoinColumn(name = "area_uid")
     @Column(length = 10)
-    private Area area;
+    private String areaName;
 
     private double lat;
 

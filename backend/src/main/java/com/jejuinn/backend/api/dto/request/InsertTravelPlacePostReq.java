@@ -45,13 +45,13 @@ public class InsertTravelPlacePostReq {
     @NotNull
     private double lng;
 
-    public TravelPlace toTravelPlace(Area area){
+    public TravelPlace toTravelPlace(){
         return TravelPlace.builder()
                 .name(this.getName())
                 .lat(this.getLat())
                 .lng(this.getLng())
-                .address(this.address)
-                .area(area)
+                .address(this.getAddress())
+                .areaName(this.getAreaName())
                 .category(this.getCategory())
                 .build();
     }
