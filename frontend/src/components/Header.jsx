@@ -67,9 +67,9 @@ export default function ButtonAppBar() {
     return navigate('/');
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box height="95px">
       <AppBar
-        position="fixed"
+        position="sticky"
         sx={{
           background: '#FFFFFF',
           height: '95px',
