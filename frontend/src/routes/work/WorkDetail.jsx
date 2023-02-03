@@ -2,14 +2,22 @@ import { Grid, Box } from '@mui/material';
 import JobDetail from '../../components/work/JobDetail';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { workDetail } from '../../api/work';
 
 export default function WorkDetail() {
+  const [work, setWork] = useState([]);
+
+  useEffect(() => {
+    setWork(workDetail());
+  }, []);
   // 받아온 데이터 피그마에 있는 모양으로 렌더링하기
   // 공고 갯수 만큼 반복하면서 WorkDetailContent 컴포넌트 재사용
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <h1 style={{ color: '#FF7600' }}>{work}의 직무 공고명</h1>
       <WhiteBox cpn={<HouseInfo />} />
-      <h1 style={{ color: '#FF7600' }}>직무공고명</h1>
       <h2 style={{ color: '#FF7600' }}>직무별 상세 및 지원</h2>
       <div>
         채용 디테일 설명 구구절절.. 사장님이 작성한 내용 가져올거임......!

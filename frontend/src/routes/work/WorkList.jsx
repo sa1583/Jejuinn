@@ -1,4 +1,5 @@
 import WorkFilterBox from '../../components/work/WorkFilterBox';
+import { allWorkList, filteredWorkList } from '../../api/work';
 import WorkListBox from '../../components/work/WorkListBox';
 
 import { allWorkList, filteredWorkList } from '../../api/work';
@@ -10,6 +11,10 @@ export default function WorkList() {
   const [works, setWorks] = useState([]);
 
   const onSearch = (imp) => {
+    console.log('필터 조건드류ㅠㅠ');
+    console.log(imp);
+    console.log('필터 조건드류ㅠㅠ');
+
     setWorks(filteredWorkList(imp));
   };
 
