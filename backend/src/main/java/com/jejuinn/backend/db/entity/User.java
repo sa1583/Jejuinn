@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,7 +32,7 @@ public class User {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long uid;
 
-   @Column(name = "email", length = 50, unique = true)
+   @Column(name = "email", length = 50)
    private String email;
 
    @Column(name = "password", length = 100)
@@ -76,6 +77,9 @@ public class User {
 
    @OneToOne(mappedBy = "user")
    private SocialLogin socialLogin;
+
+   @OneToMany(mappedBy = "user")
+   private List<TravelPlaceReview> reviews;
 
 
    public static User from(NaverProfileDto naverProfileDto, Set<Authority> authorities) {

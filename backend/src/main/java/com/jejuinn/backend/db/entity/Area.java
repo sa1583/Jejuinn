@@ -20,6 +20,6 @@ public class Area {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
-    @Column(name = "area_name", length = 10)
+    @Column(name = "area_name", length = 10, unique = true)
     private String areaName;
 }
