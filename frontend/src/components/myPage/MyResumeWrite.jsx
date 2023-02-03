@@ -1,16 +1,23 @@
-import { Box, Grid, Link } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { selectUserInfo } from '../../store/user';
+import { Box, Grid, styled, Button } from '@mui/material';
 
-export default function MyResumeInfo() {
-  // redux에서 유저 정보 가져오기
-  const userInfo = useSelector(selectUserInfo);
-  console.log(userInfo);
+const CustomButton = styled(Button)({
+  border: '1px solid #FF7600',
+  variant: 'outlined',
+  color: '#FF7600',
+  width: '70%',
+  borderRadius: '62px',
+  fontFamily: 'border',
+  height: '5vh',
+  '&:hover': {
+    color: '#FFFFFF',
+    border: '1px solid #FFFFFF',
+    backgroundColor: '#FF7600',
+  },
+});
 
+export default function MyResumeWrite({ changeApplyComp }) {
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-      <h1>지원서</h1>
       <Grid container spacing={2}>
         <Grid item md={4}>
           이름
@@ -39,16 +46,8 @@ export default function MyResumeInfo() {
         <Grid item md={8}>
           userInfo.email
         </Grid>
-
-        <Grid item md={4}>
-          인스타그램
-        </Grid>
-        <Grid item md={8}>
-          <a href="유저의 인스타그램 주소'/https://www.instagram.com/유저인스타아이디/'">
-            @userInfo.유저인스타아이디
-          </a>
-        </Grid>
       </Grid>
+      <CustomButton onClick={changeApplyComp}>지원서 저장</CustomButton>
     </Box>
   );
 }

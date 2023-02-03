@@ -142,4 +142,5 @@ const userSlice = createSlice({
 export default userSlice;
 export const selectIsLogin = (state) => state.user.isLogin;
 export const selectUserInfo = (state) => state.user.userInfo;
+export const selectAccessToken = (state) => state.user.accessToken;
 export const { logout } = userSlice.actions;
