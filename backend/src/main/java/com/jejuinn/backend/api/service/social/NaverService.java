@@ -1,10 +1,14 @@
 package com.jejuinn.backend.api.service.social;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
 import com.jejuinn.backend.db.entity.Authority;
 import com.jejuinn.backend.db.entity.SocialLogin;
 import com.jejuinn.backend.db.entity.User;
@@ -14,8 +18,17 @@ import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.api.dto.NaverProfileDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -28,11 +41,15 @@ import java.util.*;
 @Slf4j
 public class NaverService {
 
-    @Value("${social.NAVER_CLIENT_ID}")
+    @Value("${social.naver.client.id}")
     private String NAVER_CLIENT_ID;
 
-    @Value("${social.NAVER_CLIENT_SECRET}")
+    @Value("${social.naver.client.secret}")
     private String NAVER_CLIENT_SECRET;
+
+    @Value("${social.naver.url.search.local}")
+    private String NAVER_LOCAL_SEARCH_URL;
+
     private final UserRepository userRepository;
     private final SocialLoginRepository socialLoginRepository;
 
@@ -126,10 +143,51 @@ public class NaverService {
     }
 
 
-    public List<String> getSearchResult(String query){
-        String url = "https://openapi.naver.com/v1/search/local.json";
-        ObjectNode node = null;
+    public NaverLocalSearchRes getNameSearchResult(String query){
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+        int display = 10;
+        int  start = 1;
+        String sort = "random";
+        map.add("query", "제주도 "+query);
+        map.add("display", String.valueOf(display));
+        map.add("start", String.valueOf(start));
+        map.add("sort", sort);
 
-        return null;
+
+
+        var uri = UriComponentsBuilder
+                .fromUriString(NAVER_LOCAL_SEARCH_URL)
+                .queryParams(map)
+                .build()
+                .encode()
+                .toUri();
+
+        var headers = new HttpHeaders();
+        headers.set("X-Naver-Client-Id", NAVER_CLIENT_ID);
+        headers.set("X-Naver-Client-Secret", NAVER_CLIENT_SECRET);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        var httpEntity = new HttpEntity<>(headers);
+
+        var responseType = new ParameterizedTypeReference<NaverLocalSearchRes>(){};
+
+        var responseEntity = new RestTemplate()
+                .exchange(
+                        uri,
+                        HttpMethod.GET,
+                        httpEntity,
+                        responseType
+                );
+        NaverLocalSearchRes result = responseEntity.getBody();
+
+        result.getItems().stream().forEach(searchLocalItem -> {
+            searchLocalItem.setGeo();
+            String tmp = searchLocalItem.getTitle();
+            System.out.println(tmp);
+            tmp = tmp.replaceAll("<b>", "").replaceAll("</b>", "");
+            System.out.println(tmp);
+            searchLocalItem.setTitle(tmp);
+        });
+        return responseEntity.getBody();
     }
 }
