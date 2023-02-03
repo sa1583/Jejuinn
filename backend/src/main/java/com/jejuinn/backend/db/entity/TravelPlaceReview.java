@@ -35,10 +35,8 @@ public class TravelPlaceReview {
     @CreationTimestamp
     private LocalDateTime dateCreated;
 
-    @ManyToOne
-    @JoinColumn(name = "travel_place_uid")
     @NotNull
-    private TravelPlace travelPlace;
+    private Long travelPlaceUid;
 
     @ManyToOne
     @JoinColumn(name = "user_uid")
