@@ -72,7 +72,7 @@ const router = createBrowserRouter([
         element: <WorkList />,
       },
       {
-        path: 'worklist/detail/:id',
+        path: 'worklist/detail',
         element: <WorkDetail />,
       },
       {

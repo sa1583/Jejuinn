@@ -1,4 +1,5 @@
 import { Box, styled, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { images } from '../../assets/images';
 
 const CustomButton = styled(Button)({
@@ -14,6 +15,10 @@ const CustomButton = styled(Button)({
 });
 
 export default function Profile() {
+  const navigate = useNavigate();
+  const onMypage = () => {
+    navigate('/mypage');
+  };
   return (
     <Box
       sx={{
@@ -24,7 +29,7 @@ export default function Profile() {
         justifyContent: 'center',
       }}
     >
-      <h2>장정민</h2>
+      <h2 onClick={onMypage}>장정민</h2>
       <img
         src={images.sample_profile}
         alt="프로필 사진 들어가용~"
