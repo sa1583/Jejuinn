@@ -49,9 +49,16 @@ logging:
     root: info  # TRACE  <  DEBUG  <  INFO  <  WARN  <  ERROR
 
 social:
-  KAKAO_REST_API_KEY: 09696fd9847d1b1b34b6e603bd1df373
-  NAVER_CLIENT_ID : ruYgozBWsd_4RHLnrTn2
-  NAVER_CLIENT_SECRET : BoQyWXUhdY
+  naver:
+    url:
+      search:
+        local : https://openapi.naver.com/v1/search/local.json
+    client:
+      id : ruYgozBWsd_4RHLnrTn2
+      secret : BoQyWXUhdY
+  kakao:
+    client:
+      key : 09696fd9847d1b1b34b6e603bd1df373
 
 
 # s3

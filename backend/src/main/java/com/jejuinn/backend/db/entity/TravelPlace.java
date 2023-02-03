@@ -33,8 +33,8 @@ public class TravelPlace {
     @Column(length = 50)
     private String address;
 
-    @Column(length = 50)
-    private String addressDetail;
+    @Column(length = 10)
+    private String areaName;
 
     private double lat;
 
