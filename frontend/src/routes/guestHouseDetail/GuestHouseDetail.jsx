@@ -6,7 +6,7 @@ import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import GuestHouseInfo from '../../components/guestHouseDetail/GuestHouseInfo';
 import GuestHouseContent from '../../components/guestHouseDetail/GuestHouseContent';
-import GuestHouseMap from '../../components/guestHouseDetail/GuestHouseMap';
+import MapApi from '../../components/mapApi/MapApi';
 
 export default function GuestHouseDetail() {
   // 여기서 useEffect로 url 끝 번호를 따서
@@ -17,8 +17,10 @@ export default function GuestHouseDetail() {
     setId(location.pathname.split('detail/')[1]);
   }, []);
 
+  const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
+
   return (
-    <Box sx={{ paddingY: '2rem', paddingX: '20%' }}>
+    <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
       <h1 style={{ color: '#FF7600' }}>| 간장남게스트하우스</h1>
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
@@ -26,7 +28,7 @@ export default function GuestHouseDetail() {
             <WhiteBox cpn={<GuestHouseInfo />} />
           </Grid>
           <Grid item xs={12}>
-            <WhiteBox cpn={<GuestHouseMap />} />
+            <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
           </Grid>
         </Grid>
 
