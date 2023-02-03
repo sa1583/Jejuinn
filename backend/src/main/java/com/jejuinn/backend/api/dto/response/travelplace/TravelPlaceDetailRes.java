@@ -17,11 +17,13 @@ import java.util.List;
 public class TravelPlaceDetailRes {
     private TravelPlace travelPlace;
     private List<Image> images;
+    private List<ImgUrlWithReviewUid> reviews;
 
-    public static TravelPlaceDetailRes of(TravelPlace travelPlace, List<Image> images){
+    public static TravelPlaceDetailRes of(TravelPlace travelPlace, List<Image> images, List<ImgUrlWithReviewUid> reviews){
         return TravelPlaceDetailRes.builder()
                 .travelPlace(travelPlace)
                 .images(images)
+                .reviews(reviews)
                 .build();
     }
 }
