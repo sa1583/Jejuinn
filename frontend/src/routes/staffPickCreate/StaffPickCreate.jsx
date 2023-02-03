@@ -45,19 +45,7 @@ export default function StaffPickCreate() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Grid item xs={12}>
-            <WhiteBox
-              cpn={
-                isNew ? (
-                  <StaffPickCreateNewSpot
-                    handleNewSpotName={handleNewSpotName}
-                    newSpotName={newSpotName}
-                    area={area}
-                  />
-                ) : (
-                  <StaffPickCreateInfo nowPick={nowPick} />
-                )
-              }
-            />
+            <WhiteBox cpn={<StaffPickCreateInfo nowPick={nowPick} />} />
           </Grid>
         </Grid>
 
@@ -79,3 +67,9 @@ export default function StaffPickCreate() {
     </Box>
   );
 }
+
+//   <StaffPickCreateNewSpot
+//   handleNewSpotName={handleNewSpotName}
+//   newSpotName={newSpotName}
+//   area={area}
+// />

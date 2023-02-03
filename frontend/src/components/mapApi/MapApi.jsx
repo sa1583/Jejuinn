@@ -59,16 +59,18 @@ export default function MapApi({
 
     var markers = [];
 
-    for (let spot of spots) {
-      var position = new naver.maps.LatLng(spot.lat, spot.lng),
-        id = spot.id;
-      var marker = new naver.maps.Marker({
-        map: map,
-        position: position,
-        id: id,
-        animation: naver.maps.Animation.DROP,
-      });
-      markers.push(marker);
+    if (spots) {
+      for (let spot of spots) {
+        var position = new naver.maps.LatLng(spot.lat, spot.lng),
+          id = spot.id;
+        var marker = new naver.maps.Marker({
+          map: map,
+          position: position,
+          id: id,
+          animation: naver.maps.Animation.DROP,
+        });
+        markers.push(marker);
+      }
     }
 
     function getClickHandler(seq) {

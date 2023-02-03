@@ -3,7 +3,9 @@ import { useDropzone } from 'react-dropzone';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import { Typography } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
 import CancelIcon from '@mui/icons-material/Cancel';
+import { v4 as uuidv4 } from 'uuid';
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -36,8 +38,8 @@ const img = {
   height: '100%',
 };
 
-export default function ImageUploader(props) {
-  const [files, setFiles] = useState([]);
+export default function ImageUploader({ files, handleFiles }) {
+  // const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: {
       'image/*': [],
@@ -47,15 +49,8 @@ export default function ImageUploader(props) {
         Object.assign(file, { preview: URL.createObjectURL(file) }),
       );
       console.log(newImgs);
-      setFiles([...files, newImgs]);
-      // setFiles(
-      //   // ...files,
-      //   acceptedFiles.map((file) =>
-      //     Object.assign(file, {
-      //       preview: URL.createObjectURL(file),
-      //     }),
-      //   ),
-      // );
+      // setFiles([...files, ...newImgs].splice(0, 10));
+      handleFiles([...files, ...newImgs].splice(0, 10));
     },
     maxFiles: 10,
     noClick: true,
@@ -76,53 +71,47 @@ export default function ImageUploader(props) {
         open();
       }}
     >
-      <AddCircleOutlineIcon sx={{ fontSize: '5rem', color: 'primary.main' }} />
+      <AddPhotoAlternateOutlinedIcon
+        sx={{ fontSize: '5rem', color: 'primary.main' }}
+      />
+      <Typography sx={{ fontSize: '0.8rem', textAlign: 'center' }}>
+        이미지를 삭제하려면{' '}
+        <span style={{ color: '#FF7600' }}>
+          <br />
+          더블클릭
+        </span>
+        하세요.
+      </Typography>
     </button>
   );
 
   const deleteImage = (f) => {
-    setFiles(files.filter((file) => file != f));
+    // setFiles(files.filter((file) => file != f));
+    handleFiles(files.filter((file) => file != f));
     console.log(f);
   };
 
   const thumbs = files.map((file) => (
-    <div style={thumb} key={file.name}>
+    <div style={thumb} key={uuidv4()}>
       <div style={thumbInner}>
         <img
           src={file.preview}
           style={img}
           // Revoke data uri after image is loaded
-          onLoad={() => {
-            URL.revokeObjectURL(file.preview);
-            console.log(files);
-          }}
+          // onLoad={() => {
+          //   URL.revokeObjectURL(file.preview);
+          //   console.log(files);
+          // }}
+          onDoubleClick={() => deleteImage(file)}
         />
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            deleteImage(file);
-          }}
-        >
-          <CancelIcon
-            sx={{
-              color: '#ff9900',
-              backgroundColor: 'black',
-              borderRadius: 100,
-              position: 'absolute',
-              right: 5,
-              top: 5,
-              zIndex: 100,
-            }}
-          />
-        </button>
       </div>
     </div>
   ));
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, [files]);
+  // useEffect(() => {
+  //   // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+  //   return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  // }, [files]);
 
   return (
     <section className="container">
@@ -141,12 +130,20 @@ export default function ImageUploader(props) {
         <input {...getInputProps()} />
 
         {files.length === 0 ? (
-          <>
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              open();
+            }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              cursor: 'pointer',
+              justifySelf: 'center',
+            }}
+          >
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                open();
-              }}
               style={{ background: 'white', border: 'none', cursor: 'pointer' }}
             >
               <AddPhotoAlternateOutlinedIcon
@@ -163,7 +160,7 @@ export default function ImageUploader(props) {
             <Typography sx={{ fontSize: '0.8rem' }}>
               지원 확장자 : jpg, jpeg, png (최대 10개)
             </Typography>
-          </>
+          </div>
         ) : (
           <>
             <aside style={thumbsContainer}>

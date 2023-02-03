@@ -25,8 +25,9 @@ export default function SignAgree({ handleNext }) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '6vh',
+        marginTop: '3rem',
         gap: '3vh',
+        width: '100%',
       }}
     >
       <FormGroup>
@@ -105,11 +106,10 @@ export default function SignAgree({ handleNext }) {
       </div>
       <Button
         onClick={() => {
-          // navigate('../signup2');
           handleNext();
         }}
         sx={{
-          width: '100%',
+          width: '70%',
           height: '3rem',
           background: '#FF7600',
           borderRadius: '38px',

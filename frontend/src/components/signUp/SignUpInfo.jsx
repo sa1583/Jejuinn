@@ -68,11 +68,8 @@ export default function SignUpInfo({ handleNext }) {
         setEmailReceiveAllow(true);
         alert('중복 확인 완료');
         break;
-      case 409:
+      default:
         alert('이미 존재하는 이메일입니다.');
-        break;
-      case 400:
-        alert('에러');
         break;
     }
   };
@@ -132,7 +129,7 @@ export default function SignUpInfo({ handleNext }) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '3vh',
+        marginTop: '3rem',
         width: '90%',
         gap: '1rem',
       }}
@@ -186,7 +183,7 @@ export default function SignUpInfo({ handleNext }) {
         value={signUpForm.nickname}
         onChange={handleSignUpForm}
         size="small"
-        helperText="2글자 ~ 10글자"
+        helperText="2글자 ~ 10글자, 특수문자 제외"
         error={Boolean(
           signUpForm.nickname.length > 0 && nickNameTestResult() === false,
         )}
@@ -228,7 +225,7 @@ export default function SignUpInfo({ handleNext }) {
       <Button
         onClick={handleSignUp}
         sx={{
-          width: '80%',
+          width: '70%',
           height: '3rem',
           background: '#FF7600',
           borderRadius: '38px',
@@ -238,7 +235,7 @@ export default function SignUpInfo({ handleNext }) {
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5vw',
+          fontSize: '1.5rem',
           marginTop: '2vh',
         }}
         disabled={
