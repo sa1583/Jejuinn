@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 import UserVideoComponent from '../../components/videoInterview/UserVideoComponent';
 import VideoInterviewHeader from '../../components/videoInterview/VideoInterviewHeader';
 
-// const APPLICATION_SERVER_URL = "http://i8a603.p.ssafy.io:5000/";
-const APPLICATION_SERVER_URL = 'http://localhost:5000/';
+const APPLICATION_SERVER_URL = 'https://jejuinn.com:8443';
+const OPENVIDU_SERVER_SECRET = 'jejuinn';
 
 export default function VideoInterview() {
   const [openVidu, setOpenVidu] = useState(new OpenVidu());
@@ -19,8 +19,10 @@ export default function VideoInterview() {
   const [subscribers, setSubscribers] = useState([]);
   const [currentVideoDevice, setCurrentVideoDivce] = useState();
 
+  const [mute, setMute] = useState(false);
+  const [videoOff, setVideoOff] = useState(false);
+
   const joinSession = (e) => {
-    e.preventDefault();
     setSession(openVidu.initSession());
   };
 
@@ -43,25 +45,43 @@ export default function VideoInterview() {
   };
 
   const createSession = async (sessionId) => {
-    const { data } = await axios.post(
-      `${APPLICATION_SERVER_URL}api/sessions`,
-      { customSessionId: sessionId },
-      {
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
-    return data;
+    try {
+      const {
+        data: { id },
+      } = await axios.post(
+        `${APPLICATION_SERVER_URL}/openvidu/api/sessions`,
+        { customSessionId: sessionId },
+        {
+          headers: {
+            Authorization:
+              'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      return id;
+    } catch (error) {
+      if (error?.response?.status === 409) {
+        return sessionId;
+      }
+    }
   };
 
   const createToken = async (sessionId) => {
-    const { data } = await axios.post(
-      `${APPLICATION_SERVER_URL}api/sessions/${sessionId}/connections`,
+    const {
+      data: { token },
+    } = await axios.post(
+      `${APPLICATION_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
       {},
       {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          Authorization:
+            'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
+          'Content-Type': 'application/json',
+        },
       },
     );
-    return data;
+    return token;
   };
 
   const switchCamera = async () => {
@@ -118,6 +138,16 @@ export default function VideoInterview() {
       ]);
       setMainStreamManager(stream);
     }
+  };
+
+  const handleVideo = () => {
+    publisher.publishVideo(!videoOff);
+    setVideoOff(!videoOff);
+  };
+
+  const handleAudio = () => {
+    publisher.publishAudio(!mute);
+    setMute(!mute);
   };
 
   useEffect(() => {
@@ -178,12 +208,17 @@ export default function VideoInterview() {
 
   return (
     <div>
-      {session && <VideoInterviewHeader />}
+      {session && (
+        <VideoInterviewHeader
+          handleVideo={handleVideo}
+          handleAudio={handleAudio}
+        />
+      )}
       <Box
         sx={{
           backgroundColor: 'primary.main',
           width: '100%',
-          height: '92vh',
+          height: '91vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
