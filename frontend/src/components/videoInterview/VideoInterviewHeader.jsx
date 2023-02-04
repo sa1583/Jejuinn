@@ -1,7 +1,9 @@
 import { Box, Button } from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import MicIcon from '@mui/icons-material/Mic';
-import { useState } from 'react';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import { useEffect } from 'react';
 
 const buttonOption = {
   borderRadius: '100px',
@@ -14,9 +16,17 @@ const buttonOption = {
   ':hover': { background: 'grey' },
 };
 
-export default function VideoInterviewHeader({ handleVideo, handleAudio }) {
-  const [mute, setMute] = useState(false);
-  const [videoOff, setVideoOff] = useState(false);
+export default function VideoInterviewHeader({
+  handleVideo,
+  handleAudio,
+  videoOff,
+  audioOff,
+  leaveSession,
+}) {
+  useEffect(() => {
+    console.log(videoOff);
+    console.log(audioOff);
+  }, [videoOff, audioOff]);
 
   return (
     <Box
@@ -26,16 +36,31 @@ export default function VideoInterviewHeader({ handleVideo, handleAudio }) {
         background: 'black',
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <Box width="80%" display="flex" sx={{ justifyContent: 'center' }}>
         <Button sx={buttonOption} onClick={handleVideo}>
-          <VideocamIcon />
+          {!videoOff ? (
+            <VideocamIcon />
+          ) : (
+            <VideocamOffIcon sx={{ color: 'red' }} />
+          )}
         </Button>
         <Button sx={buttonOption} onClick={handleAudio}>
-          <MicIcon />
+          {!audioOff ? <MicIcon /> : <MicOffIcon sx={{ color: 'red' }} />}
         </Button>
       </Box>
+      <Button
+        sx={{
+          fontSize: 18,
+          backgroundColor: 'red',
+          color: 'white',
+        }}
+        onClick={leaveSession}
+      >
+        나가기
+      </Button>
     </Box>
   );
 }

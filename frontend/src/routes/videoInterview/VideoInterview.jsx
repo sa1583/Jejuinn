@@ -19,7 +19,7 @@ export default function VideoInterview() {
   const [subscribers, setSubscribers] = useState([]);
   const [currentVideoDevice, setCurrentVideoDivce] = useState();
 
-  const [mute, setMute] = useState(false);
+  const [audioOff, setAudioOff] = useState(false);
   const [videoOff, setVideoOff] = useState(false);
 
   const joinSession = (e) => {
@@ -34,7 +34,7 @@ export default function VideoInterview() {
     setSession(undefined);
     setSubscribers([]);
     setMySessionId('');
-    setMyUserName('user');
+    setMyUserName('');
     setMainStreamManager(undefined);
     setPublisher(undefined);
   };
@@ -84,38 +84,6 @@ export default function VideoInterview() {
     return token;
   };
 
-  const switchCamera = async () => {
-    try {
-      const device = await openVidu.getDevices();
-      const videoDevices = device.filter(
-        (device) => device.kind === 'videoinput',
-      );
-
-      if (videoDevices && videoDevices.length > 1) {
-        const newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== currentVideoDevice.deviceId,
-        );
-
-        if (newVideoDevice.length > 0) {
-          const newPublisher = openVidu.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true,
-          });
-
-          await session.unpublish(mainStreamManager);
-          await session.publish(newPublisher);
-          setCurrentVideoDivce(newVideoDevice[0]);
-          setMainStreamManager(newPublisher);
-          newPublisher(newPublisher);
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const deleteSubscriber = (streamManager) => {
     setSubscribers(
       subscribers.filter((subscriber) => subscriber !== streamManager),
@@ -141,13 +109,13 @@ export default function VideoInterview() {
   };
 
   const handleVideo = () => {
-    publisher.publishVideo(!videoOff);
+    publisher.publishVideo(videoOff);
     setVideoOff(!videoOff);
   };
 
   const handleAudio = () => {
-    publisher.publishAudio(!mute);
-    setMute(!mute);
+    publisher.publishAudio(audioOff);
+    setAudioOff(!audioOff);
   };
 
   useEffect(() => {
@@ -186,19 +154,7 @@ export default function VideoInterview() {
           mirror: false, // Whether to mirror your local video or not
         });
         session.publish(publisher);
-        const devices = await openVidu.getDevices();
-        const videoDevices = devices.filter(
-          (device) => device.kind === 'videoinput',
-        );
-        const currentVideoDeviceId = publisher.stream
-          .getMediaStream()
-          .getVideoTracks()[0]
-          .getSettings().deviceId;
-        const currentVideoDevice = videoDevices.find(
-          (device) => device.deviceId === currentVideoDeviceId,
-        );
 
-        setCurrentVideoDivce(currentVideoDevice);
         setMainStreamManager(publisher);
         setPublisher(publisher);
       };
@@ -208,17 +164,11 @@ export default function VideoInterview() {
 
   return (
     <div>
-      {session && (
-        <VideoInterviewHeader
-          handleVideo={handleVideo}
-          handleAudio={handleAudio}
-        />
-      )}
       <Box
         sx={{
           backgroundColor: 'primary.main',
           width: '100%',
-          height: '91vh',
+          height: session ? '84.5vh' : '91vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -257,11 +207,6 @@ export default function VideoInterview() {
           <div>
             <div>
               <h1>{mySessionId}</h1>
-              <input
-                type="button"
-                onClick={leaveSession}
-                value="Leave session"
-              />
             </div>
 
             {mainStreamManager !== undefined ? (
@@ -282,6 +227,15 @@ export default function VideoInterview() {
           </div>
         ) : null}
       </Box>
+      {session && (
+        <VideoInterviewHeader
+          handleVideo={handleVideo}
+          handleAudio={handleAudio}
+          leaveSession={leaveSession}
+          videoOff={videoOff}
+          audioOff={audioOff}
+        />
+      )}
     </div>
   );
 }

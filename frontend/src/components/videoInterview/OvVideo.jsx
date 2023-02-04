@@ -8,7 +8,6 @@ export default function OvVideo(props) {
 
   useEffect(() => {
     if (props && !!videoRef) {
-      console.log(props.streamManager);
       props.streamManager.addVideoElement(videoRef.current);
     }
   });

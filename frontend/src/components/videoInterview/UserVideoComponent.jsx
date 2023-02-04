@@ -1,16 +1,20 @@
 import { Box, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import OvVideo from './OvVideo';
 
-export default function UserVideoComponent(props) {
+export default function UserVideoComponent({ streamManager, main }) {
   const getNicknameTag = () => {
-    console.log(props.streamManager);
-    return JSON.parse(props.streamManager.stream.connection.data).clientData;
+    return JSON.parse(streamManager.stream.connection.data).clientData;
   };
+
+  useEffect(() => {
+    console.log('cur: ', streamManager);
+  });
   return (
     <div>
-      {props.streamManager !== undefined ? (
+      {streamManager !== undefined ? (
         <div>
-          <OvVideo streamManager={props.streamManager} main={props.main} />
+          <OvVideo streamManager={streamManager} main={main} />
           <Box
             sx={{
               position: 'relative',
