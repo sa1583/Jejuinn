@@ -1,7 +1,8 @@
-import { Grid } from '@mui/material';
+import { Grid, makeStyles } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import getAddressBySpot from '../../api/map';
+import { getSpotInfo } from '../../api/staffPick';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickCreateForm from '../../components/staffPickCreateComponent/StaffPickCreateForm';
 import StaffPickCreateInfo from '../../components/staffPickCreateComponent/StaffPickCreateInfo';
@@ -11,20 +12,22 @@ import WhiteBox from '../../components/whiteBox/WhiteBox';
 export default function StaffPickCreate() {
   const [nowPick, setNowPick] = useState('');
   const [area, setArea] = useState('');
-  const [isNew, setIsNew] = useState(true);
 
   const [newSpotName, setNewSpotName] = useState('');
   const handleNewSpotName = (e) => {
     setNewSpotName(e.target.value);
   };
 
-  const handlePinClick = (id) => {
-    setNowPick(id);
-    setIsNew(false);
+  const handlePinClick = async (marker) => {
+    setNowPick(marker.id);
+    // setNowPick(id에 해당하는 명소 정보 axios로 받아서 리스트로 갱)
+    // 그다음에 StaffPickCreateInfo 에서 nowPick에 대한 정보 출력 갱
+    const data = await getSpotInfo(marker.id);
+    console.log(data);
+    setNowPick(data);
   };
 
   const setNewPin = async (e) => {
-    setIsNew(true);
     const lat = e._lat;
     const lng = e._lng;
     setNowPick([lat, lng]);
@@ -35,11 +38,13 @@ export default function StaffPickCreate() {
   };
 
   const spots = [
-    { id: 1, lat: 33.4485, lng: 126.5631 },
+    { id: 23, lat: 33.4485, lng: 126.5631 },
     { id: 2, lat: 33.478, lng: 126.4948 },
     { id: 3, lat: 33.4664, lng: 126.6694 },
     { id: 4, lat: 33.2856, lng: 126.4449 },
+    { id: 5, lat: 10, lng: 10 },
   ];
+  // const [spots, setSpots] = useState(initial);
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <Grid container spacing={4}>
@@ -55,7 +60,7 @@ export default function StaffPickCreate() {
               <MapApi
                 handlePinClick={handlePinClick}
                 spots={spots}
-                setNewPin={setNewPin}
+                // setNewPin={setNewPin}
               />
             }
           />

@@ -6,4 +6,6 @@ export const images = {
   sample_profile: '/images/sample_profile.png',
   main_one: '/images/mainOne.svg',
   default_image: '/images/Default_Image.jpg',
+  pin_selected: '/images/pin_selected.png',
+  pin_not_selected: '/images/pin_not_selected.png',
 };

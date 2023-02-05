@@ -1,5 +1,6 @@
 import { Box } from '@mui/system';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { images } from '../../assets/images';
 
 // HandlePinClick: 지도에 있는 핀을 클릭했을 때 발생시키고 싶은 매서드 넣으면 됨
 /**
@@ -17,7 +18,7 @@ export default function MapApi({
   startSpot,
 }) {
   const mapElement = useRef(null);
-
+  const [pickedMarker, setPickedMarker] = useState(false);
   /// 여기 spots를 axois로 전체 리스트 받아오면 됨
   // 이런 데이터 형식으로 상위 컴포넌트에서 spots로 props 내리면 됨
   // const spots = [
@@ -36,7 +37,7 @@ export default function MapApi({
       new naver.maps.LatLng(33.5415, 126.9072),
     );
 
-    // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
+    // 지도 첫 랜더링 시  중심 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
     let location = new naver.maps.LatLng(33.3793, 126.5497);
     if (startSpot) {
       location = new naver.maps.LatLng(startSpot[0].lat, startSpot[0].lng);
@@ -59,39 +60,78 @@ export default function MapApi({
 
     var markers = [];
 
+    //여기
+
     if (spots) {
       for (let spot of spots) {
-        var position = new naver.maps.LatLng(spot.lat, spot.lng),
-          id = spot.id;
+        var position = new naver.maps.LatLng(spot.lat, spot.lng);
+        var id = spot.id;
+
+        // const picked = () => {
+        //   if (id === pickedMarker) return { url: images.pin_selected };
+        //   else return { url: images.pin_not_selected };
+        // };
+
         var marker = new naver.maps.Marker({
+          id: id,
           map: map,
           position: position,
-          id: id,
           animation: naver.maps.Animation.DROP,
+          // icon: {
+          //   url: images.pin_not_selected,
+          // },
         });
+        // naver.maps.Event.addListener(marker, 'click', getClickHandler(marker));
+
         markers.push(marker);
       }
     }
 
-    function getClickHandler(seq) {
+    // function getClickHandler(seq) {
+    //   return function () {
+    //     if (handlePinClick) {
+    //       var marker = markers[seq];
+    //       // seq.setIcon(images.pin_selected);
+    //       setPickedMarker(marker.id);
+    //       console.log(marker.id);
+    //       // 여기
+    //       handlePinClick(marker);
+    //     }
+    //   };
+    // }
+
+    // for (var i = 0, ii = markers.length; i < ii; i++) {
+    //   naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+    // }
+
+    function getClickHandler(mar) {
       return function () {
         if (handlePinClick) {
-          var marker = markers[seq];
-
-          handlePinClick(marker.id);
+          mar.setIcon(images.pin_selected);
+          // setPickedMarker(mar.id);
+          console.log(mar.id);
+          // 여기
+          handlePinClick(mar);
         }
       };
     }
 
-    for (var i = 0, ii = markers.length; i < ii; i++) {
-      naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+    for (var marker of markers) {
+      naver.maps.Event.addListener(marker, 'click', getClickHandler(marker));
     }
 
     if (setNewPin) {
-      var pin = new naver.maps.Marker({
-        position: new naver.maps.LatLng(33.3873, 126.5431),
-        map: map,
-      });
+      if (startSpot) {
+        var pin = new naver.maps.Marker({
+          position: new naver.maps.LatLng(startSpot[0].lat, startSpot[0].lng),
+          map: map,
+        });
+      } else {
+        var pin = new naver.maps.Marker({
+          position: new naver.maps.LatLng(33.3873, 126.5431),
+          map: map,
+        });
+      }
 
       naver.maps.Event.addListener(map, 'click', function (e) {
         pin.setPosition(e.coord);

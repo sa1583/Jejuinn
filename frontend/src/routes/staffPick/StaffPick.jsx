@@ -55,11 +55,11 @@ export default function StaffPick() {
   };
 
   const testapi = () => {
-    const data = { msg: 'aaaa' };
+    // const data = { msg: 'aaaa' };
     axios({
       method: 'post',
-      url: 'http://i8a603.p.ssafy.io:8080/api/test3',
-      data,
+      url: 'http://i8a603.p.ssafy.io:8080/api/spot/1',
+      // data,
     }).then(console.log);
   };
 
@@ -87,21 +87,20 @@ export default function StaffPick() {
 
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
-    <div>
+    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <SpeedDialComponent actions={actions} />
 
-      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <WhiteBox
-              cpn={<StaffPickFilter getFilter={getFilter} filter={filter} />}
-            />
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <WhiteBox cpn={<MapApi spots={spots} />} />
-          </Grid>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={4}>
+          <WhiteBox
+            cpn={<StaffPickFilter getFilter={getFilter} filter={filter} />}
+          />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <WhiteBox cpn={<MapApi spots={spots} />} />
+        </Grid>
 
-          {/* <Box
+        {/* <Box
             component={Grid}
             item
             md={4}
@@ -109,26 +108,25 @@ export default function StaffPick() {
           >
             <WhiteBox cpn={<StaffPickRank />} />
           </Box> */}
-          {/* <Grid item xs={12} md={8}> */}
-          <Grid item xs={12} md={12}>
-            {spotReviews.length > 0 && (
-              <WhiteBox
-                cpn={
-                  <StaffPickReviews
-                    spotReviews={spotReviews}
-                    selectedSpot={selectedSpot}
-                    deleteSelected={deleteSelected}
-                  />
-                }
-              />
-            )}
-            {spotReviews.length === 0 && (
-              <WhiteBox cpn={<StaffPickSpotList selectSpot={selectSpot} />} />
-            )}
-          </Grid>
-          {/* </Grid> */}
+        {/* <Grid item xs={12} md={8}> */}
+        <Grid item xs={12} md={12}>
+          {spotReviews.length > 0 && (
+            <WhiteBox
+              cpn={
+                <StaffPickReviews
+                  spotReviews={spotReviews}
+                  selectedSpot={selectedSpot}
+                  deleteSelected={deleteSelected}
+                />
+              }
+            />
+          )}
+          {spotReviews.length === 0 && (
+            <WhiteBox cpn={<StaffPickSpotList selectSpot={selectSpot} />} />
+          )}
         </Grid>
-      </Box>
-    </div>
+        {/* </Grid> */}
+      </Grid>
+    </Box>
   );
 }

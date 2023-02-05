@@ -13,7 +13,7 @@ function getReviews(uid) {
   return api.get(`/api/all-spot/${uid}`);
 }
 
-function getReview(uid) {
+function getSpotInfo(uid) {
   return api.get(`/api/spot/{uid}`);
 }
 
@@ -24,4 +24,4 @@ function getRecommendName(parameter) {
   return api.get(`/api/travelPlace/search/name?query=${parameter}`);
 }
 
-export { getSpots, getReviews, getReview, getRecommendName };
+export { getSpots, getReviews, getSpotInfo, getRecommendName };

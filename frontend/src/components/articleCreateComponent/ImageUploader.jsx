@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import { Typography } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-import CancelIcon from '@mui/icons-material/Cancel';
 import { v4 as uuidv4 } from 'uuid';
+import { useEffect } from 'react';
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -13,17 +11,20 @@ const thumbsContainer = {
   width: '100%',
   height: '100%',
   alignItems: 'center',
+  gap: '1rem',
 };
 
 const thumb = {
   display: 'inline-flex',
   borderRadius: 2,
   border: '1px solid #eaeaea',
-  marginRight: 8,
+  // marginRight: 8,
   width: '13rem',
   height: '13rem',
   boxSizing: 'border-box',
   position: 'relative',
+  background: '#f5f5f5ac',
+  justifyContent: 'center',
 };
 
 const thumbInner = {
@@ -34,7 +35,7 @@ const thumbInner = {
 
 const img = {
   display: 'block',
-  width: 'auto',
+  width: '100%',
   height: '100%',
 };
 
@@ -98,10 +99,10 @@ export default function ImageUploader({ files, handleFiles }) {
           src={file.preview}
           style={img}
           // Revoke data uri after image is loaded
-          // onLoad={() => {
-          //   URL.revokeObjectURL(file.preview);
-          //   console.log(files);
-          // }}
+          onunload={() => {
+            URL.revokeObjectURL(file.preview);
+            console.log(files);
+          }}
           onDoubleClick={() => deleteImage(file)}
         />
       </div>
@@ -124,7 +125,6 @@ export default function ImageUploader({ files, handleFiles }) {
           alignItems: 'center',
           gap: '1rem',
           padding: '1rem',
-          minHeight: '15rem',
         }}
       >
         <input {...getInputProps()} />
