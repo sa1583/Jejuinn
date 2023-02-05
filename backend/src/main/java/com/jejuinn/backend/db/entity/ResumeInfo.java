@@ -35,7 +35,7 @@ public class ResumeInfo {
             name = "ResumeInfo_person_type_join",
             joinColumns = {@JoinColumn(name = "ResumeInfo_uid", referencedColumnName = "uid")},
             inverseJoinColumns = {@JoinColumn(name = "type", referencedColumnName = "type")})
-    private List<PersonType> tags = new ArrayList<>();
+    private List<PersonType> tags;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -56,5 +56,5 @@ public class ResumeInfo {
             name = "user_authority_join",
             joinColumns = {@JoinColumn(name = "resume_info_uid", referencedColumnName = "uid")},
             inverseJoinColumns = {@JoinColumn(name = "area_name", referencedColumnName = "area_name")})
-    private List<Area> interestAreas = new ArrayList<>();
+    private List<Area> interestAreas;
 }

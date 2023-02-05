@@ -3,6 +3,7 @@ package com.jejuinn.backend.db.entity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
+@DynamicUpdate
+@ToString
 public class TravelPlaceReview {
 
     @Id
@@ -30,7 +33,7 @@ public class TravelPlaceReview {
     private String content;
 
     @NotNull
-    private int like;
+    private int likeCount;
 
     @CreationTimestamp
     private LocalDateTime dateCreated;
@@ -38,11 +41,7 @@ public class TravelPlaceReview {
     @NotNull
     private Long travelPlaceUid;
 
-    @ManyToOne
-    @JoinColumn(name = "user_uid")
     @NotNull
-    private User user;
-
-
+    private Long userUid;
 
 }
