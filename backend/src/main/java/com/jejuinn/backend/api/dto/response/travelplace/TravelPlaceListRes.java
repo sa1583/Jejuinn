@@ -16,7 +16,17 @@ public class TravelPlaceListRes {
 
     private double lng;
 
+    private String category;
+
+    private String mainImgPath;
+
     public static TravelPlaceListRes of(TravelPlace travelPlace, String imgPath){
-        return null;
+        return TravelPlaceListRes.builder()
+                .travelPlaceUid(travelPlace.getUid())
+                .lat(travelPlace.getLat())
+                .lng(travelPlace.getLng())
+                .category(travelPlace.getCategory())
+                .mainImgPath(imgPath)
+                .build();
     }
 }

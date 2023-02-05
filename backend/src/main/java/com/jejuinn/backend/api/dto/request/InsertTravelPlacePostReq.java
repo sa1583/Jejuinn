@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 public class InsertTravelPlacePostReq {
 
     @ApiModelProperty(name="명소 이름")
-    @Size(min = 50)
+    @Size(min = 2, max=50)
     @NotNull
     private String name;
 
