@@ -30,6 +30,8 @@ public class Recruitment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
+    private Long guestHouseUid;
+
     @Column(length = 50)
     private String title;
 
