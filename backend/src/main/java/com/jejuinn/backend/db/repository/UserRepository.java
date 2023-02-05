@@ -4,6 +4,8 @@ import com.jejuinn.backend.db.entity.SocialLogin;
 import com.jejuinn.backend.db.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -12,5 +14,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByEmail(String email); // username을 기준으로 users 정보와 권한 정보를 같이 가져온다.
 
     Optional<User> findOneByEmailAndSocialLogin(String email, SocialLogin socialLogin); // 일반 로그인 검색
+
     Optional<User> findOneByEmailAndSocialLogin_Type(String email, int type); // 소셜 로그인 검색 (email + type)
+
+//    @Query("select u.nickname from User u where u.uid = :userUid")
+//    String findNicknameById(@Param("userUid") Long userUid);
 }

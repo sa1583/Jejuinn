@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ImgUrlWithReviewUid {
+public class ImgUrlAndReviewUid {
     private Long reviewUid;
     private String imgPath;
 }

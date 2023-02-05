@@ -17,6 +17,10 @@ public class TravelPlacePinsRes {
     private double lng;
 
     public static TravelPlacePinsRes of(TravelPlace travelPlace){
-        return null;
+        return TravelPlacePinsRes.builder()
+                .travelPlaceUid(travelPlace.getUid())
+                .lat(travelPlace.getLat())
+                .lng(travelPlace.getLng())
+                .build();
     }
 }
