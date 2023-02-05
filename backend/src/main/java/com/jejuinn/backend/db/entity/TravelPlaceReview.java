@@ -33,7 +33,7 @@ public class TravelPlaceReview {
     private String content;
 
     @NotNull
-    private int like;
+    private int likeCount;
 
     @CreationTimestamp
     private LocalDateTime dateCreated;

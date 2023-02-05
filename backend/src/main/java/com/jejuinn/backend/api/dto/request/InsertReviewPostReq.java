@@ -1,13 +1,10 @@
 package com.jejuinn.backend.api.dto.request;
 
-import com.jejuinn.backend.db.entity.TravelPlace;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
-import com.jejuinn.backend.db.entity.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -33,7 +30,7 @@ public class InsertReviewPostReq {
                 .travelPlaceUid(getTravelPlaceUid())
                 .starRating(getStarRating())
                 .content(getContent())
-                .like(0)
+                .likeCount(0)
                 .userUid(userUid)
                 .build();
     }

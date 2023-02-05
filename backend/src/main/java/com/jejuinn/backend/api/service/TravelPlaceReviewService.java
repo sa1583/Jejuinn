@@ -1,6 +1,5 @@
 package com.jejuinn.backend.api.service;
 
-import com.jejuinn.backend.db.entity.Comment;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
 import com.jejuinn.backend.db.repository.TravelPlaceReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,6 @@ public class TravelPlaceReviewService {
     public void addLike(final Long uid) {
         TravelPlaceReview review = travelPlaceReviewRepository.findById(uid)
                 .orElseThrow(() -> new UsernameNotFoundException("데이터베이스에서 찾을 수 없습니다."));
-        review.setLike(review.getLike()+1);
+        review.setLikeCount(review.getLikeCount()+1);
     }
 }

@@ -1,8 +1,6 @@
 package com.jejuinn.backend.db.repository;
 
-import com.jejuinn.backend.api.dto.request.InsertReviewPostReq;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
-import com.jejuinn.backend.db.entity.User;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -22,12 +20,12 @@ class TravelPlaceReviewRepositoryTest {
 
     @Test
     public void test(){
-        InsertReviewPostReq req = InsertReviewPostReq.builder().travelPlaceUid(1L).starRating(4).content("hihi").build();
+//        InsertReviewPostReq req = InsertReviewPostReq.builder().travelPlaceUid(1L).starRating(4).content("hihi").build();
 
         TravelPlaceReview review = TravelPlaceReview.builder()
                 .starRating(4)
                 .content("hi")
-                .like(3)
+                .likeCount(0)
                 .travelPlaceUid(1L)
                 .userUid(1L).build();
 

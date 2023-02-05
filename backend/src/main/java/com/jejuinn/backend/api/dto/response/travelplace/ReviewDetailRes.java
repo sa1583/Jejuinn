@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -43,7 +42,7 @@ public class ReviewDetailRes {
                 .uid(review.getUid())
                 .starRating(review.getStarRating())
                 .content(review.getContent())
-                .like(review.getLike())
+                .like(review.getLikeCount())
                 .dateCreated(review.getDateCreated())
                 .travelPlaceUid(review.getTravelPlaceUid())
                 .writer_uid(review.getUid())

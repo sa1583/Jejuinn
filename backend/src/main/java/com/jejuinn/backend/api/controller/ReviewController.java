@@ -68,15 +68,15 @@ public class ReviewController {
         // 리뷰 저장
         TravelPlaceReview review = travelPlaceReviewRepository.save(req.toTravelPlaceReview(userUid));
 
-        System.out.println("?1");
         // 사진 저장
         try {
             s3Uploader.uploadImages(images, REVIEW_TYPE, review.getUid());
         } catch (IOException e) {
+            log.error("AWS S3 이미지 저장 에러");
             e.printStackTrace();
             return ResponseEntity.status(400).build();
         }
-        System.out.println("?2");
+
         return ResponseEntity.status(200).build();
     }
 
@@ -92,7 +92,7 @@ public class ReviewController {
         return ResponseEntity.status(200)
                 .body(travelPlaceReviewRepository.findById(reviewUid)
                         .map(review -> ReviewDetailRes.of(review,
-                                "userRepository.findNicknameById(review.getUserUid())",
+                                userRepository.findNicknameById(review.getUserUid()),
                                 imageRepository.findAllByPostTypeAndPostUid(REVIEW_TYPE, review.getUid()))));
     }
 
