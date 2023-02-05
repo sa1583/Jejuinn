@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.dto.response;
+package com.jejuinn.backend.api.dto.response.recruitment;
 
 import com.jejuinn.backend.db.entity.Work;
 import lombok.*;
