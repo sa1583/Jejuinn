@@ -75,11 +75,18 @@ public class User {
    inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
    private Set<Authority> authorities;
 
+//   @ManyToMany
+//   @JoinTable(
+//           name = "user_review_join",
+//           joinColumns = {@JoinColumn(name = "user_uid", referencedColumnName = "uid")},
+//           inverseJoinColumns = {@JoinColumn(name = "review_uid", referencedColumnName = "uid")})
+//   private List<TravelPlaceReview> likes;
+
    @OneToOne(mappedBy = "user")
    private SocialLogin socialLogin;
 
-   @OneToMany(mappedBy = "user")
-   private List<TravelPlaceReview> reviews;
+//   @OneToMany(mappedBy = "user")
+//   private List<TravelPlaceReview> reviews;
 
 
    public static User from(NaverProfileDto naverProfileDto, Set<Authority> authorities) {

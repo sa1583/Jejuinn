@@ -52,14 +52,12 @@ public class UserService {
     public HttpHeaders getHttpHeaders(User user, String token) {
 
         String accessToken = tokenProvider.createAccessToken(user);
-        System.out.println("????1");
 
         String refreshToken = token;
         if(refreshToken == null){
             refreshToken = tokenProvider.createRefreshToken(user);
         }
 
-        System.out.println("????2");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
         httpHeaders.add(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken);
