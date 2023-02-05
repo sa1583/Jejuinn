@@ -1,4 +1,7 @@
-import { Box, Grid, styled, Button } from '@mui/material';
+import { Box, Grid, styled, Button, TextField } from '@mui/material';
+import { FilterDate, FilterArea, FilterStyle } from '../work/Filters';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const CustomButton = styled(Button)({
   border: '1px solid #FF7600',
@@ -16,38 +19,66 @@ const CustomButton = styled(Button)({
 });
 
 export default function MyResumeWrite({ changeApplyComp }) {
+
+  const [area, setArea] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [styleTags, setStyleTags] = useState([]);
+  const [intro, setIntro] = useState('')
+// twoCalls 사용해서 
+
+  const writeArea = (imp) => {
+    setArea(imp.target.value)
+  }
+  const writeStyleTags = (imp) => {
+    setStyleTags(imp)
+  }
+  const writeStartDate = (imp) => {
+    setStartDate(imp.$d.toISOString().split('T')[0]);
+  }
+  const writeIntro = (imp) => {
+    setIntro(imp.target.value);
+  }
+  const submitResume = () => {
+    
+  }
+
+  useEffect(()=>{
+    console.log(area, styleTags, startDate, intro);
+  },[area, styleTags, startDate, intro])
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <form>
       <Grid container spacing={2}>
         <Grid item md={4}>
-          이름
+          선호하는 스타일
         </Grid>
         <Grid item md={8}>
-          userInfo.username
+          <FilterStyle onStyleTags={writeStyleTags} />
         </Grid>
 
         <Grid item md={4}>
-          나이 (성별)
+          선호 지역
         </Grid>
         <Grid item md={8}>
-          userInfo.age, userInfo.gender
+          <FilterArea onArea={writeArea}/>
         </Grid>
 
         <Grid item md={4}>
-          휴대폰번호
+          입도 가능일
         </Grid>
         <Grid item md={8}>
-          userInfo.phone
+          <FilterDate onStartDate={writeStartDate}/>
         </Grid>
 
         <Grid item md={4}>
-          이메일
+          자기소개
         </Grid>
         <Grid item md={8}>
-          userInfo.email
+          <TextField onChange={writeIntro}/>
         </Grid>
+      <CustomButton onClick={changeApplyComp} onSubmit={submitResume}>지원서 저장</CustomButton>
       </Grid>
-      <CustomButton onClick={changeApplyComp}>지원서 저장</CustomButton>
+      </form>
     </Box>
   );
 }

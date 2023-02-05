@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import JobDetail from './JobDetail';
-import WhiteBox from '../../components/whiteBox/WhiteBox';
+import WhiteBox from '../whiteBox/WhiteBox';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function WorkListBox({ works }) {
