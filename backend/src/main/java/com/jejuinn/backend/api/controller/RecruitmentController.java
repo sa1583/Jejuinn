@@ -2,6 +2,7 @@ package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.recruitment.InsertRecruitmentPostReq;
 import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkPostReq;
+import com.jejuinn.backend.api.dto.response.recruitment.MyRecruitmentListRes;
 import com.jejuinn.backend.api.dto.response.recruitment.RecruitmentDetailRes;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkListRes;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "구인 관련 기능 API")
@@ -112,4 +114,18 @@ public class RecruitmentController {
         return ResponseEntity.status(200).build();
     }
 
+    @GetMapping("/auth/job-offer/{guestHouseUid}")
+    @ApiOperation(value = "특정 게스트하우스에 대한 모집공고 리스트 확인", notes = "특정 게스트하우스에 대한 모든 모집공고 목록을 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "데이터가 없습니다."),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyRecruitment(@PathVariable String guestHouseUid) {
+        return ResponseEntity.status(200)
+                .body(recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(Long.parseLong(guestHouseUid))
+                        .stream().map(recruitment -> MyRecruitmentListRes.of(recruitment))
+                        .collect(Collectors.toList()));
+    }
 }
