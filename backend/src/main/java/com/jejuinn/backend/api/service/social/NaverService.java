@@ -166,14 +166,15 @@ public class NaverService {
                         responseType
                 );
         NaverLocalSearchRes result = responseEntity.getBody();
+        log.info("gogo");
 
         result.getItems().stream().forEach(searchLocalItem -> {
+            log.info("변환 전 : {}",searchLocalItem);
             searchLocalItem.setGeo();
             String tmp = searchLocalItem.getTitle();
-            System.out.println(tmp);
             tmp = tmp.replaceAll("<b>", "").replaceAll("</b>", "");
-            System.out.println(tmp);
             searchLocalItem.setTitle(tmp);
+            log.info("변환 후 : {}",searchLocalItem);
         });
         return responseEntity.getBody();
     }
