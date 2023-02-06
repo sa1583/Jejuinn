@@ -12,11 +12,15 @@ export default function ImageSlider({ items }) {
     >
       {items?.map((item) => {
         return (
-          <div className="slide" key={item} style={{ width: '10rem' }}>
+          <div
+            className="slide"
+            key={item}
+            style={{ width: '100%', aspectRatio: '1/1' }}
+          >
             <img
               src={`${images.defalut_url}${item.imgPath}`}
-              alt="임의지 엌"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              alt="명소 사진"
+              style={{ height: '100%', objectFit: 'cover' }}
             />
           </div>
         );

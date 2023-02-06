@@ -1,5 +1,6 @@
 import { Box } from '@mui/system';
 import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { images } from '../../assets/images';
 
 // HandlePinClick: 지도에 있는 핀을 클릭했을 때 발생시키고 싶은 매서드 넣으면 됨
@@ -26,8 +27,10 @@ export default function MapApi({
   //   { id: 3, lat: 33.4664, lng: 126.6694 },
   //   { id: 4, lat: 33.2856, lng: 126.4449 },
   // ];
-
-  // const [pickedMarker, setPickedMarker] = useState(4);
+  const location = useLocation();
+  const page = location.pathname.split('/');
+  const pageId = page[page.length - 1];
+  console.log(pageId);
 
   useEffect(() => {
     const { naver } = window;
@@ -43,7 +46,7 @@ export default function MapApi({
     // 지도 첫 랜더링 시  중심 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
     let location = new naver.maps.LatLng(33.3793, 126.5497);
     if (startSpot) {
-      location = new naver.maps.LatLng(startSpot[0].lat, startSpot[0].lng);
+      location = new naver.maps.LatLng(startSpot[0]?.lat, startSpot[0]?.lng);
     }
 
     const mapOptions: naver.maps.MapOptions = {
@@ -56,7 +59,6 @@ export default function MapApi({
       },
       zIndex: 100,
       maxBounds: jeju,
-      // mapTypeId: naver.maps.MapTypeId.SATELLITE,
     };
 
     const map = new naver.maps.Map(mapElement.current, mapOptions);
@@ -92,17 +94,17 @@ export default function MapApi({
 
     if (spots) {
       for (let spot of spots) {
-        const position = new naver.maps.LatLng(spot.lat, spot.lng);
-        const id = spot.travelPlaceUid && spot.travelPlaceUid;
+        const position = new naver.maps.LatLng(spot?.lat, spot?.lng);
+        const id = spot?.travelPlaceUid && spot.travelPlaceUid;
 
         const marker = new naver.maps.Marker({
           id: id,
           map: map,
           position: position,
-          animation: naver.maps.Animation.DROP,
-          icon: notPickedIcon,
+          // animation: naver.maps.Animation.DROP,
+          icon: pageId == id ? pickedIcon : notPickedIcon,
+          // icon: notPickedIcon,
         });
-
         markers.push(marker);
       }
     }
@@ -131,11 +133,13 @@ export default function MapApi({
         var pin = new naver.maps.Marker({
           position: new naver.maps.LatLng(startSpot[0].lat, startSpot[0].lng),
           map: map,
+          icon: notPickedIcon,
         });
       } else {
         var pin = new naver.maps.Marker({
           position: new naver.maps.LatLng(33.3873, 126.5431),
           map: map,
+          icon: notPickedIcon,
         });
       }
 
@@ -144,7 +148,7 @@ export default function MapApi({
         setNewPin(e.coord);
       });
     }
-  }, [spots]);
+  }, [spots, pageId]);
   return (
     <Box
       sx={{

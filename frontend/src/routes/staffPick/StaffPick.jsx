@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
 import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
-// import StaffPickRank from '../../components/staffPickComponent/StaffPickRank';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -11,14 +10,13 @@ import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import { getReviews } from '../../api/staffPick';
 import { getSpotsPin, getSpotsImg, getSpotInfo } from '../../api/staffPick';
 import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
 export default function StaffPick() {
   const navigate = useNavigate();
   const location = useLocation();
   const pageId = location.pathname.split('staffpicklist/')[1];
-  console.log(pageId);
+  // console.log(pageId);
 
   const [filter, setFilter] = useState({
     type: '전체',
@@ -32,7 +30,7 @@ export default function StaffPick() {
   };
 
   const goCreate = () => {
-    navigate('create');
+    navigate('/staffpicklist/create');
   };
 
   const testapi = () => {
@@ -48,13 +46,6 @@ export default function StaffPick() {
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
     { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
-
-  // const spots = [
-  //   { travelPlaceUid: 1, lat: 33.4485, lng: 126.5631 },
-  //   { travelPlaceUid: 2, lat: 33.478, lng: 126.4948 },
-  //   { travelPlaceUid: 3, lat: 33.4664, lng: 126.6694 },
-  //   { travelPlaceUid: 4, lat: 33.2856, lng: 126.4449 },
-  // ];
 
   // spots 정보 저장할 함수
   const [spots, setSpots] = useState([]);
@@ -84,16 +75,6 @@ export default function StaffPick() {
   const selectSpot = async () => {
     const data = (await getSpotInfo(pageId)).data.travelPlace;
     setSelectedSpot(data);
-
-    // const uid = e.target.id;
-    // const name = e.target.name;
-    // setSelectedSpot({ uid, name });
-    // fetch(`dataPractice/reviews_${uid}.json`)
-    //   .then((res) => res.json())
-    //   .then((json) => setSpotReviews(json));
-    // 위에 패치 지우고 아래 주석 해제  -> 전체함수 selectSpot 에 async 붙여줘야함
-    // const reviews = await getReviews()
-    // setSpotReviews(reviews)
   };
 
   // 클릭한 마커의 명소 디테일 보기
@@ -102,9 +83,9 @@ export default function StaffPick() {
   };
 
   useEffect(() => {
-    if (!pageId) {
-      getSpotsPins();
-    }
+    // if (!pageId) {
+    getSpotsPins();
+    // }
   }, [pageId]);
   useEffect(() => {
     if (!pageId) {
@@ -157,8 +138,6 @@ export default function StaffPick() {
             />
           </Grid>
         )}
-
-        {/* </Grid> */}
       </Grid>
     </Box>
   );

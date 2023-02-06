@@ -26,10 +26,10 @@ export default function StaffPickReviews({ spotname }) {
 
   useEffect(() => {
     getReviewList();
-  }, []);
+  }, [pageId]);
 
   return (
-    <Box sx={{ padding: '3vh' }}>
+    <Box sx={{ width: '90%', padding: '5%' }}>
       <Box
         sx={{
           display: 'flex',
@@ -49,7 +49,8 @@ export default function StaffPickReviews({ spotname }) {
           fontSize="large"
         />
       </Box>
-      <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}>
+      <Box sx={{ width: '100%' }}>
+        {/* <Box sx={{ width: '100%', maxHeight: '15rem', overflowY: 'scroll' }}> */}
         <ImageList variant="masonry" cols={4} gap={8}>
           {spotReviews.map((item) => (
             <ImageListItem key={uuidv4()}>

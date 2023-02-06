@@ -6,28 +6,8 @@ import CommentBox from '../commentComponent/CommentBox';
 import CommentInput from '../commentComponent/CommentInput';
 import CommentList from '../commentComponent/CommentList';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from 'react';
-import { getReviewDetail } from '../../api/staffPick';
-import { useLocation } from 'react-router-dom';
-export default function ReviewContent() {
-  const location = useLocation();
-  const pageId = location.pathname.split('detail/')[1];
 
-  const [reviewContent, setReviewContent] = useState([]);
-  const getReviewContent = async () => {
-    const data = (await getReviewDetail(pageId)).data;
-    console.log(data);
-    setReviewContent(data);
-  };
-
-  const images = [
-    'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/10/jeju-island-4206829__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-  ];
+export default function ReviewContent({ reviewContent }) {
   const comments = [
     {
       img: 'J',
@@ -48,23 +28,14 @@ export default function ReviewContent() {
   //   setComments(review.comments)
   // },[review])
 
-  useEffect(() => {
-    getReviewContent();
-  }, []);
-
   return (
     <Box sx={{ padding: '5%' }}>
-      <ImageSlider items={reviewContent.images} />
+      <ImageSlider items={reviewContent?.images} />
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
         <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>
       </Box>
-      <h2>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga dicta
-        repellat adipisci veniam excepturi hic ea cupiditate itaque eum
-        obcaecati saepe odit assumenda, voluptatum explicabo earum mollitia
-        deserunt eveniet quidem?
-      </h2>
+      <h2>{reviewContent?.content}</h2>
       <h2 style={{ color: '#FF7600' }}>댓글</h2>
       <CommentBox cpn={<CommentInput />} />
       <div
