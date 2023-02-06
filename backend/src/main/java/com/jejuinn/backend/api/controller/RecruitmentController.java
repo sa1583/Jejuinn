@@ -1,6 +1,5 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.dto.request.recruitment.InsertRecruitmentPostReq;
 import com.jejuinn.backend.api.dto.response.recruitment.RecruitmentDetailRes;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkListRes;
@@ -68,8 +67,7 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertRecruitment(@RequestPart List<MultipartFile> images,
-                                               @RequestPart InsertRecruitmentPostReq insertRecruitmentPostReq) {
+    public ResponseEntity<?> insertRecruitment(@RequestPart List<MultipartFile> images) {
         return null;
     }
 }
