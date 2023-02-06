@@ -1,5 +1,8 @@
 import { Box, styled, Button } from '@mui/material';
+import { workDetail } from '../../api/work';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const CustomButton = styled(Button)({
   height: '5vh',
@@ -8,23 +11,31 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function JobDetail({ work }) {
+export default function JobDetail({ workid }) {
   const navigate = useNavigate();
+  const [work, setWork] = useState({});
+
+  async function getWork() {
+    const work = await workDetail(workid);
+    console.log(work.data);
+    setWork(work.data.recruitment);
+  }
+
+  useEffect(() => {
+    getWork();
+  }, []);
 
   const onJobDetail = () => {
-    // API 완성되면 recruitmentId 경로에 추가
-    // navigate(`/worklist/detail/${work.uid}`);
-    navigate(`/worklist/detail`);
+    navigate(`/worklist/detail/${workid}`);
   };
   const onApply = () => {
     navigate('/지원서 제출 api로 연결~');
   };
-
   return (
     <>
       <Box sx={{ padding: '3vh', height: '100%' }}>
         <h2 onClick={onJobDetail} style={{ color: '#FF7600' }}>
-          API 나오면 {work}.title 받아서 제목 보여줄거임~
+          {work.title}
         </h2>
         <div>
           API 나오면 work.detail 받아서 내용 나오는거 보고 구성하면 됨~~
