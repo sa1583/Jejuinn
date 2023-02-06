@@ -26,6 +26,7 @@ import MyGuestHouse from './components/myPage/MyGuestHouse';
 import SignUpBox from './components/signUp/SignUpBox';
 import FindPassword from './routes/logIn/FindPassword';
 import MyApplicantList from './components/myPage/MyApplicantList';
+import VideoInterview from './routes/videoInterview/VideoInterview';
 
 const router = createBrowserRouter([
   {
@@ -112,14 +113,22 @@ const router = createBrowserRouter([
         path: 'login/findpassword',
         element: <FindPassword />,
       },
+      {
+        path: 'interview',
+        element: <VideoInterview />,
+      },
     ],
   },
 ]);
 
 const theme = createTheme({
+  typography: {
+    fontFamily: ['SUIT-Regular'],
+  },
   palette: {
     primary: {
       main: '#FF7600',
+      contrastText: '#FFFFFF',
     },
     secondary: {
       main: '#FFFFFF',

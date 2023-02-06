@@ -7,9 +7,9 @@ import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import GuestHouseInfo from '../../components/guestHouseDetail/GuestHouseInfo';
 import GuestHouseContent from '../../components/guestHouseDetail/GuestHouseContent';
-import GuestHouseMap from '../../components/guestHouseDetail/GuestHouseMap';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
+import MapApi from '../../components/mapApi/MapApi';
 
 export default function GuestHouseDetail() {
   // 여기서 useEffect로 url 끝 번호를 따서
@@ -29,6 +29,8 @@ export default function GuestHouseDetail() {
     { icon: <ModeEditOutlinedIcon />, name: '글 수정', handle: goModifiy },
   ];
 
+  const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
+  
   return (
     <>
       <SpeedDialComponent actions={actions} />
@@ -40,10 +42,9 @@ export default function GuestHouseDetail() {
               <WhiteBox cpn={<GuestHouseInfo />} />
             </Grid>
             <Grid item xs={12}>
-              <WhiteBox cpn={<GuestHouseMap />} />
+              <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
             </Grid>
           </Grid>
-
           <Grid item xs={12} md={8}>
             <Grid item xs={12}>
               <WhiteBox cpn={<GuestHouseContent />} />
