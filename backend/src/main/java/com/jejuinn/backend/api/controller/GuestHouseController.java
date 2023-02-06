@@ -39,7 +39,7 @@ public class GuestHouseController {
      * @param pageable
      * @return
      */
-    @GetMapping("/api/guest-house")
+    @GetMapping("/api/guest-houses")
     @ApiOperation(value = "게스트하우스 리스트 보기", notes = "<strong> page를 입력받아</strong> 게스트하우스를 15개씩 보여줍니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -55,7 +55,7 @@ public class GuestHouseController {
                                  imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()))));
     }
 
-    @GetMapping("/api/guest-house/{guestHouseUid}")
+    @GetMapping("/api/guest-houses/{guestHouseUid}")
     @ApiOperation(value = "게스트하우스 상세 보기", notes = "<strong>게스트하우스 uid</strong>를 입력받아 게스트하우스 상세 정보를 응답합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -104,7 +104,7 @@ public class GuestHouseController {
      * @return
      */
 
-    @PutMapping("/auth/guest-house/{guestHouseUid}")
+    @PutMapping("/auth/guest-houses/{guestHouseUid}")
     @ApiOperation(value = "게스트하우스 수정", notes = "<strong>이미지 파일과 게스트 하우스 정보, 게스트하우스 uid</strong>를 입력받아 저장합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(수정 성공)"),
@@ -143,7 +143,7 @@ public class GuestHouseController {
      * @param guestHouseUid
      * @return
      */
-    @DeleteMapping("/auth/guest-house/{guestHouseUid}")
+    @DeleteMapping("/auth/guest-houses/{guestHouseUid}")
     @ApiOperation(value = "게스트하우스 삭제", notes = "<strong>게스트하우스 uid</strong>를 입력받아 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(수정 성공)"),
@@ -153,6 +153,11 @@ public class GuestHouseController {
     public ResponseEntity<?> deleteGuestHouse(@PathVariable String guestHouseUid){
         guestHouseRepository.deleteById(Long.parseLong(guestHouseUid));
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/auth/guest-house/")
+    public ResponseEntity<?> getMyGuestHouseStaff(){
+        return null;
     }
 
 //    @PostConstruct
