@@ -30,7 +30,6 @@ export default function MapApi({
   const location = useLocation();
   const page = location.pathname.split('/');
   const pageId = page[page.length - 1];
-  console.log(pageId);
 
   useEffect(() => {
     const { naver } = window;
