@@ -36,8 +36,8 @@ public class InsertRecruitmentPostReq {
 
     public List<PersonType> toPersonType() {
         List<PersonType> list = new ArrayList<>();
-        for(String type : this.wanted) {
-            list.add(PersonType.builder().type(type).build());
+        for(String s : this.getWanted()) {
+            list.add(PersonType.builder().type(s).build());
         }
         return list;
     }
