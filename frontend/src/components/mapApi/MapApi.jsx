@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { images } from '../../assets/images';
 
 // HandlePinClick: 지도에 있는 핀을 클릭했을 때 발생시키고 싶은 매서드 넣으면 됨
@@ -18,7 +18,6 @@ export default function MapApi({
   startSpot,
 }) {
   const mapElement = useRef(null);
-  const [pickedMarker, setPickedMarker] = useState(false);
   /// 여기 spots를 axois로 전체 리스트 받아오면 됨
   // 이런 데이터 형식으로 상위 컴포넌트에서 spots로 props 내리면 됨
   // const spots = [
@@ -28,9 +27,13 @@ export default function MapApi({
   //   { id: 4, lat: 33.2856, lng: 126.4449 },
   // ];
 
+  // const [pickedMarker, setPickedMarker] = useState(4);
+
   useEffect(() => {
     const { naver } = window;
     if (!mapElement.current || !naver) return;
+
+    let pickedMarker = 4;
 
     var jeju = new naver.maps.LatLngBounds(
       new naver.maps.LatLng(33.2053, 126.1872),
@@ -58,66 +61,69 @@ export default function MapApi({
 
     const map = new naver.maps.Map(mapElement.current, mapOptions);
 
-    var markers = [];
+    const markers = [];
 
-    //여기
+    // 선택 안된 핀
+
+    const content = [
+      '<div>',
+      `       <img src=${images.pin_not_selected} width="30" height="30" alt="현재 위치"/>`,
+      '</div>',
+    ].join('');
+
+    const notPickedIcon = {
+      content: content,
+      size: new naver.maps.Size(20, 20),
+      anchor: new naver.maps.Point(16, 16),
+    };
+
+    // 선택 된 핀
+    const content2 = [
+      '<div>',
+      `       <img src=${images.pin_selected} width="30" height="30" alt="현재 위치"/>`,
+      '</div>',
+    ].join('');
+
+    const pickedIcon = {
+      size: new naver.maps.Size(20, 20),
+      content: content2,
+      anchor: new naver.maps.Point(16, 16),
+    };
 
     if (spots) {
       for (let spot of spots) {
-        var position = new naver.maps.LatLng(spot.lat, spot.lng);
-        var id = spot.id;
+        const position = new naver.maps.LatLng(spot.lat, spot.lng);
+        const id = spot.travelPlaceUid && spot.travelPlaceUid;
 
-        // const picked = () => {
-        //   if (id === pickedMarker) return { url: images.pin_selected };
-        //   else return { url: images.pin_not_selected };
-        // };
-
-        var marker = new naver.maps.Marker({
+        const marker = new naver.maps.Marker({
           id: id,
           map: map,
           position: position,
           animation: naver.maps.Animation.DROP,
-          // icon: {
-          //   url: images.pin_not_selected,
-          // },
+          icon: notPickedIcon,
         });
-        // naver.maps.Event.addListener(marker, 'click', getClickHandler(marker));
 
         markers.push(marker);
       }
     }
 
-    // function getClickHandler(seq) {
-    //   return function () {
-    //     if (handlePinClick) {
-    //       var marker = markers[seq];
-    //       // seq.setIcon(images.pin_selected);
-    //       setPickedMarker(marker.id);
-    //       console.log(marker.id);
-    //       // 여기
-    //       handlePinClick(marker);
-    //     }
-    //   };
-    // }
-
-    // for (var i = 0, ii = markers.length; i < ii; i++) {
-    //   naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
-    // }
-
-    function getClickHandler(mar) {
+    function getClickHandler(seq) {
       return function () {
         if (handlePinClick) {
-          mar.setIcon(images.pin_selected);
-          // setPickedMarker(mar.id);
-          console.log(mar.id);
+          const marker = markers[seq];
+          const markerBefore = markers[pickedMarker];
+          pickedMarker = seq;
+
+          marker.setIcon(pickedIcon);
+          markerBefore.setIcon(notPickedIcon);
           // 여기
-          handlePinClick(mar);
+          handlePinClick(marker);
         }
       };
     }
 
-    for (var marker of markers) {
-      naver.maps.Event.addListener(marker, 'click', getClickHandler(marker));
+    for (var i = 0, ii = markers.length; i < ii; i++) {
+      naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
     }
 
     if (setNewPin) {
@@ -138,7 +144,7 @@ export default function MapApi({
         setNewPin(e.coord);
       });
     }
-  }, []);
+  }, [spots]);
   return (
     <Box
       sx={{
