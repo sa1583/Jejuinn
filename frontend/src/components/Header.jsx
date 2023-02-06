@@ -102,7 +102,7 @@ export default function ButtonAppBar() {
               sx={{
                 flexGrow: 1.3,
                 fontSize: '21px',
-                fontFamily: 'SBAggroB',
+                fontFamily: 'SBAggroM',
               }}
               key={page.name}
             >
@@ -118,7 +118,7 @@ export default function ButtonAppBar() {
             <Typography
               sx={{
                 fontSize: '21px',
-                fontFamily: 'SBAggroB',
+                fontFamily: 'SBAggroM',
               }}
             >
               <Link
@@ -126,7 +126,6 @@ export default function ButtonAppBar() {
                 style={{
                   textDecoration: 'none',
                   color: '#FF7600',
-                  fontWeight: 'Bold',
                 }}
               >
                 로그인

@@ -9,7 +9,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export default function SearchForm() {
-  const [selectDate, setSelectDate] = useState();
+  const [selectDate, setSelectDate] = useState(null);
   const handleDate = (inIsland) => {
     setSelectDate(inIsland);
   };
@@ -43,7 +43,7 @@ export default function SearchForm() {
     <form
       action=""
       style={{
-        width: '85%',
+        width: '67%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -112,7 +112,7 @@ export default function SearchForm() {
                 onChange={(newValue) => {
                   handleDate(newValue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => <CustomTextField {...params} />}
               />
             </LocalizationProvider>
           </Stack>
