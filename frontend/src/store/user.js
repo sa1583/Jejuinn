@@ -6,6 +6,7 @@ import {
   loginKakao,
   loginNormal,
   loginFacebook,
+  signUpApi,
 } from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
@@ -85,6 +86,21 @@ export const getNormalAuthToken = createAsyncThunk(
       let { accesstoken, refreshtoken } = (await loginNormal(body)).headers;
       accesstoken = accesstoken.split(' ')[1];
       refreshtoken = refreshtoken.split(' ')[1];
+      return { accesstoken, refreshtoken };
+    } catch (e) {
+      return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
+    }
+  },
+);
+export const getNormalAuthTokenInSignUp = createAsyncThunk(
+  'user/getNormalAuthToken',
+  async (body, thunkAPI) => {
+    try {
+      let { accesstoken, refreshtoken } = (await signUpApi(body)).headers;
+      accesstoken = accesstoken.split(' ')[1];
+      refreshtoken = refreshtoken.split(' ')[1];
+      console.log(accesstoken);
+
       return { accesstoken, refreshtoken };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });

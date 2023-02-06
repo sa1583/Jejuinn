@@ -24,7 +24,7 @@ export default function SignUpComplete() {
         }}
         sx={{
           width: '80%',
-          height: '6vh',
+          height: '3rem',
           background: '#FF7600',
           borderRadius: '38px',
           color: 'white',
