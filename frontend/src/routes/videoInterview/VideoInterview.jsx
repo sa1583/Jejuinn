@@ -14,7 +14,6 @@ export default function VideoInterview() {
   const [mySessionId, setMySessionId] = useState();
   const [myUserName, setMyUserName] = useState();
   const [session, setSession] = useState();
-  // const [mainStreamManager, setMainStreamManager] = useState();
   const [publisher, setPublisher] = useState();
   const [subscribers, setSubscribers] = useState([]);
 
@@ -34,7 +33,6 @@ export default function VideoInterview() {
     setSubscribers([]);
     setMySessionId('');
     setMyUserName('');
-    // setMainStreamManager(undefined);
     setPublisher(undefined);
   };
 
@@ -84,17 +82,8 @@ export default function VideoInterview() {
   };
 
   const deleteSubscriber = (streamManager) => {
-    // let newSubscribers = subscribers;
-    // const index = subscribers.indexOf(streamManager, 0);
-    // if (index > -1) {
-    //   newSubscribers.splice(index, 1);
-    //   console.log('newSubscribers', newSubscribers);
-    //   setSubscribers(newSubscribers);
-    // }
-    setSubscribers(
-      subscribers.filter((subscriber) => {
-        return subscriber !== streamManager;
-      }),
+    setSubscribers((prev) =>
+      prev.filter((subscriber) => subscriber !== streamManager),
     );
   };
 
@@ -105,16 +94,6 @@ export default function VideoInterview() {
   const handleChangeUserName = (e) => {
     setMyUserName(e.target.value);
   };
-
-  // const handleMainVideoStream = (stream) => {
-  //   if (mainStreamManager !== stream) {
-  //     setSubscribers([
-  //       ...subscribers.filter((sub) => sub !== stream),
-  //       mainStreamManager,
-  //     ]);
-  //     setMainStreamManager(stream);
-  //   }
-  // };
 
   const handleVideo = () => {
     publisher.publishVideo(videoOff);
@@ -140,8 +119,6 @@ export default function VideoInterview() {
       });
 
       session.on('streamDestroyed', (event) => {
-        console.log('streamManager', event.stream.streamManager);
-        console.log('subscribers', subscribers);
         deleteSubscriber(event.stream.streamManager);
       });
 
@@ -149,13 +126,15 @@ export default function VideoInterview() {
         console.warn(exception);
       });
 
-      // session.on('publisherStartSpeaking', (event) => {
-      //   console.log(`${event.connection.connectionId} start speaking`);
-      // });
+      session.on('publisherStartSpeaking', (event) => {
+        console.log(
+          'User ' + event.connection.connectionId + ' start speaking',
+        );
+      });
 
-      // session.on('publisherStopSpeaking', (event) => {
-      //   console.log(`${event.connection.connectionId} stop speaking`);
-      // });
+      session.on('publisherStopSpeaking', (event) => {
+        console.log('User ' + event.connection.connectionId + ' stop speaking');
+      });
 
       const sessionConnect = async () => {
         const token = await getToken();
@@ -172,7 +151,6 @@ export default function VideoInterview() {
         });
         session.publish(publisher);
 
-        // setMainStreamManager(publisher);
         setSubscribers((prev) => [...prev, publisher]);
         setPublisher(publisher);
       };
@@ -184,9 +162,8 @@ export default function VideoInterview() {
     <div>
       <Box
         sx={{
-          backgroundColor: 'primary.main',
           width: '100%',
-          height: session ? '84.5vh' : '91vh',
+          height: session ? '83vh' : '90vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -223,9 +200,9 @@ export default function VideoInterview() {
         ) : null}
         {session !== undefined ? (
           <div>
-            <div>
+            {/* <div>
               <h1>{mySessionId}</h1>
-            </div>
+            </div> */}
             {/* 
             {mainStreamManager !== undefined ? (
               <Box>
@@ -235,14 +212,22 @@ export default function VideoInterview() {
                 />
               </Box>
             ) : null} */}
-            <div style={{ display: 'flex' }}>
-              {subscribers.map((sub) => (
-                <UserVideoComponent
-                  key={sub}
-                  streamManager={sub}
-                  main={false}
-                  num={subscribers.length}
-                />
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                margin: 'auto',
+              }}
+            >
+              {subscribers.map((sub, i) => (
+                <div key={i}>
+                  <UserVideoComponent
+                    streamManager={sub}
+                    main={false}
+                    num={subscribers.length}
+                  />
+                </div>
               ))}
             </div>
           </div>
