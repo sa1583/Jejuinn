@@ -1,22 +1,38 @@
 import { Grid, Box } from '@mui/material';
-import JobDetail from '../../components/work/JobDetail';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { workDetail } from '../../api/work';
+import { recruitmentDetail } from '../../api/work';
+import { useParams } from 'react-router-dom';
+import WorkListBox from '../../components/work/WorkListBox';
 
 export default function WorkDetail() {
-  const [work, setWork] = useState([]);
+  const { recruitmentUid } = useParams();
+  const [recruitment, setRecruitment] = useState([]);
+  const [images, setImages] = useState([]);
+  const [works, setWorks] = useState([]);
+  const [geustHouse, setGuestHouse] = useState();
+
+  async function getWork() {
+    const data = await recruitmentDetail(recruitmentUid);
+    setRecruitment(data.data.recruitment);
+    setImages(data.data.images);
+    setWorks(data.data.works);
+  }
 
   useEffect(() => {
-    setWork(workDetail());
+    getWork();
   }, []);
   // 받아온 데이터 피그마에 있는 모양으로 렌더링하기
   // 공고 갯수 만큼 반복하면서 WorkDetailContent 컴포넌트 재사용
+
+  console.log(recruitment);
+  console.log(images);
+  console.log(works);
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-      <h1 style={{ color: '#FF7600' }}>{work}의 직무 공고명</h1>
+      {/* <h1 style={{ color: '#FF7600' }}>{recruitment.recruitment.title}</h1> */}
       <WhiteBox cpn={<HouseInfo />} />
       <h2 style={{ color: '#FF7600' }}>직무별 상세 및 지원</h2>
       <div>
@@ -43,14 +59,7 @@ export default function WorkDetail() {
           </h2>
         </Grid>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <WhiteBox cpn={<JobDetail />} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <WhiteBox cpn={<JobDetail />} />
-          </Grid>
-        </Grid>
+        <WorkListBox works={works} />
 
         <Grid item xs={12} md={4}></Grid>
       </Grid>

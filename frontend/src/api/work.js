@@ -26,7 +26,7 @@ const filteredWorkList = (filterValues) => {
 };
 
 // 구인상세 내용 가져오는 API 요청
-const workDetail = (recruitmentUid) => {
+const recruitmentDetail = (recruitmentUid) => {
   return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
 
   // props 정상적으로 작동하는지 확인해보려고 만든 리턴
@@ -34,4 +34,4 @@ const workDetail = (recruitmentUid) => {
   // return ['work1'];
 };
 
-export { workDetail, allWorkList, filteredWorkList };
+export { recruitmentDetail, allWorkList, filteredWorkList };
