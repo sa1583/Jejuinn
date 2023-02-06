@@ -51,7 +51,7 @@ public class CommentController {
         return ResponseEntity.status(200).build();
     }
 
-    @DeleteMapping("/auth/comment/{uid}")
+    @DeleteMapping("/auth/comments/{uid}")
     @ApiOperation(value = "댓글 삭제", notes = "<strong>댓글의 uid</strong>을 입력받아 댓글을 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),

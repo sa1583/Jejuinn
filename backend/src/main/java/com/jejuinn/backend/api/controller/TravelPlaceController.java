@@ -49,7 +49,7 @@ public class TravelPlaceController {
      * 저장된 모든 관광지의 uid와 위치 정보를 조회합니다.
      * @return
      */
-    @GetMapping("/api/travelPlace/pins")
+    @GetMapping("/api/travel-place/pins")
     @ApiOperation(value = "모든 관광지 위치 보기(지도에 핀 찍을 때)", notes = "관광지의 위치 정보를 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -69,7 +69,7 @@ public class TravelPlaceController {
      * @param pageable
      * @return TravelPlaceListRes : uid, 위도, 경도, 메인 이미지
      */
-    @GetMapping("/api/travelPlace")
+    @GetMapping("/api/travel-places")
     @ApiOperation(value = "관광지 조회(리뷰 최신순)", notes = "<strong>페이지네이션 정보(pageNumber만 사용)를 받아</strong> 15개씩 사진, 카테고리, 관광지명, uid를 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -84,7 +84,7 @@ public class TravelPlaceController {
                                 imageRepository.findImgPathByPostTypeAndPostUid(TRAVEL_PLACE, travelPlace.getUid()))));
     }
 
-    @GetMapping("/api/travelPlace/search/name")
+    @GetMapping("/api/travel-place/search/name")
     @ApiOperation(value = "관광지 이름 검색", notes = "<strong>관광지 이름</strong>을 입력받아 최대 10개의 업체명을 응답합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -97,7 +97,7 @@ public class TravelPlaceController {
         return ResponseEntity.status(200).body(result);
     }
 
-    @PostMapping("/api/travelPlace")
+    @PostMapping("/api/travel-place")
     @ApiOperation(value = "관광지 추가", notes = "<strong>관광지 정보(travel-place)와 사진(images)을 입력받아</strong>을 입력받아 저장합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삽입 성공)"),
@@ -122,7 +122,7 @@ public class TravelPlaceController {
         return ResponseEntity.status(200).build();
     }
 
-    @GetMapping("/api/travelPlace/{travelPlaceUid}")
+    @GetMapping("/api/travel-places/{travelPlaceUid}")
     @ApiOperation(value = "관광지 상세 조회", notes = "<strong>관광지의 uid</strong>를 입력받아 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -140,7 +140,7 @@ public class TravelPlaceController {
                 .body(TravelPlaceDetailRes.of(travelPlace.get(), images));
     }
 
-    @GetMapping("/api/travelPlace/search")
+    @GetMapping("/api/travel-place/search")
     @ApiOperation(value = "관광지 필터 조회", notes = "<strong>관광지의 구분, 지역, 관광지명</strong>을 입력받아 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),

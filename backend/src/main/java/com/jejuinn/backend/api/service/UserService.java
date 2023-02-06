@@ -62,6 +62,7 @@ public class UserService {
         httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
         httpHeaders.add(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken);
 
+        logger.info("토큰 재발급 ");
         logger.info("ACCESS : {}",accessToken);
         logger.info("REFRESH : {}", refreshToken);
         logger.info("user UID : {}", user.getUid());
