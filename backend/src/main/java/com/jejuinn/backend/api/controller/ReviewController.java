@@ -160,32 +160,45 @@ public class ReviewController {
         return ResponseEntity.status(200).build();
     }
 
-
-
     @PutMapping("/auth/travelPlace/reviews/{reviewUid}/like")
-    @ApiOperation(value = "관광지 리뷰 좋아요", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 좋아요 갯수를 증가합니다.")
+    @ApiOperation(value = "관광지 리뷰 좋아요 등록", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 등록합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
+            @ApiResponse(code = 200, message = "OK(좋아요 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(이미 좋아요를 누른 리뷰)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateTravelPlaceReview(@PathVariable Long reviewUid, HttpServletRequest request){
+    public ResponseEntity<?> likeTravelPlaceReview(@PathVariable Long reviewUid, HttpServletRequest request){
         Long userUid = userService.getUserUidFromAccessToken(request);
-        Optional<User> user = userRepository.findById(userUid);
-
-
-//        for (TravelPlaceReview like : user.get().getLikes()) {
-//            if(like.getUid() == reviewUid) {
-//                log.info("이미 좋아요를 누른 리뷰입니다.");
-//                return ResponseEntity.status(400).build();
-//            }
-//        }
-//
-//        travelPlaceReviewService.addLike(reviewUid);
-//        user.get().getLikes().add(TravelPlaceReview.builder()
-//                .uid(reviewUid).build());
-
+        travelPlaceReviewService.addLike(userUid, reviewUid);
         return ResponseEntity.status(200).build();
     }
+
+    @PutMapping("/auth/travelPlace/reviews/{reviewUid}/dislike")
+    @ApiOperation(value = "관광지 리뷰 좋아요 취소", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 취소합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(좋아요 취소 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(이미 좋아요를 취소한 리뷰)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> dislikeTravelPlaceReview(@PathVariable Long reviewUid, HttpServletRequest request){
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        travelPlaceReviewService.deleteLike(userUid, reviewUid);
+        return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/auth/travelPlace/reviews/like")
+    @ApiOperation(value = "좋아요 누른 관광지 리뷰 목록", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 취소합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(좋아요 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(이미 좋아요를 누른 리뷰)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyLikedTravelPlaceReview(@PathVariable Long reviewUid, HttpServletRequest request){
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        User user = userRepository.findById(userUid).get();
+        return ResponseEntity.status(200).build();
+    }
+
+
 
 }
