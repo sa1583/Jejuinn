@@ -47,7 +47,7 @@ public class ReviewController {
     private final NaverService naverService;
     private final S3Uploader s3Uploader;
 
-    @GetMapping("/api/travelPlace/{travelPlaceUid}/reviews")
+    @GetMapping("/api/travel-place/{travelPlaceUid}/reviews")
     @ApiOperation(value = "관광지의 리뷰들 조회", notes = "<strong>관광지의 uid</strong>를 입력받아 리뷰 리스트를 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -68,7 +68,7 @@ public class ReviewController {
     }
 
 
-    @PostMapping("/auth/travelPlace/reviews")
+    @PostMapping("/auth/travel-place/reviews")
     @ApiOperation(value = "관광지 리뷰 추가", notes = "<strong>리뷰의 uid</strong>를 입력받아 리뷰를 정보를 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -96,7 +96,7 @@ public class ReviewController {
         return ResponseEntity.status(200).build();
     }
 
-    @GetMapping("/api/travelPlace/reviews/{reviewUid}")
+    @GetMapping("/api/travel-place/reviews/{reviewUid}")
     @ApiOperation(value = "관광지 리뷰 상세 보기", notes = "<strong>리뷰의 uid</strong>를 입력받아 리뷰를 정보를 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -114,7 +114,7 @@ public class ReviewController {
                                 )));
     }
 
-    @DeleteMapping("/auth/travelPlace/reviews/{reviewUid}")
+    @DeleteMapping("/auth/travel-place/reviews/{reviewUid}")
     @ApiOperation(value = "관광지 리뷰 삭제", notes = "<strong>리뷰의 uid</strong>를 입력받아 리뷰를 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
@@ -143,7 +143,7 @@ public class ReviewController {
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/auth/travelPlace/reviews/{reviewUid}")
+    @PutMapping("/auth/travel-place/reviews/{reviewUid}")
     @ApiOperation(value = "관광지 리뷰 수정", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 리뷰를 수정합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
@@ -178,7 +178,7 @@ public class ReviewController {
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/auth/travelPlace/reviews/{reviewUid}/like")
+    @PutMapping("/auth/travel-place/reviews/{reviewUid}/like")
     @ApiOperation(value = "관광지 리뷰 좋아요 등록", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 등록합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(좋아요 성공)"),
@@ -191,7 +191,7 @@ public class ReviewController {
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/auth/travelPlace/reviews/{reviewUid}/dislike")
+    @PutMapping("/auth/travel-place/reviews/{reviewUid}/dislike")
     @ApiOperation(value = "관광지 리뷰 좋아요 취소", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 취소합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(좋아요 취소 성공)"),
@@ -204,7 +204,7 @@ public class ReviewController {
         return ResponseEntity.status(200).build();
     }
 
-    @GetMapping("/auth/travelPlace/reviews/like")
+    @GetMapping("/auth/travel-place/reviews/like")
     @ApiOperation(value = "좋아요 누른 관광지 리뷰 목록", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 취소합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
