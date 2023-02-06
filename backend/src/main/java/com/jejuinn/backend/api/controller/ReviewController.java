@@ -1,16 +1,12 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.InsertReviewPostReq;
-import com.jejuinn.backend.api.dto.request.InsertTravelPlacePostReq;
 import com.jejuinn.backend.api.dto.request.UpdateReviewPutReq;
 import com.jejuinn.backend.api.dto.response.travelplace.*;
-import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
 import com.jejuinn.backend.api.service.TravelPlaceReviewService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.api.service.social.NaverService;
-import com.jejuinn.backend.db.entity.Image;
-import com.jejuinn.backend.db.entity.TravelPlace;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.*;
@@ -20,8 +16,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,12 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(tags = "관광지 관련 기능 API")
+@Api(tags = "관광지 리뷰 관련 기능 API")
 @RequiredArgsConstructor
 @Slf4j
 public class ReviewController {
@@ -51,6 +46,26 @@ public class ReviewController {
     private final ImageRepository imageRepository;
     private final NaverService naverService;
     private final S3Uploader s3Uploader;
+
+    @GetMapping("/api/travelPlace/{travelPlaceUid}/reviews")
+    @ApiOperation(value = "관광지의 리뷰들 조회", notes = "<strong>관광지의 uid</strong>를 입력받아 리뷰 리스트를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getReviews(@PathVariable Long travelPlaceUid){
+        Optional<List<TravelPlaceReview>> reviews = travelPlaceReviewRepository.findAllByTravelPlaceUid(travelPlaceUid);
+
+        List<ImgUrlAndReviewUid> reviewWithImg = null;
+        if(reviews.isPresent()){
+            reviewWithImg = reviews.get().stream().map(travelPlaceReview
+                            -> ImgUrlAndReviewUid.of(imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()),
+                                    travelPlaceReview.getUid())).collect(Collectors.toList());
+        }
+        return ResponseEntity.status(200).body(reviewWithImg);
+
+    }
 
 
     @PostMapping("/auth/travelPlace/reviews")
@@ -95,7 +110,7 @@ public class ReviewController {
                         .map(review -> ReviewDetailRes.of(review,
                                 userRepository.findNicknameById(review.getUserUid()),
                                 imageRepository.findAllByPostTypeAndPostUid(REVIEW_TYPE, review.getUid()),
-                                commentRepository.findAllByPostTypeAndPostUidOOrderByDateCreatedDesc(REVIEW_TYPE, review.getUid())
+                                commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(REVIEW_TYPE, review.getUid())
                                 )));
     }
 
