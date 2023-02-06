@@ -41,6 +41,7 @@ public class ReviewController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final TravelPlaceReviewService travelPlaceReviewService;
     private final TravelPlaceRepository travelPlaceRepository;
     private final TravelPlaceRepositorySupport travelPlaceRepositorySupport;
@@ -88,12 +89,14 @@ public class ReviewController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getTravelPlaceReview(@PathVariable Long reviewUid){
-        log.info("관광지 정보 상세 조회 review uid : {}", reviewUid);
+        log.info("관광지 리뷰 상세 보기 : {}", reviewUid);
         return ResponseEntity.status(200)
                 .body(travelPlaceReviewRepository.findById(reviewUid)
                         .map(review -> ReviewDetailRes.of(review,
                                 userRepository.findNicknameById(review.getUserUid()),
-                                imageRepository.findAllByPostTypeAndPostUid(REVIEW_TYPE, review.getUid()))));
+                                imageRepository.findAllByPostTypeAndPostUid(REVIEW_TYPE, review.getUid()),
+                                commentRepository.findAllByPostTypeAndPostUidOOrderByDateCreatedDesc(REVIEW_TYPE, review.getUid())
+                                )));
     }
 
     @DeleteMapping("/auth/travelPlace/reviews/{reviewUid}")
@@ -189,14 +192,18 @@ public class ReviewController {
     @GetMapping("/auth/travelPlace/reviews/like")
     @ApiOperation(value = "좋아요 누른 관광지 리뷰 목록", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 취소합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(좋아요 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(이미 좋아요를 누른 리뷰)"),
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(옳바르지 않은 사용자)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyLikedTravelPlaceReview(@PathVariable Long reviewUid, HttpServletRequest request){
+    public ResponseEntity<?> getMyLikedTravelPlaceReview(HttpServletRequest request){
         Long userUid = userService.getUserUidFromAccessToken(request);
         User user = userRepository.findById(userUid).get();
-        return ResponseEntity.status(200).build();
+        List<TravelPlaceReview> reviews = user.getLikes();
+        return ResponseEntity.status(200)
+                .body(reviews.stream().map(travelPlaceReview
+                        -> ReviewSimpleRes.of(travelPlaceReview,
+                        imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()))));
     }
 
 
