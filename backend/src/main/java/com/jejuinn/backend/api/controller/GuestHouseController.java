@@ -69,7 +69,7 @@ public class GuestHouseController {
                         .map(guestHouse ->
                                 GetGuestHouseDetailPostRes.of(guestHouse,
                                         imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()),
-                                        commentRepository.findAllByPostTypeAndPostUidOOrderByDateCreatedDesc(GUEST_TYPE, guestHouse.getUid()))));
+                                        commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(GUEST_TYPE, guestHouse.getUid()))));
     }
 
     @PostMapping("/auth/guest-house")

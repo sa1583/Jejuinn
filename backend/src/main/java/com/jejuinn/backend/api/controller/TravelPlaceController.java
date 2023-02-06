@@ -138,21 +138,9 @@ public class TravelPlaceController {
         if(travelPlace.isEmpty()) return ResponseEntity.status(400).build();
 
         List<Image> images = imageRepository.findAllByPostTypeAndPostUid(TRAVEL_PLACE, travelPlaceUid);
-        Optional<List<TravelPlaceReview>> reviews = travelPlaceReviewRepository.findAllByTravelPlaceUid(travelPlaceUid);
-
-        List<ImgUrlAndReviewUid> reviewWithImg = null;
-        if(reviews.isPresent()){
-            reviewWithImg = reviews.get().stream().map(travelPlaceReview
-                    -> ImgUrlAndReviewUid
-                            .builder()
-                            .imgPath(imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()))
-                            .reviewUid(travelPlaceReview.getUid())
-                            .build())
-                    .collect(Collectors.toList());
-        }
 
         return ResponseEntity.status(200)
-                .body(TravelPlaceDetailRes.of(travelPlace.get(), images, reviewWithImg));
+                .body(TravelPlaceDetailRes.of(travelPlace.get(), images));
     }
 
     @GetMapping("/api/travelPlace/search")

@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(tags = "관광지 관련 기능 API")
+@Api(tags = "관광지 리뷰 관련 기능 API")
 @RequiredArgsConstructor
 @Slf4j
 public class ReviewController {
@@ -51,6 +51,30 @@ public class ReviewController {
     private final ImageRepository imageRepository;
     private final NaverService naverService;
     private final S3Uploader s3Uploader;
+
+    @GetMapping("/api/travelPlace/{travelPlaceUid}/reviews")
+    @ApiOperation(value = "관광지의 리뷰들 조회", notes = "<strong>관광지의 uid</strong>를 입력받아 리뷰 리스트를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getReviews(@PathVariable Long travelPlaceUid){
+        Optional<List<TravelPlaceReview>> reviews = travelPlaceReviewRepository.findAllByTravelPlaceUid(travelPlaceUid);
+
+        List<ImgUrlAndReviewUid> reviewWithImg = null;
+        if(reviews.isPresent()){
+            reviewWithImg = reviews.get().stream().map(travelPlaceReview
+                            -> ImgUrlAndReviewUid
+                            .builder()
+                            .imgPath(imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()))
+                            .reviewUid(travelPlaceReview.getUid())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        return ResponseEntity.status(200).body(reviewWithImg);
+
+    }
 
 
     @PostMapping("/auth/travelPlace/reviews")
@@ -95,7 +119,7 @@ public class ReviewController {
                         .map(review -> ReviewDetailRes.of(review,
                                 userRepository.findNicknameById(review.getUserUid()),
                                 imageRepository.findAllByPostTypeAndPostUid(REVIEW_TYPE, review.getUid()),
-                                commentRepository.findAllByPostTypeAndPostUidOOrderByDateCreatedDesc(REVIEW_TYPE, review.getUid())
+                                commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(REVIEW_TYPE, review.getUid())
                                 )));
     }
 

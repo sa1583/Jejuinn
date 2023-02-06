@@ -12,6 +12,8 @@ public class TravelPlaceListRes {
 
     private Long travelPlaceUid;
 
+    private String travelPlaceName;
+
     private double lat;
 
     private double lng;
@@ -23,6 +25,7 @@ public class TravelPlaceListRes {
     public static TravelPlaceListRes of(TravelPlace travelPlace, String imgPath){
         return TravelPlaceListRes.builder()
                 .travelPlaceUid(travelPlace.getUid())
+                .travelPlaceName(travelPlace.getName())
                 .lat(travelPlace.getLat())
                 .lng(travelPlace.getLng())
                 .category(travelPlace.getCategory())
