@@ -25,6 +25,7 @@ import MyResume from './components/myPage/MyResume';
 import MyGuestHouse from './components/myPage/MyGuestHouse';
 import SignUpBox from './components/signUp/SignUpBox';
 import FindPassword from './routes/logIn/FindPassword';
+import MyApplicantList from './components/myPage/MyApplicantList';
 
 const router = createBrowserRouter([
   {
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
       {
         path: 'mypage/guesthouse',
         element: <MyPage content={<MyGuestHouse />} />,
+      },
+      {
+        path: 'mypage/guesthouse/applicantlist/:id',
+        element: <MyPage content={<MyApplicantList />} />,
       },
       {
         path: 'login/findpassword',

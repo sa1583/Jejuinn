@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import GuestHouseInfo from '../../components/guestHouseDetail/GuestHouseInfo';
 import GuestHouseContent from '../../components/guestHouseDetail/GuestHouseContent';
 import GuestHouseMap from '../../components/guestHouseDetail/GuestHouseMap';
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 
 export default function GuestHouseDetail() {
   // 여기서 useEffect로 url 끝 번호를 따서
@@ -17,25 +20,37 @@ export default function GuestHouseDetail() {
     setId(location.pathname.split('detail/')[1]);
   }, []);
 
-  return (
-    <Box sx={{ paddingY: '2rem', paddingX: '20%' }}>
-      <h1 style={{ color: '#FF7600' }}>| 간장남게스트하우스</h1>
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={4}>
-          <Grid item xs={12}>
-            <WhiteBox cpn={<GuestHouseInfo />} />
-          </Grid>
-          <Grid item xs={12}>
-            <WhiteBox cpn={<GuestHouseMap />} />
-          </Grid>
-        </Grid>
+  const navigate = useNavigate();
+  const goModifiy = () => {
+    navigate('create');
+  };
 
-        <Grid item xs={12} md={8}>
-          <Grid item xs={12}>
-            <WhiteBox cpn={<GuestHouseContent />} />
+  const actions = [
+    { icon: <ModeEditOutlinedIcon />, name: '글 수정', handle: goModifiy },
+  ];
+
+  return (
+    <>
+      <SpeedDialComponent actions={actions} />
+      <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
+        <h1 style={{ color: '#FF7600' }}>| 간장남게스트하우스</h1>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={4}>
+            <Grid item xs={12}>
+              <WhiteBox cpn={<GuestHouseInfo />} />
+            </Grid>
+            <Grid item xs={12}>
+              <WhiteBox cpn={<GuestHouseMap />} />
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} md={8}>
+            <Grid item xs={12}>
+              <WhiteBox cpn={<GuestHouseContent />} />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 }

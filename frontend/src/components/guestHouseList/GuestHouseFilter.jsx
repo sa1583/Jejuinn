@@ -50,7 +50,22 @@ export default function GuestHouseFilter({ getFilter, filter }) {
     '수영장이 있는 게하',
     '뷰가 좋은 게하',
   ];
-  const selectedSections = ['전체', '서귀포시', '제주시', '서울시 엌'];
+  const selectedSections = [
+    '전체',
+    '서귀포시',
+    '제주시',
+    '한경면',
+    '한림읍',
+    '애월읍',
+    '조천읍',
+    '구좌읍',
+    '성산읍',
+    '표선면',
+    '남원읍',
+    '안덕면',
+    '대정읍',
+    '우도면',
+  ];
 
   const [pickForm, setPickForm] = useState(filter);
   const handlePickForm = (e) => {
