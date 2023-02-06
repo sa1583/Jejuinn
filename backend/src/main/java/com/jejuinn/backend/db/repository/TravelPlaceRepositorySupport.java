@@ -23,9 +23,9 @@ public class TravelPlaceRepositorySupport {
         List<TravelPlace> content = jpaQueryFactory
                 .selectFrom(qTravelPlace)
                 .where(
-                        qTravelPlace.category.eq(category),
+                        categoryEq(category),
                         areaNameEq(areaName),
-                        qTravelPlace.name.contains(word)
+                        nameEq(word)
                 )
                 .offset(page.getOffset())
                 .limit(page.getPageSize())
@@ -34,9 +34,9 @@ public class TravelPlaceRepositorySupport {
                 .select(qTravelPlace.count())
                 .from(qTravelPlace)
                 .where(
-                        qTravelPlace.category.eq(category),
+                        categoryEq(category),
                         areaNameEq(areaName),
-                        qTravelPlace.name.contains(word)
+                        nameEq(word)
                 )
                 .fetchOne();
         return new PageImpl<>(content, page, count);
@@ -45,5 +45,15 @@ public class TravelPlaceRepositorySupport {
     private BooleanExpression areaNameEq (String areaName){
         if (areaName.equals("전체")) return null;
         return qTravelPlace.areaName.eq(areaName);
+    }
+
+    private BooleanExpression categoryEq (String category){
+        if (category.equals("전체")) return null;
+        return qTravelPlace.category.eq(category);
+    }
+
+    private BooleanExpression nameEq (String name){
+        if (name == null) return null;
+        return qTravelPlace.name.eq(name);
     }
 }
