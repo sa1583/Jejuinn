@@ -1,7 +1,13 @@
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function NowRecruiting({ nowRecruiting, checked }) {
+  const navigate = useNavigate();
+  const goApplicantList = (id) => {
+    navigate(`applicantlist/${id}`);
+  };
+
   return (
     <Box
       sx={{
@@ -37,6 +43,7 @@ export default function NowRecruiting({ nowRecruiting, checked }) {
           </Button>
         )}
         <Button
+          onClick={() => goApplicantList(nowRecruiting.guestHouseUid)}
           sx={{
             background: '#FF7600',
             borderRadius: '100px',
