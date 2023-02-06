@@ -1,22 +1,28 @@
 import { SectionsContainer, Section } from 'react-fullpage';
 import MainOne from '../../components/main/MainOne';
+import MainTwo from '../../components/main/MainTwo';
+import MainThree from '../../components/main/MainThree';
+import MainFour from '../../components/main/MainFour';
 
 export default function Main() {
   let options = {
-    anchors: ['sectionOne', 'sectionTwo', 'sectionThree'],
+    anchors: ['sectionOne', 'sectionTwo', 'sectionThree', 'sectionFour'],
     navigation: false,
   };
 
   return (
-    <SectionsContainer {...options} style={{ paddingTop: '80' }}>
+    <SectionsContainer {...options}>
       <Section>
         <MainOne />
       </Section>
       <Section>
-        <p>소개 페이지</p>
+        <MainTwo />
       </Section>
       <Section>
-        <p>테마 및 기능 설명</p>
+        <MainThree />
+      </Section>
+      <Section>
+        <MainFour />
       </Section>
     </SectionsContainer>
   );

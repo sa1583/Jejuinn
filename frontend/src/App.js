@@ -112,9 +112,13 @@ const router = createBrowserRouter([
 ]);
 
 const theme = createTheme({
+  typography: {
+    fontFamily: ['SUIT-Regular'],
+  },
   palette: {
     primary: {
       main: '#FF7600',
+      contrastText: '#FFFFFF',
     },
     secondary: {
       main: '#FFFFFF',
