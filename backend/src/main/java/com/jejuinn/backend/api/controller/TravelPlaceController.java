@@ -1,7 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.InsertTravelPlacePostReq;
-import com.jejuinn.backend.api.dto.request.UpdateReviewPutReq;
 import com.jejuinn.backend.api.dto.response.travelplace.*;
 import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
 import com.jejuinn.backend.api.service.TravelPlaceReviewService;
@@ -22,12 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "관광지 관련 기능 API")

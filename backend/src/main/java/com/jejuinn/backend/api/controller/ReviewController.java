@@ -1,16 +1,12 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.InsertReviewPostReq;
-import com.jejuinn.backend.api.dto.request.InsertTravelPlacePostReq;
 import com.jejuinn.backend.api.dto.request.UpdateReviewPutReq;
 import com.jejuinn.backend.api.dto.response.travelplace.*;
-import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
 import com.jejuinn.backend.api.service.TravelPlaceReviewService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.api.service.social.NaverService;
-import com.jejuinn.backend.db.entity.Image;
-import com.jejuinn.backend.db.entity.TravelPlace;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.*;
@@ -20,8 +16,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,12 +60,8 @@ public class ReviewController {
         List<ImgUrlAndReviewUid> reviewWithImg = null;
         if(reviews.isPresent()){
             reviewWithImg = reviews.get().stream().map(travelPlaceReview
-                            -> ImgUrlAndReviewUid
-                            .builder()
-                            .imgPath(imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()))
-                            .reviewUid(travelPlaceReview.getUid())
-                            .build())
-                    .collect(Collectors.toList());
+                            -> ImgUrlAndReviewUid.of(imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()),
+                                    travelPlaceReview.getUid())).collect(Collectors.toList());
         }
         return ResponseEntity.status(200).body(reviewWithImg);
 
