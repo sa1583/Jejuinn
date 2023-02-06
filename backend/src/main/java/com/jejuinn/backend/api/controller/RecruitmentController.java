@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.recruitment.InsertRecruitmentPostReq;
 import com.jejuinn.backend.api.dto.response.recruitment.RecruitmentDetailRes;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkListRes;
@@ -64,8 +65,11 @@ public class RecruitmentController {
     @ApiOperation(value = "모집공고 작성", notes = "모집공고 등록시 그에 대한 모집공고, 직무, 이미지가 저장됩니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(등록 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertRecruitment(@RequestPart List<MultipartFile> images) {
+    public ResponseEntity<?> insertRecruitment(@RequestPart List<MultipartFile> images,
+                                               @RequestPart InsertRecruitmentPostReq insertRecruitmentPostReq) {
         return null;
     }
 }
