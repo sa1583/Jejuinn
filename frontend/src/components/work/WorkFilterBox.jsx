@@ -34,9 +34,9 @@ export default function WorkFilterBox({ onSearch }) {
   const onClick = () => {
     setFilterValue({ name, area, startDate, styleTags });
   };
-  useEffect(() => {
-    onSearch(filterValue);
-  }, [filterValue]);
+  // useEffect(() => {
+  //   onSearch(filterValue);
+  // }, [filterValue]);
 
   const onName = (imp) => {
     setName(imp.target.value);
