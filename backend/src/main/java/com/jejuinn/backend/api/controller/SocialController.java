@@ -140,7 +140,6 @@ public class SocialController {
         User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("GOOGLE").ordinal()).get();
 
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
-        logger.info("GOOGLE_USER_INFO : {}", user);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
