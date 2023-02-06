@@ -25,6 +25,7 @@ import MyResume from './components/myPage/MyResume';
 import MyGuestHouse from './components/myPage/MyGuestHouse';
 import SignUpBox from './components/signUp/SignUpBox';
 import FindPassword from './routes/logIn/FindPassword';
+import VideoInterview from './routes/videoInterview/VideoInterview';
 
 const router = createBrowserRouter([
   {
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: 'login/findpassword',
         element: <FindPassword />,
+      },
+      {
+        path: 'interview',
+        element: <VideoInterview />,
       },
     ],
   },
