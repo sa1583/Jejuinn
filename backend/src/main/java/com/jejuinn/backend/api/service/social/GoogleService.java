@@ -35,7 +35,7 @@ public class GoogleService {
         try {
             // header에 accessToken을 담는다.
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", "Bearer " + access_token);
+            headers.add("Authorization", access_token);
 
             // HttpEntity를 생성해 헤더에 담아 restTemplate으로 구글과 통신한다.
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(headers);
@@ -58,7 +58,9 @@ public class GoogleService {
 
             // email과 nickname 추출
             String email = new ObjectMapper().writeValueAsString(node.get("email"));
+            System.out.println(email);
             String nickname = new ObjectMapper().writeValueAsString(node.get("name"));
+            System.out.println(nickname);
             email = email.substring(1, email.length() - 1);
             nickname = nickname.substring(1, nickname.length() - 1);
 
