@@ -49,9 +49,10 @@ public class StaffRecord {
     @CreationTimestamp
     private LocalDate startDate;
 
-    @UpdateTimestamp
     private LocalDate endDate;
 
     @Column(length = 25)
     private String workName;
+
+    private boolean isWorking;
 }
