@@ -14,9 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @Api(tags = "구인 관련 기능 API")
@@ -57,5 +58,14 @@ public class RecruitmentController {
                                         WorkDetailRes.ofDetail(workRepository.findAllByRecruitmentUid(Long.parseLong(recruitmentUid))),
                                         imageRepository.findAllByPostTypeAndPostUid(RECRUITMENT_TYPE, Long.parseLong(recruitmentUid))
                                 )));
+    }
+
+    @PostMapping("/auth/job-offer")
+    @ApiOperation(value = "모집공고 작성", notes = "모집공고 등록시 그에 대한 모집공고, 직무, 이미지가 저장됩니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(등록 성공)"),
+    })
+    public ResponseEntity<?> insertRecruitment(@RequestPart List<MultipartFile> images) {
+        return null;
     }
 }
