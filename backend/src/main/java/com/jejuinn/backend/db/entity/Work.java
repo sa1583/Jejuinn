@@ -3,6 +3,8 @@ package com.jejuinn.backend.db.entity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,7 +25,7 @@ public class Work {
     @Column(name="uid")
     private Long uid;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruitment_uid")
     private Recruitment recruitment;
 
