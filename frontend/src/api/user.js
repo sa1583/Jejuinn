@@ -25,7 +25,12 @@ const getUserInfo = (token) => {
 };
 
 function loginGoogle(token) {
-  return api.post('/api/users/social/google', {}, getTokenHeader(token));
+  let header = {
+    headers: {
+      access_token: `Bearer ${token}`,
+    },
+  };
+  return api.post('/api/users/social/google', {}, header);
 }
 
 function loginKakao(token) {

@@ -11,16 +11,16 @@ export default function GoogleRedirect() {
 
   async function getGoogleUser() {
     // 인가코드로 구글 서버에서 accessToken 가져오기
-    const access_token = (await getGoogleAccessToken(auth_code)).data.access_token;
-    // 구글 서버에서 받은 accessToken을 우리 BE서버로 보내서 정보 가져오기
-    const data = dispatch(getGoogleToken(access_token));
-    dispatch(getUserInfoByToken(data));
+    const access_token = (await getGoogleAccessToken(auth_code)).data
+      .access_token;
+    const payload = (await dispatch(getGoogleToken(access_token))).payload;
+    console.log('왜 않돼?');
+    dispatch(getUserInfoByToken(payload.accesstoken));
     navigate('/');
   }
   useEffect(() => {
     getGoogleUser();
   });
-
 
   return <div></div>;
 }

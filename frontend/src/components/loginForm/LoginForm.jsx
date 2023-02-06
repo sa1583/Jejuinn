@@ -62,7 +62,7 @@ export default function LoginForm() {
     const body = { email: logInForm.email, password: logInForm.password };
     const data = await dispatch(getNormalAuthToken(body));
     dispatch(getUserInfoByToken(data.payload.accesstoken));
-    return navigate('');
+    navigate('../');
   };
 
   return (
