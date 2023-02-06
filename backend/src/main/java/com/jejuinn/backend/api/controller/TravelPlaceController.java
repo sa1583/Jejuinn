@@ -1,7 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.InsertTravelPlacePostReq;
-import com.jejuinn.backend.api.dto.request.UpdateReviewPutReq;
 import com.jejuinn.backend.api.dto.response.travelplace.*;
 import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
 import com.jejuinn.backend.api.service.TravelPlaceReviewService;
@@ -22,12 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "관광지 관련 기능 API")
@@ -95,6 +92,7 @@ public class TravelPlaceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getTravelPlaceNameList(@RequestParam String query){
+        log.info("관광지 이름 검색 요청");
         NaverLocalSearchRes result = naverService.getNameSearchResult(query);
         return ResponseEntity.status(200).body(result);
     }
@@ -137,21 +135,9 @@ public class TravelPlaceController {
         if(travelPlace.isEmpty()) return ResponseEntity.status(400).build();
 
         List<Image> images = imageRepository.findAllByPostTypeAndPostUid(TRAVEL_PLACE, travelPlaceUid);
-        Optional<List<TravelPlaceReview>> reviews = travelPlaceReviewRepository.findAllByTravelPlaceUid(travelPlaceUid);
-
-        List<ImgUrlAndReviewUid> reviewWithImg = null;
-        if(reviews.isPresent()){
-            reviewWithImg = reviews.get().stream().map(travelPlaceReview
-                    -> ImgUrlAndReviewUid
-                            .builder()
-                            .imgPath(imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()))
-                            .reviewUid(travelPlaceReview.getUid())
-                            .build())
-                    .collect(Collectors.toList());
-        }
 
         return ResponseEntity.status(200)
-                .body(TravelPlaceDetailRes.of(travelPlace.get(), images, reviewWithImg));
+                .body(TravelPlaceDetailRes.of(travelPlace.get(), images));
     }
 
     @GetMapping("/api/travelPlace/search")

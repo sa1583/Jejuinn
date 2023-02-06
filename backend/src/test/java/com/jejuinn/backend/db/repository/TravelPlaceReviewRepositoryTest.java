@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
 class TravelPlaceReviewRepositoryTest {
     @Autowired UserRepository userRepository;
     @Autowired TravelPlaceReviewRepository travelPlaceReviewRepository;
