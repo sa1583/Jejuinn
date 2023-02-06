@@ -42,8 +42,10 @@ export const getGoogleToken = createAsyncThunk(
   'user/getGoogleToken',
   async (token, thunkAPI) => {
     try {
-      const { data } = (await loginGoogle(token)).headers;
-      return data;
+      let { accesstoken, refreshtoken } = (await loginGoogle(token)).headers;
+      accesstoken = accesstoken.split(' ')[1];
+      refreshtoken = refreshtoken.split(' ')[1];
+      return { accesstoken, refreshtoken };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
@@ -144,6 +146,14 @@ const userSlice = createSlice({
       .addCase(getKakaoToken.rejected, () => {
         alert('실패!');
       })
+      .addCase(getGoogleToken.fulfilled, (state, action) => {
+        // console.log(action);
+        state.accessToken = action.payload.accesstoken;
+        state.refreshToken = action.payload.refreshtoken;
+      })
+      .addCase(getGoogleToken.rejected, () => {
+        alert('실패!');
+      })
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
@@ -158,4 +168,5 @@ const userSlice = createSlice({
 export default userSlice;
 export const selectIsLogin = (state) => state.user.isLogin;
 export const selectUserInfo = (state) => state.user.userInfo;
+export const selectAccessToken = (state) => state.user.accessToken;
 export const { logout } = userSlice.actions;

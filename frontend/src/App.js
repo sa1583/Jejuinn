@@ -74,7 +74,7 @@ const router = createBrowserRouter([
         element: <WorkList />,
       },
       {
-        path: 'worklist/detail',
+        path: 'worklist/detail/:workid',
         element: <WorkDetail />,
       },
       {

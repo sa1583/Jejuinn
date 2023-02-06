@@ -8,16 +8,18 @@ import { useEffect, useState } from 'react';
 export default function WorkList() {
   const [works, setWorks] = useState([]);
 
-  const onSearch = (imp) => {
-    console.log('필터 조건드류ㅠㅠ');
-    console.log(imp);
-    console.log('필터 조건드류ㅠㅠ');
+  async function getWorks() {
+    const data = await allWorkList();
 
+    setWorks(data.data.content);
+  }
+
+  const onSearch = (imp) => {
     setWorks(filteredWorkList(imp));
   };
 
   useEffect(() => {
-    setWorks(allWorkList());
+    getWorks();
   }, []);
 
   return (
