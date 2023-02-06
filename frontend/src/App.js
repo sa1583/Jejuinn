@@ -25,6 +25,8 @@ import MyResume from './components/myPage/MyResume';
 import MyGuestHouse from './components/myPage/MyGuestHouse';
 import SignUpBox from './components/signUp/SignUpBox';
 import FindPassword from './routes/logIn/FindPassword';
+import MyApplicantList from './components/myPage/MyApplicantList';
+import VideoInterview from './routes/videoInterview/VideoInterview';
 
 const router = createBrowserRouter([
   {
@@ -72,7 +74,7 @@ const router = createBrowserRouter([
         element: <WorkList />,
       },
       {
-        path: 'worklist/detail',
+        path: 'worklist/detail/:workid',
         element: <WorkDetail />,
       },
       {
@@ -104,17 +106,29 @@ const router = createBrowserRouter([
         element: <MyPage content={<MyGuestHouse />} />,
       },
       {
+        path: 'mypage/guesthouse/applicantlist/:id',
+        element: <MyPage content={<MyApplicantList />} />,
+      },
+      {
         path: 'login/findpassword',
         element: <FindPassword />,
+      },
+      {
+        path: 'interview',
+        element: <VideoInterview />,
       },
     ],
   },
 ]);
 
 const theme = createTheme({
+  typography: {
+    fontFamily: ['SUIT-Regular'],
+  },
   palette: {
     primary: {
       main: '#FF7600',
+      contrastText: '#FFFFFF',
     },
     secondary: {
       main: '#FFFFFF',

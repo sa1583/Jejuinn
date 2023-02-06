@@ -102,7 +102,6 @@ export default function MyGuestHouse() {
             </Box>
           </Box>
         </Box>
-        <br />
         <Box>
           <p style={{ fontSize: '1.3rem' }}>내 게스트하우스</p>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}>

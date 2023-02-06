@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
 import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
@@ -12,7 +12,8 @@ import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // import { getReviews } from '../../api/staffPick';
-// import { getSpots } from '../../api/staffPick';
+import { getSpotsPin, getSpotsImg, getSpotInfo } from '../../api/staffPick';
+import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
 export default function StaffPick() {
   const navigate = useNavigate();
 
@@ -26,40 +27,17 @@ export default function StaffPick() {
     setFilter(pickForm);
     // 여기엔 이제 api 통신
   };
-  const [selectedSpot, setSelectedSpot] = useState({ uid: '', name: '' });
 
-  const [spotReviews, setSpotReviews] = useState([]);
-
-  // 클릭한 명소의 uid, name을 받고
-  // uid를 이용해 해당 명소의 리뷰 리스트를 받아오는 로직
-  // 나중에 fetch 우리서버랑 통신으로 바꿔줘야함
-  //
-  const selectSpot = (e) => {
-    const uid = e.target.id;
-    const name = e.target.name;
-    setSelectedSpot({ uid, name });
-    fetch(`dataPractice/reviews_${uid}.json`)
-      .then((res) => res.json())
-      .then((json) => setSpotReviews(json));
-    // 위에 패치 지우고 아래 주석 해제  -> 전체함수 selectSpot 에 async 붙여줘야함
-    // const reviews = await getReviews()
-    // setSpotReviews(reviews)
-  };
-
-  const deleteSelected = () => {
-    setSelectedSpot({ uid: '', name: '' });
-    setSpotReviews([]);
-  };
   const goCreate = () => {
     navigate('create');
   };
 
   const testapi = () => {
-    const data = { msg: 'aaaa' };
+    // const data = { msg: 'aaaa' };
     axios({
       method: 'post',
-      url: 'http://i8a603.p.ssafy.io:8080/api/test3',
-      data,
+      url: 'http://i8a603.p.ssafy.io:8080/api/spot/1',
+      // data,
     }).then(console.log);
   };
 
@@ -68,67 +46,124 @@ export default function StaffPick() {
     { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
 
-  const spots = [
-    { id: 1, lat: 33.4485, lng: 126.5631 },
-    { id: 2, lat: 33.478, lng: 126.4948 },
-    { id: 3, lat: 33.4664, lng: 126.6694 },
-    { id: 4, lat: 33.2856, lng: 126.4449 },
-  ];
+  // const spots = [
+  //   { travelPlaceUid: 1, lat: 33.4485, lng: 126.5631 },
+  //   { travelPlaceUid: 2, lat: 33.478, lng: 126.4948 },
+  //   { travelPlaceUid: 3, lat: 33.4664, lng: 126.6694 },
+  //   { travelPlaceUid: 4, lat: 33.2856, lng: 126.4449 },
+  // ];
 
   // spots 정보 저장할 함수
-  // const [spots, setSpots] = useState([])
+  const [spots, setSpots] = useState([]);
   /**
    * 놀고먹기 처음 들어갔을 때 전체 명소 리스트 받는 함수
    */
-  // const getSpotsList = async () => {
-  //   const SpotsList = await getSpots();
-  //   setSpots(SpotsList)
-  // };
+  const getSpotsPins = async () => {
+    const SpotsList = (await getSpotsPin()).data;
+    console.log(SpotsList);
+    setSpots(SpotsList);
+  };
+
+  // 명소 이미지 리스트 받아오기
+  const [spotImgs, setSpotImgs] = useState([]);
+
+  const getSpotsImgs = async () => {
+    const data = (await getSpotsImg()).data.content;
+    setSpotImgs(data);
+    console.log(data);
+  };
+
+  // 명소 정보 받아오기
+  const [selectedSpot, setSelectedSpot] = useState(false);
+
+  const [spotReviews, setSpotReviews] = useState([]);
+
+  // 클릭한 명소의 uid, name을 받고
+  // uid를 이용해 해당 명소의 리뷰 리스트를 받아오는 로직
+  // 나중에 fetch 우리서버랑 통신으로 바꿔줘야함
+  //
+  const selectSpot = async (e) => {
+    const data = (await getSpotInfo(e.target.id)).data.travelPlace;
+    console.log(data);
+    setSelectedSpot(data);
+
+    // const uid = e.target.id;
+    // const name = e.target.name;
+    // setSelectedSpot({ uid, name });
+    // fetch(`dataPractice/reviews_${uid}.json`)
+    //   .then((res) => res.json())
+    //   .then((json) => setSpotReviews(json));
+    // 위에 패치 지우고 아래 주석 해제  -> 전체함수 selectSpot 에 async 붙여줘야함
+    // const reviews = await getReviews()
+    // setSpotReviews(reviews)
+  };
+
+  const deleteSelected = () => {
+    setSelectedSpot(false);
+    setSpotReviews([]);
+  };
+
+  const handlePinClick = (marker) => {
+    console.log(marker.id);
+  };
+
+  useEffect(() => {
+    getSpotsPins();
+  }, []);
+  useEffect(() => {
+    getSpotsImgs();
+  }, []);
 
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
-    <div>
+    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <SpeedDialComponent actions={actions} />
 
-      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={4}>
+          <WhiteBox
+            cpn={<StaffPickFilter getFilter={getFilter} filter={filter} />}
+          />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <WhiteBox
+            cpn={<MapApi spots={spots} handlePinClick={handlePinClick} />}
+          />
+        </Grid>
+
+        {selectedSpot && (
+          <Grid item xs={4}>
+            <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={selectedSpot} />} />
+          </Grid>
+        )}
+        {selectedSpot && (
+          <Grid item xs={8}>
             <WhiteBox
-              cpn={<StaffPickFilter getFilter={getFilter} filter={filter} />}
+              cpn={
+                <StaffPickReviews
+                  spotReviews={spotReviews}
+                  selectedSpot={selectedSpot}
+                  deleteSelected={deleteSelected}
+                />
+              }
             />
           </Grid>
-          <Grid item xs={12} md={8}>
-            <WhiteBox cpn={<MapApi spots={spots} />} />
-          </Grid>
-
-          {/* <Box
-            component={Grid}
-            item
-            md={4}
-            display={{ xs: 'none', md: 'block' }}
-          >
-            <WhiteBox cpn={<StaffPickRank />} />
-          </Box> */}
-          {/* <Grid item xs={12} md={8}> */}
+        )}
+        {!selectedSpot && (
           <Grid item xs={12} md={12}>
-            {spotReviews.length > 0 && (
-              <WhiteBox
-                cpn={
-                  <StaffPickReviews
-                    spotReviews={spotReviews}
-                    selectedSpot={selectedSpot}
-                    deleteSelected={deleteSelected}
-                  />
-                }
-              />
-            )}
-            {spotReviews.length === 0 && (
-              <WhiteBox cpn={<StaffPickSpotList selectSpot={selectSpot} />} />
-            )}
+            <WhiteBox
+              cpn={
+                <StaffPickSpotList
+                  selectSpot={selectSpot}
+                  spotImgs={spotImgs}
+                />
+              }
+            />
           </Grid>
-          {/* </Grid> */}
-        </Grid>
-      </Box>
-    </div>
+        )}
+
+        {/* </Grid> */}
+      </Grid>
+    </Box>
   );
 }

@@ -2,6 +2,7 @@ import { Box, Grid, styled, Button } from '@mui/material';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import Profile from '../../components/myPage/Profile';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const CustomButton = styled(Button)({
   border: '1px solid #FF7600',
@@ -19,13 +20,16 @@ const CustomButton = styled(Button)({
 
 export default function MyPage({ content }) {
   const comp = content;
+  const [selectedButton, setSelectedButton] = useState('main');
 
   const navigate = useNavigate();
   const onApply = () => {
     navigate('/mypage/resume');
+    setSelectedButton('apply');
   };
   const onGuestHouse = () => {
     navigate('/mypage/guesthouse');
+    setSelectedButton('guestHouse');
   };
 
   return (

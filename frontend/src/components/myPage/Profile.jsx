@@ -1,4 +1,4 @@
-import { Box, styled, Button } from '@mui/material';
+import { Box, styled, Button, Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { images } from '../../assets/images';
 
@@ -22,21 +22,23 @@ export default function Profile() {
   return (
     <Box
       sx={{
-        paddingY: '3rem',
+        paddingTop: '1rem',
+        paddingBottom: '3rem',
         paddingX: '10%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      <h2 onClick={onMypage}>장정민</h2>
-      <img
+      <h1 onClick={onMypage}>장정민</h1>
+      <Avatar
         src={images.sample_profile}
         alt="프로필 사진 들어가용~"
         style={{
-          marginBottom: '16px',
-          height: '100%',
-          borderRadius: '50%',
+          width: '20rem',
+          height: '20rem',
+          marginBottom: '20px',
           cursor: 'pointer',
         }}
       />

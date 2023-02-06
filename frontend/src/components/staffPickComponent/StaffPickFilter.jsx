@@ -38,7 +38,7 @@ const CustomButton = styled(Button)({
   height: '3rem',
   color: 'white',
   '&:hover': {
-    backgroundColor: '#006992',
+    backgroundColor: '#FF7600',
   },
 });
 
