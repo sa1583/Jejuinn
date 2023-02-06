@@ -57,6 +57,7 @@ public class GoogleService {
             node = ((ObjectNode) newNode).put("Authentication", "Successful");
 
             // email과 nickname 추출
+            System.out.println(node);
             String email = new ObjectMapper().writeValueAsString(node.get("email"));
             System.out.println(email);
             String nickname = new ObjectMapper().writeValueAsString(node.get("name"));
