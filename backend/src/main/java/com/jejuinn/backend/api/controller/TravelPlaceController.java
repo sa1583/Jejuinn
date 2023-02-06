@@ -95,6 +95,7 @@ public class TravelPlaceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getTravelPlaceNameList(@RequestParam String query){
+        log.info("관광지 이름 검색 요청");
         NaverLocalSearchRes result = naverService.getNameSearchResult(query);
         return ResponseEntity.status(200).body(result);
     }
