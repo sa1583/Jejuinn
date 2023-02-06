@@ -37,6 +37,7 @@ public class WorkListRes {
                 .gender(work.getGender())
                 .minWorkPeriod(work.getMinWorkPeriod())
                 .workDays(work.getWorkDays())
+                .workTime(work.getWorkTime())
                 .daysOff(work.getDaysOff())
                 .salary(work.getSalary())
                 .build();
