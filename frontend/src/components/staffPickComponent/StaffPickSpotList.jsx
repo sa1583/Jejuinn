@@ -3,26 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { images } from '../../assets/images';
+import { useNavigate } from 'react-router-dom';
 // import { data } from '../../practiceApi/staffPickList';
 // import { useNavigate } from 'react-router-dom';
 // import { getSpots } from '../../api/staffPick';
 // import { useState } from 'react';
 
 export default function StaffPickSpotList({ selectSpot, spotImgs }) {
-  // const navigate = useNavigate();
-  // const goDetail = (id) => {
-  //   navigate(`detail/${id}`);
-  // };
-
-  // 나중에 여기서 받아온 data를 map 돌려서 리스트 출력해야함
-
-  // useEffect(() => {}, [spotImgs]);
-  console.log(spotImgs);
-  // const [imgs, setImgs] = useState([])
-
-  // useEffect(()=> {
-  //   setImgs(spotImgs)
-  // },[spotImgs])
+  const navigate = useNavigate();
+  const goReviews = (e) => {
+    navigate(`/staffpicklist/${e.target.id}`);
+  };
 
   return (
     <Box sx={{ padding: '3vh' }}>
@@ -39,7 +30,9 @@ export default function StaffPickSpotList({ selectSpot, spotImgs }) {
                 alt="관광지"
                 loading="lazy"
                 id={item.travelPlaceUid}
-                onClick={selectSpot}
+                onClick={(e) => {
+                  goReviews(e);
+                }}
                 // name={item.name}
               />
               {/* <ImageListItemBar title={item.name} /> */}

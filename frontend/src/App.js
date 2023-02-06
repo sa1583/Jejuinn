@@ -82,6 +82,10 @@ const router = createBrowserRouter([
         element: <StaffPick />,
       },
       {
+        path: 'staffpicklist/:spotid',
+        element: <StaffPick />,
+      },
+      {
         path: 'staffpicklist/detail/:id',
         element: <StaffPickDetail />,
       },

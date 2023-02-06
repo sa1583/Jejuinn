@@ -9,13 +9,16 @@ import { Box } from '@mui/system';
 import StaffPickReviews from '../../components/staffPickComponent/StaffPickReviews';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // import { getReviews } from '../../api/staffPick';
 import { getSpotsPin, getSpotsImg, getSpotInfo } from '../../api/staffPick';
 import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
 export default function StaffPick() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageId = location.pathname.split('staffpicklist/')[1];
+  console.log(pageId);
 
   const [filter, setFilter] = useState({
     type: '전체',
@@ -60,7 +63,6 @@ export default function StaffPick() {
    */
   const getSpotsPins = async () => {
     const SpotsList = (await getSpotsPin()).data;
-    console.log(SpotsList);
     setSpots(SpotsList);
   };
 
@@ -70,21 +72,17 @@ export default function StaffPick() {
   const getSpotsImgs = async () => {
     const data = (await getSpotsImg()).data.content;
     setSpotImgs(data);
-    console.log(data);
   };
 
   // 명소 정보 받아오기
   const [selectedSpot, setSelectedSpot] = useState(false);
 
-  const [spotReviews, setSpotReviews] = useState([]);
-
   // 클릭한 명소의 uid, name을 받고
   // uid를 이용해 해당 명소의 리뷰 리스트를 받아오는 로직
   // 나중에 fetch 우리서버랑 통신으로 바꿔줘야함
   //
-  const selectSpot = async (e) => {
-    const data = (await getSpotInfo(e.target.id)).data.travelPlace;
-    console.log(data);
+  const selectSpot = async () => {
+    const data = (await getSpotInfo(pageId)).data.travelPlace;
     setSelectedSpot(data);
 
     // const uid = e.target.id;
@@ -98,21 +96,27 @@ export default function StaffPick() {
     // setSpotReviews(reviews)
   };
 
-  const deleteSelected = () => {
-    setSelectedSpot(false);
-    setSpotReviews([]);
-  };
-
+  // 클릭한 마커의 명소 디테일 보기
   const handlePinClick = (marker) => {
-    console.log(marker.id);
+    navigate(`/staffpicklist/${marker.id}`);
   };
 
   useEffect(() => {
-    getSpotsPins();
-  }, []);
+    if (!pageId) {
+      getSpotsPins();
+    }
+  }, [pageId]);
   useEffect(() => {
-    getSpotsImgs();
-  }, []);
+    if (!pageId) {
+      getSpotsImgs();
+    }
+  }, [pageId]);
+
+  useEffect(() => {
+    if (pageId) {
+      selectSpot();
+    }
+  }, [pageId]);
 
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
@@ -131,25 +135,17 @@ export default function StaffPick() {
           />
         </Grid>
 
-        {selectedSpot && (
+        {pageId && (
           <Grid item xs={4}>
             <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={selectedSpot} />} />
           </Grid>
         )}
-        {selectedSpot && (
+        {pageId && (
           <Grid item xs={8}>
-            <WhiteBox
-              cpn={
-                <StaffPickReviews
-                  spotReviews={spotReviews}
-                  selectedSpot={selectedSpot}
-                  deleteSelected={deleteSelected}
-                />
-              }
-            />
+            <WhiteBox cpn={<StaffPickReviews spotname={selectedSpot.name} />} />
           </Grid>
         )}
-        {!selectedSpot && (
+        {!pageId && (
           <Grid item xs={12} md={12}>
             <WhiteBox
               cpn={
