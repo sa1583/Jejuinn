@@ -1,10 +1,12 @@
 package com.jejuinn.backend.api.dto.search;
 
+import com.jejuinn.backend.util.geotrans.GeoNewTrans;
 import com.jejuinn.backend.util.geotrans.GeoTrans;
 import com.jejuinn.backend.util.geotrans.GeoTransPoint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class NaverLocalSearchRes {
     @NoArgsConstructor
     @AllArgsConstructor
     @Slf4j
+    @ToString
     public static class SearchLocalItem{
         private String title;  // 검색 결과 업체, 기관명을 나타낸다.
         private String link;  // 검색 결과 업체, 기관의 상세 정보가 제공되는 네이버 페이지의 하이퍼텍스트 link를 나타낸다.
@@ -38,11 +41,14 @@ public class NaverLocalSearchRes {
             log.info("좌표 변환 / KATEC -> 위도경도");
             double coorX = Double.parseDouble(this.mapx+"");
             double coorY = Double.parseDouble(this.mapy+"");
+            GeoNewTrans trans = new GeoNewTrans(0, coorX, coorY);
 
-            GeoTransPoint oKA = new GeoTransPoint(coorX, coorY);
-            GeoTransPoint oGeo = GeoTrans.convert(GeoTrans.KATEC, GeoTrans.GEO, oKA);
-            this.mapx = oGeo.getX();
-            this.mapy = oGeo.getY();
+//            GeoTransPoint oKA = new GeoTransPoint(coorX, coorY);
+//            GeoTransPoint oGeo = GeoTrans.convert(GeoTrans.KATEC, GeoTrans.GEO, oKA);
+//            this.mapx = oGeo.getX();
+//            this.mapy = oGeo.getY();
+            this.mapx = trans.outpt_y;
+            this.mapy = trans.outpt_x;
         }
     }
 }

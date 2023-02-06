@@ -1,6 +1,5 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.dto.request.InsertCommentPostReq;
 import com.jejuinn.backend.api.dto.request.InsertGuestHousePostReq;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
@@ -70,7 +69,7 @@ public class GuestHouseController {
                         .map(guestHouse ->
                                 GetGuestHouseDetailPostRes.of(guestHouse,
                                         imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()),
-                                        commentRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()))));
+                                        commentRepository.findAllByPostTypeAndPostUidOOrderByDateCreatedDesc(GUEST_TYPE, guestHouse.getUid()))));
     }
 
     @PostMapping("/auth/guest-house")
