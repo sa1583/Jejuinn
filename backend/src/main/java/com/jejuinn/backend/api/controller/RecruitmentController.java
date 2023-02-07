@@ -61,13 +61,13 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQEUST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getRecruitmentDetail(@PathVariable String recruitmentUid) {
+    public ResponseEntity<?> getRecruitmentDetail(@PathVariable Long recruitmentUid) {
         return ResponseEntity.status(200)
-                .body(recruitmentRepository.findById(Long.parseLong(recruitmentUid))
+                .body(recruitmentRepository.findById(recruitmentUid)
                         .map(recruitment ->
                                 RecruitmentDetailRes.of(recruitment,
-                                        WorkDetailRes.ofDetail(workRepository.findAllByRecruitmentUid(Long.parseLong(recruitmentUid))),
-                                        imageRepository.findAllByPostTypeAndPostUid(RECRUITMENT_TYPE, Long.parseLong(recruitmentUid))
+                                        WorkDetailRes.ofDetail(workRepository.findAllByRecruitmentUid(recruitmentUid)),
+                                        imageRepository.findAllByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid)
                                 )));
     }
 
@@ -102,9 +102,9 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteRecruitment(@PathVariable String recruitmentUid) {
-        Optional<List<Long>> list = imageRepository.findUidByPostTypeAndPostUid(RECRUITMENT_TYPE, Long.parseLong(recruitmentUid));
-        recruitmentRepository.deleteById(Long.parseLong(recruitmentUid));
+    public ResponseEntity<?> deleteRecruitment(@PathVariable Long recruitmentUid) {
+        Optional<List<Long>> list = imageRepository.findUidByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid);
+        recruitmentRepository.deleteById(recruitmentUid);
         for(Long uid : list.get()) {
             try {
                 s3Uploader.delete(uid);
@@ -124,9 +124,9 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyRecruitment(@PathVariable String guestHouseUid) {
+    public ResponseEntity<?> getMyRecruitment(@PathVariable Long guestHouseUid) {
         return ResponseEntity.status(200)
-                .body(recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(Long.parseLong(guestHouseUid))
+                .body(recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(guestHouseUid)
                         .stream().map(recruitment -> MyRecruitmentListRes.of(recruitment))
                         .collect(Collectors.toList()));
     }
