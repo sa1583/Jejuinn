@@ -39,7 +39,7 @@ export default function VideoInterviewHeader({
         alignItems: 'center',
       }}
     >
-      <Box width="80%" display="flex" sx={{ justifyContent: 'center' }}>
+      <Box width="95%" display="flex" sx={{ justifyContent: 'center' }}>
         <Button sx={buttonOption} onClick={handleVideo}>
           {!videoOff ? (
             <VideocamIcon />
@@ -51,16 +51,18 @@ export default function VideoInterviewHeader({
           {!audioOff ? <MicIcon /> : <MicOffIcon sx={{ color: 'red' }} />}
         </Button>
       </Box>
-      <Button
-        sx={{
-          fontSize: 18,
-          backgroundColor: 'red',
-          color: 'white',
-        }}
-        onClick={leaveSession}
-      >
-        나가기
-      </Button>
+      <Box>
+        <Button
+          sx={{
+            fontSize: 18,
+            backgroundColor: 'red',
+            color: 'white',
+          }}
+          onClick={leaveSession}
+        >
+          나가기
+        </Button>
+      </Box>
     </Box>
   );
 }
