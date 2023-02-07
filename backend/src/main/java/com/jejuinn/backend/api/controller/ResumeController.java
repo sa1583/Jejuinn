@@ -41,8 +41,8 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteResumeInfo(@PathVariable String resumeInfoUid) {
-        resumeInfoRepository.deleteById(Long.parseLong(resumeInfoUid));
+    public ResponseEntity<?> deleteResumeInfo(@PathVariable Long resumeInfoUid) {
+        resumeInfoRepository.deleteById(resumeInfoUid);
         return ResponseEntity.status(200).build();
     }
 
@@ -53,9 +53,9 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyResumeInfo(@PathVariable String userUid) {
+    public ResponseEntity<?> getMyResumeInfo(@PathVariable Long userUid) {
         return ResponseEntity.status(200)
-                .body(resumeInfoRepository.findByUserUidAndIsDeletedFalse(Long.parseLong(userUid))
+                .body(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid)
                         .map(resumeInfo -> ResumeInfoDetailRes.of(resumeInfo)));
     }
 }
