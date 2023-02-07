@@ -192,8 +192,8 @@ public class UserController {
             @ApiResponse(code = 400, message = "BAD REQUEST(로그아웃 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> logout(@PathVariable String uid){
-        userRepositorySupport.saveRefreshToken(Long.parseLong(uid), null);
+    public ResponseEntity<?> logout(@PathVariable Long uid){
+        userRepositorySupport.saveRefreshToken(uid, null);
         return ResponseEntity.status(200).build();
     }
 

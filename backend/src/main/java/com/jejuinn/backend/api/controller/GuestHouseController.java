@@ -63,9 +63,9 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getGuestHouseDetail(@PathVariable String guestHouseUid){
+    public ResponseEntity<?> getGuestHouseDetail(@PathVariable Long guestHouseUid){
         return ResponseEntity.status(200)
-                .body(guestHouseRepository.findById(Long.parseLong(guestHouseUid))
+                .body(guestHouseRepository.findById(guestHouseUid)
                         .map(guestHouse ->
                                 GetGuestHouseDetailPostRes.of(guestHouse,
                                         imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()),
@@ -150,8 +150,8 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST(수정 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteGuestHouse(@PathVariable String guestHouseUid){
-        guestHouseRepository.deleteById(Long.parseLong(guestHouseUid));
+    public ResponseEntity<?> deleteGuestHouse(@PathVariable Long guestHouseUid){
+        guestHouseRepository.deleteById(guestHouseUid);
         return ResponseEntity.status(200).build();
     }
 //    @PostConstruct
