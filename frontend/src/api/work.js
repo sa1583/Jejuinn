@@ -1,6 +1,13 @@
 import { apiInstance } from './index';
+import { useSelector } from 'react-redux';
+import { selectAccessToken, selectUserInfo } from '../store/user';
 
 const api = apiInstance();
+
+const Access_token = () => {
+  const token = useSelector(selectAccessToken);
+  return token;
+};
 
 const allWorkList = () => {
   return api.get('/api/job-offer');
@@ -14,13 +21,19 @@ const filteredWorkList = (filterValues) => {
     },
   };
   return api.post('/api/job-offer/filter', config, {});
-  // props 정상적으로 작동하는지 확인해보려고 만든 리턴
-  // API 연결 후 위의 리턴 주석 해지
-  // return [['work1'], ['work5']];
 };
 
 const recruitmentDetail = (recruitmentUid) => {
   return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
 };
 
-export { recruitmentDetail, allWorkList, filteredWorkList };
+const writeRecruitment = (body) => {
+  const config = {
+    headers: {
+      access_token: `Bearer ${Access_token()}`,
+    },
+  };
+  return api.post('/auth/job-offer', body, config);
+};
+
+export { recruitmentDetail, allWorkList, filteredWorkList, writeRecruitment };

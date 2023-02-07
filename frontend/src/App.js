@@ -6,6 +6,7 @@ import SignUp from './routes/signUp/SignUp';
 import GuestHouse from './routes/guestHouse/GuestHouse';
 import GuestHouseDetail from './routes/guestHouseDetail/GuestHouseDetail';
 import WorkList from './routes/work/WorkList';
+import RecruitmentWrite from './components/work/RecruitmentWrite';
 import RecruitmentDetail from './routes/work/RecruitmentDetail';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';

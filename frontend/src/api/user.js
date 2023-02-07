@@ -76,4 +76,5 @@ export {
   checkEmail,
   getPasswordCode,
   signUpApi,
+  getTokenHeader,
 };

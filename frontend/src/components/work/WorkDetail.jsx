@@ -1,11 +1,12 @@
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function JobDetail({ work }) {
+export default function WorkDetail({ work }) {
   const navigate = useNavigate();
   const onRecruitmentDetail = () => {
     navigate(`/worklist/detail/${work.recruitmentUid}`);
   };
+  console.log(work);
   return (
     <>
       <Box
@@ -13,12 +14,47 @@ export default function JobDetail({ work }) {
         onClick={onRecruitmentDetail}
       >
         <h2 style={{ color: '#FF7600' }}>{work.workName}</h2>
-        <div>
-          daysOff: {work.daysOff}, gender: {work.gender}, intake:{work.intake},
-          minWorkPeriod: {work.minWorkPeriod},recruitmentUid:{' '}
-          {work.recruitmentUid}, salary: {work.salary}, workDays:{' '}
-          {work.workDays}, workName:{work.workName}, workTime: {work.workTime}
-        </div>
+        <Grid container>
+          <Grid item md={6}>
+            근무방식
+          </Grid>
+          <Grid item md={6}>
+            {work.workDays}일 근무
+            <br />
+            {work.daysOff}일 휴무
+          </Grid>
+          <Grid item md={6}>
+            성별
+          </Grid>
+          <Grid item md={6}>
+            {work.gender}
+          </Grid>
+          <Grid item md={6}>
+            인원
+          </Grid>
+          <Grid item md={6}>
+            {work.intake}
+          </Grid>
+          <Grid item md={6}>
+            근무시간
+          </Grid>
+          <Grid item md={6}>
+            {work.workTime}
+          </Grid>
+          <Grid item md={6}>
+            급여
+          </Grid>
+          <Grid item md={6}>
+            {work.salary}
+          </Grid>
+          <Grid item md={6}>
+            최소근무기간
+          </Grid>
+          <Grid item md={6}>
+            {work.minWorkPeriod}개월
+          </Grid>
+        </Grid>
+        <div></div>
       </Box>
     </>
   );
