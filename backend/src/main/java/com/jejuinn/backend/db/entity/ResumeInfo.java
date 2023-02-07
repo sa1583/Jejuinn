@@ -53,7 +53,7 @@ public class ResumeInfo {
 
     @ManyToMany
     @JoinTable(
-            name = "user_authority_join",
+            name = "resume_info_area_join",
             joinColumns = {@JoinColumn(name = "resume_info_uid", referencedColumnName = "uid")},
             inverseJoinColumns = {@JoinColumn(name = "area_name", referencedColumnName = "area_name")})
     private List<Area> interestAreas;
