@@ -15,7 +15,7 @@ export default function OvVideo(props) {
       ref={videoRef}
       width={props.width}
       height={props.height}
-      style={{ borderRadius: '8px', border: 'solid 2px primary.main' }}
+      style={{ borderRadius: '8px', border: 'solid 2px grey' }}
     />
   );
 }

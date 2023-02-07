@@ -5,6 +5,9 @@ import SettingsVoiceIcon from '@mui/icons-material/SettingsVoice';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import MicOffIcon from '@mui/icons-material/MicOff';
 
+const MAX_WIDTH = 1900;
+const MAX_HEIGHT = 790;
+
 export default function UserVideoComponent({
   streamManager,
   main,
@@ -21,13 +24,11 @@ export default function UserVideoComponent({
   };
 
   const calculateWidth = () => {
-    if (num === 2) {
-      return 1850 / num;
-    } else if (num % 3 === 0) {
-      return 600 / parseInt(num / 3);
-    } else {
-      return 800 / parseInt(num / 3 + 1);
-    }
+    if (num === 1) return 1050;
+    else if (num === 2) return 948;
+    else if (num === 3) return 632;
+    else if (num <= 6) return 530;
+    else if (num <= 8) return 470;
   };
 
   useEffect(() => {
