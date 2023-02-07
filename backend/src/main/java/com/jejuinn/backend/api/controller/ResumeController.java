@@ -1,6 +1,7 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.resumeinfo.InsertResumeInfoPostReq;
+import com.jejuinn.backend.api.dto.request.resumeinfo.UpdateResumeInfoPutReq;
 import com.jejuinn.backend.api.dto.response.recruitment.MyRecruitmentListRes;
 import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
 import com.jejuinn.backend.api.service.ResumeInfoService;
@@ -70,6 +71,18 @@ public class ResumeController {
     })
     public ResponseEntity<?> updateAutoApply(@PathVariable Long userUid) {
         resumeInfoService.update(userUid);
+        return ResponseEntity.status(200).build();
+    }
+
+    @PutMapping("/auth/job-search")
+    @ApiOperation(value = "내 지원서 수정", notes = "내가 작성해놓은 지원서를 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateResumeInfo(@Valid @RequestPart UpdateResumeInfoPutReq updateResumeInfoPutReq) {
+        resumeInfoRepository.save(updateResumeInfoPutReq.toResumeInfo());
         return ResponseEntity.status(200).build();
     }
 }
