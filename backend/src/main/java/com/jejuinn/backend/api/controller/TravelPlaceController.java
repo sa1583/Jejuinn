@@ -147,10 +147,16 @@ public class TravelPlaceController {
             @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getTravelPlaceByFilter(@PageableDefault(page = 15) Pageable pageable,
+    public ResponseEntity<?> getTravelPlaceByFilter(@PageableDefault(size = 15) Pageable pageable,
                                                     @RequestParam String category,
                                                     @RequestParam String areaName,
                                                     @RequestParam String word){
+
+        log.info("필터 조회 요청");
+        log.info("pageNumber : {}", pageable.getPageNumber());
+        log.info("category : {}", category);
+        log.info("areaName : {}", areaName);
+        log.info("word : {}", word);
         return ResponseEntity.status(200)
                 .body(travelPlaceRepositorySupport.searchTravelPlaceWithFilter(category, areaName, word, pageable)
                         .map(travelPlace

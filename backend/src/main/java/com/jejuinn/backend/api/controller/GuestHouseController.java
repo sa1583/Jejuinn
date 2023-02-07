@@ -154,12 +154,6 @@ public class GuestHouseController {
         guestHouseRepository.deleteById(Long.parseLong(guestHouseUid));
         return ResponseEntity.status(200).build();
     }
-
-    @GetMapping("/auth/guest-house/")
-    public ResponseEntity<?> getMyGuestHouseStaff(){
-        return null;
-    }
-
 //    @PostConstruct
 //    public void init(){
 //        for (int i = 0; i < 100; i++) {

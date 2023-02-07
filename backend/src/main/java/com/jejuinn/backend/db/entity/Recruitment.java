@@ -1,5 +1,6 @@
 package com.jejuinn.backend.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -46,6 +47,10 @@ public class Recruitment {
 
     @UpdateTimestamp
     private LocalDateTime dateUpdated;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "recruitment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Work> works = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

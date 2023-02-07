@@ -17,6 +17,9 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query("select i.imgPath from Image i where i.postType = :postType and i.postUid = :postUid")
     Optional<List<String>> findImgPathByPostTypeAndPostUid(@Param("postType") String postType, @Param("postUid") Long postUid);
 
+    @Query("select i.uid from Image i where i.postType = :postType and i.postUid = :postUid")
+    Optional<List<Long>> findUidByPostTypeAndPostUid(@Param("postType") String postType, @Param("postUid") Long postUid);
+
 //    @Query("select i.imgPath from Image i where i.postType = :postType and i.postUid = :postUid")
 //    List<String> findAllImgPathByPostTypeAndPostUid(@Param("postType") String postType, @Param("postUid") Long postUid);
 }
