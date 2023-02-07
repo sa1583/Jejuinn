@@ -151,6 +151,12 @@ public class TravelPlaceController {
                                                     @RequestParam String category,
                                                     @RequestParam String areaName,
                                                     @RequestParam String word){
+
+        log.info("필터 조회 요청");
+        log.info("pageNumber : {}", pageable.getPageNumber());
+        log.info("category : {}", category);
+        log.info("areaName : {}", areaName);
+        log.info("word : {} // 빈 문자열 = {}", word, word.equals(""));
         return ResponseEntity.status(200)
                 .body(travelPlaceRepositorySupport.searchTravelPlaceWithFilter(category, areaName, word, pageable)
                         .map(travelPlace

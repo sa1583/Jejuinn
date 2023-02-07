@@ -53,7 +53,7 @@ public class TravelPlaceRepositorySupport {
     }
 
     private BooleanExpression nameEq (String name){
-        if (name == null) return null;
+        if (name == null || name.equals("")) return null;
         return qTravelPlace.name.eq(name);
     }
 }
