@@ -58,8 +58,8 @@ public class CommentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteComment(@PathVariable String uid){
-        commentRepository.deleteById(Long.parseLong(uid));
+    public ResponseEntity<?> deleteComment(@PathVariable Long uid){
+        commentRepository.deleteById(uid);
         return ResponseEntity.status(200).build();
     }
 
@@ -70,8 +70,8 @@ public class CommentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateComment(@RequestParam String uid, @RequestParam String content){
-        commentService.update(Long.parseLong(uid), content);
+    public ResponseEntity<?> updateComment(@RequestParam Long uid, @RequestParam String content){
+        commentService.update(uid, content);
         return ResponseEntity.status(200).build();
     }
 }
