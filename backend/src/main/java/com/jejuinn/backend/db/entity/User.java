@@ -100,6 +100,7 @@ public class User {
               .username(naverProfileDto.getName())
               .profileImageUrl(naverProfileDto.getProfileImage())
               .phone(naverProfileDto.getMobile())
+              .sugarContent(8)
               .isStaff(false)
               .authorities(authorities)
               .build();
