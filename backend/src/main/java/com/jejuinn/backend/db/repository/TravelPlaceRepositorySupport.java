@@ -39,6 +39,8 @@ public class TravelPlaceRepositorySupport {
                         nameEq(word)
                 )
                 .fetchOne();
+        System.out.println(content.size());
+        System.out.println(content.get(0).getName());
         return new PageImpl<>(content, page, count);
     }
 
@@ -53,7 +55,7 @@ public class TravelPlaceRepositorySupport {
     }
 
     private BooleanExpression nameEq (String name){
-        if (name == null || name.equals("")) return null;
+        if (name == null || name.equals("") || name.equals(" ")) return null;
         return qTravelPlace.name.eq(name);
     }
 }
