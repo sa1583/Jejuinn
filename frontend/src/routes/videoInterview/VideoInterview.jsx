@@ -15,7 +15,7 @@ export default function VideoInterview() {
   const [myUserName, setMyUserName] = useState();
   const [session, setSession] = useState();
   const [publisher, setPublisher] = useState();
-  const [subscribers, setSubscribers] = useState([]);
+  const [participants, setParticipants] = useState([]);
 
   const [audioOff, setAudioOff] = useState(false);
   const [videoOff, setVideoOff] = useState(false);
@@ -28,9 +28,8 @@ export default function VideoInterview() {
     if (session) {
       session.disconnect();
     }
-    setOpenVidu(null);
     setSession(undefined);
-    setSubscribers([]);
+    setParticipants([]);
     setMySessionId('');
     setMyUserName('');
     setPublisher(undefined);
@@ -82,7 +81,7 @@ export default function VideoInterview() {
   };
 
   const deleteSubscriber = (streamManager) => {
-    setSubscribers((prev) =>
+    setParticipants((prev) =>
       prev.filter((subscriber) => subscriber !== streamManager),
     );
   };
@@ -97,17 +96,17 @@ export default function VideoInterview() {
 
   const handleVideo = () => {
     publisher.publishVideo(videoOff);
-    setVideoOff(!videoOff);
+    setVideoOff((prev) => !prev);
   };
 
   const handleAudio = () => {
     publisher.publishAudio(audioOff);
-    setAudioOff(!audioOff);
+    setAudioOff((prev) => !prev);
   };
 
   useEffect(() => {
     return () => {
-      leaveSession();
+      return leaveSession();
     };
   }, []);
 
@@ -115,7 +114,10 @@ export default function VideoInterview() {
     if (session) {
       session.on('streamCreated', (event) => {
         const sub = session.subscribe(event.stream, undefined);
-        setSubscribers((prev) => [...prev, sub]);
+        sub.speaking = false;
+        sub.videoOff = false;
+        sub.audioOff = false;
+        setParticipants((prev) => [...prev, sub]);
       });
 
       session.on('streamDestroyed', (event) => {
@@ -127,13 +129,112 @@ export default function VideoInterview() {
       });
 
       session.on('publisherStartSpeaking', (event) => {
-        console.log(
-          'User ' + event.connection.connectionId + ' start speaking',
-        );
+        setParticipants((prev) => {
+          const changedSub = prev.filter(
+            (sub) =>
+              sub.stream.connection.connectionId ===
+              event.connection.connectionId,
+          );
+          const newState = prev.filter(
+            (sub) =>
+              sub.stream.connection.connectionId !==
+              event.connection.connectionId,
+          );
+          changedSub[0].speaking = true;
+          newState.push(changedSub[0]);
+          return newState;
+        });
       });
 
       session.on('publisherStopSpeaking', (event) => {
-        console.log('User ' + event.connection.connectionId + ' stop speaking');
+        setParticipants((prev) => {
+          const changedSub = prev.filter(
+            (sub) =>
+              sub.stream.connection.connectionId ===
+              event.connection.connectionId,
+          );
+          const newState = prev.filter(
+            (sub) =>
+              sub.stream.connection.connectionId !==
+              event.connection.connectionId,
+          );
+          changedSub[0].speaking = false;
+          newState.push(changedSub[0]);
+          return newState;
+        });
+      });
+
+      session.on('streamPropertyChanged', (event) => {
+        if (event.changedProperty === 'videoActive') {
+          if (event.newValue === false) {
+            setParticipants((prev) => {
+              const changedSub = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId ===
+                  event.stream.connection.connectionId,
+              );
+              const newState = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId !==
+                  event.stream.connection.connectionId,
+              );
+              changedSub[0].videoOff = true;
+              newState.push(changedSub[0]);
+              return newState;
+            });
+          } else {
+            setParticipants((prev) => {
+              const changedSub = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId ===
+                  event.stream.connection.connectionId,
+              );
+              const newState = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId !==
+                  event.stream.connection.connectionId,
+              );
+              changedSub[0].videoOff = false;
+              newState.push(changedSub[0]);
+              return newState;
+            });
+          }
+        } else if (event.changedProperty === 'audioActive') {
+          if (event.oldValue === true && event.newValue === false) {
+            setParticipants((prev) => {
+              const changedSub = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId ===
+                  event.stream.connection.connectionId,
+              );
+              const newState = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId !==
+                  event.stream.connection.connectionId,
+              );
+              changedSub[0].audioOff = true;
+              newState.push(changedSub[0]);
+              return newState;
+            });
+          } else if (event.oldValue === false && event.newValue === true) {
+            setParticipants((prev) => {
+              const changedSub = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId ===
+                  event.stream.connection.connectionId,
+              );
+              const newState = prev.filter(
+                (sub) =>
+                  sub.stream.connection.connectionId !==
+                  event.stream.connection.connectionId,
+              );
+              changedSub[0].audioOff = false;
+              changedSub[0].speaking = false;
+              newState.push(changedSub[0]);
+              return newState;
+            });
+          }
+        }
       });
 
       const sessionConnect = async () => {
@@ -150,20 +251,26 @@ export default function VideoInterview() {
           mirror: false, // Whether to mirror your local video or not
         });
         session.publish(publisher);
-
-        setSubscribers((prev) => [...prev, publisher]);
+        publisher.speaking = false;
+        publisher.videoOff = false;
+        publisher.audioOff = false;
+        setParticipants((prev) => [...prev, publisher]);
         setPublisher(publisher);
       };
       sessionConnect();
     }
   }, [session]);
 
+  useEffect(() => {
+    console.log(participants);
+  }, [participants]);
+
   return (
     <div>
       <Box
         sx={{
           width: '100%',
-          height: session ? '83vh' : '90vh',
+          minHeight: session ? '83vh' : '90vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -200,18 +307,6 @@ export default function VideoInterview() {
         ) : null}
         {session !== undefined ? (
           <div>
-            {/* <div>
-              <h1>{mySessionId}</h1>
-            </div> */}
-            {/* 
-            {mainStreamManager !== undefined ? (
-              <Box>
-                <UserVideoComponent
-                  streamManager={mainStreamManager}
-                  main={true}
-                />
-              </Box>
-            ) : null} */}
             <div
               style={{
                 display: 'flex',
@@ -220,15 +315,21 @@ export default function VideoInterview() {
                 margin: 'auto',
               }}
             >
-              {subscribers.map((sub, i) => (
-                <div key={i}>
-                  <UserVideoComponent
-                    streamManager={sub}
-                    main={false}
-                    num={subscribers.length}
-                  />
-                </div>
-              ))}
+              {participants.map((sub) => {
+                console.log('sub', sub);
+                return (
+                  <div key={sub.stream.connection.connectionId}>
+                    <UserVideoComponent
+                      streamManager={sub}
+                      main={false}
+                      num={participants.length}
+                      speaking={sub.speaking}
+                      videoOfff={sub.videoOff}
+                      audioOff={sub.audioOff}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         ) : null}
