@@ -78,10 +78,11 @@ public class ReviewController {
             @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertReview(@RequestPart("images") List<MultipartFile> images,
+    public ResponseEntity<?> insertReview(@RequestPart(value = "images", required = false) List<MultipartFile> images,
                                           @Valid @RequestPart("review") InsertReviewPostReq req,
                                           HttpServletRequest request){
         log.info("관광지 리뷰 추가 요청");
+        log.info("info {}", req.toString());
         Long userUid = userService.getUserUidFromAccessToken(request);
 
         // 리뷰 저장
