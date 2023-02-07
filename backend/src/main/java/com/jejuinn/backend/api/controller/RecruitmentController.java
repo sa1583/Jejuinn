@@ -72,7 +72,9 @@ public class RecruitmentController {
     }
 
     @PostMapping("/auth/job-offer")
-    @ApiOperation(value = "모집공고 작성", notes = "모집공고(InsertRecruitmentPostReq), 직무(InsertWorkPostReq) : 직무 + 인재상(String 배열), 이미지(images)를 보내주면 이를 저장합니다.")
+    @ApiOperation(value = "모집공고 작성", notes = "모집공고(InsertRecruitmentPostReq) + 인재상(String 배열), " +
+            "직무(InsertWorkPostReq) : 직무, 이미지(images)를 보내주면 이를 저장합니다.\n" +
+            "ReqeustModel에 대한 자세한 설명은 밑에 Model 참고")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(등록 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
