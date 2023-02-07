@@ -4,9 +4,11 @@ import com.jejuinn.backend.api.dto.request.InsertReviewPostReq;
 import com.jejuinn.backend.api.dto.request.UpdateReviewPutReq;
 import com.jejuinn.backend.api.dto.response.travelplace.*;
 import com.jejuinn.backend.api.service.TravelPlaceReviewService;
+import com.jejuinn.backend.api.service.TravelPlaceService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.api.service.social.NaverService;
+import com.jejuinn.backend.db.entity.Image;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.*;
@@ -37,6 +39,7 @@ public class ReviewController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final TravelPlaceService travelPlaceService;
     private final TravelPlaceReviewService travelPlaceReviewService;
     private final TravelPlaceRepository travelPlaceRepository;
     private final TravelPlaceRepositorySupport travelPlaceRepositorySupport;
@@ -83,6 +86,9 @@ public class ReviewController {
 
         // 리뷰 저장
         TravelPlaceReview review = travelPlaceReviewRepository.save(req.toTravelPlaceReview(userUid));
+
+        // 관광지 평점 업데이트
+        travelPlaceService.updateReviewCountAndRating(review.getTravelPlaceUid(), review.getStarRating(), "INSERT");
 
         // 사진 저장
         try {
@@ -131,14 +137,24 @@ public class ReviewController {
         }
 
         Long userUid = userService.getUserUidFromAccessToken(request);
+
         // 리뷰의 user uid와 현재 접속한 사용자의 uid가 다르다면
         if(review.get().getUserUid() != userUid) {
             log.info("관광지 리뷰의 작성자와 현재 이용자가 다릅니다.");
             return ResponseEntity.status(401).build();
         }
 
+        List<Long> list = imageRepository.findAllByPostTypeAndPostUid(REVIEW_TYPE, reviewUid)
+                .stream().map(image -> image.getUid()).collect(Collectors.toList());
+
+        try {
+            s3Uploader.deleteImages(list);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).build();
+        }
+
         travelPlaceReviewRepository.deleteById(reviewUid);
-        // 차후 이미지 삭제 추가
 
         return ResponseEntity.status(200).build();
     }
@@ -156,8 +172,13 @@ public class ReviewController {
                                                       @PathVariable Long reviewUid){
         log.info("관광지 리뷰 수정 요청");
 
-        // 게스트 하우스 저장
+
+
+        // 리뷰 저장
         TravelPlaceReview review = travelPlaceReviewRepository.save(req.toTravelPlaceReview(reviewUid));
+
+        // 관광지 평점 수정
+        travelPlaceService.updateReviewCountAndRating(review.getTravelPlaceUid(), review.getStarRating(), "UPDATE");
 
         // 사진 삭제
         try {
