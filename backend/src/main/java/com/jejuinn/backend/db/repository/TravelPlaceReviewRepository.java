@@ -20,4 +20,7 @@ public interface TravelPlaceReviewRepository extends JpaRepository<TravelPlaceRe
     @Modifying
     @Query("update TravelPlaceReview set likeCount = likeCount - 1 where uid = :reviewUid")
     void decreaseLikeCount(@Param("reviewUid") Long reviewUid);
+
+    @Query("select avg(r.starRating) from TravelPlaceReview r where r.travelPlaceUid = :travelPlaceUid")
+    double getAvgStarRating(@Param("travelPlaceUid") Long travelPlaceUid);
 }
