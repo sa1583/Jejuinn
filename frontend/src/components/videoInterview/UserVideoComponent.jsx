@@ -15,7 +15,6 @@ export default function UserVideoComponent({
 }) {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const [borderWidth, setBorderWidth] = useState('0px');
 
   const getNicknameTag = () => {
     return JSON.parse(streamManager.stream.connection.data).clientData;
