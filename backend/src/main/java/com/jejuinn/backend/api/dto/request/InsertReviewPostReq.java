@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class InsertReviewPostReq {
 
     @ApiModelProperty(name="명소 uid")
