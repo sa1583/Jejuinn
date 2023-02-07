@@ -6,11 +6,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-/**
- *
- */
 @Entity
-@Table(name = "recruitment_resume_info_join")
+@Table(name = "work_resume_info_join")
 @Getter
 @Setter
 @Builder
@@ -18,15 +15,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class RecruitmentResumeInfo {
-
+public class WorkResumeInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
     @ManyToOne
-    @JoinColumn(name = "recruitment_uid")
-    private Recruitment recruitment;
+    @JoinColumn(name = "work_uid")
+    private Work work;
 
     @ManyToOne
     @JoinColumn(name = "resume_info_uid")
