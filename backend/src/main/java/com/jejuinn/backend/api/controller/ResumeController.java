@@ -1,6 +1,8 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.resumeinfo.InsertResumeInfoPostReq;
+import com.jejuinn.backend.api.dto.response.recruitment.MyRecruitmentListRes;
+import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "구직 관련 기능 API")
@@ -43,4 +46,16 @@ public class ResumeController {
         return ResponseEntity.status(200).build();
     }
 
+    @GetMapping("/auth/job-search/{userUid}")
+    @ApiOperation(value = "내 지원서 상세 조회", notes = "userUid를 통해 마이 페이지에서 내 지원서를 상세 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyResumeInfo(@PathVariable String userUid) {
+        return ResponseEntity.status(200)
+                .body(resumeInfoRepository.findByUserUidAndIsDeletedFalse(Long.parseLong(userUid))
+                        .map(resumeInfo -> ResumeInfoDetailRes.of(resumeInfo)));
+    }
 }
