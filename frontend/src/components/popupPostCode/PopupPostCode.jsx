@@ -40,8 +40,12 @@ const PopupPostCode = (props) => {
 
   return (
     <div>
-      <DaumPostcode style={postCodeStyle} onComplete={handlePostCode} />
+      <DaumPostcode
+        style={{ postCodeStyle, display: 'relative' }}
+        onComplete={handlePostCode}
+      />
       <Button
+        style={{ display: 'absolute' }}
         onClick={() => {
           props.onClose();
         }}
