@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import SendSMS from '../sendSMS/SendSMS';
 
 const style = {
