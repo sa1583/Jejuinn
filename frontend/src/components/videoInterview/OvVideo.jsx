@@ -9,5 +9,13 @@ export default function OvVideo(props) {
     }
   });
 
-  return <video autoPlay ref={videoRef} width={props.width} />;
+  return (
+    <video
+      autoPlay
+      ref={videoRef}
+      width={props.width}
+      height={props.height}
+      style={{ borderRadius: '8px', border: 'solid 2px primary.main' }}
+    />
+  );
 }
