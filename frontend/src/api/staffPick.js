@@ -11,15 +11,18 @@ const getAdminTokenHeader = (token) => {
   };
 };
 
-function createSpotReview(token, data) {
+function createSpotReview(token, body) {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',
+      // encType: 'multipart/form-data',
+      // processData: false,
+      'Content-Disposition': 'form-data',
     },
   };
 
-  return api.post('/auth/travel-place/reviews', data, config);
+  return api.post('/auth/travel-place/reviews', body, config);
 }
 
 // 명소 리스트 핀

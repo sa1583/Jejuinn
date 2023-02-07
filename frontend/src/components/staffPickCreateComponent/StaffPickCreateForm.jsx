@@ -11,24 +11,52 @@ export default function StaffPickCreateForm({ nowPickId }) {
   const [content, setContent] = useState('');
   const acces_token = useSelector(selectAccessToken);
 
+  // const yesi =
+  // {
+  //   review: {
+  //     content: '쏼라쏼라맨',
+  //     travelPlaceUid: 3,
+  //     starRating: 3.5
+  //   },
+  //   images: [
+  //     {첫번째 파일 정보},
+  //     {두번째 파일 정보},
+  //   ]
+  // }
+
   const submit = async (e) => {
     e.preventDefault();
-    let data = new FormData();
-    data.append(
-      'review',
-      JSON.stringify({
-        content,
-        travelPlaceUid: nowPickId,
-        starRating,
-      }),
-    );
-    data.append('images', JSON.stringify(files));
+    const data = new FormData();
 
-    // files.forEach((file) => {
-    //   data.append('images', file);
+    const review = {
+      content,
+      travelPlaceUid: nowPickId,
+      starRating,
+    };
+
+    // const blob = new Blob([JSON.stringify(review)], {
+    //   type: 'application/json',
     // });
-    // console.log(images);
-
+    // console.log(blob);
+    // data.append('review', JSON.stringify(review));
+    // data.append('images', blob);
+    // const newFiles = files.map((file) => JSON.stringify(file));
+    // data.append('images', newFiles);
+    // console.log(files);
+    files.forEach((file) => {
+      data.append('images', file);
+    });
+    for (const key of data.keys()) {
+      console.log(key);
+    }
+    // FormData의 value 확인
+    // @ts-ignore
+    for (const value of data.values()) {
+      console.log(value);
+    }
+    // console.log(data.has('review'));
+    // console.log(data.get('review'));
+    // console.log(data.get('images'));
     // console.log(files);
     // const data = {
     // review: {
@@ -39,8 +67,8 @@ export default function StaffPickCreateForm({ nowPickId }) {
     //   images: images,
     // };
     // console.log(data);
-    const result = await createSpotReview(acces_token, data);
-    console.log(result);
+    // const result = await createSpotReview(acces_token, data);
+    // console.log(result);
   };
   const [starRating, setStarRating] = useState(1);
 

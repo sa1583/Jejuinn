@@ -100,7 +100,7 @@ export default function MapApi({
           id: id,
           map: map,
           position: position,
-          animation: naver.maps.Animation.DROP,
+          // animation: naver.maps.Animation.DROP,
           icon: pageId == id ? pickedIcon : notPickedIcon,
           // icon: notPickedIcon,
         });

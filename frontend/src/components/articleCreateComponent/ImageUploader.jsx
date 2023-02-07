@@ -31,12 +31,14 @@ const thumbInner = {
   display: 'flex',
   minWidth: 0,
   overflow: 'hidden',
+  width: '100%',
 };
 
 const img = {
   display: 'block',
   width: '100%',
   height: '100%',
+  objectFit: 'cover',
 };
 
 export default function ImageUploader({ files, handleFiles }) {
