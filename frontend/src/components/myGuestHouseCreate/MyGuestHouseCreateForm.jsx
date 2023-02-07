@@ -32,6 +32,11 @@ export default function MyGuestHouseCreateForm() {
     console.log(form.content);
   };
 
+  const [files, setFiles] = useState([]);
+  const handleFiles = (datas) => {
+    setFiles(datas);
+  };
+
   // 주소 검색 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const openPostCode = () => {
@@ -118,16 +123,7 @@ export default function MyGuestHouseCreateForm() {
         />
         <br />
         <label htmlFor="image">이미지 업로드</label>
-        <input
-          name="imgs"
-          id="image"
-          type="file"
-          accept="image/*"
-          multiple
-          value={form.imgs}
-          onChange={handleForm}
-        />
-        <ImageUploader />
+        <ImageUploader handleFiles={handleFiles} files={files} />
 
         <br />
         <label htmlFor="content">내용</label>

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Button } from '@mui/material';
 import DaumPostcode from 'react-daum-postcode';
 
@@ -28,6 +29,31 @@ const PopupPostCode = (props) => {
     props.onClose();
   };
 
+  const handleComplete = (data) => {
+    const searchTxt = data.address; // 검색한 주소
+    const config = {
+      headers: {
+        Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+      },
+    }; // 헤더 설정
+    const url =
+      'https://dapi.kakao.com/v2/local/search/address.json?query=' + searchTxt; // REST API url에 data.address값 전송
+    axios.get(url, config).then(function (result) {
+      // API호출
+      if (result.data !== undefined || result.data !== null) {
+        if (result.data.documents[0].x && result.data.documents[0].y) {
+          // Kakao Local API로 검색한 주소 정보 및 위도, 경도값 저장
+          const address_name = result.data.documents[0].address.address_name;
+          const region_2depth_name =
+            result.data.documents[0].address.region_2depth_name;
+          const x = result.data.documents[0].x;
+          const y = result.data.documents[0].y;
+          console.log(x, y);
+        }
+      }
+    });
+  };
+
   const postCodeStyle = {
     display: 'block',
     position: 'absolute',
@@ -42,7 +68,7 @@ const PopupPostCode = (props) => {
     <div>
       <DaumPostcode
         style={{ postCodeStyle, display: 'relative' }}
-        onComplete={handlePostCode}
+        onComplete={(handlePostCode, handleComplete)}
       />
       <Button
         style={{ display: 'absolute' }}

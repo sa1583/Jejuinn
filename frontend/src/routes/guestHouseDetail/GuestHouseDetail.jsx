@@ -30,7 +30,7 @@ export default function GuestHouseDetail() {
   ];
 
   const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
-  
+
   return (
     <>
       <SpeedDialComponent actions={actions} />
