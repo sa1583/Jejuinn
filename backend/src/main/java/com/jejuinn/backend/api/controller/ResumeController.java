@@ -39,7 +39,7 @@ public class ResumeController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteResumeInfo(@PathVariable String resumeInfoUid) {
-
+        resumeInfoRepository.deleteById(Long.parseLong(resumeInfoUid));
         return ResponseEntity.status(200).build();
     }
 

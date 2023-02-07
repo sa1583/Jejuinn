@@ -31,15 +31,18 @@ public class InsertResumeInfoPostReq {
     private int minWorkPeriod;
 
     @NotNull
+    private String guestHouseType;
+
+    @NotNull
     private boolean autoApply;
 
-    private List<String> tags;
+    private List<String> personTypes;
 
     private List<String> interestAreas;
 
     public List<PersonType> toPersonType() {
         List<PersonType> list = new ArrayList<>();
-        for(String s : this.getTags()) {
+        for(String s : this.getPersonTypes()) {
             list.add(PersonType.builder().type(s).build());
         }
         return list;
@@ -60,7 +63,8 @@ public class InsertResumeInfoPostReq {
                 .possibleStartDate(this.possibleStartDate)
                 .minWorkPeriod(this.minWorkPeriod)
                 .autoApply(this.autoApply)
-                .tags(toPersonType())
+                .guestHouseType(this.guestHouseType)
+                .personTypes(toPersonType())
                 .interestAreas(toArea())
                 .build();
     }

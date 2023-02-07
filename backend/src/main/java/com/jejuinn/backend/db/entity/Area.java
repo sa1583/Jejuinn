@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class Area {
 
     @Id
-    @Column(length = 10)
+    @Column(name = "area_name", length = 10)
     private String areaName;
 
 }
