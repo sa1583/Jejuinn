@@ -55,7 +55,7 @@ public class StaffService {
     }
 
     @Transactional
-    public void addMyStaff(Long guestHouseUid, Long representativeUid, Long userUid, String workName) {
+    public StaffRecord addMyStaff(Long guestHouseUid, Long representativeUid, Long userUid, String workName) {
         GuestHouse guestHouse = guestHouseRepository.findById(guestHouseUid)
                 .orElseThrow(()-> new NoContentException("등록되지 않은 게스트하우스 입니다."));
 
@@ -67,5 +67,7 @@ public class StaffService {
 
         StaffRecord staffRecord = StaffRecord.of(staff, guestHouse, workName);
         staffRecordRepository.save(staffRecord);
+
+        return staffRecord;
     }
 }
