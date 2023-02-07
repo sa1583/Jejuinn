@@ -33,6 +33,8 @@ public class StaffListRes {
 
     private String workName;
 
+    private boolean isActive;
+
     public static StaffListRes of(StaffRecord staff){
         if(staff == null) return null;
         return StaffListRes.builder()
@@ -44,6 +46,7 @@ public class StaffListRes {
                 .startDate(staff.getStartDate())
                 .endDate(staff.getEndDate())
                 .workName(staff.getWorkName())
+                .isActive(staff.isActive())
                 .build();
     }
 }

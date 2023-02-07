@@ -16,10 +16,9 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 public class Area {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long uid;
 
-    @Column(name = "area_name", length = 10, unique = true)
+    @Id
+    @Column(name = "area_name", length = 10)
     private String areaName;
+
 }

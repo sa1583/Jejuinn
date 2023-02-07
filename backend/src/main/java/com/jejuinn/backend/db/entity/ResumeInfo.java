@@ -1,6 +1,7 @@
 package com.jejuinn.backend.db.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,7 +36,7 @@ public class ResumeInfo {
             name = "ResumeInfo_person_type_join",
             joinColumns = {@JoinColumn(name = "ResumeInfo_uid", referencedColumnName = "uid")},
             inverseJoinColumns = {@JoinColumn(name = "type", referencedColumnName = "type")})
-    private List<PersonType> tags;
+    private List<PersonType> personTypes;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -46,14 +47,16 @@ public class ResumeInfo {
 
     private boolean autoApply;
 
-    @CreatedDate
+    private String guestHouseType;
+
+    @CreationTimestamp
     private LocalDate dateCreated;
 
     private boolean isDeleted;
 
     @ManyToMany
     @JoinTable(
-            name = "user_authority_join",
+            name = "resume_info_area_join",
             joinColumns = {@JoinColumn(name = "resume_info_uid", referencedColumnName = "uid")},
             inverseJoinColumns = {@JoinColumn(name = "area_name", referencedColumnName = "area_name")})
     private List<Area> interestAreas;

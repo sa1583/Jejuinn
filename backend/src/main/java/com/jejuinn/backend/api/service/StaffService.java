@@ -36,7 +36,7 @@ public class StaffService {
                 .orElseThrow(()-> new NoContentException("등록되지 않은 게스트하우스 입니다."));
         if(guestHouse.getRepresentativeUid() != representativeUid)
             throw new UnAuthorizationException("게스트 하우스의 권한이 없습니다.");
-        return staffRecordRepository.findAllByGuestHouseUidAndEndDateOrderByStartDateDesc(guestHouseUid, null);
+        return staffRecordRepository.findAllByGuestHouseUidAndIsActiveTrueOrderByStartDateDesc(guestHouseUid);
     }
 
     @Transactional
@@ -51,6 +51,7 @@ public class StaffService {
         if(guestHouse.getRepresentativeUid() != userUid && staff.getUserUid() != userUid)
             throw new UnAuthorizationException("업무 종료 권한이 없습니다.");
         staff.setEndDate(LocalDate.now());
+        staff.setActive(false);
         return staff;    // transaction이 종료되는 시점에 변경 필드 업데이트
     }
 
