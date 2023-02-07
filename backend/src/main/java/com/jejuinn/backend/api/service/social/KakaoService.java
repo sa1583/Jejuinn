@@ -85,6 +85,7 @@ public class KakaoService {
                         .gender(getFromOptional(gender))
                         .nickname(name)
                         .profileImageUrl(profileImageUrl)
+                        .sugarContent(8)
                         .authorities(Collections.singleton(authority))
                         .build();
 

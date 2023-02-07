@@ -72,6 +72,7 @@ public class GoogleService {
             user = User.builder()
                     .email(email)
                     .nickname(nickname)
+                    .sugarContent(8)
                     .authorities(Collections.singleton(authority))
                     .build();
 
