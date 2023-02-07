@@ -54,5 +54,16 @@ public class StaffRecord {
     @Column(length = 25)
     private String workName;
 
-    private boolean isWorking;
+    public static StaffRecord of(User staff, GuestHouse guestHouse, String workName){
+        return StaffRecord.builder()
+                .guestHouseUid(guestHouse.getUid())
+                .userUid(staff.getUid())
+                .guestHouseName(guestHouse.getGuestHouseName())
+                .guestHouseAddress(guestHouse.getAddress())
+                .guestHouseAddressDetail(guestHouse.getAddressDetail())
+                .username(staff.getUsername())
+                .userEmail(staff.getEmail())
+                .workName(workName)
+                .build();
+    }
 }

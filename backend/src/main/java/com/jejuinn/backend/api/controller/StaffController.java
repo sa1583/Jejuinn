@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -30,30 +27,70 @@ public class StaffController {
     private final StaffRecordRepository staffRecordRepository;
 
 
-    @GetMapping("/auth/my-staff/{guestHouseUid}")
-    @ApiOperation(value = "모든 스태프 조회", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 목록을 조회합니다.")
+    @GetMapping("/auth/guest-house/staff")
+    @ApiOperation(value = "내 게스트 하우스의 모든 스태프 조회", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 목록을 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(데이터가 없음)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(게스트 하우스가 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyStaffList(@PathVariable Long guestHouseUid, HttpServletRequest request){
+    public ResponseEntity<?> getMyStaffList(@RequestParam Long guestHouseUid, HttpServletRequest request){
+        // 접속한 유저의 uid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
-        List<StaffRecord> staffRecords = staffRecordRepository.findAllByGuestHouseUidAndIsWorking(guestHouseUid, true);
-        if(staffRecords.isEmpty()) return ResponseEntity.status(400).build();
+
+        // 게스트 하우스의 스태프 목록을 불러옵니다.
+        List<StaffRecord> staffRecords = staffService.getMyStaffList(guestHouseUid, userUid);
+
         return ResponseEntity.status(200).body(staffRecords.stream().map(staffRecord
                 -> StaffListRes.of(staffRecord)));
     }
 
-    @DeleteMapping("/auth/my-staff/{guestHouseUid}/{staffUid}")
-    @ApiOperation(value = "스태프 삭제(업무 종료)", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 목록을 조회합니다.")
+    @GetMapping("/auth/guest-house/staff/active")
+    @ApiOperation(value = "내 게스트 하우스의 업무 중인 스태프만 조회", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 목록을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(게스트 하우스가 없음)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyActiveStaffList(@RequestParam Long guestHouseUid, HttpServletRequest request){
+        // 접속한 유저의 uid를 가져옵니다.
+        Long userUid = userService.getUserUidFromAccessToken(request);
+
+        // 게스트 하우스의 스태프 목록을 불러옵니다.
+        List<StaffRecord> staffRecords = staffService.getMyActiveStaffList(guestHouseUid, userUid);
+
+        return ResponseEntity.status(200).body(staffRecords.stream().map(staffRecord
+                -> StaffListRes.of(staffRecord)));
+    }
+
+    @DeleteMapping("/auth/guest-house/staff")
+    @ApiOperation(value = "내 스태프 업무 종료", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 업무를 종료합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(데이터가 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteMyStaff(@PathVariable Long guestHouseUid, @PathVariable Long staffUid){
-        staffService.done(guestHouseUid, staffUid);
+    public ResponseEntity<?> deleteMyStaff(@RequestParam Long guestHouseUid,
+                                           @RequestParam Long staffUid,
+                                           HttpServletRequest request){
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        staffService.doneMyStaff(guestHouseUid, staffUid, userUid);
+        return ResponseEntity.status(200).build();
+    }
+
+    @PostMapping("/auth/guest-house/staff")
+    @ApiOperation(value = "스태프 채용(자동 매칭의 경우)", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 업무를 종료합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(데이터가 없음)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> addMyStaff(@RequestParam Long guestHouseUid,
+                                        @RequestParam Long userUid,
+                                        @RequestParam String workName,
+                                        HttpServletRequest request){
+        Long representativeUid = userService.getUserUidFromAccessToken(request);
+        staffService.addMyStaff(guestHouseUid, representativeUid, userUid, workName);
         return ResponseEntity.status(200).build();
     }
 }
