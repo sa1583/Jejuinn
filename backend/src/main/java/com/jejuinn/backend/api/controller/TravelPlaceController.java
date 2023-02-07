@@ -156,7 +156,7 @@ public class TravelPlaceController {
         log.info("pageNumber : {}", pageable.getPageNumber());
         log.info("category : {}", category);
         log.info("areaName : {}", areaName);
-        log.info("word : {} {}", word, word.equals(""));
+        log.info("word : {} // 빈 문자열 = {}", word, word.equals(""));
         return ResponseEntity.status(200)
                 .body(travelPlaceRepositorySupport.searchTravelPlaceWithFilter(category, areaName, word, pageable)
                         .map(travelPlace
