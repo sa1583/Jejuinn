@@ -54,6 +54,8 @@ public class StaffRecord {
     @Column(length = 25)
     private String workName;
 
+    private boolean isActive;
+
     public static StaffRecord of(User staff, GuestHouse guestHouse, String workName){
         return StaffRecord.builder()
                 .guestHouseUid(guestHouse.getUid())
