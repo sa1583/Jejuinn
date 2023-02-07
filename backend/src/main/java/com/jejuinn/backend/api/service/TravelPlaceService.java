@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class TravelPlaceService {
             avg = travelPlaceReviewRepository.getAvgStarRating(uid);
         }
         travelPlace.setReviewCount(count);
+        travelPlace.setDateUpdated(LocalDateTime.now());
         travelPlace.setStarRatingAvg(avg);
     }
 }
