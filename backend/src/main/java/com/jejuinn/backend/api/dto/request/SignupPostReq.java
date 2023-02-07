@@ -39,6 +39,8 @@ public class SignupPostReq {
                 .nickname(req.getNickname())
                 .email(req.getEmail())
                 .password(req.getPassword())
+                .sugarContent(8)
+                .isStaff(false)
                 .authorities(authorities)
                 .build();
     }
