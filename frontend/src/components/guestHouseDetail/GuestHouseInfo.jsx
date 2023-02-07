@@ -8,7 +8,7 @@ export default function GuestHouseInfo() {
   const hashTags = ['파티', '오션뷰', '조식', '서핑', '친목'];
 
   return (
-    <div style={{ padding: '3vh 3vh' }}>
+    <div style={{ display: 'block', padding: '3vh 3vh', marginBottom: '3vh' }}>
       <Box
         sx={{
           justifyContent: 'center',
@@ -38,20 +38,18 @@ export default function GuestHouseInfo() {
       </Box>
       <br />
 
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
         <PhoneAndroidIcon sx={{ color: '#FF7600', padding: '5px' }} />
         <p>010-1234-1234</p>
       </Box>
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
         <EmailIcon sx={{ color: '#FF7600', padding: '5px' }} />
         <p>aldkjfl@gmail.com</p>
       </Box>
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
         <HomeIcon sx={{ color: '#FF7600', padding: '5px' }} />
         <p>제주특별자치도 제주시 구좌읍 행원로</p>
       </Box>
-      <h3 style={{ color: '#FF7600' }}>현재 모집 공고 리스트</h3>
-      <p>다은이꺼 가져오면 되지 않을까...</p>
     </div>
   );
 }

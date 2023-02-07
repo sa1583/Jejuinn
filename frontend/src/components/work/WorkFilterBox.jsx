@@ -34,9 +34,9 @@ export default function WorkFilterBox({ onSearch }) {
   const onClick = () => {
     setFilterValue({ name, area, startDate, styleTags });
   };
-  useEffect(() => {
-    onSearch(filterValue);
-  }, [filterValue]);
+  // useEffect(() => {
+  //   onSearch(filterValue);
+  // }, [filterValue]);
 
   const onName = (imp) => {
     setName(imp.target.value);
@@ -50,9 +50,9 @@ export default function WorkFilterBox({ onSearch }) {
   const onStyleTags = (imp) => {
     setStyleTags(imp);
   };
-  useEffect(() => {
-    console.log(name, area, startDate, styleTags);
-  }, [name, area, startDate, styleTags]);
+  // useEffect(() => {
+  //   console.log(name, area, startDate, styleTags);
+  // }, [name, area, startDate, styleTags]);
 
   return (
     <Box sx={{ padding: '3vh', height: '100%' }}>
