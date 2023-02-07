@@ -50,7 +50,7 @@ public class GuestHouse {
     private String addressDetail;
 
     @OneToOne
-    @JoinColumn(name = "area_uid")
+    @JoinColumn(name = "area_name")
     private Area area;
 
     @CreationTimestamp
