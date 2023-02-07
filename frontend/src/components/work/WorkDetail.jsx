@@ -1,27 +1,8 @@
-import { Box, styled, Button } from '@mui/material';
-import { recruitmentDetail } from '../../api/work';
+import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
-
-const CustomButton = styled(Button)({
-  height: '5vh',
-  '&:hover': {
-    backgroundColor: '#FF7600',
-  },
-});
 
 export default function JobDetail({ work }) {
   const navigate = useNavigate();
-  // const [work, setWork] = useState({});
-
-  // async function getWork() {
-  //   const work = await recruitmentDetail(recruitmentUid);
-  //   console.log(work.data);
-  // }
-  // useEffect(() => {
-  //   getWork();
-  // }, []);
   const onRecruitmentDetail = () => {
     navigate(`/worklist/detail/${work.recruitmentUid}`);
   };

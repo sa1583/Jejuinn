@@ -9,16 +9,18 @@ import WorkListBox from '../../components/work/WorkListBox';
 
 export default function WorkDetail() {
   const { recruitmentUid } = useParams();
-  const [recruitment, setRecruitment] = useState([]);
+  const [recruitment, setRecruitment] = useState({});
   const [images, setImages] = useState([]);
   const [works, setWorks] = useState([]);
-  const [geustHouse, setGuestHouse] = useState();
+  const [geustHouseId, setGuestHouseId] = useState();
 
   async function getWork() {
     const data = await recruitmentDetail(recruitmentUid);
     setRecruitment(data.data.recruitment);
     setImages(data.data.images);
     setWorks(data.data.works);
+    setGuestHouseId(data.data.recruitment.guestHouseUid);
+    // console.log(data.data);
   }
 
   useEffect(() => {
@@ -27,26 +29,21 @@ export default function WorkDetail() {
   // 받아온 데이터 피그마에 있는 모양으로 렌더링하기
   // 공고 갯수 만큼 반복하면서 WorkDetailContent 컴포넌트 재사용
 
-  console.log(recruitment);
-  console.log(images);
-  console.log(works);
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       {/* <h1 style={{ color: '#FF7600' }}>{recruitment.recruitment.title}</h1> */}
-      <WhiteBox cpn={<HouseInfo />} />
-      <h2 style={{ color: '#FF7600' }}>직무별 상세 및 지원</h2>
+      <WhiteBox
+        cpn={<HouseInfo geustHouseId={geustHouseId} images={images} />}
+      />
+      <h2 style={{ color: '#FF7600' }}>
+        {recruitment.title}(recruitment.title)
+      </h2>
+      <div>{recruitment.welfare} (recruitment.welfare)</div>
+      <div>{recruitment.addInfo} (recruitment.addInfo)</div>
+      <div>{recruitment.wanted} (recruitment.wanted)</div>
       <div>
-        채용 디테일 설명 구구절절.. 사장님이 작성한 내용 가져올거임......!
-        <div></div>- 점장 : 주 5일~6일 근무 (오전 8시~12시 / 휴무시간 / 16~22시)
-        * 수습기간 협의 (1개월~ 3개월 180만원 제공) * 사업장 관리, 예약관리,
-        청소 등 업무 일괄 * 게스트하우스 스텝 시스템 운영 중 (휴무일은 스텝이
-        대체 운영) - 업무사항 - 사업장 운영 (게스트하우스 운영 전담) - 특수사항
-        - 유튜브 및 SNS 이해도 높으신 분 환영 (본사가 광고 대행사 이기에 해당
-        영역 촬영 및 출연이 발생 할 수 있음) - 본 내용을 모두 숙지 하시고
-        가능하다고 생각 되시는 분들 도전해 보고 싶은 분들만 이력서 제출해 주시길
-        바랍니다. 모든 질문은 이메일 자기소개서에만 포함해 전달 주시길 바랍니다.
-        *** 서류 확인 후 카카오톡 메시지로 연락 드립니다. *** 접수후 카카오톡
-        jepisode 로 메시지 주시면 확인이 더 빠릅니다.
+        워크 아이디 부여되면 해당 워크 관련 정보 보여주고 아래 진행중인 채용
+        목록에서는 제외
       </div>
       <Grid container>
         <Grid item xs={12} md={12} my={4}></Grid>
@@ -55,7 +52,7 @@ export default function WorkDetail() {
 
         <Grid item md={12}>
           <h2 style={{ color: '#FF7600' }}>
-            해당 게스트하우스에서 진행중인 다른 채용
+            해당 게스트하우스에서 진행중인 채용
           </h2>
         </Grid>
 
