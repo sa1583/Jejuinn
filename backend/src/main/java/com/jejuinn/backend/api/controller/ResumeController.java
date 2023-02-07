@@ -3,6 +3,7 @@ package com.jejuinn.backend.api.controller;
 import com.jejuinn.backend.api.dto.request.resumeinfo.InsertResumeInfoPostReq;
 import com.jejuinn.backend.api.dto.response.recruitment.MyRecruitmentListRes;
 import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
+import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class ResumeController {
 
     private final ResumeInfoRepository resumeInfoRepository;
+    private final ResumeInfoService resumeInfoService;
 
     @PostMapping("/auth/job-search")
     @ApiOperation(value = "지원서 작성", notes = "")
@@ -57,5 +59,17 @@ public class ResumeController {
         return ResponseEntity.status(200)
                 .body(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid)
                         .map(resumeInfo -> ResumeInfoDetailRes.of(resumeInfo)));
+    }
+
+    @PutMapping("/auth/auto-apply/{userUid}")
+    @ApiOperation(value = "자동추천 ON/OFF 기능", notes = "userUid를 통해 마이 페이지에서 내 지원서의 자동추천 여부를 변경합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(수정 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateAutoApply(@PathVariable Long userUid) {
+        resumeInfoService.update(userUid);
+        return ResponseEntity.status(200).build();
     }
 }
