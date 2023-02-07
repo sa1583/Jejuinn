@@ -35,11 +35,11 @@ export default function MapApi({
     const { naver } = window;
     if (!mapElement.current || !naver) return;
 
-    let pickedMarker = 4;
+    let pickedMarker = 0;
 
     var jeju = new naver.maps.LatLngBounds(
-      new naver.maps.LatLng(33.2053, 126.1872),
-      new naver.maps.LatLng(33.5415, 126.9072),
+      new naver.maps.LatLng(33.1, 126),
+      new naver.maps.LatLng(33.6, 127),
     );
 
     // 지도 첫 랜더링 시  중심 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
@@ -75,7 +75,7 @@ export default function MapApi({
     const notPickedIcon = {
       content: content,
       size: new naver.maps.Size(20, 20),
-      anchor: new naver.maps.Point(16, 16),
+      anchor: new naver.maps.Point(0, 0),
     };
 
     // 선택 된 핀
@@ -88,7 +88,7 @@ export default function MapApi({
     const pickedIcon = {
       size: new naver.maps.Size(20, 20),
       content: content2,
-      anchor: new naver.maps.Point(16, 16),
+      anchor: new naver.maps.Point(0, 0),
     };
 
     if (spots) {
@@ -100,7 +100,7 @@ export default function MapApi({
           id: id,
           map: map,
           position: position,
-          // animation: naver.maps.Animation.DROP,
+          animation: naver.maps.Animation.DROP,
           icon: pageId == id ? pickedIcon : notPickedIcon,
           // icon: notPickedIcon,
         });

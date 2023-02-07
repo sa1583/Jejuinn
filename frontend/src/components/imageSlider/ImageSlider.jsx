@@ -20,7 +20,11 @@ export default function ImageSlider({ items }) {
             <img
               src={`${images.defalut_url}${item.imgPath}`}
               alt="명소 사진"
-              style={{ height: '100%', objectFit: 'cover' }}
+              style={{
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: '39px',
+              }}
             />
           </div>
         );

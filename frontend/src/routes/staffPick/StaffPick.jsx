@@ -10,41 +10,40 @@ import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { getSpotsPin, getSpotsImg, getSpotInfo } from '../../api/staffPick';
+import {
+  getSpotsPin,
+  getSpotsImg,
+  getSpotInfo,
+  getSpotsByFilter,
+} from '../../api/staffPick';
 import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
 export default function StaffPick() {
   const navigate = useNavigate();
   const location = useLocation();
   const pageId = location.pathname.split('staffpicklist/')[1];
-  // console.log(pageId);
 
-  const [filter, setFilter] = useState({
-    type: '전체',
-    section: '전체',
-    inp: '',
+  const [pickForm, setPickForm] = useState({
+    category: '전체',
+    areaName: '전체',
+    word: '',
   });
+  const handlePickForm = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setPickForm({ ...pickForm, [name]: value });
+  };
 
-  const getFilter = (pickForm) => {
-    setFilter(pickForm);
-    // 여기엔 이제 api 통신
+  const getFilterdSpots = async () => {
+    const data = (await getSpotsByFilter(pickForm)).data.content;
+    setSpots(data);
   };
 
   const goCreate = () => {
     navigate('/staffpicklist/create');
   };
 
-  const testapi = () => {
-    // const data = { msg: 'aaaa' };
-    axios({
-      method: 'post',
-      url: 'http://i8a603.p.ssafy.io:8080/api/spot/1',
-      // data,
-    }).then(console.log);
-  };
-
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
-    { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
 
   // spots 정보 저장할 함수
@@ -86,7 +85,7 @@ export default function StaffPick() {
     // if (!pageId) {
     getSpotsPins();
     // }
-  }, [pageId]);
+  }, []);
   useEffect(() => {
     if (!pageId) {
       getSpotsImgs();
@@ -107,7 +106,13 @@ export default function StaffPick() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <WhiteBox
-            cpn={<StaffPickFilter getFilter={getFilter} filter={filter} />}
+            cpn={
+              <StaffPickFilter
+                pickForm={pickForm}
+                handlePickForm={handlePickForm}
+                getFilterdSpots={getFilterdSpots}
+              />
+            }
           />
         </Grid>
         <Grid item xs={12} md={8}>

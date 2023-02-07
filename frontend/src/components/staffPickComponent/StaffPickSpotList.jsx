@@ -20,7 +20,8 @@ export default function StaffPickSpotList({ selectSpot, spotImgs }) {
       <h2>
         <span style={{ color: '#FF7600' }}>{spotImgs.length}건</span>의 명소
       </h2>
-      <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}>
+      {/* <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}> */}
+      <Box sx={{ width: '100%' }}>
         <ImageList variant="masonry" cols={4} gap={8}>
           {spotImgs.map((item) => (
             <ImageListItem key={uuidv4()}>

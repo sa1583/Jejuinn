@@ -2,22 +2,50 @@ import { useState } from 'react';
 import axios from 'axios';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
 import { Box } from '@mui/system';
-import { Button, Typography } from '@mui/material';
+import { Button, Rating, Typography } from '@mui/material';
 import ImageUploader from '../articleCreateComponent/ImageUploader';
-export default function StaffPickCreateForm() {
+import { useSelector } from 'react-redux';
+import userSlice, { selectAccessToken } from '../../store/user';
+import { createSpotReview } from '../../api/staffPick';
+export default function StaffPickCreateForm({ nowPickId }) {
   const [content, setContent] = useState('');
-  // const submit = (e) => {
-  //   e.preventDefault();
-  //   axios({
-  //     url: 'https://jejuiin-default-rtdb.asia-southeast1.firebasedatabase.app/',
-  //     method: 'post',
-  //     data: form,
-  //   });
-  // };
+  const acces_token = useSelector(selectAccessToken);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    let data = new FormData();
+    data.append(
+      'review',
+      JSON.stringify({
+        content,
+        travelPlaceUid: nowPickId,
+        starRating,
+      }),
+    );
+    data.append('images', JSON.stringify(files));
+
+    // files.forEach((file) => {
+    //   data.append('images', file);
+    // });
+    // console.log(images);
+
+    // console.log(files);
+    // const data = {
+    // review: {
+    //   content,
+    //   travelPlaceUid: nowPickId,
+    //   starRating,
+    // },
+    //   images: images,
+    // };
+    // console.log(data);
+    const result = await createSpotReview(acces_token, data);
+    console.log(result);
+  };
+  const [starRating, setStarRating] = useState(1);
 
   const getContent = (value) => {
     setContent(value);
-    console.log(content);
   };
 
   const [files, setFiles] = useState([]);
@@ -46,10 +74,31 @@ export default function StaffPickCreateForm() {
         value={content}
         getContent={getContent}
       />
+
+      <Box
+        sx={{
+          alignSelf: 'center',
+          marginTop: '5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="h3">평점</Typography>
+        <Rating
+          value={starRating}
+          onChange={(event, newValue) => {
+            setStarRating(newValue);
+          }}
+          size="large"
+          sx={{ fontSize: '3rem' }}
+        />
+      </Box>
+
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           type="submit"
-          // onClick={submit}
+          onClick={submit}
           sx={{
             marginTop: '5rem',
             width: '40%',

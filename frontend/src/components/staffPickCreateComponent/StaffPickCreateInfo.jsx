@@ -8,7 +8,7 @@ export default function StaffPickCreateInfo({ nowPick }) {
   const handleClose = () => setOpen(false);
 
   const inline = (title, content) => (
-    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+    <Typography variant="h6" sx={{ fontWeight: 'bolder', margin: 0 }}>
       <Box component="span" sx={{ color: 'primary.main' }}>
         {title}
       </Box>{' '}
@@ -27,7 +27,16 @@ export default function StaffPickCreateInfo({ nowPick }) {
         position: 'relative',
       }}
     >
-      <Box sx={{ padding: '1rem' }}>
+      <Box
+        sx={{
+          padding: '1rem',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
         <button
           style={{
             border: 'none',
@@ -47,19 +56,20 @@ export default function StaffPickCreateInfo({ nowPick }) {
         <Box
           sx={{
             width: '90%',
-            height: '20rem',
-            padding: '5%',
             display: 'flex',
             flexDirection: 'column',
-            gap: '1.5rem',
-            justifyContent: 'center',
+            gap: '1rem',
+            margin: '2rem 0 0 0',
           }}
         >
           {inline('이름', nowPick?.name)}
           {inline('유형', nowPick?.category)}
           {inline('주소', nowPick?.address)}
-          {inline('리뷰 수', `${nowPick?.reviewCount} 개`)}
-          {inline('평점', `${nowPick?.starRatingAvg} 점`)}
+          {inline('리뷰 수', nowPick.reviewCount && `${nowPick.reviewCount}개`)}
+          {inline(
+            '평점',
+            nowPick.starRatingAvg && `${nowPick?.starRatingAvg} 점`,
+          )}
         </Box>
       </Box>
     </Box>

@@ -29,8 +29,10 @@ export default function ReviewContent({ reviewContent }) {
   // },[review])
 
   return (
-    <Box sx={{ padding: '5%' }}>
-      <ImageSlider items={reviewContent?.images} />
+    <Box sx={{ padding: '5%', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ width: '100%', alignSelf: 'center' }}>
+        <ImageSlider items={reviewContent?.images} />
+      </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
         <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>

@@ -99,10 +99,10 @@ export default function ImageUploader({ files, handleFiles }) {
           src={file.preview}
           style={img}
           // Revoke data uri after image is loaded
-          onunload={() => {
-            URL.revokeObjectURL(file.preview);
-            console.log(files);
-          }}
+          // onunload={() => {
+          //   URL.revokeObjectURL(file.preview);
+          //   console.log(files);
+          // }}
           onDoubleClick={() => deleteImage(file)}
         />
       </div>
