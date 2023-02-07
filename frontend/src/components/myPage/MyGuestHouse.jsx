@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import MyGuestHouseCom from './MyGuestHouseCom';
@@ -103,7 +104,21 @@ export default function MyGuestHouse() {
           </Box>
         </Box>
         <Box>
-          <p style={{ fontSize: '1.3rem' }}>내 게스트하우스</p>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <p style={{ fontSize: '1.3rem' }}>내 게스트하우스</p>
+            <Link
+              to="/guesthouse/create"
+              style={{ textDecoration: 'none', color: '#FF7600' }}
+            >
+              + 새로운 게스트하우스
+            </Link>
+          </Box>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}>
             {myGuestHouses.map((myGuestHouse) => {
               return (
