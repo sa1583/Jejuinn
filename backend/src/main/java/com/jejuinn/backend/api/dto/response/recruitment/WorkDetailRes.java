@@ -14,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class WorkDetailRes {
 
+    private Long uid;
+
     private String workName;
 
     private int intake;
@@ -36,6 +38,7 @@ public class WorkDetailRes {
         List<WorkDetailRes> result = new ArrayList<>();
         for(Work work : works) {
             WorkDetailRes workDetailRes = WorkDetailRes.builder()
+                    .uid(work.getUid())
                     .workName(work.getWorkName())
                     .intake(work.getIntake())
                     .gender(work.getGender())
