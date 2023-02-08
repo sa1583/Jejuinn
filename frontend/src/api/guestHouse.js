@@ -10,4 +10,13 @@ const allGuestHouseList = () => {
   return api.get('/api/guest-houses');
 };
 
-export { guestHouseDetail, allGuestHouseList };
+const getApplicantByUid = (uid, token) => {
+  const config = {
+    headers: {
+      access_token: `Bearer ${token}`,
+    },
+  };
+  return api.get(`/auth/job-search/${uid}`, config);
+};
+
+export { guestHouseDetail, allGuestHouseList, getApplicantByUid };
