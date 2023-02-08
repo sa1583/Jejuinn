@@ -6,7 +6,7 @@ import SignUp from './routes/signUp/SignUp';
 import GuestHouse from './routes/guestHouse/GuestHouse';
 import GuestHouseDetail from './routes/guestHouseDetail/GuestHouseDetail';
 import WorkList from './routes/work/WorkList';
-import WorkDetail from './routes/work/WorkDetail';
+import RecruitmentDetail from './routes/work/RecruitmentDetail';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
@@ -26,6 +26,7 @@ import MyGuestHouse from './components/myPage/MyGuestHouse';
 import SignUpBox from './components/signUp/SignUpBox';
 import FindPassword from './routes/logIn/FindPassword';
 import MyApplicantList from './components/myPage/MyApplicantList';
+import GuestHouseCreate from './routes/guestHouseCreate/GuestHouseCreate';
 import VideoInterview from './routes/videoInterview/VideoInterview';
 
 const router = createBrowserRouter([
@@ -74,11 +75,15 @@ const router = createBrowserRouter([
         element: <WorkList />,
       },
       {
-        path: 'worklist/detail/:workid',
-        element: <WorkDetail />,
+        path: 'worklist/detail/:recruitmentUid',
+        element: <RecruitmentDetail />,
       },
       {
         path: 'staffpicklist',
+        element: <StaffPick />,
+      },
+      {
+        path: 'staffpicklist/:spotid',
         element: <StaffPick />,
       },
       {
@@ -112,6 +117,10 @@ const router = createBrowserRouter([
       {
         path: 'login/findpassword',
         element: <FindPassword />,
+      },
+      {
+        path: 'guesthouse/create',
+        element: <GuestHouseCreate />,
       },
       {
         path: 'interview',

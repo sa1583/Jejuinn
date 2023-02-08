@@ -16,8 +16,16 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
   const [activeStep, setActiveStep] = useState(0);
 
   // 다음 스텝
-  const handleNext = () => {
+  const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep == 1) {
+      console.log(activeStep);
+      const lng = nowPick[0].lng;
+      const lat = nowPick[0].lat;
+      const data = await getAddressBySpot(lng, lat);
+      const address = data.data.documents[0].address_name;
+      setArea(address);
+    }
   };
   // 이전 스텝
   const handlePrior = () => {
@@ -28,11 +36,14 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
   const [spotName, setSpotName] = useState('');
   const handleSpotName = (e) => {
     setSpotName(e);
+    getSpotFromStack();
   };
+
+  // 좌표
+  const [nowPick, setNowPick] = useState([{ lat: 33.3793, lng: 126.5497 }]);
 
   // 긴 주소
   const [area, setArea] = useState('');
-  const [nowPick, setNowPick] = useState([{ lat: 33.3793, lng: 126.5497 }]);
 
   const [shortArea, setShortArea] = useState('');
 
@@ -43,16 +54,35 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
     } else {
       setShortArea(areaArray[2]);
     }
-  });
+  }, [area]);
+
+  const [stack, setStack] = useState({});
+
+  const getSpotFromStack = () => {
+    const lat = stack.lat;
+    const lng = stack.lng;
+    setNowPick([{ lat, lng }]);
+  };
 
   // 새로운 명소 장소 선택
   const setNewPin = async (e) => {
     const lat = e._lat;
     const lng = e._lng;
     setNowPick([{ lat, lng }]);
-    const data = await getAddressBySpot(lng, lat);
-    const address = data.data.documents[0].address_name;
-    setArea(address);
+    setStack({ lat, lng });
+    // const data = await getAddressBySpot(lng, lat);
+    // const address = data.data.documents[0].address_name;
+    // setArea(address);
+  };
+
+  const setNewPinByNameSearch = async (spot) => {
+    const lng = spot.mapy;
+    const lat = spot.mapx;
+    setNowPick([{ lat, lng }]);
+    // const data = await getAddressBySpot(lng, lat);
+
+    // const address = data.data.documents[0].address_name;
+    // setArea(address);
   };
 
   // 새로운 명소 유형 선택
@@ -85,8 +115,7 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
           <StaffPickCreateSpotName
             spotName={spotName}
             handleSpotName={handleSpotName}
-            newtype={newtype}
-            handleType={handleType}
+            setNewPinByNameSearch={setNewPinByNameSearch}
           />
         );
       case 2:

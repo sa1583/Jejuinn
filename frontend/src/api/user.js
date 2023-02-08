@@ -43,7 +43,12 @@ function loginKakao(token) {
 }
 
 function loginFacebook(token) {
-  return api.post('/api/users/social/facebook', {}, getTokenHeader(token));
+  let header = {
+    headers: {
+      access_token: `Bearer ${token}`,
+    },
+  };
+  return api.post('/api/users/social/facebook', {}, header);
 }
 
 // 기본 로그인 토큰 받기
