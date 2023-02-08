@@ -1,5 +1,6 @@
 import { Box } from '@mui/system';
 import Avatar from '@mui/material/Avatar';
+import { Typography } from '@mui/material';
 
 export default function CommentList({ comment }) {
   return (
@@ -8,13 +9,15 @@ export default function CommentList({ comment }) {
         sx={{
           display: 'flex',
           gap: '1rem',
-          alignItems: 'center',
           paddingLeft: '0.5rem',
         }}
       >
-        <Avatar sx={{ width: '2rem', height: '2rem' }}>{comment.img}</Avatar>
+        <Avatar sx={{ width: '2rem', height: '2rem', marginTop: '0.5rem' }}>
+          {comment.img}
+        </Avatar>
         <Box sx={{ width: '100%' }}>
-          <h5 style={{ margin: 0 }}>{comment.name}</h5>
+          <Typography sx={{ fontWeight: 'bolder' }}>{comment.name}</Typography>
+
           <Box
             sx={{
               display: 'flex',
@@ -26,12 +29,14 @@ export default function CommentList({ comment }) {
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: '2rem',
-                justifyContent: 'center',
               }}
             >
-              <p style={{ margin: 0, fontSize: '0.8rem', width: '80%' }}>
+              <Typography
+                variant="p"
+                sx={{ marginTop: '0.3rem', width: '90%' }}
+              >
                 {comment.comment}
-              </p>
+              </Typography>
             </div>
           </Box>
         </Box>

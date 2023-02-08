@@ -13,21 +13,26 @@ import StaffPickCreateSpotType from './StaffPickCreateSpotType';
 import { createNewSpot } from '../../api/staffPick';
 
 export default function StaffPickCreateNewSpot({ open, handleClose }) {
-  const steps = ['위치 선택', '이름 선택', '유형 선택', '확인', '등록 완료!'];
+  const steps = [
+    '위치 선택',
+    '이름 선택',
+    '유형·사진 선택',
+    '확인',
+    '등록 완료!',
+  ];
   const [activeStep, setActiveStep] = useState(0);
 
   // 다음 스텝
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep == 1) {
-      console.log(activeStep);
       const lng = nowPick[0].lng;
       const lat = nowPick[0].lat;
       const data = await getAddressBySpot(lng, lat);
       const address = data.data.documents[0].address_name;
       setArea(address);
     } else if (activeStep == 3) {
-      const body = {
+      const travelPlace = {
         name: spotName,
         category: newtype,
         address: area,
@@ -35,8 +40,16 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
         lat: nowPick[0].lat,
         lng: nowPick[0].lng,
       };
-      const data = await createNewSpot(body);
-      console.log(data);
+      const formData = new FormData();
+      const blob = new Blob([JSON.stringify(travelPlace)], {
+        type: 'application/json',
+      });
+
+      formData.append('travelPlace', blob);
+      formData.append('image', file[0]);
+
+      await createNewSpot(formData);
+      handleClose();
     }
   };
   // 이전 스텝
@@ -49,6 +62,11 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
   const handleSpotName = (e) => {
     setSpotName(e);
     getSpotFromStack();
+  };
+
+  const [file, setFile] = useState([]);
+  const handleFile = (data) => {
+    setFile(data);
   };
 
   // 좌표
@@ -82,19 +100,12 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
     const lng = e._lng;
     setNowPick([{ lat, lng }]);
     setStack({ lat, lng });
-    // const data = await getAddressBySpot(lng, lat);
-    // const address = data.data.documents[0].address_name;
-    // setArea(address);
   };
 
   const setNewPinByNameSearch = async (spot) => {
     const lng = spot.mapy;
     const lat = spot.mapx;
     setNowPick([{ lat, lng }]);
-    // const data = await getAddressBySpot(lng, lat);
-
-    // const address = data.data.documents[0].address_name;
-    // setArea(address);
   };
 
   // 새로운 명소 유형 선택
@@ -132,7 +143,12 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
         );
       case 2:
         return (
-          <StaffPickCreateSpotType newtype={newtype} handleType={handleType} />
+          <StaffPickCreateSpotType
+            newtype={newtype}
+            handleType={handleType}
+            file={file}
+            handleFile={handleFile}
+          />
         );
 
       case 3:
@@ -165,7 +181,7 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
         }}
       >
         <Typography
-          sx={{ fontSize: '2vw', color: '#FF7600', fontWeight: 'bolder' }}
+          sx={{ fontSize: '2vw', color: 'primary.main', fontWeight: 'bolder' }}
         >
           새로운 명소 등록
         </Typography>

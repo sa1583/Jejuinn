@@ -39,7 +39,7 @@ const img = {
   objectFit: 'cover',
 };
 
-export default function ImageUploader({ files, handleFiles }) {
+export default function ImageUploader({ files, handleFiles, maxNum }) {
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: {
       'image/*': [],
@@ -49,9 +49,9 @@ export default function ImageUploader({ files, handleFiles }) {
         Object.assign(file, { preview: URL.createObjectURL(file) }),
       );
       console.log(newImgs);
-      handleFiles([...files, ...newImgs].splice(0, 10));
+      handleFiles([...files, ...newImgs].splice(0, maxNum));
     },
-    maxFiles: 10,
+    maxFiles: maxNum,
     noClick: true,
   });
 
@@ -122,6 +122,7 @@ export default function ImageUploader({ files, handleFiles }) {
           alignItems: 'center',
           gap: '1rem',
           padding: '1rem',
+          minHeight: '208px',
         }}
       >
         <input {...getInputProps()} />
