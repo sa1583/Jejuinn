@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.dto.response;
+package com.jejuinn.backend.api.dto.response.user;
 
 import com.jejuinn.backend.db.entity.User;
 import lombok.*;
@@ -24,6 +24,8 @@ public class GetUserInfoPostRes {
 
     private String phone;
 
+    private int sugarContent;
+
 
     public static GetUserInfoPostRes from(User user) {
         return GetUserInfoPostRes.builder()
@@ -31,6 +33,7 @@ public class GetUserInfoPostRes {
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .nickname(user.getNickname())
+                .sugarContent((int) user.getSugarContent())
                 .phone(user.getPhone()).build();
     }
 }
