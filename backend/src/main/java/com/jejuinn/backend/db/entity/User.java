@@ -63,7 +63,8 @@ public class User {
    private String refreshToken;
 
    @NotNull
-   private int sugarContent; //감귤당도 : 1 ~ 20, start: 8 단위 브릭스
+   @Column(columnDefinition = "DECIMAL(5,3)")
+   private double sugarContent; //감귤당도 : 1 ~ 20, start: 8 단위 브릭스
 
    @Column(length = 50)
    private String InstagramLink;

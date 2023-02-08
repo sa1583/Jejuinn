@@ -1,16 +1,15 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.dto.request.LoginPostReq;
-import com.jejuinn.backend.api.dto.request.SimpleEmailReq;
-import com.jejuinn.backend.api.dto.response.GetUserInfoPostRes;
-import com.jejuinn.backend.api.dto.request.SignupPostReq;
-import com.jejuinn.backend.api.dto.response.SimpleCodeRes;
+import com.jejuinn.backend.api.dto.request.user.LoginPostReq;
+import com.jejuinn.backend.api.dto.request.user.SimpleEmailReq;
+import com.jejuinn.backend.api.dto.response.user.GetUserInfoPostRes;
+import com.jejuinn.backend.api.dto.request.user.SignupPostReq;
+import com.jejuinn.backend.api.dto.response.user.SimpleCodeRes;
 import com.jejuinn.backend.api.service.EmailService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.entity.User;
-import com.jejuinn.backend.db.enums.SocialType;
 import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.db.repository.UserRepositorySupport;
 import io.swagger.annotations.*;

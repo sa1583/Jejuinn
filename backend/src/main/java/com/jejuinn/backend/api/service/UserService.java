@@ -1,6 +1,6 @@
 package com.jejuinn.backend.api.service;
 
-import com.jejuinn.backend.api.dto.request.SignupPostReq;
+import com.jejuinn.backend.api.dto.request.user.SignupPostReq;
 import com.jejuinn.backend.db.entity.Authority;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.UserRepository;
@@ -8,7 +8,9 @@ import com.jejuinn.backend.db.repository.UserRepositorySupport;
 import com.jejuinn.backend.exception.DuplicateMemberException;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
+import com.jejuinn.backend.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -22,12 +24,12 @@ import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserRepositorySupport userRepositorySupport;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
     public User signup(SignupPostReq userRegisterPostReq) {
@@ -44,7 +46,7 @@ public class UserService {
 
 
         User user = userRepository.save(SignupPostReq.from(userRegisterPostReq, Collections.singleton(authority)));
-        logger.info("USER UID : {}",user.getUid());
+        log.info("USER UID : {}",user.getUid());
 
         return user;
     }
@@ -62,14 +64,14 @@ public class UserService {
         httpHeaders.add(JwtFilter.ACCESS_HEADER, "Bearer " + accessToken);
         httpHeaders.add(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken);
 
-        logger.info("토큰 재발급 ");
-        logger.info("ACCESS : {}",accessToken);
-        logger.info("REFRESH : {}", refreshToken);
-        logger.info("user UID : {}", user.getUid());
+        log.info("토큰 재발급 ");
+        log.info("ACCESS : {}",accessToken);
+        log.info("REFRESH : {}", refreshToken);
+        log.info("user UID : {}", user.getUid());
 
         userRepositorySupport.saveRefreshToken(user.getUid(), refreshToken);
 
-        logger.info("save refresh token");
+        log.info("save refresh token");
         return httpHeaders;
     }
 
@@ -80,4 +82,18 @@ public class UserService {
         if(uid == null) return null;
         return Long.parseLong(uid);
     }
+
+    @Transactional
+    public void updateSugarContent(double point, long uid){
+        User user = userRepository.findById(uid)
+                .orElseThrow(()->new NoContentException("사용자가 아닙니다."));
+        log.info("사용자 평점(감귤 당도) UPDATE : BEFORE : {}", user.getSugarContent());
+
+        double sum = user.getSugarContent()+point;
+        double updatePoint = (sum > 10) ? 10 : (sum < 0) ? 0 : sum;
+        user.setSugarContent(updatePoint);
+
+        log.info("사용자 평점(감귤 당도) UPDATE : AFTER : {}", user.getSugarContent());
+    }
+
 }
