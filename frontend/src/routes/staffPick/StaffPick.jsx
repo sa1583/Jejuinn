@@ -2,56 +2,49 @@ import { useEffect, useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
 import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
-// import StaffPickRank from '../../components/staffPickComponent/StaffPickRank';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import StaffPickReviews from '../../components/staffPickComponent/StaffPickReviews';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import { getReviews } from '../../api/staffPick';
-import { getSpotsPin, getSpotsImg, getSpotInfo } from '../../api/staffPick';
+import {
+  getSpotsPin,
+  getSpotsImg,
+  getSpotInfo,
+  getSpotsByFilter,
+} from '../../api/staffPick';
 import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
 export default function StaffPick() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageId = location.pathname.split('staffpicklist/')[1];
 
-  const [filter, setFilter] = useState({
-    type: '전체',
-    section: '전체',
-    inp: '',
+  const [pickForm, setPickForm] = useState({
+    category: '전체',
+    areaName: '전체',
+    word: '',
   });
+  const handlePickForm = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setPickForm({ ...pickForm, [name]: value });
+  };
 
-  const getFilter = (pickForm) => {
-    setFilter(pickForm);
-    // 여기엔 이제 api 통신
+  const getFilterdSpots = async () => {
+    const data = (await getSpotsByFilter(pickForm)).data.content;
+    setSpots(data);
   };
 
   const goCreate = () => {
-    navigate('create');
-  };
-
-  const testapi = () => {
-    // const data = { msg: 'aaaa' };
-    axios({
-      method: 'post',
-      url: 'http://i8a603.p.ssafy.io:8080/api/spot/1',
-      // data,
-    }).then(console.log);
+    navigate('/staffpicklist/create');
   };
 
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
-    { icon: <ModeEditOutlinedIcon />, name: '테스트', handle: testapi },
   ];
-
-  // const spots = [
-  //   { travelPlaceUid: 1, lat: 33.4485, lng: 126.5631 },
-  //   { travelPlaceUid: 2, lat: 33.478, lng: 126.4948 },
-  //   { travelPlaceUid: 3, lat: 33.4664, lng: 126.6694 },
-  //   { travelPlaceUid: 4, lat: 33.2856, lng: 126.4449 },
-  // ];
 
   // spots 정보 저장할 함수
   const [spots, setSpots] = useState([]);
@@ -60,7 +53,6 @@ export default function StaffPick() {
    */
   const getSpotsPins = async () => {
     const SpotsList = (await getSpotsPin()).data;
-    console.log(SpotsList);
     setSpots(SpotsList);
   };
 
@@ -70,49 +62,41 @@ export default function StaffPick() {
   const getSpotsImgs = async () => {
     const data = (await getSpotsImg()).data.content;
     setSpotImgs(data);
-    console.log(data);
   };
 
   // 명소 정보 받아오기
   const [selectedSpot, setSelectedSpot] = useState(false);
 
-  const [spotReviews, setSpotReviews] = useState([]);
-
   // 클릭한 명소의 uid, name을 받고
   // uid를 이용해 해당 명소의 리뷰 리스트를 받아오는 로직
   // 나중에 fetch 우리서버랑 통신으로 바꿔줘야함
   //
-  const selectSpot = async (e) => {
-    const data = (await getSpotInfo(e.target.id)).data.travelPlace;
-    console.log(data);
+  const selectSpot = async () => {
+    const data = (await getSpotInfo(pageId)).data.travelPlace;
     setSelectedSpot(data);
-
-    // const uid = e.target.id;
-    // const name = e.target.name;
-    // setSelectedSpot({ uid, name });
-    // fetch(`dataPractice/reviews_${uid}.json`)
-    //   .then((res) => res.json())
-    //   .then((json) => setSpotReviews(json));
-    // 위에 패치 지우고 아래 주석 해제  -> 전체함수 selectSpot 에 async 붙여줘야함
-    // const reviews = await getReviews()
-    // setSpotReviews(reviews)
   };
 
-  const deleteSelected = () => {
-    setSelectedSpot(false);
-    setSpotReviews([]);
-  };
-
+  // 클릭한 마커의 명소 디테일 보기
   const handlePinClick = (marker) => {
-    console.log(marker.id);
+    navigate(`/staffpicklist/${marker.id}`);
   };
 
   useEffect(() => {
+    // if (!pageId) {
     getSpotsPins();
+    // }
   }, []);
   useEffect(() => {
-    getSpotsImgs();
-  }, []);
+    if (!pageId) {
+      getSpotsImgs();
+    }
+  }, [pageId]);
+
+  useEffect(() => {
+    if (pageId) {
+      selectSpot();
+    }
+  }, [pageId]);
 
   // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
@@ -122,34 +106,38 @@ export default function StaffPick() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <WhiteBox
-            cpn={<StaffPickFilter getFilter={getFilter} filter={filter} />}
+            cpn={
+              <StaffPickFilter
+                pickForm={pickForm}
+                handlePickForm={handlePickForm}
+                getFilterdSpots={getFilterdSpots}
+              />
+            }
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <WhiteBox
-            cpn={<MapApi spots={spots} handlePinClick={handlePinClick} />}
+            cpn={
+              <MapApi
+                spots={spots}
+                handlePinClick={handlePinClick}
+                pickedId={pageId}
+              />
+            }
           />
         </Grid>
 
-        {selectedSpot && (
+        {pageId && (
           <Grid item xs={4}>
             <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={selectedSpot} />} />
           </Grid>
         )}
-        {selectedSpot && (
+        {pageId && (
           <Grid item xs={8}>
-            <WhiteBox
-              cpn={
-                <StaffPickReviews
-                  spotReviews={spotReviews}
-                  selectedSpot={selectedSpot}
-                  deleteSelected={deleteSelected}
-                />
-              }
-            />
+            <WhiteBox cpn={<StaffPickReviews spotname={selectedSpot.name} />} />
           </Grid>
         )}
-        {!selectedSpot && (
+        {!pageId && (
           <Grid item xs={12} md={12}>
             <WhiteBox
               cpn={
@@ -161,8 +149,6 @@ export default function StaffPick() {
             />
           </Grid>
         )}
-
-        {/* </Grid> */}
       </Grid>
     </Box>
   );
