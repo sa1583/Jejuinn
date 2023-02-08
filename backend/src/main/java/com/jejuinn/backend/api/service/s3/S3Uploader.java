@@ -90,6 +90,11 @@ public class S3Uploader {
         }
     }
 
+    public void uploadImage(MultipartFile image, String guestType, Long uid) throws IOException {
+        String imgPath= upload(image, guestType);
+        imageRepository.save(Image.init(guestType, uid, imgPath));
+    }
+
     public void deleteImages(List<Long> list) throws IOException {
         for (Long uid : list) {
             delete(uid);
