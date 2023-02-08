@@ -2,18 +2,34 @@ import { Box } from '@mui/system';
 import { ImageList, ImageListItem } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
-import { useNavigate } from 'react-router-dom';
-export default function StaffPickReviews({
-  spotReviews,
-  selectedSpot,
-  deleteSelected,
-}) {
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getReviews } from '../../api/staffPick';
+import { useEffect, useState } from 'react';
+import { images } from '../../assets/images';
+export default function StaffPickReviews({ spotname }) {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const pageId = location.pathname.split('staffpicklist/')[1];
+
   const goDetail = (id) => {
-    navigate(`detail/${id}`);
+    navigate(`/staffpicklist/detail/${id}`);
   };
+
+  const [spotReviews, setSpotReviews] = useState([]);
+
+  const getReviewList = async () => {
+    const data = (await getReviews(pageId)).data;
+    console.log(data);
+    setSpotReviews(data);
+  };
+
+  useEffect(() => {
+    getReviewList();
+  }, [pageId]);
+
   return (
-    <Box sx={{ padding: '3vh' }}>
+    <Box sx={{ width: '90%', padding: '5%' }}>
       <Box
         sx={{
           display: 'flex',
@@ -22,26 +38,29 @@ export default function StaffPickReviews({
         }}
       >
         <h2>
-          <span style={{ color: '#FF7600' }}>{selectedSpot?.name}</span>의 리뷰
+          <span style={{ color: '#FF7600' }}>{spotname}</span>의 리뷰
         </h2>
 
         <ArrowCircleLeftOutlinedIcon
-          onClick={deleteSelected}
+          onClick={() => {
+            navigate('/staffpicklist');
+          }}
           sx={{ cursor: 'pointer' }}
           fontSize="large"
         />
       </Box>
-      <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}>
+      <Box sx={{ width: '100%' }}>
+        {/* <Box sx={{ width: '100%', maxHeight: '15rem', overflowY: 'scroll' }}> */}
         <ImageList variant="masonry" cols={4} gap={8}>
           {spotReviews.map((item) => (
             <ImageListItem key={uuidv4()}>
               <img
-                src={`${item.img_url}?w=248&fit=crop&auto=format`}
-                srcSet={`${item.img_url}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                src={`${images.defalut_url}${item.imgPath}?w=248&fit=crop&auto=format`}
+                srcSet={`${images.defalut_url}${item.imgPath}?w=248&fit=crop&auto=format&dpr=2 2x`}
                 alt="리뷰"
                 loading="lazy"
-                uid={item.uid}
-                onClick={() => goDetail(item.uid)}
+                uid={item.reviewUid}
+                onClick={() => goDetail(item.reviewUid)}
               />
             </ImageListItem>
           ))}
