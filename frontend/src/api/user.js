@@ -13,7 +13,7 @@ const getTokenHeader = (token) => {
 const getOurTokens = (token, state) => {
   const config = {
     headers: {
-      access_token: `Bearer ${token}`,
+      socialToken: `Bearer ${token}`,
       state,
     },
   };
