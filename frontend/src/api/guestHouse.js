@@ -10,13 +10,13 @@ const allGuestHouseList = () => {
   return api.get('/api/guest-houses');
 };
 
-const getApplicantByUid = (uid, token) => {
+const getApplicantByUid = async (uid, token) => {
   const config = {
     headers: {
-      access_token: `Bearer ${token}`,
+      accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(`/auth/job-search/${uid}`, config);
+  return await api.get(`/auth/job-search/${uid}`, config);
 };
 
 export { guestHouseDetail, allGuestHouseList, getApplicantByUid };

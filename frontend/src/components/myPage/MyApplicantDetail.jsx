@@ -34,35 +34,18 @@ const style = {
 
 export default function MyApplicantDetail({ id, handleClose }) {
   const navigate = useNavigate();
-  // const [myApplicant, setMyApplicant] = React.useState();
+  const [myApplicant, setMyApplicant] = React.useState();
   const accessToken = useSelector(selectAccessToken);
 
-  // useEffect(() => {
-  //   console.log(accessToken);
-  //   const applicant = async () => await getApplicantByUid(id, accessToken);
-  //   setMyApplicant(applicant);
-  // }, []);
-  const myApplicant = {
-    uid: 9,
-    userUid: 1,
-    content: '즐겁게 일할 수 있어요',
-    possibleStartDate: '2023-02-15',
-    minWorkPeriod: 4,
-    autoApply: true,
-    guestHouseType: null,
-    dateCreated: '2023-02-07',
-    interestAreas: [
-      {
-        areaName: '애월읍',
-      },
-    ],
-    personTypes: [
-      {
-        type: '꼼꼼',
-      },
-    ],
-    WorkHistory: [],
-  };
+  useEffect(() => {
+    let user;
+    async function getData() {
+      user = await getApplicantByUid(id, accessToken);
+      setMyApplicant(user.data);
+    }
+    getData();
+    // setMyApplicant(applicant());
+  }, []);
 
   return (
     <div>
@@ -87,7 +70,11 @@ export default function MyApplicantDetail({ id, handleClose }) {
               <Stack direction="column" spacing={3}>
                 <Stack direction="row" spacing={1}>
                   <Avatar
-                    src={images.sample_profile}
+                    src={
+                      myApplicant.profileImageUrl
+                        ? myApplicant.profileImageUrl
+                        : images.sample_profile
+                    }
                     style={{
                       width: '15rem',
                       height: '15rem',
@@ -107,7 +94,7 @@ export default function MyApplicantDetail({ id, handleClose }) {
                           lineHeight: '58px',
                         }}
                       >
-                        {myApplicant.name}
+                        {myApplicant.name ? myApplicant.name : '장정민'}
                       </Typography>
                       <Typography
                         style={{
@@ -119,7 +106,8 @@ export default function MyApplicantDetail({ id, handleClose }) {
                           fontSize: '32px',
                         }}
                       >
-                        {myApplicant.gender} | {myApplicant.age}
+                        {myApplicant.gender ? myApplicant.gender : '남자'} |{' '}
+                        {myApplicant.age ? myApplicant.age : 20}
                       </Typography>
                       <a href={myApplicant.instagramLink}>
                         <img src={images.instagram_logo} width="39px" />
@@ -266,15 +254,10 @@ export default function MyApplicantDetail({ id, handleClose }) {
                     근무 이력
                   </Typography>
                   <Stack direction="row" spacing={1} marginLeft="170px">
-                    {myApplicant?.staffHistories?.map((history) => {
+                    {myApplicant?.staffRecordDetail?.map((history) => {
                       if (history.onDuty === 'true') return null;
                       return (
-                        <WorkHistory
-                          key={history.uid}
-                          guestHouseName={history.guestHouseName}
-                          startDate={history.startDate}
-                          endDate={history.endDate}
-                        />
+                        <WorkHistory key={history.uid} history={history} />
                       );
                     })}
                   </Stack>
