@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.EvaluationStaffPostReq;
 import com.jejuinn.backend.api.dto.response.staff.StaffListRes;
 import com.jejuinn.backend.api.service.StaffService;
 import com.jejuinn.backend.api.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -91,6 +93,19 @@ public class StaffController {
                                         HttpServletRequest request){
         Long representativeUid = userService.getUserUidFromAccessToken(request);
         staffService.addMyStaff(guestHouseUid, representativeUid, userUid, workName);
+        return ResponseEntity.status(200).build();
+    }
+
+    @PostMapping("/auth/guest-house/staff/evaluation")
+    @ApiOperation(value = "스태프 채용(자동 매칭의 경우)", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 업무를 종료합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(데이터가 없음)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> evalStaff(@Valid @RequestBody EvaluationStaffPostReq data, HttpServletRequest request){
+        Long representativeUid = userService.getUserUidFromAccessToken(request);
+        staffService.updateStaffScore(data);
         return ResponseEntity.status(200).build();
     }
 }

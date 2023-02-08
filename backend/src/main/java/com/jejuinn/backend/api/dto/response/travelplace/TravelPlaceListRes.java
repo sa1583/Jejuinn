@@ -27,7 +27,9 @@ public class TravelPlaceListRes {
 
     public static TravelPlaceListRes of(TravelPlace travelPlace, Optional<List<String>> images){
         String imgUrl = null;
-        if(images.isPresent()) imgUrl = images.get().get(0);
+        if(images.isPresent() && images.get().size() != 0) {
+            imgUrl = images.get().get(0);
+        }
         return TravelPlaceListRes.builder()
                 .travelPlaceUid(travelPlace.getUid())
                 .travelPlaceName(travelPlace.getName())
