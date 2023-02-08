@@ -126,14 +126,16 @@ export default function MyMain() {
             내가 지원한 모집 공고
           </AccordionSummary>
           <AccordionDetails>
-            {myAppliedRecruitment.map((recruitment) => {
-              return (
-                <WhiteBox
-                  key={recruitment.uid}
-                  cpn={<MyMainRecruitment recruitment={recruitment} />}
-                />
-              );
-            })}
+            <Stack direction="column" spacing={1}>
+              {myAppliedRecruitment.map((recruitment) => {
+                return (
+                  <WhiteBox
+                    key={recruitment.uid}
+                    cpn={<MyMainRecruitment recruitment={recruitment} />}
+                  />
+                );
+              })}
+            </Stack>
           </AccordionDetails>
         </Accordion>
 
