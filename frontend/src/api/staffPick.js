@@ -61,7 +61,23 @@ function getReviewDetail(uid) {
 
 // 새로운 명소 등록
 function createNewSpot(data) {
-  return api.post('/api/travel-place', data);
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return api.post('/api/travel-place', data, config);
+}
+
+// 리뷰 디테일 삭제
+function deleteReviewDetail(reviewUid, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+
+  return api.delete(`/auth/travel-place/reviews/${reviewUid}`, config);
 }
 
 export {
@@ -74,4 +90,5 @@ export {
   getSpotsByFilter,
   createSpotReview,
   createNewSpot,
+  deleteReviewDetail,
 };
