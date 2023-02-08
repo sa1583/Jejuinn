@@ -4,10 +4,8 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import WhiteBox from '../whiteBox/WhiteBox';
-import MyMainApply from './MyMainApply';
 import MyMainArticle from './MyMainArticle';
-import MyMainLikeNotice from './MyMainLikeNotice';
-import MyMainLikePlace from './MyMainLikePlace';
+import MyMainRecruitment from './MyMainRecruitment';
 import { useEffect, useState } from 'react';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -51,9 +49,10 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export default function MyMain() {
   const [isOpened, setIsOpened] = useState(true);
   const [tabNum, setTabNum] = useState('1');
-  const [myLikeNoticeList, setMyLikeNoticeList] = useState([]);
+  const [myLikeRecruitment, setMyLikeRecruitment] = useState([]);
   const [myLikePlaceList, setMyLikePlaceList] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
+  const [myAppliedRecruitment, setMyAppliedRecruitment] = useState([]);
 
   const handleChangeTab = (event, newValue) => {
     setTabNum(newValue);
@@ -65,7 +64,7 @@ export default function MyMain() {
   };
 
   useEffect(() => {
-    setMyLikeNoticeList([
+    setMyLikeRecruitment([
       {
         uid: 0,
         name: '가토게토하우스',
@@ -103,6 +102,20 @@ export default function MyMain() {
         imageUrl: null,
       },
     ]);
+    setMyAppliedRecruitment([
+      {
+        uid: 9,
+        name: '게토 게스트하우스',
+        title: '성별 무관 스탭2명 모집중',
+        imageUrl: images.sample_profile,
+      },
+      {
+        uid: 103,
+        name: '정민 게스트하우스',
+        title: '장정민이 있는 하남자 게스트하우스',
+        imageUrl: null,
+      },
+    ]);
   }, []);
 
   return (
@@ -113,7 +126,14 @@ export default function MyMain() {
             내가 지원한 모집 공고
           </AccordionSummary>
           <AccordionDetails>
-            <WhiteBox cpn={<MyMainApply id={1} />} />
+            {myAppliedRecruitment.map((recruitment) => {
+              return (
+                <WhiteBox
+                  key={recruitment.uid}
+                  cpn={<MyMainRecruitment recruitment={recruitment} />}
+                />
+              );
+            })}
           </AccordionDetails>
         </Accordion>
 
@@ -135,11 +155,11 @@ export default function MyMain() {
               </Box>
               <TabPanel value="1">
                 <Stack direction="column" spacing={1}>
-                  {myLikeNoticeList.map((myNotice) => {
+                  {myLikeRecruitment.map((recruitment) => {
                     return (
                       <WhiteBox
-                        key={myNotice.uid}
-                        cpn={<MyMainLikeNotice notice={myNotice} />}
+                        key={recruitment.uid}
+                        cpn={<MyMainRecruitment recruitment={recruitment} />}
                       />
                     );
                   })}
@@ -147,11 +167,11 @@ export default function MyMain() {
               </TabPanel>
               <TabPanel value="2">
                 <Stack direction="column" spacing={1}>
-                  {myLikePlaceList.map((myPlace) => {
+                  {myLikePlaceList.map((post) => {
                     return (
                       <WhiteBox
-                        key={myPlace.uid}
-                        cpn={<MyMainLikePlace place={myPlace} />}
+                        key={post.uid}
+                        cpn={<MyMainArticle post={post} />}
                       />
                     );
                   })}
