@@ -10,6 +10,7 @@ import getAddressBySpot from '../../api/map';
 import StaffPickCreateSpotName from './StaffPickCreateSpotName';
 import StaffPickCreatSpotCheck from './StaffPickCreatSpotCheck';
 import StaffPickCreateSpotType from './StaffPickCreateSpotType';
+import { createNewSpot } from '../../api/staffPick';
 
 export default function StaffPickCreateNewSpot({ open, handleClose }) {
   const steps = ['위치 선택', '이름 선택', '유형 선택', '확인', '등록 완료!'];
@@ -25,6 +26,17 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
       const data = await getAddressBySpot(lng, lat);
       const address = data.data.documents[0].address_name;
       setArea(address);
+    } else if (activeStep == 3) {
+      const body = {
+        name: spotName,
+        category: newtype,
+        address: area,
+        areaName: shortArea,
+        lat: nowPick[0].lat,
+        lng: nowPick[0].lng,
+      };
+      const data = await createNewSpot(body);
+      console.log(data);
     }
   };
   // 이전 스텝
