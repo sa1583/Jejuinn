@@ -11,6 +11,7 @@ import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
 import com.jejuinn.backend.db.repository.ImageRepository;
 import com.jejuinn.backend.db.repository.RecruitmentRepository;
+import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.db.repository.WorkRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,11 +38,12 @@ public class RecruitmentController {
     private final WorkRepository workRepository;
     private final RecruitmentRepository recruitmentRepository;
     private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
     private static final String RECRUITMENT_TYPE = "RECRUITMENT";
 
     @GetMapping("/api/job-offer")
-    @ApiOperation(value = "일하기 페이지에서 현재 모집중인 직무 모두 보기(시간 순서대로)", notes = "구인 공고의 직무 정보들을 리턴합니다.")
+    @ApiOperation(value = "모집중인 직무 모두 보기(시간 순서대로)", notes = "구인 공고의 모든 직무 정보들을 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "NO CONTENT(데이터가 없습니다)"),
@@ -55,7 +57,8 @@ public class RecruitmentController {
     }
 
     @GetMapping("/api/job-offer/{recruitmentUid}")
-    @ApiOperation(value = "일하기 페이지에서 현재 모집중인 직무 중 하나 클릭시 그에 대한 구인공고로 이동", notes = "특정 구인 공고에 대한 정보를 리턴합니다.")
+    @ApiOperation(value = "recruitmentUid를 통해 모집공고 세부 정보 제공", notes = "특정 구인 공고에 대한 정보를 리턴합니다." +
+            "직무, 이미지, 채용공고 관련 정보 제공")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQEUST"),
@@ -117,7 +120,7 @@ public class RecruitmentController {
     }
 
     @GetMapping("/auth/job-offer/{guestHouseUid}")
-    @ApiOperation(value = "특정 게스트하우스에 대한 모집공고 리스트 확인", notes = "특정 게스트하우스에 대한 모든 모집공고 목록을 보여줍니다.")
+    @ApiOperation(value = "특정 게스트하우스에 대한 모집공고 리스트 확인", notes = "gusetHouseUid를 통해 특정 게스트하우스에 대한 모든 모집공고 목록을 보여줍니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "데이터가 없습니다."),
