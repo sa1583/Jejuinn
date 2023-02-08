@@ -105,20 +105,19 @@ public class TravelPlaceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> insertTravelPlace(
-            @RequestPart("images") List<MultipartFile> images,
-            @Valid @RequestPart("travel-place") InsertTravelPlacePostReq req){
+            @Valid @RequestBody InsertTravelPlacePostReq req){
 
         log.info("관광지 추가 요청");
         // 명소 저장
         TravelPlace travelPlace = travelPlaceRepository.save(req.toTravelPlace());
 
         // 사진 저장
-        try {
-            s3Uploader.uploadImages(images, TRAVEL_PLACE, travelPlace.getUid());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(400).build();
-        }
+//        try {
+//            s3Uploader.uploadImages(images, TRAVEL_PLACE, travelPlace.getUid());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(400).build();
+//        }
         return ResponseEntity.status(200).build();
     }
 
