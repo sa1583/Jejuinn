@@ -105,7 +105,6 @@ public class TravelPlaceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> insertTravelPlace(
-            @RequestPart("images") List<MultipartFile> images,
             @Valid @RequestPart("travel-place") InsertTravelPlacePostReq req){
 
         log.info("관광지 추가 요청");
