@@ -113,12 +113,12 @@ public class TravelPlaceController {
         TravelPlace travelPlace = travelPlaceRepository.save(req.toTravelPlace());
 
         // 사진 저장
-        try {
-            s3Uploader.uploadImages(images, TRAVEL_PLACE, travelPlace.getUid());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(400).build();
-        }
+//        try {
+//            s3Uploader.uploadImages(images, TRAVEL_PLACE, travelPlace.getUid());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(400).build();
+//        }
         return ResponseEntity.status(200).build();
     }
 
