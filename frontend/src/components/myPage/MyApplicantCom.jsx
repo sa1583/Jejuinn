@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Modal, Typography } from '@mui/material';
+import { Box, Modal } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { images } from '../../assets/images';
 import MyApplicantDetail from './MyApplicantDetail';

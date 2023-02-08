@@ -14,8 +14,8 @@ export default function FacebookRedirect() {
     const access_token = (await getFacebookAccessToken(auth_code)).data
       .access_token;
     // 페이스북 서버에서 받은 accessToken을 우리 BE서버로 보내서 정보 가져오기
-    const data = dispatch(getFacebookToken(access_token));
-    dispatch(getUserInfoByToken(data));
+    const { payload } = dispatch(getFacebookToken(access_token));
+    dispatch(getUserInfoByToken(payload.accesstoken));
     navigate('/');
   }
   useEffect(() => {
