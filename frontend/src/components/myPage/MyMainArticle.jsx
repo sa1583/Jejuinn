@@ -1,6 +1,24 @@
-import { Box, styled, Button, IconButton } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import WhiteBox from '../whiteBox/WhiteBox';
-export default function MyMainArticle() {
-  return <Box sx={{ paddingY: '3%', paddingX: '3%' }}>작성글 </Box>;
+import { Stack, Avatar, Typography } from '@mui/material';
+import { images } from '../../assets/images';
+export default function MyMainArticle({ post }) {
+  return (
+    <Stack direction="row" sx={{ p: '2%' }} spacing={7}>
+      <Avatar
+        src={post.imageUrl ? post.imageUrl : images.sample_profile}
+        sx={{ width: '75px', height: '75px' }}
+      />
+      <Stack justifyContent="center">
+        <Typography
+          sx={{
+            fontFamily: 'Lato',
+            fontStyle: 'normal',
+            fontWeight: 600,
+            fontSize: '24px',
+          }}
+        >
+          {post.name}
+        </Typography>
+      </Stack>
+    </Stack>
+  );
 }

@@ -1,4 +1,4 @@
-import { Box, styled, Button, IconButton } from '@mui/material';
+import { Box, styled, Button, IconButton, Stack } from '@mui/material';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
@@ -6,8 +6,14 @@ import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import WhiteBox from '../whiteBox/WhiteBox';
 import MyMainApply from './MyMainApply';
 import MyMainArticle from './MyMainArticle';
-import MyMainLike from './MyMainLike';
-import { useState } from 'react';
+import MyMainLikeNotice from './MyMainLikeNotice';
+import MyMainLikePlace from './MyMainLikePlace';
+import { useEffect, useState } from 'react';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import { images } from '../../assets/images';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -44,10 +50,60 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function MyMain() {
   const [isOpened, setIsOpened] = useState(true);
+  const [tabNum, setTabNum] = useState('1');
+  const [myLikeNoticeList, setMyLikeNoticeList] = useState([]);
+  const [myLikePlaceList, setMyLikePlaceList] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
+
+  const handleChangeTab = (event, newValue) => {
+    setTabNum(newValue);
+  };
+
   const openClose = () => {
     const prev = isOpened;
     setIsOpened(!prev);
   };
+
+  useEffect(() => {
+    setMyLikeNoticeList([
+      {
+        uid: 0,
+        name: '가토게토하우스',
+        title: '성별 무관 스탭2명 모집중',
+        imageUrl: null,
+      },
+      {
+        uid: 1,
+        name: '가토게토하우스',
+        title: '성별 무관 스탭2명 모집중',
+        imageUrl: null,
+      },
+    ]);
+    setMyLikePlaceList([
+      {
+        uid: 45,
+        name: '낙지와 새우',
+        imageUrl: null,
+      },
+      {
+        uid: 46,
+        name: '우도 콧구멍',
+        imageUrl: null,
+      },
+    ]);
+    setMyPosts([
+      {
+        uid: 24,
+        name: '엉또 폭포',
+        imageUrl: images.sample_profile,
+      },
+      {
+        uid: 83,
+        name: '윾태 폭포',
+        imageUrl: null,
+      },
+    ]);
+  }, []);
 
   return (
     <>
@@ -57,25 +113,66 @@ export default function MyMain() {
             내가 지원한 모집 공고
           </AccordionSummary>
           <AccordionDetails>
-            <WhiteBox cpn={<MyMainApply />}></WhiteBox>
+            <WhiteBox cpn={<MyMainApply id={1} />} />
           </AccordionDetails>
         </Accordion>
 
         <Accordion>
           <AccordionSummary>내가 관심있는 글</AccordionSummary>
-          <AccordionDetails>
-            <Box sx={{ paddingY: '1%' }}>
-              <WhiteBox cpn={<MyMainLike />}></WhiteBox>
-            </Box>
-            <Box sx={{ paddingY: '1%' }}>
-              <WhiteBox cpn={<MyMainLike />}></WhiteBox>
-            </Box>
+          <AccordionDetails sx={{ borderTop: 'none', m: 0, p: 0 }}>
+            <TabContext value={tabNum}>
+              <Box
+                sx={{
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                  marginX: '16px',
+                }}
+              >
+                <TabList onChange={handleChangeTab}>
+                  <Tab label="모집공고" value="1" />
+                  <Tab label="관광지" value="2" />
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <Stack direction="column" spacing={1}>
+                  {myLikeNoticeList.map((myNotice) => {
+                    return (
+                      <WhiteBox
+                        key={myNotice.uid}
+                        cpn={<MyMainLikeNotice notice={myNotice} />}
+                      />
+                    );
+                  })}
+                </Stack>
+              </TabPanel>
+              <TabPanel value="2">
+                <Stack direction="column" spacing={1}>
+                  {myLikePlaceList.map((myPlace) => {
+                    return (
+                      <WhiteBox
+                        key={myPlace.uid}
+                        cpn={<MyMainLikePlace place={myPlace} />}
+                      />
+                    );
+                  })}
+                </Stack>
+              </TabPanel>
+            </TabContext>
           </AccordionDetails>
         </Accordion>
         <Accordion>
           <AccordionSummary>내가 작성한 글</AccordionSummary>
           <AccordionDetails>
-            <WhiteBox cpn={<MyMainArticle />}></WhiteBox>
+            <Stack direction="column" spacing={1}>
+              {myPosts.map((post) => {
+                return (
+                  <WhiteBox
+                    key={post.uid}
+                    cpn={<MyMainArticle post={post} />}
+                  />
+                );
+              })}
+            </Stack>
           </AccordionDetails>
         </Accordion>
       </Box>

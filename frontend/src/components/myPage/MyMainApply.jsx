@@ -13,7 +13,7 @@ export default function MyMainApply({ id }) {
       direction="row"
       justifyContent="space-between"
       spacing={3}
-      sx={{ padding: '2%', display: 'flex', alignContent: 'center' }}
+      sx={{ padding: '2%' }}
     >
       <Avatar
         src={
