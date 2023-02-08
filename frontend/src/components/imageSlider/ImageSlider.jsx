@@ -15,7 +15,12 @@ export default function ImageSlider({ items }) {
           <div
             className="slide"
             key={item}
-            style={{ width: '100%', aspectRatio: '1/1' }}
+            style={{
+              width: '100%',
+              aspectRatio: '1/1',
+              borderRadius: '39px',
+              overflow: 'hidden',
+            }}
           >
             <img
               src={`${images.defalut_url}${item.imgPath}`}
@@ -23,7 +28,6 @@ export default function ImageSlider({ items }) {
               style={{
                 height: '100%',
                 objectFit: 'cover',
-                borderRadius: '39px',
               }}
             />
           </div>
