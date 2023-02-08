@@ -1,11 +1,14 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkResumeInfoPostReq;
 import com.jejuinn.backend.api.dto.request.resumeinfo.InsertResumeInfoPostReq;
 import com.jejuinn.backend.api.dto.request.resumeinfo.UpdateResumeInfoPutReq;
 import com.jejuinn.backend.api.dto.response.recruitment.MyRecruitmentListRes;
 import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
 import com.jejuinn.backend.api.service.ResumeInfoService;
+import com.jejuinn.backend.db.entity.WorkResumeInfo;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
+import com.jejuinn.backend.db.repository.WorkResumeInfoRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -24,6 +27,7 @@ public class ResumeController {
 
     private final ResumeInfoRepository resumeInfoRepository;
     private final ResumeInfoService resumeInfoService;
+    private final WorkResumeInfoRepository workResumeInfoRepository;
 
     @PostMapping("/auth/job-search")
     @ApiOperation(value = "지원서 작성", notes = "")
@@ -50,7 +54,7 @@ public class ResumeController {
     }
 
     @GetMapping("/auth/job-search/{userUid}")
-    @ApiOperation(value = "내 지원서 상세 조회", notes = "userUid를 통해 마이 페이지에서 내 지원서를 상세 조회합니다.")
+    @ApiOperation(value = "지원서 상세 조회", notes = "userUid를 통해 지원서를 상세 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
@@ -84,5 +88,22 @@ public class ResumeController {
     public ResponseEntity<?> updateResumeInfo(@Valid @RequestPart UpdateResumeInfoPutReq updateResumeInfoPutReq) {
         resumeInfoRepository.save(updateResumeInfoPutReq.toResumeInfo());
         return ResponseEntity.status(200).build();
+    }
+
+    @PostMapping("/auth/job-search/apply")
+    @ApiOperation(value = "지원서 제출 기능", notes = "userUid와 workUid를 통해 지원서를 제출합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(제출 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> applyWork(@Valid @RequestPart InsertWorkResumeInfoPostReq insertWorkResumeInfoPostReq) {
+        WorkResumeInfo workResumeInfo = resumeInfoService.insertWorkResumeInfo(insertWorkResumeInfoPostReq);
+        if(workResumeInfo != null) {
+            workResumeInfoRepository.save(workResumeInfo);
+            return ResponseEntity.status(200).build();
+        } else {
+            return ResponseEntity.status(400).build();
+        }
     }
 }
