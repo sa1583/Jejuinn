@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface WorkResumeInfoRepository extends JpaRepository<WorkResumeInfo, Long> {
 
-    @Query(value = "select ", nativeQuery = true)
-    List<ApplicantMapper> getApplicant();
 }
