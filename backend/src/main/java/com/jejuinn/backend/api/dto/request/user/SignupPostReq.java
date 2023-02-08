@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.dto.request;
+package com.jejuinn.backend.api.dto.request.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jejuinn.backend.db.entity.Authority;

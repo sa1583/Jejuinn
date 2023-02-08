@@ -1,6 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.dto.request.EvaluationStaffPostReq;
+import com.jejuinn.backend.api.dto.request.staff.EvaluationStaffPostReq;
 import com.jejuinn.backend.api.dto.response.staff.StaffListRes;
 import com.jejuinn.backend.api.service.StaffService;
 import com.jejuinn.backend.api.service.UserService;

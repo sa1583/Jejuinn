@@ -1,15 +1,17 @@
 package com.jejuinn.backend.api.service;
 
-import com.jejuinn.backend.api.dto.request.EvaluationStaffPostReq;
+import com.jejuinn.backend.api.dto.request.staff.EvaluationStaffPostReq;
 import com.jejuinn.backend.db.entity.GuestHouse;
 import com.jejuinn.backend.db.entity.StaffRecord;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.GuestHouseRepository;
 import com.jejuinn.backend.db.repository.StaffRecordRepository;
 import com.jejuinn.backend.db.repository.UserRepository;
+import com.jejuinn.backend.exception.BadRequestException;
 import com.jejuinn.backend.exception.NoContentException;
 import com.jejuinn.backend.exception.UnAuthorizationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StaffService {
     private final StaffRecordRepository staffRecordRepository;
     private final GuestHouseRepository guestHouseRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<StaffRecord> getMyStaffList(Long guestHouseUid, Long representativeUid){
         GuestHouse guestHouse = guestHouseRepository.findById(guestHouseUid)
@@ -74,7 +78,17 @@ public class StaffService {
     }
 
     public void updateStaffScore(EvaluationStaffPostReq data){
-//        StaffRecord staffRecord = staffRecordRepository.findById(data.getStaffUid())
-//                .orElseThrow(()->new No);
+        StaffRecord staffRecord = staffRecordRepository.findById(data.getStaffUid())
+                .orElseThrow(()->new NoContentException(data.getStaffUid()+": 해당하는 스탭이 없습니다."));
+
+        if(staffRecord.isActive()) throw new BadRequestException("업무가 종료된 스탭이 아닙니다");
+
+        int eval = data.getScore();
+
+        userService.updateSugarContent(zScore(eval), staffRecord.getUserUid());
+    }
+
+    private double zScore(double value) {
+        return (value - 1) / 10;
     }
 }
