@@ -10,6 +10,7 @@ import { images } from '../../assets/images';
  * handlePinClick 으로 표시된 spots의 마커를 누르면 실행할 함수를 상속 (상속 안하면 마커 클릭 기능 없음)
  * setNewPin 으로 새로운 핀을 찍을 때 실행할 함수를 상속 (상속 안하면 새로운 핀 찍기 기능 없음)
  * startSpot 으로 페이지 랜더링 됐을 때 지도 화면 위치 상속 (상속 안하면 미리 지정한 제주도 중앙으로 위치)
+ * pickId 로 렌더링 됐을 때 색깔 다른 핀 선택
  * @returns
  */
 export default function MapApi({
@@ -17,6 +18,7 @@ export default function MapApi({
   spots,
   setNewPin,
   startSpot,
+  pickedId,
 }) {
   const mapElement = useRef(null);
   /// 여기 spots를 axois로 전체 리스트 받아오면 됨
@@ -27,9 +29,9 @@ export default function MapApi({
   //   { id: 3, lat: 33.4664, lng: 126.6694 },
   //   { id: 4, lat: 33.2856, lng: 126.4449 },
   // ];
-  const location = useLocation();
-  const page = location.pathname.split('/');
-  const pageId = page[page.length - 1];
+  // const location = useLocation();
+  // const page = location.pathname.split('/');
+  // const pageId = page[page.length - 1];
 
   useEffect(() => {
     const { naver } = window;
@@ -75,7 +77,7 @@ export default function MapApi({
     const notPickedIcon = {
       content: content,
       size: new naver.maps.Size(20, 20),
-      anchor: new naver.maps.Point(0, 0),
+      anchor: new naver.maps.Point(15, 30),
     };
 
     // 선택 된 핀
@@ -88,7 +90,7 @@ export default function MapApi({
     const pickedIcon = {
       size: new naver.maps.Size(20, 20),
       content: content2,
-      anchor: new naver.maps.Point(0, 0),
+      anchor: new naver.maps.Point(15, 30),
     };
 
     if (spots) {
@@ -101,7 +103,7 @@ export default function MapApi({
           map: map,
           position: position,
           // animation: naver.maps.Animation.DROP,
-          icon: pageId == id ? pickedIcon : notPickedIcon,
+          icon: pickedId == id ? pickedIcon : notPickedIcon,
           // icon: notPickedIcon,
         });
         markers.push(marker);
@@ -147,7 +149,7 @@ export default function MapApi({
         setNewPin(e.coord);
       });
     }
-  }, [spots, pageId]);
+  }, [spots, pickedId]);
   return (
     <Box
       sx={{

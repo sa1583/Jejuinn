@@ -37,7 +37,7 @@ export default function ReviewContent({ reviewContent }) {
         <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
         <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>
       </Box>
-      <h2>{reviewContent?.content}</h2>
+      <div dangerouslySetInnerHTML={{ __html: reviewContent?.content }} />
       <h2 style={{ color: '#FF7600' }}>댓글</h2>
       <CommentBox cpn={<CommentInput />} />
       <div

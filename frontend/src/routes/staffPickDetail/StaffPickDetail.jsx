@@ -15,10 +15,19 @@ export default function StaffPickDetail() {
   const location = useLocation();
   const pageId = location.pathname.split('detail/')[1];
 
+  // 명소 좌표 정보
+  const [spots, setSpots] = useState([]);
+
+  const [travelPlaceUid, setTravelPlaceUid] = useState('');
+
   const [reviewContent, setReviewContent] = useState([]);
   const getReviewContent = async () => {
     const data = (await getReviewDetail(pageId)).data;
+    setTravelPlaceUid(data.travelPlaceUid);
     setReviewContent(data);
+    const info = (await getSpotInfo(data.travelPlaceUid)).data.travelPlace;
+    setSpotInfo(info);
+    setSpots([{ id: info.uid, lat: info.lat, lng: info.lng }]);
   };
 
   useEffect(() => {
@@ -28,19 +37,16 @@ export default function StaffPickDetail() {
   // 명소 디테일 정보
   const [spotInfo, setSpotInfo] = useState([]);
 
-  const getSpotdetail = async () => {
-    const data = (await getSpotInfo(pageId)).data.travelPlace;
-    setSpotInfo(data);
+  // const getSpotdetail = async () => {
+  //   const data = (await getSpotInfo(pageId)).data.travelPlace;
+  //   setSpotInfo(data);
 
-    setSpots([{ id: data.uid, lat: data.lat, lng: data.lng }]);
-  };
+  //   setSpots([{ id: data.uid, lat: data.lat, lng: data.lng }]);
+  // };
 
-  // 명소 좌표 정보
-  const [spots, setSpots] = useState([]);
-
-  useState(() => {
-    getSpotdetail();
-  }, []);
+  // useState(() => {
+  //   getSpotdetail();
+  // }, []);
 
   // const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
   return (

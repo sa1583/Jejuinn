@@ -26,7 +26,7 @@ export default function StaffPickCreateForm({ nowPickId }) {
 
   const submit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
+    const formData = new FormData();
 
     const review = {
       content,
@@ -34,24 +34,24 @@ export default function StaffPickCreateForm({ nowPickId }) {
       starRating,
     };
 
-    // const blob = new Blob([JSON.stringify(review)], {
-    //   type: 'application/json',
-    // });
+    const blob = new Blob([JSON.stringify(review)], {
+      type: 'application/json',
+    });
     // console.log(blob);
-    // data.append('review', JSON.stringify(review));
-    // data.append('images', blob);
+    // formData.append('review', JSON.stringify(review));
+    formData.append('review', blob);
     // const newFiles = files.map((file) => JSON.stringify(file));
     // data.append('images', newFiles);
     // console.log(files);
     files.forEach((file) => {
-      data.append('images', file);
+      formData.append('images', file);
     });
-    for (const key of data.keys()) {
+    for (const key of formData.keys()) {
       console.log(key);
     }
     // FormData의 value 확인
     // @ts-ignore
-    for (const value of data.values()) {
+    for (const value of formData.values()) {
       console.log(value);
     }
     // console.log(data.has('review'));
@@ -67,8 +67,8 @@ export default function StaffPickCreateForm({ nowPickId }) {
     //   images: images,
     // };
     // console.log(data);
-    // const result = await createSpotReview(acces_token, data);
-    // console.log(result);
+    const result = await createSpotReview(acces_token, formData);
+    console.log(result);
   };
   const [starRating, setStarRating] = useState(1);
 
