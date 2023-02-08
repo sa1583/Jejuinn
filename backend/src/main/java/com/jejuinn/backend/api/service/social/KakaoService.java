@@ -9,6 +9,7 @@ import com.jejuinn.backend.db.entity.SocialLogin;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.enums.SocialType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -17,6 +18,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class KakaoService {
 
     /**
@@ -26,7 +28,6 @@ public class KakaoService {
      */
 
     public SocialLogin getUserInfoFromKakao(String access_token){
-
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
         JsonElement element = null;
 
