@@ -16,9 +16,6 @@ function createSpotReview(token, body) {
     headers: {
       accessToken: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',
-      // encType: 'multipart/form-data',
-      // processData: false,
-      'Content-Disposition': 'form-data',
     },
   };
 
@@ -62,6 +59,11 @@ function getReviewDetail(uid) {
   return api.get(`/api/travel-place/reviews/${uid}`);
 }
 
+// 새로운 명소 등록
+function createNewSpot(data) {
+  return api.post('/api/travel-place', data);
+}
+
 export {
   getSpotsPin,
   getSpotInfo,
@@ -71,4 +73,5 @@ export {
   getReviewDetail,
   getSpotsByFilter,
   createSpotReview,
+  createNewSpot,
 };
