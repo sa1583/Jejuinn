@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TravelPlaceRepository extends JpaRepository<TravelPlace, Long> {
-    Page<TravelPlace> findAllOrderByDateUpdatedDesc(Pageable pageable);
+    Page<TravelPlace> findAllByOrderByDateUpdatedDesc(Pageable pageable);
 }

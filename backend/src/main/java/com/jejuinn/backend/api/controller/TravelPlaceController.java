@@ -79,7 +79,7 @@ public class TravelPlaceController {
     public ResponseEntity<?> getTravelPlaceList(@PageableDefault(size = 15) Pageable pageable){
         log.info("리뷰 최신순으로 관광지 조회");
         return ResponseEntity.status(200)
-                .body(travelPlaceRepository.findAllOrderByDateUpdatedDesc(pageable)
+                .body(travelPlaceRepository.findAllByOrderByDateUpdatedDesc(pageable)
                         .map(travelPlace
                                 -> TravelPlaceListRes.of(travelPlace,
                                 imageRepository.findImgPathByPostTypeAndPostUid(TRAVEL_PLACE, travelPlace.getUid()))));
