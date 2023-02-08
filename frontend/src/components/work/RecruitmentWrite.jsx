@@ -1,19 +1,41 @@
 import { useState, useEffect } from 'react';
 import { recruitmentDetail } from '../../api/work';
 import { Box, Button, Grid } from '@mui/material';
-import { GetRecruitmentTitle } from './WorkWriteForms';
+import {
+  GetRecruitmentTitle,
+  GetRecruitmentInfo,
+  GetRecruitmentWelfare,
+  GetRecruitmentPersontype,
+} from './WorkWriteForms';
 import { writeRecruitment } from '../../api/work';
 
 export default function RecruitmentWrite({ onClick }) {
   // Recruitment, work id 받아서
 
+  const [title, setTitle] = useState('');
+  const [welfare, setWelfare] = useState('');
+  const [persontype, setPersontype] = useState([]);
+  const [addInfo, setAddInfo] = useState('');
+
+  const onTitle = (imp) => {
+    console.log(imp.target.value);
+    setTitle(imp.target.value);
+  };
+  const onWelfare = (imp) => {
+    setWelfare(imp.target.value);
+  };
+  const onPersontype = (imp) => {
+    setPersontype(imp);
+  };
+  const onAddInfo = (imp) => {
+    setAddInfo(imp.target.value);
+  };
+
   return (
     <Box sx={{ paddingY: '3vh', height: '100%' }}>
       <Grid container>
         <Grid item md={10}>
-          <h2 style={{ color: '#FF7600' }}>
-            <GetRecruitmentTitle />
-          </h2>
+          <GetRecruitmentTitle onTitle={onTitle} />
         </Grid>
         <Grid item md={2}>
           <Button onClick={onClick}>저장</Button>
@@ -26,21 +48,21 @@ export default function RecruitmentWrite({ onClick }) {
             복지
           </Grid>
           <Grid item md={9}>
-            복지 작성
+            <GetRecruitmentWelfare onWelfare={onWelfare} />
           </Grid>
 
           <Grid item md={3}>
             인재상
           </Grid>
           <Grid item md={9}>
-            복지 작성
+            <GetRecruitmentPersontype onPersontype={onPersontype} />
           </Grid>
 
           <Grid item md={3}>
             추가 정보
           </Grid>
           <Grid item md={9}>
-            복지 작성
+            <GetRecruitmentInfo onAddInfo={onAddInfo} />
           </Grid>
         </Grid>
         <div>

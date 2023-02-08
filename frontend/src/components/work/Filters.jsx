@@ -67,11 +67,17 @@ function FilterName({ onName }) {
 }
 
 function FilterArea({ onArea }) {
+  const [area, setArea] = useState('');
+  const handelOnChange = (event) => {
+    setArea(event.target.value);
+    onArea(event.target.value);
+  };
   return (
     <CustomTextField
       sx={{ width: '100%' }}
       label="선호하는 지역"
       select
+      value={area}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start" style={{ color: '#FF7600' }}>
@@ -79,7 +85,7 @@ function FilterArea({ onArea }) {
           </InputAdornment>
         ),
       }}
-      onChange={onArea}
+      onChange={handelOnChange}
     >
       {selectedSections.map((selectedSection) => (
         <MenuItem key={uuidv4()} value={selectedSection}>
@@ -92,21 +98,17 @@ function FilterArea({ onArea }) {
 
 function FilterDate({ onStartDate }) {
   const [selectDate, setSelectDate] = useState();
-  const twoCalls = (imp) => {
-    handleDate(imp);
-    onStartDate(imp);
-  };
-  const handleDate = (inIsland) => {
-    setSelectDate(inIsland);
+  const handelOnChange = (event) => {
+    console.log(event);
+    setSelectDate(event.$d.toISOString().split('T')[0]);
+    onStartDate(event.$d.toISOString().split('T')[0]);
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="입도가능날짜"
         value={selectDate}
-        onChange={(newValue) => {
-          twoCalls(newValue);
-        }}
+        onChange={handelOnChange}
         renderInput={(params) => <TextField {...params} />}
       />
     </LocalizationProvider>

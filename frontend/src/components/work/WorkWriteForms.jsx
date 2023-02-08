@@ -1,10 +1,4 @@
-import {
-  styled,
-  TextField,
-  InputAdornment,
-  MenuItem,
-  Stack,
-} from '@mui/material';
+import { styled, TextField, MenuItem, Stack } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,6 +6,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 import { Box } from '@mui/system';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -38,19 +33,68 @@ const CustomTextField = styled(TextField)({
   },
 });
 
+// 직무 입력
+
 const selectedGenders = ['여자', '남자', '무관'];
 const selectedDays = [1, 2, 3, 4, 5];
 
-function GetWorkName() {
-  return <CustomTextField label="직무명" />;
+function GetWorkName({ handleWorkInfo }) {
+  const [workName, setWorkName] = useState('');
+  const onInput = (event) => {
+    handleWorkInfo(event);
+    setWorkName(event.target.value);
+  };
+
+  return (
+    <CustomTextField
+      label="직무명"
+      name="workName"
+      value={workName}
+      onInput={onInput}
+      variant="standard"
+      sx={{
+        width: '50%',
+      }}
+    />
+  );
 }
 
-function GetWorkSalary() {
-  return <CustomTextField label="급여" />;
-}
-function GetWorkGender() {
+function GetWorkSalary({ handleWorkInfo }) {
+  const [workSalary, setWorkSalary] = useState('');
+  const onInput = (event) => {
+    handleWorkInfo(event);
+    setWorkSalary(event.target.value);
+  };
+
   return (
-    <CustomTextField sx={{ width: '100%' }} label="성별" select>
+    <CustomTextField
+      label="급여"
+      placeholder="급여조건을 입력해 주세요"
+      name="salary"
+      value={workSalary}
+      onInput={onInput}
+      sx={{
+        width: '100%',
+      }}
+    />
+  );
+}
+
+function GetWorkGender({ handleWorkInfo }) {
+  const [gender, setGender] = useState('');
+  const handelOnChange = (event) => {
+    setGender(event.target.value);
+    handleWorkInfo(event);
+  };
+  return (
+    <CustomTextField
+      sx={{ width: '100%' }}
+      label="성별"
+      select
+      name="gender"
+      value={gender}
+      onChange={handelOnChange}
+    >
       {selectedGenders.map((selectedGender) => (
         <MenuItem key={uuidv4()} value={selectedGender}>
           {selectedGender}
@@ -60,25 +104,62 @@ function GetWorkGender() {
   );
 }
 
-function GetWorkPeriod() {
+function GetWorkPeriod({ handleWorkInfo }) {
+  const [minWorkPeriod, setMinWorkPeriod] = useState(0);
+  const handelOnInput = (event) => {
+    setMinWorkPeriod(event.target.value);
+    handleWorkInfo(event);
+  };
   return (
     <Box sx={{ width: '40%' }}>
-      <CustomTextField label="최소근무기간(개월)" type="number" />
+      <CustomTextField
+        label="최소근무기간(개월)"
+        type="number"
+        name="minWorkPeriod"
+        value={minWorkPeriod}
+        onInput={handelOnInput}
+      />
     </Box>
   );
 }
 
-function GetWorkIntake() {
+function GetWorkIntake({ handleWorkInfo }) {
+  const [intake, setIntake] = useState(0);
+  const handelOnInput = (event) => {
+    setIntake(event.target.value);
+    handleWorkInfo(event);
+  };
   return (
     <Box sx={{ width: '40%' }}>
-      <CustomTextField label="채용인원" type="number" />
+      <CustomTextField
+        label="채용인원"
+        type="number"
+        name="intake"
+        onInput={handelOnInput}
+      />
     </Box>
   );
 }
 
-function GetWorkWorkDays() {
+function GetWorkWorkDays({ handleWorkInfo }) {
+  const [workDays, setWorkDays] = useState(2);
+  const handelOnChange = (event) => {
+    setWorkDays(event.target.value);
+    handleWorkInfo(event);
+  };
+
   return (
-    <CustomTextField label="" type="number" select>
+    <CustomTextField
+      label=""
+      type="number"
+      select
+      value={workDays}
+      name="workDays"
+      onChange={handelOnChange}
+      sx={{
+        width: '6vh',
+      }}
+    >
       {selectedDays.map((selectedDay) => (
         <MenuItem key={uuidv4()} value={selectedDay}>
           {selectedDay}
@@ -88,9 +169,24 @@ function GetWorkWorkDays() {
   );
 }
 
-function GetWorkDaysOff() {
+function GetWorkDaysOff({ handleWorkInfo }) {
+  const [daysOff, setDaysOff] = useState(2);
+  const handelOnChange = (event) => {
+    setDaysOff(event.target.value);
+    handleWorkInfo(event);
+  };
   return (
-    <CustomTextField label="" type="number" select>
+    <CustomTextField
+      label=""
+      type="number"
+      select
+      value={daysOff}
+      name="daysOff"
+      onChange={handelOnChange}
+      sx={{
+        width: '6vh',
+      }}
+    >
       {selectedDays.map((selectedDay) => (
         <MenuItem key={uuidv4()} value={selectedDay}>
           {selectedDay}
@@ -100,56 +196,145 @@ function GetWorkDaysOff() {
   );
 }
 
-function GetWorkStartTime() {
-  const [value, setValue] = useState(dayjs('2018-01-01T00:00:00.000Z'));
+function GetWorkStartTime({ onWorkStartTime }) {
+  const [startTime, setStartTime] = useState(dayjs('2018-01-01T00:00:00.000Z'));
+  const handelOnChange = (event) => {
+    const hour = event.$d.toTimeString().split(':')[0];
+    const minute = event.$d.toTimeString().split(':')[1].split(':')[0];
+    setStartTime(event.$d.getTime());
+    onWorkStartTime(`${hour}:${minute}`);
+  };
   return (
-    <Box sx={{ width: '40%' }}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Stack spacing={3}>
-          <TimePicker
-            value={value}
-            onChange={setValue}
-            renderInput={(params) => <TextField {...params} />}
-            shouldDisableTime={(timeValue, clockType) => {
-              if (clockType === 'minutes' && timeValue % 5) {
-                return true;
-              }
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Stack spacing={3}>
+        <TimePicker
+          value={startTime}
+          onChange={handelOnChange}
+          renderInput={(params) => <TextField {...params} />}
+          shouldDisableTime={(timeValue, clockType) => {
+            if (clockType === 'minutes' && timeValue % 5) {
+              return true;
+            }
 
-              return false;
-            }}
-          />
-        </Stack>
-      </LocalizationProvider>
-    </Box>
+            return false;
+          }}
+        />
+      </Stack>
+    </LocalizationProvider>
   );
 }
 
-function GetWorkEndTime() {
-  const [value, setValue] = useState(dayjs('2018-01-01T00:00:00.000Z'));
+function GetWorkEndTime({ onWorkEndTime }) {
+  const [endTime, setEndTime] = useState(dayjs('2018-01-01T00:00:00.000Z'));
+  const handelOnChange = (event) => {
+    const hour = event.$d.toTimeString().split(':')[0];
+    const minute = event.$d.toTimeString().split(':')[1].split(':')[0];
+    setEndTime(event.$d.getTime());
+    onWorkEndTime(`${hour}:${minute}`);
+  };
   return (
-    <Box sx={{ width: '40%' }}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Stack spacing={3}>
-          <TimePicker
-            value={value}
-            onChange={setValue}
-            renderInput={(params) => <TextField {...params} />}
-            shouldDisableTime={(timeValue, clockType) => {
-              if (clockType === 'minutes' && timeValue % 5) {
-                return true;
-              }
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Stack spacing={3}>
+        <TimePicker
+          value={endTime}
+          onChange={handelOnChange}
+          renderInput={(params) => <TextField {...params} />}
+          shouldDisableTime={(timeValue, clockType) => {
+            if (clockType === 'minutes' && timeValue % 5) {
+              return true;
+            }
 
-              return false;
-            }}
-          />
-        </Stack>
-      </LocalizationProvider>
-    </Box>
+            return false;
+          }}
+        />
+      </Stack>
+    </LocalizationProvider>
   );
 }
 
-function GetRecruitmentTitle() {
-  return <CustomTextField label="채용 공고 제목" />;
+function GetWorkDescription({ handleWorkInfo }) {
+  const [workDescription, setWorkDescription] = useState('');
+  const onInput = (event) => {
+    handleWorkInfo(event);
+    setWorkDescription(event.target.value);
+  };
+
+  return (
+    <CustomTextField
+      label="직무 상세 설명"
+      name="workDescription"
+      value={workDescription}
+      onInput={onInput}
+      multiline
+      sx={{
+        width: '100%',
+        '& .MuiOutlinedInput-root': {
+          height: '20vh',
+          '& fieldset': {
+            borderRadius: '30px',
+          },
+        },
+      }}
+    />
+  );
+}
+
+// 채용공고 정보 입력
+
+function GetRecruitmentTitle({ onTitle }) {
+  return <CustomTextField label="채용 공고 제목" onInput={onTitle} />;
+}
+
+function GetRecruitmentWelfare({ onWelfare }) {
+  return <CustomTextField label="복지" onInput={onWelfare} />;
+}
+
+function GetRecruitmentInfo({ onAddInfo }) {
+  return <CustomTextField label="추가정보" onInput={onAddInfo} />;
+}
+
+const selectedPersontypes = [
+  '스탭 경험자',
+  '활발한 성격',
+  '책임감',
+  '꼼꼼',
+  '의사소통 기술',
+  '친절함',
+  '아침형 인간',
+  '저녁형 인간',
+  '빠른 습득',
+  '열정',
+  '대처능력',
+  '빠른 일처리 ',
+];
+
+function GetRecruitmentPersontype({ onPersontype }) {
+  const [value, setValue] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
+  return (
+    <Autocomplete
+      multiple
+      limitTags={3}
+      options={selectedPersontypes.map((option) => option)}
+      value={value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+        onPersontype(newValue);
+      }}
+      inputValue={inputValue}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
+      renderInput={(params) => (
+        <CustomTextField
+          {...params}
+          label="인재상"
+          placeholder="원하는 인재상을 입력하세요"
+        />
+      )}
+    />
+  );
 }
 
 export {
@@ -162,5 +347,9 @@ export {
   GetWorkDaysOff,
   GetWorkStartTime,
   GetWorkEndTime,
+  GetWorkDescription,
+  GetRecruitmentInfo,
+  GetRecruitmentWelfare,
   GetRecruitmentTitle,
+  GetRecruitmentPersontype,
 };

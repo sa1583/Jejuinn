@@ -1,6 +1,8 @@
 import { Box, styled, Button, Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { images } from '../../assets/images';
+import { useSelector } from 'react-redux';
+import { selectUserInfo } from '../../store/user';
 
 const CustomButton = styled(Button)({
   color: '#FFFFFF',
@@ -15,6 +17,8 @@ const CustomButton = styled(Button)({
 });
 
 export default function Profile() {
+  const userInfo = useSelector(selectUserInfo);
+
   const navigate = useNavigate();
   const onMypage = () => {
     navigate('/mypage');
@@ -31,7 +35,7 @@ export default function Profile() {
         alignItems: 'center',
       }}
     >
-      <h1 onClick={onMypage}>장정민</h1>
+      <h1 onClick={onMypage}>{userInfo.nickname}</h1>
       <Avatar
         src={images.sample_profile}
         alt="프로필 사진 들어가용~"

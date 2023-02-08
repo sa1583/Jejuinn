@@ -12,7 +12,6 @@ export default function WorkListBox({ works }) {
   const isLogin = useSelector(selectIsLogin);
   const houseCount = 2;
   // 내 게하 보기 만들어 지면 게스트하우스 갯수 확인
-  console.log(isLogin);
 
   const [onWrite, setOnWrite] = useState(false);
   const OnClick = () => {
@@ -35,6 +34,7 @@ export default function WorkListBox({ works }) {
           </Grid>
         ) : null}
         {works.map((work) => (
+          // 해당 직무 아이디가 아닐 때만 보여주기
           <Grid item md={4} key={uuidv4()}>
             <WhiteBox cpn={<WorkDetail work={work} />} />
           </Grid>
