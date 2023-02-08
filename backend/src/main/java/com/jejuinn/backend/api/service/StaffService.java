@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.service;
 
+import com.jejuinn.backend.api.dto.request.EvaluationStaffPostReq;
 import com.jejuinn.backend.db.entity.GuestHouse;
 import com.jejuinn.backend.db.entity.StaffRecord;
 import com.jejuinn.backend.db.entity.User;
@@ -70,5 +71,10 @@ public class StaffService {
         staffRecordRepository.save(staffRecord);
 
         return staffRecord;
+    }
+
+    public void updateStaffScore(EvaluationStaffPostReq data){
+//        StaffRecord staffRecord = staffRecordRepository.findById(data.getStaffUid())
+//                .orElseThrow(()->new No);
     }
 }
