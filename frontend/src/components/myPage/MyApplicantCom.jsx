@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Modal, Typography } from '@mui/material';
+import { Box, Modal } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { images } from '../../assets/images';
 import MyApplicantDetail from './MyApplicantDetail';
@@ -48,7 +48,7 @@ export default function MyStaff({ myApplicant }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <MyApplicantDetail id={myApplicant.uid} />
+        <MyApplicantDetail id={myApplicant.uid} handleClose={handleClose} />
       </Modal>
     </>
   );

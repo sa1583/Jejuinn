@@ -72,8 +72,10 @@ export const getFacebookToken = createAsyncThunk(
   'user/getFacebookToken',
   async (token, thunkAPI) => {
     try {
-      const { data } = (await loginFacebook(token)).headers;
-      return data;
+      let { accesstoken, refreshtoken } = (await loginFacebook(token)).headers;
+      accesstoken = accesstoken.split(' ')[1];
+      refreshtoken = refreshtoken.split(' ')[1];
+      return { accesstoken, refreshtoken };
     } catch (e) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그인 실패' });
     }
@@ -152,6 +154,13 @@ const userSlice = createSlice({
         state.refreshToken = action.payload.refreshtoken;
       })
       .addCase(getGoogleToken.rejected, () => {
+        alert('실패!');
+      })
+      .addCase(getFacebookToken.fulfilled, (state, action) => {
+        state.accessToken = action.payload.accesstoken;
+        state.refreshToken = action.payload.refreshtoken;
+      })
+      .addCase(getFacebookToken.rejected, () => {
         alert('실패!');
       })
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {

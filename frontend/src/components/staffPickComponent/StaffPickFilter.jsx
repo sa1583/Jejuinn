@@ -42,7 +42,11 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function StaffPickFilter({ getFilter, filter }) {
+export default function StaffPickFilter({
+  pickForm,
+  handlePickForm,
+  getFilterdSpots,
+}) {
   const selectedTypes = ['전체', '자연', '놀거리', '볼거리', '먹거리'];
   const selectedSections = [
     '전체',
@@ -61,12 +65,12 @@ export default function StaffPickFilter({ getFilter, filter }) {
     '우도면',
   ];
 
-  const [pickForm, setPickForm] = useState(filter);
-  const handlePickForm = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setPickForm({ ...pickForm, [name]: value });
-  };
+  // const [pickForm, setPickForm] = useState(filter);
+  // const handlePickForm = (e) => {
+  //   const name = e.target.name;
+  //   const value = e.target.value;
+  //   setPickForm({ ...pickForm, [name]: value });
+  // };
 
   return (
     <form
@@ -93,9 +97,9 @@ export default function StaffPickFilter({ getFilter, filter }) {
               </InputAdornment>
             ),
           }}
-          value={pickForm.type}
+          value={pickForm.category}
           onChange={handlePickForm}
-          name="type"
+          name="category"
           defaultValue={'전체'}
           // 여이가 라벨 사이즈 조정하는곳
           // 근데 라벨 들어가는 칸은 조정이 안됨 ㅋ
@@ -119,9 +123,9 @@ export default function StaffPickFilter({ getFilter, filter }) {
               </InputAdornment>
             ),
           }}
-          value={pickForm.section}
+          value={pickForm.areaName}
           onChange={handlePickForm}
-          name="section"
+          name="areaName"
         >
           {selectedSections.map((selectedSection) => (
             <MenuItem key={uuidv4()} value={selectedSection}>
@@ -132,8 +136,8 @@ export default function StaffPickFilter({ getFilter, filter }) {
 
         <CustomTextField
           label="검색어로 찾기"
-          name="inp"
-          value={pickForm.inp}
+          name="word"
+          value={pickForm.word}
           onChange={handlePickForm}
           InputProps={{
             startAdornment: (
@@ -155,7 +159,8 @@ export default function StaffPickFilter({ getFilter, filter }) {
           startIcon={<SearchIcon />}
           onClick={(e) => {
             e.preventDefault();
-            getFilter(pickForm);
+            //여기에 필터 검색 로직
+            getFilterdSpots();
           }}
         >
           조건 검색
