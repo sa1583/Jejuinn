@@ -9,4 +9,5 @@ export const images = {
   default_image: '/images/Default_Image.jpg',
   pin_selected: '/images/pin_selected.png',
   pin_not_selected: '/images/pin_not_selected.png',
+  instagram_logo: '/images/instagram_logo.png',
 };
