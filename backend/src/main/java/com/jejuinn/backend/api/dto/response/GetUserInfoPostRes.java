@@ -26,6 +26,7 @@ public class GetUserInfoPostRes {
 
 
     public static GetUserInfoPostRes from(User user) {
+        System.out.println(user.getUsername());
         return GetUserInfoPostRes.builder()
                 .uid(user.getUid())
                 .email(user.getEmail())

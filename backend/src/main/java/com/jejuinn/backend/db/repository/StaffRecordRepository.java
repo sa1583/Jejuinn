@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface StaffRecordRepository extends JpaRepository<StaffRecord, Long> {
     List<StaffRecord> findAllByGuestHouseUidOrderByStartDateDesc(Long guestHouseUid);
+
     List<StaffRecord> findAllByGuestHouseUidAndIsActiveTrueOrderByStartDateDesc(Long guestHouseUid);
+
+    List<StaffRecord> findAllByuserUidAndIsActiveTrueOrderByStartDateDesc(Long userUid);
 }
