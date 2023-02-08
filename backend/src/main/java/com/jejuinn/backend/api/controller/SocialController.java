@@ -32,7 +32,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SocialController {
 
-    private static final String TOKEN_HEADER = "access_token";
+    private static final String TOKEN_HEADER = "socialToken";
     private final UserService userService;
     private final SocialLoginRepository socialLoginRepository;
     private final UserRepository userRepository;
