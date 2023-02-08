@@ -28,6 +28,7 @@ import FindPassword from './routes/logIn/FindPassword';
 import MyApplicantList from './components/myPage/MyApplicantList';
 import GuestHouseCreate from './routes/guestHouseCreate/GuestHouseCreate';
 import VideoInterview from './routes/videoInterview/VideoInterview';
+import StaffPickUpdate from './routes/staffPickUpdate/StaffPickUpdate';
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: 'staffpicklist/create',
         element: <StaffPickCreate />,
+      },
+      {
+        path: 'staffpicklist/detail/update/:id',
+        element: <StaffPickUpdate />,
       },
       {
         path: 'sendSMS',

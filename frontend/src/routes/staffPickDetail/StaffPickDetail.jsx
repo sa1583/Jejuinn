@@ -13,7 +13,6 @@ import {
 } from '../../api/staffPick';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { async } from 'q';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../store/user';
 
@@ -44,7 +43,6 @@ export default function StaffPickDetail() {
   const accessToken = useSelector(selectAccessToken);
 
   const deleteReview = async () => {
-    console.log(accessToken);
     await deleteReviewDetail(pageId, accessToken);
     alert('리뷰가 삭제되었습니다.');
     navigate('/staffpicklist');

@@ -11,6 +11,7 @@ const getAdminTokenHeader = (token) => {
   };
 };
 
+// 명소 리뷰 작성
 function createSpotReview(token, body) {
   const config = {
     headers: {
@@ -18,8 +19,18 @@ function createSpotReview(token, body) {
       'Content-Type': 'multipart/form-data',
     },
   };
-
   return api.post('/auth/travel-place/reviews', body, config);
+}
+
+// 명소 리뷰 수정
+function updateSpotReview(token, body, uid) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return api.put(`/auth/travel-place/reviews/${uid}`, body, config);
 }
 
 // 명소 리스트 핀
@@ -91,4 +102,5 @@ export {
   createSpotReview,
   createNewSpot,
   deleteReviewDetail,
+  updateSpotReview,
 };
