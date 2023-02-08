@@ -105,7 +105,7 @@ public class TravelPlaceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> insertTravelPlace(
-            @Valid @RequestPart("travel-place") InsertTravelPlacePostReq req){
+            @Valid @RequestBody InsertTravelPlacePostReq req){
 
         log.info("관광지 추가 요청");
         // 명소 저장
