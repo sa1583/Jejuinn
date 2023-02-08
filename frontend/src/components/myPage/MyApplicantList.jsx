@@ -35,7 +35,7 @@ export default function MyApplicantList() {
   return (
     <div>
       <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
-        <h1>지원자 목록</h1>
+        <h1 style={{ fontSize: '1.8rem' }}>지원자 목록</h1>
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

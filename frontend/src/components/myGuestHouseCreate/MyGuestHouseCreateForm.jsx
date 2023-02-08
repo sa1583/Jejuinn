@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import axios from 'axios';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
 import { Box, TextField, Button } from '@mui/material';
 import ImageUploader from '../articleCreateComponent/ImageUploader';
 import PopupDom from '../popupPostCode/PopupDom';
 import PopupPostCode from '../popupPostCode/PopupPostCode';
+import { guestHouseCreate } from '../../api/guestHouse';
 
 export default function MyGuestHouseCreateForm() {
   const [address, setAddress] = useState('');
@@ -20,11 +20,7 @@ export default function MyGuestHouseCreateForm() {
   const submit = (e) => {
     e.preventDefault();
     console.log(form);
-    // axios({
-    //   url: '',
-    //   method: 'post',
-    //   data: form,
-    // });
+    // guestHouseCreate(form);
   };
 
   const getContent = (value) => {

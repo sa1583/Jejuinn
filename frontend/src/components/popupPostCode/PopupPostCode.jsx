@@ -48,6 +48,7 @@ const PopupPostCode = (props) => {
             result.data.documents[0].address.region_2depth_name;
           const x = result.data.documents[0].x;
           const y = result.data.documents[0].y;
+          console.log(address_name, region_2depth_name);
           console.log(x, y);
         }
       }
@@ -68,7 +69,7 @@ const PopupPostCode = (props) => {
     <div>
       <DaumPostcode
         style={{ postCodeStyle, display: 'relative' }}
-        onComplete={(handlePostCode, handleComplete)}
+        onComplete={handlePostCode}
       />
       <Button
         style={{ display: 'absolute' }}
