@@ -1,12 +1,14 @@
 import { Box, Typography } from '@mui/material';
 import WhiteBox from '../whiteBox/WhiteBox';
 
-export default function WorkHistory(props) {
+export default function WorkHistory({
+  history: { endDate, guestHouseName, startDate, workName },
+}) {
   return (
     <Box width="150px">
       <WhiteBox
         cpn={
-          <Box padding="15px">
+          <Box padding="15px" minHeight="120px">
             <Typography
               sx={{
                 fontFamily: 'Inter',
@@ -17,10 +19,11 @@ export default function WorkHistory(props) {
                 color: 'primary.main',
               }}
             >
-              {props.guestHouseName}
+              {guestHouseName}
             </Typography>
+            <Typography>{workName}</Typography>
             <Typography>
-              {props.startDate} ~ {props.endDate}
+              {startDate} ~ {endDate}
             </Typography>
           </Box>
         }

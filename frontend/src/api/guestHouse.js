@@ -8,6 +8,15 @@ const allGuestHouseList = () => {
   return api.get('/api/guest-houses');
 };
 
+const getApplicantByUid = async (uid, token) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return await api.get(`/auth/job-search/${uid}`, config);
+};
+
 const guestHouseDetail = (guestHouseUid) => {
   return api.get(`/api/guest-houses/${guestHouseUid}`);
 };
@@ -91,6 +100,7 @@ const myRecommendList = (token, workUid) => {
 export {
   guestHouseDetail,
   allGuestHouseList,
+  getApplicantByUid,
   guestHouseCreate,
   guestHouseUpdate,
   guestHouseDelete,
