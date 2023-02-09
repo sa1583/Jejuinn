@@ -29,6 +29,7 @@ import MyApplicantList from './components/myPage/MyApplicantList';
 import GuestHouseCreate from './routes/guestHouseCreate/GuestHouseCreate';
 import VideoInterview from './routes/videoInterview/VideoInterview';
 import MyRecommendList from './components/myPage/MyRecommendList';
+import NaverAuthRedirect from './routes/naverAuth/NaverAuthRedirect';
 
 const router = createBrowserRouter([
   {
@@ -130,6 +131,10 @@ const router = createBrowserRouter([
       {
         path: 'interview',
         element: <VideoInterview />,
+      },
+      {
+        path: 'auth/naver',
+        element: <NaverAuthRedirect />,
       },
     ],
   },
