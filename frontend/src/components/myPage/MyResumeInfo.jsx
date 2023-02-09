@@ -1,4 +1,4 @@
-import { Box, Grid, Link } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { selectUserInfo } from '../../store/user';
