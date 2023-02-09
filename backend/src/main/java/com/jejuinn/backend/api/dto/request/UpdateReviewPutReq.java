@@ -19,9 +19,9 @@ public class UpdateReviewPutReq {
     @NotNull
     private String content;
 
-    public TravelPlaceReview toTravelPlaceReview(Long travelPlaceUid){
+    public TravelPlaceReview toTravelPlaceReview(Long reviewUid){
         return TravelPlaceReview.builder()
-                .uid(travelPlaceUid)
+                .uid(reviewUid)
                 .content(content)
                 .starRating(starRating)
                 .build();
