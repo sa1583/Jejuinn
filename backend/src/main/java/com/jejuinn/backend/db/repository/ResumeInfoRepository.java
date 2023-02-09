@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ResumeInfoRepository extends JpaRepository<ResumeInfo, Long> {
     Optional<ResumeInfo> findByUserUidAndIsDeletedFalse(Long userUid);
-
+    Optional<ResumeInfo> findById(Long resumeInfoUid);
 }
