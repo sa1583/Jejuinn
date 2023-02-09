@@ -22,6 +22,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -157,7 +158,7 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteWork(@PathVariable Long workUid) {
+    public ResponseEntity<?> deleteWork(@PathVariable Long workUid, HttpServletRequest request) {
         workRepository.deleteById(workUid);
         return ResponseEntity.status(200).build();
     }
