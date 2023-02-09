@@ -30,6 +30,8 @@ public class ModifyWorkPutReq {
 
     private String workDescription;
 
+    private String salary;
+
     public Work toWork() {
         return Work.builder()
                 .uid(this.workUid)
@@ -42,6 +44,7 @@ public class ModifyWorkPutReq {
                 .workDays(this.workDays)
                 .daysOff(this.daysOff)
                 .workDescription(this.workDescription)
+                .salary(this.salary)
                 .build();
     }
 }

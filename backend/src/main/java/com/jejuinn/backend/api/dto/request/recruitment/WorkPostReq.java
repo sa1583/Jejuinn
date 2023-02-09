@@ -28,6 +28,8 @@ public class WorkPostReq {
 
     private String workDescription;
 
+    private String salary;
+
     public Work toWork() {
         return Work.builder()
                 .recruitment(Recruitment.builder().uid(this.recruitmentUid).build())
@@ -39,6 +41,7 @@ public class WorkPostReq {
                 .workDays(this.workDays)
                 .daysOff(this.daysOff)
                 .workDescription(this.workDescription)
+                .salary(this.salary)
                 .build();
     }
 }
