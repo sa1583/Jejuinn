@@ -26,6 +26,24 @@ const guestHouseCreate = (body) => {
   return api.post('/auth/guest-house', body, config);
 };
 
+const guestHouseUpdate = (guestHouseUid, body) => {
+  const config = {
+    headers: {
+      access_token: `Bearer ${Access_token()}`,
+    },
+  };
+  return api.put(`/auth/guest-houses/${guestHouseUid}`, body, config);
+};
+
+const guestHouseDelete = (guestHouseUid) => {
+  const config = {
+    headers: {
+      access_token: `Bearer ${Access_token()}`,
+    },
+  };
+  return api.delete(`/auth/guest-houses/${guestHouseUid}`, config);
+};
+
 const myGuestHouseList = () => {
   const config = {
     headers: {
@@ -57,6 +75,8 @@ export {
   guestHouseDetail,
   allGuestHouseList,
   guestHouseCreate,
+  guestHouseUpdate,
+  guestHouseDelete,
   myGuestHouseList,
   myStaffList,
   myJobOfferList,
