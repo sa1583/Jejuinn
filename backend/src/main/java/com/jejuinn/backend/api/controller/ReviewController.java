@@ -189,8 +189,10 @@ public class ReviewController {
 
         // 사진 삭제
         try {
-            s3Uploader.deleteImages(list);
-            log.info("사진 삭제 완료");
+            if(!list.isEmpty()){
+                s3Uploader.deleteImages(list);
+                log.info("사진 삭제 완료");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(400).build();
@@ -198,8 +200,10 @@ public class ReviewController {
 
         // 사진 저장
         try {
-            s3Uploader.uploadImages(images, REVIEW_TYPE, review.getUid());
-            log.info("사진 저장 완료");
+            if (!images.isEmpty()){
+                s3Uploader.uploadImages(images, REVIEW_TYPE, review.getUid());
+                log.info("사진 저장 완료");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(400).build();
