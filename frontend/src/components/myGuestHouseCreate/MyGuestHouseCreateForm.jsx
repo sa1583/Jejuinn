@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import axios from 'axios';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
 import { Box, TextField, Button } from '@mui/material';
 import ImageUploader from '../articleCreateComponent/ImageUploader';
 import PopupDom from '../popupPostCode/PopupDom';
 import PopupPostCode from '../popupPostCode/PopupPostCode';
+import { guestHouseCreate } from '../../api/guestHouse';
 
 export default function MyGuestHouseCreateForm() {
   const [address, setAddress] = useState('');
@@ -20,16 +20,17 @@ export default function MyGuestHouseCreateForm() {
   const submit = (e) => {
     e.preventDefault();
     console.log(form);
-    // axios({
-    //   url: '',
-    //   method: 'post',
-    //   data: form,
-    // });
+    // guestHouseCreate(form);
   };
 
   const getContent = (value) => {
     setForm({ ...form, content: value });
     console.log(form.content);
+  };
+
+  const [files, setFiles] = useState([]);
+  const handleFiles = (datas) => {
+    setFiles(datas);
   };
 
   // 주소 검색 팝업창 상태 관리
@@ -118,16 +119,7 @@ export default function MyGuestHouseCreateForm() {
         />
         <br />
         <label htmlFor="image">이미지 업로드</label>
-        <input
-          name="imgs"
-          id="image"
-          type="file"
-          accept="image/*"
-          multiple
-          value={form.imgs}
-          onChange={handleForm}
-        />
-        <ImageUploader />
+        <ImageUploader handleFiles={handleFiles} files={files} />
 
         <br />
         <label htmlFor="content">내용</label>
