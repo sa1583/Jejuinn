@@ -1,5 +1,6 @@
 package com.jejuinn.backend.db.repository;
 
+import com.jejuinn.backend.api.dto.response.resumeinfo.UserResumeInfoRes;
 import com.jejuinn.backend.db.entity.SocialLogin;
 import com.jejuinn.backend.db.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -19,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u.nickname from User u where u.uid = :userUid")
     String findNicknameById(@Param("userUid") Long userUid);
+
 }

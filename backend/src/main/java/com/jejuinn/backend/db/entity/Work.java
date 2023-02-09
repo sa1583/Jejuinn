@@ -1,5 +1,6 @@
 package com.jejuinn.backend.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -55,5 +57,9 @@ public class Work {
 
     @Column(name = "salary", length = 25)
     private String salary;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "work", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<WorkResumeInfo> workResumeInfos = new ArrayList<>();
 
 }
