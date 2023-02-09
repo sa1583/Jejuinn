@@ -10,5 +10,5 @@ public interface StaffRecordRepository extends JpaRepository<StaffRecord, Long> 
 
     List<StaffRecord> findAllByGuestHouseUidAndIsActiveTrueOrderByStartDateDesc(Long guestHouseUid);
 
-    List<StaffRecord> findAllByuserUidAndIsActiveTrueOrderByStartDateDesc(Long userUid);
+    List<StaffRecord> findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(Long userUid);
 }
