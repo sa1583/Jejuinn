@@ -16,6 +16,7 @@ export default function MyStaff({ myApplicant }) {
           display: 'flex',
           alignItems: 'center',
           paddingX: '2vh',
+          cursor: 'pointer',
         }}
         onClick={handleOpen}
       >

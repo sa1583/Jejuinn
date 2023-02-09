@@ -1,11 +1,14 @@
-import { Box } from '@mui/material';
+import { Box, Fade } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
-export default function NowRecruiting({ nowRecruiting, checked }) {
+export default function MyJobOffer({ myJobOffer, checked }) {
   const navigate = useNavigate();
-  const goApplicantList = (id) => {
-    navigate(`applicantlist/${id}`);
+  const goApplicantList = (workUid) => {
+    navigate(`applicantlist/${workUid}`);
+  };
+  const goRecoommendList = (workUid) => {
+    navigate(`recommendlist/${workUid}`);
   };
 
   return (
@@ -18,14 +21,15 @@ export default function NowRecruiting({ nowRecruiting, checked }) {
       }}
     >
       <Box sx={{ paddingX: '2vh' }}>
-        <h3 style={{ marginBottom: '2px' }}>파티 게하 여성 1명 모집</h3>
+        <h3 style={{ marginBottom: '2px' }}>{myJobOffer.title}</h3>
         <p style={{ marginTop: '0', marginRight: '10px' }}>
-          게시일: 2023-01-23 | 지원인원: 13명
+          게시일: {myJobOffer.dateCreated} | 지원인원: 13명
         </p>
       </Box>
       <Box>
-        {checked && (
+        <Fade in={checked}>
           <Button
+            onClick={() => goRecoommendList(myJobOffer.uid)}
             sx={{
               background: '#FF7600',
               borderRadius: '150px',
@@ -41,9 +45,9 @@ export default function NowRecruiting({ nowRecruiting, checked }) {
           >
             추천스탭 보기
           </Button>
-        )}
+        </Fade>
         <Button
-          onClick={() => goApplicantList(nowRecruiting.guestHouseUid)}
+          onClick={() => goApplicantList(myJobOffer.uid)}
           sx={{
             background: '#FF7600',
             borderRadius: '100px',
