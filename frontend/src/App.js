@@ -28,6 +28,7 @@ import FindPassword from './routes/logIn/FindPassword';
 import MyApplicantList from './components/myPage/MyApplicantList';
 import GuestHouseCreate from './routes/guestHouseCreate/GuestHouseCreate';
 import VideoInterview from './routes/videoInterview/VideoInterview';
+import MyRecommendList from './components/myPage/MyRecommendList';
 
 const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ const router = createBrowserRouter([
       {
         path: 'mypage/guesthouse/applicantlist/:id',
         element: <MyPage content={<MyApplicantList />} />,
+      },
+      {
+        path: 'mypage/guesthouse/recommendlist/:id',
+        element: <MyPage content={<MyRecommendList />} />,
       },
       {
         path: 'login/findpassword',

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAccessToken, selectUserInfo } from '../../store/user';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -73,23 +75,30 @@ const TabsList = styled(TabsListUnstyled)(
 );
 
 export default function MyGuestHouse() {
+  const access_token = useSelector(selectAccessToken);
+  const userInfo = useSelector(selectUserInfo);
   // const [myGuestHouses, setMyGuestHouses] = useState([]);
+
   // async function getMyGuestHouse() {
-  //   const data = await myGuestHouseList();
-  //   console.log(data);
-  //   setMyGuestHouses(data);
+  //   const data = await myGuestHouseList(access_token, userInfo.uid);
+  //   console.log(data.data);
+  //   setMyGuestHouses(data.data);
   // }
 
   const myGuestHouses = [
     {
-      uid: '5',
+      uid: '1',
       gusetHouseName: '게토게스트하우스',
     },
     {
-      uid: '6',
+      uid: '2',
       gusetHouseName: '간장남게스트하우스',
     },
   ];
+
+  // useEffect(() => {
+  //   getMyGuestHouse();
+  // }, []);
 
   return (
     <>
