@@ -13,7 +13,7 @@ const getTokenHeader = (token) => {
 const getOurTokens = (token, state) => {
   const config = {
     headers: {
-      access_token: `Bearer ${token}`,
+      socialToken: `Bearer ${token}`,
       state,
     },
   };
@@ -27,7 +27,7 @@ const getUserInfo = (token) => {
 function loginGoogle(token) {
   let header = {
     headers: {
-      access_token: `Bearer ${token}`,
+      socialToken: `Bearer ${token}`,
     },
   };
   return api.post('/api/users/social/google', {}, header);
@@ -36,7 +36,7 @@ function loginGoogle(token) {
 function loginKakao(token) {
   let header = {
     headers: {
-      access_token: `Bearer ${token}`,
+      socialToken: `Bearer ${token}`,
     },
   };
   return api.post('/api/users/social/kakao', {}, header);
@@ -45,7 +45,7 @@ function loginKakao(token) {
 function loginFacebook(token) {
   let header = {
     headers: {
-      access_token: `Bearer ${token}`,
+      socialToken: `Bearer ${token}`,
     },
   };
   return api.post('/api/users/social/facebook', {}, header);

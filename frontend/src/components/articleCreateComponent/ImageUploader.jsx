@@ -3,7 +3,6 @@ import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternate
 import { Typography } from '@mui/material';
 
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect } from 'react';
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -18,7 +17,6 @@ const thumb = {
   display: 'inline-flex',
   borderRadius: 2,
   border: '1px solid #eaeaea',
-  // marginRight: 8,
   width: '13rem',
   height: '13rem',
   boxSizing: 'border-box',
@@ -31,16 +29,17 @@ const thumbInner = {
   display: 'flex',
   minWidth: 0,
   overflow: 'hidden',
+  width: '100%',
 };
 
 const img = {
   display: 'block',
   width: '100%',
   height: '100%',
+  objectFit: 'cover',
 };
 
-export default function ImageUploader({ files, handleFiles }) {
-  // const [files, setFiles] = useState([]);
+export default function ImageUploader({ files, handleFiles, maxNum }) {
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: {
       'image/*': [],
@@ -50,10 +49,9 @@ export default function ImageUploader({ files, handleFiles }) {
         Object.assign(file, { preview: URL.createObjectURL(file) }),
       );
       console.log(newImgs);
-      // setFiles([...files, ...newImgs].splice(0, 10));
-      handleFiles([...files, ...newImgs].splice(0, 10));
+      handleFiles([...files, ...newImgs].splice(0, maxNum));
     },
-    maxFiles: 10,
+    maxFiles: maxNum,
     noClick: true,
   });
 
@@ -87,7 +85,6 @@ export default function ImageUploader({ files, handleFiles }) {
   );
 
   const deleteImage = (f) => {
-    // setFiles(files.filter((file) => file != f));
     handleFiles(files.filter((file) => file != f));
     console.log(f);
   };
@@ -99,10 +96,10 @@ export default function ImageUploader({ files, handleFiles }) {
           src={file.preview}
           style={img}
           // Revoke data uri after image is loaded
-          onunload={() => {
-            URL.revokeObjectURL(file.preview);
-            console.log(files);
-          }}
+          // onunload={() => {
+          //   URL.revokeObjectURL(file.preview);
+          //   console.log(files);
+          // }}
           onDoubleClick={() => deleteImage(file)}
         />
       </div>
@@ -125,6 +122,7 @@ export default function ImageUploader({ files, handleFiles }) {
           alignItems: 'center',
           gap: '1rem',
           padding: '1rem',
+          minHeight: '208px',
         }}
       >
         <input {...getInputProps()} />

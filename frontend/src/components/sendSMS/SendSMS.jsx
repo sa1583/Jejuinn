@@ -49,7 +49,9 @@ export default function SendSMS() {
 
   return (
     <React.Fragment>
-      <Button onClick={handleOpen}>문자 보내기</Button>
+      <Button onClick={handleOpen} sx={{ color: 'white' }}>
+        문자 보내기
+      </Button>
       <Modal
         hideBackdrop
         open={open}

@@ -8,9 +8,14 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-export default function StaffPickCreateSpotName({ spotName, handleSpotName }) {
+export default function StaffPickCreateSpotName({
+  spotName,
+  handleSpotName,
+  setNewPinByNameSearch,
+}) {
   const getNameRecommend = async () => {
     const datas = (await getRecommendName(spotName)).data.items;
+    console.log(datas);
     setNameList(datas);
   };
 
@@ -45,11 +50,14 @@ export default function StaffPickCreateSpotName({ spotName, handleSpotName }) {
           onChange={(e) => handleSpotName(e.target.value)}
         />
         <List sx={style} component="nav" aria-label="mailbox folders">
-          {nameList.map((name) => (
+          {nameList.map((item) => (
             <ListItem button divider key={uuidv4()}>
               <ListItemText
-                primary={name.title}
-                onClick={(e) => handleSpotName(e.target.textContent)}
+                primary={item.title}
+                onClick={(e) => {
+                  handleSpotName(e.target.textContent);
+                  setNewPinByNameSearch(item);
+                }}
               />
             </ListItem>
           ))}

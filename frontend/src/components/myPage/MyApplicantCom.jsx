@@ -49,7 +49,7 @@ export default function MyStaff({ myApplicant }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <MyApplicantDetail id={myApplicant.uid} />
+        <MyApplicantDetail id={myApplicant.uid} handleClose={handleClose} />
       </Modal>
     </>
   );

@@ -1,47 +1,80 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import SpotInfo from '../../components/staffPickDetailComponent/SpotInfo';
 import ReviewContent from '../../components/staffPickDetailComponent/ReviewContent';
 import MapApi from '../../components/mapApi/MapApi';
-// import { getReview } from '../../api/staffPick';
-// import { useState } from 'react';
+import {
+  deleteReviewDetail,
+  getReviewDetail,
+  getSpotInfo,
+} from '../../api/staffPick';
+import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { async } from 'q';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../store/user';
 
 export default function StaffPickDetail() {
-  // 여기서 useEffect로 url 끝 번호를 따서
-  // 글 번호로 axios 요청보내서 글 디테일 정보 받아와야함
+  // 리뷰 컨텐츠 내용
   const location = useLocation();
   const pageId = location.pathname.split('detail/')[1];
+  const navigate = useNavigate();
+  // 명소 좌표 정보
+  const [spots, setSpots] = useState([]);
 
-  // 여기 아래로 처음 렌더링시 리뷰 정보 받아오는 로직
-  // 여기 내용을 props로 content 컴포넌트로 내려줘야함
-  // const [review, setReview] = useState([]);
-  // const getReviewDetail = async (uid) => {
-  //   const review = await getReview(uid);
-  //   setReview(review);
-  // };
+  const [reviewContent, setReviewContent] = useState([]);
+  // 리뷰 정보와 명소 정보 받아오기
+  const getReviewContent = async () => {
+    const data = (await getReviewDetail(pageId)).data;
+    setReviewContent(data);
+    const info = (await getSpotInfo(data.travelPlaceUid)).data.travelPlace;
+    setSpotInfo(info);
+    setSpots([{ id: info.uid, lat: info.lat, lng: info.lng }]);
+  };
+
   useEffect(() => {
-    console.log(pageId);
-    // getReviewDetail(pageId);
-  }, [pageId]);
+    getReviewContent();
+  }, []);
 
-  const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
+  // 명소 디테일 정보
+  const [spotInfo, setSpotInfo] = useState([]);
+  const accessToken = useSelector(selectAccessToken);
+
+  const deleteReview = async () => {
+    console.log(accessToken);
+    await deleteReviewDetail(pageId, accessToken);
+    alert('리뷰가 삭제되었습니다.');
+    navigate('/staffpicklist');
+  };
+
+  const actions = [
+    {
+      icon: <DeleteOutlineOutlinedIcon />,
+      name: '리뷰 삭제',
+      handle: deleteReview,
+    },
+  ];
+
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <SpeedDialComponent actions={actions} />
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
-          <Grid item xs={12}>
-            <WhiteBox cpn={<SpotInfo />} />
-          </Grid>
-          <Grid item xs={12}>
-            <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <WhiteBox cpn={<SpotInfo spotInfo={spotInfo} />} />
+            </Grid>
+            <Grid item xs={12}>
+              <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
+            </Grid>
           </Grid>
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <WhiteBox cpn={<ReviewContent />} />
+          <WhiteBox cpn={<ReviewContent reviewContent={reviewContent} />} />
         </Grid>
       </Grid>
     </Box>
