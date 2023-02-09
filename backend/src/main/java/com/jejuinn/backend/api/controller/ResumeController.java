@@ -78,6 +78,24 @@ public class ResumeController {
         );
     }
 
+    @GetMapping("/auth/applicant-resume-info/{userUid}")
+    @ApiOperation(value = "지원서 상세 조회", notes = "userUid를 통해 지원서를 상세 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "작성된 이력서가 없습니다."),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getApplicantResumeInfo(@PathVariable Long userUid) {
+        return ResponseEntity.status(200).body(
+                ResumeInfoDetailRes.of(
+                        resumeInfoService.updateIsRead(userUid),
+                        UserDetail.of(userRepository.findById(userUid)),
+                        StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid))
+                )
+        );
+    }
+
     @PutMapping("/auth/auto-apply/{userUid}")
     @ApiOperation(value = "자동추천 ON/OFF", notes = "userUid를 통해 마이 페이지에서 내 지원서의 자동추천 여부를 변경합니다.")
     @ApiResponses({
