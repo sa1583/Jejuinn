@@ -20,8 +20,6 @@ public class UserDetail {
 
     private String profileImageUrl;
 
-    private String InstagramLink;
-
     public static UserDetail of(Optional<User> user) {
         if(user.isEmpty()) return null;
         return UserDetail.builder()
@@ -29,7 +27,6 @@ public class UserDetail {
                 .gender(user.get().getGender())
                 .age(user.get().getAge())
                 .profileImageUrl(user.get().getProfileImageUrl())
-                .InstagramLink(user.get().getInstagramLink())
                 .build();
     }
 }

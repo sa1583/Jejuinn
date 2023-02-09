@@ -56,6 +56,9 @@ public class ResumeInfo {
 
     private LocalDate isRead;
 
+    @Column(length = 50)
+    private String instagramLink;
+
     @ManyToMany
     @JoinTable(
             name = "resume_info_area_join",

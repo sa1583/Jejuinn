@@ -36,6 +36,8 @@ public class ResumeInfoDetail {
 
     private LocalDate isRead;
 
+    private String instagramLink;
+
     public static ResumeInfoDetail of(Optional<ResumeInfo> resumeInfo) {
         if(resumeInfo.isEmpty()) return null;
         return ResumeInfoDetail.builder()
@@ -49,6 +51,7 @@ public class ResumeInfoDetail {
                 .interestAreas(resumeInfo.get().getInterestAreas())
                 .personTypes(resumeInfo.get().getPersonTypes())
                 .isRead(resumeInfo.get().getIsRead())
+                .instagramLink(resumeInfo.get().getInstagramLink())
                 .build();
     }
 
@@ -64,6 +67,7 @@ public class ResumeInfoDetail {
                 .dateCreated(resumeInfo.get().getDateCreated())
                 .interestAreas(resumeInfo.get().getInterestAreas())
                 .personTypes(resumeInfo.get().getPersonTypes())
+                .instagramLink(resumeInfo.get().getInstagramLink())
                 .build();
     }
 }
