@@ -2,6 +2,7 @@ package com.jejuinn.backend.api.service;
 
 import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkResumeInfoPostReq;
 import com.jejuinn.backend.api.dto.response.recruitment.MyApplicantDetailRes;
+import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetail;
 import com.jejuinn.backend.db.entity.ResumeInfo;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.entity.Work;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +48,17 @@ public class ResumeInfoService {
         }
         boolean autoApply = resumeInfo.isAutoApply();
         resumeInfo.setAutoApply(!autoApply);
+        return resumeInfo;
+    }
+
+    @Transactional
+    public ResumeInfoDetail updateIsRead(Long userUid) {
+        Optional<ResumeInfo> temp = resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid);
+        ResumeInfoDetail resumeInfo = null;
+        if(temp.isPresent()) {
+            resumeInfo = ResumeInfoDetail.ofCEO(temp);
+            temp.get().setIsRead(LocalDate.now());
+        }
         return resumeInfo;
     }
 
