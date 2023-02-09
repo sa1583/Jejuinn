@@ -4,10 +4,8 @@ import com.jejuinn.backend.api.dto.request.recruitment.InsertRecruitmentPostReq;
 import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkPostReq;
 import com.jejuinn.backend.api.dto.request.recruitment.ModifyWorkPutReq;
 import com.jejuinn.backend.api.dto.request.recruitment.WorkPostReq;
-import com.jejuinn.backend.api.dto.response.recruitment.MyRecruitmentListRes;
-import com.jejuinn.backend.api.dto.response.recruitment.RecruitmentDetailRes;
-import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
-import com.jejuinn.backend.api.dto.response.recruitment.WorkListRes;
+import com.jejuinn.backend.api.dto.response.recruitment.*;
+import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
@@ -38,7 +36,7 @@ public class RecruitmentController {
     private final WorkRepository workRepository;
     private final RecruitmentRepository recruitmentRepository;
     private final ImageRepository imageRepository;
-    private final UserRepository userRepository;
+    private final ResumeInfoService resumeInfoService;
     private final S3Uploader s3Uploader;
     private static final String RECRUITMENT_TYPE = "RECRUITMENT";
     private final WorkResumeInfoRepository workResumeInfoRepository;
@@ -136,7 +134,7 @@ public class RecruitmentController {
     }
 
     @GetMapping("/auth/recruitment/{workUid}")
-    @ApiOperation(value = "특정 직무에 대한 지원자 목록 확인", notes = "workUid를 이용하여 그 직무에 지원한 지원자 목록을 불러옵니다.")
+    @ApiOperation(value = "직무에 대한 지원자 목록 확인", notes = "workUid를 이용하여 그 직무에 지원한 지원자 정보를 불러옵니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "데이터가 없습니다."),
@@ -144,8 +142,12 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getApplicant(@PathVariable Long workUid) {
-
-        return null;
+        List<Long> resumeInfoUids = workResumeInfoRepository.findResumeInfoUidByWorkUid(workUid);
+        List<MyApplicantDetailRes> result = resumeInfoService.getMyApplicant(resumeInfoUids);
+        if(result.size() == 0) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(
+                result
+        );
     }
 
     @DeleteMapping("/auth/work/{workUid}")
