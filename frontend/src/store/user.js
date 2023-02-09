@@ -86,7 +86,6 @@ export const getFacebookToken = createAsyncThunk(
 export const getNormalAuthToken = createAsyncThunk(
   'user/getNormalAuthToken',
   async (body, thunkAPI) => {
-    console.log(body);
     try {
       let { accesstoken, refreshtoken } = (await loginNormal(body)).headers;
       accesstoken = accesstoken.split(' ')[1];

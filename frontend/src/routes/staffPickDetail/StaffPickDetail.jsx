@@ -13,9 +13,9 @@ import {
 } from '../../api/staffPick';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { async } from 'q';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../store/user';
+import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 
 export default function StaffPickDetail() {
   // 리뷰 컨텐츠 내용
@@ -44,10 +44,13 @@ export default function StaffPickDetail() {
   const accessToken = useSelector(selectAccessToken);
 
   const deleteReview = async () => {
-    console.log(accessToken);
     await deleteReviewDetail(pageId, accessToken);
     alert('리뷰가 삭제되었습니다.');
     navigate('/staffpicklist');
+  };
+
+  const goUpdateReview = () => {
+    navigate(`/staffpicklist/detail/update/${pageId}`);
   };
 
   const actions = [
@@ -55,6 +58,11 @@ export default function StaffPickDetail() {
       icon: <DeleteOutlineOutlinedIcon />,
       name: '리뷰 삭제',
       handle: deleteReview,
+    },
+    {
+      icon: <DriveFileRenameOutlineOutlinedIcon />,
+      name: '리뷰 수정',
+      handle: goUpdateReview,
     },
   ];
 
@@ -74,7 +82,11 @@ export default function StaffPickDetail() {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <WhiteBox cpn={<ReviewContent reviewContent={reviewContent} />} />
+          <WhiteBox
+            cpn={
+              <ReviewContent reviewContent={reviewContent} pageId={pageId} />
+            }
+          />
         </Grid>
       </Grid>
     </Box>
