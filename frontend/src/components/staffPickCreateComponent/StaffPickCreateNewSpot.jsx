@@ -11,6 +11,7 @@ import StaffPickCreateSpotName from './StaffPickCreateSpotName';
 import StaffPickCreatSpotCheck from './StaffPickCreatSpotCheck';
 import StaffPickCreateSpotType from './StaffPickCreateSpotType';
 import { createNewSpot } from '../../api/staffPick';
+import StaffPickCreateNewSpotFinish from './StaffPickCreateNewSpotFinish';
 
 export default function StaffPickCreateNewSpot({
   open,
@@ -53,7 +54,7 @@ export default function StaffPickCreateNewSpot({
       formData.append('image', file[0]);
 
       await createNewSpot(formData);
-
+    } else if (activeStep == 4) {
       handleClose();
       getSpotsPins();
       setActiveStep(0);
@@ -137,7 +138,6 @@ export default function StaffPickCreateNewSpot({
             <div style={{ width: '100%' }}>
               <MapApi setNewPin={setNewPin} startSpot={nowPick} />{' '}
             </div>
-            {area}
           </Box>
         );
       case 1:
@@ -168,6 +168,8 @@ export default function StaffPickCreateNewSpot({
             shortArea={shortArea}
           />
         );
+      case 4:
+        return <StaffPickCreateNewSpotFinish />;
     }
   };
 
@@ -253,7 +255,10 @@ export default function StaffPickCreateNewSpot({
           }}
           size="large"
           disabled={
-            (activeStep === 0 && nowPick.length === 0) || activeStep === 4
+            (activeStep === 0 && nowPick.length === 0) ||
+            activeStep === 4 ||
+            (activeStep === 1 && spotName.length === 0) ||
+            (activeStep === 2 && (newtype === '' || file.length === 0))
           }
           onClick={handleNext}
         >

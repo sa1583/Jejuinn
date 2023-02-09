@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import { Typography } from '@mui/material';
 
 export default function StaffPickCreateSpotName({
   spotName,
@@ -39,8 +40,27 @@ export default function StaffPickCreateSpotName({
         display: 'flex',
         justifyContent: 'center',
         marginTop: '2rem',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginBottom: '2rem',
+        }}
+      >
+        <Typography sx={{ fontWeight: 'bolder' }}>
+          이름을 입력하면 추천 이름 리스트가 나타납니다.
+        </Typography>
+        <Typography sx={{ fontWeight: 'bolder' }}>
+          정확한 위치 지정을 원하시면 추천 이름을 클릭해주세요.
+        </Typography>
+      </Box>
+
       <Box sx={{ width: '60%' }}>
         <TextField
           sx={{ width: '100%' }}

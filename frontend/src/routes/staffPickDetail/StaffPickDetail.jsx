@@ -14,8 +14,13 @@ import {
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { useSelector } from 'react-redux';
-import { selectAccessToken } from '../../store/user';
+import {
+  selectAccessToken,
+  selectIsLogin,
+  selectUserInfo,
+} from '../../store/user';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 
 export default function StaffPickDetail() {
   // 리뷰 컨텐츠 내용
@@ -53,6 +58,16 @@ export default function StaffPickDetail() {
     navigate(`/staffpicklist/detail/update/${pageId}`);
   };
 
+  console.log(reviewContent);
+
+  const loginedUserUid = useSelector(selectUserInfo);
+  const islogined = useSelector(selectIsLogin);
+  const goCreate = () => {
+    !islogined
+      ? alert('로그인이 필요합니다.')
+      : navigate('/staffpicklist/create');
+  };
+
   const actions = [
     {
       icon: <DeleteOutlineOutlinedIcon />,
@@ -64,6 +79,7 @@ export default function StaffPickDetail() {
       name: '리뷰 수정',
       handle: goUpdateReview,
     },
+    { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
   ];
 
   return (

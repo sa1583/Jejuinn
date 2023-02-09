@@ -1,4 +1,4 @@
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Rating, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { deepOrange } from '@mui/material/colors';
 import ImageSlider from '../imageSlider/ImageSlider';
@@ -18,7 +18,6 @@ export default function ReviewContent({ reviewContent, pageId }) {
   const getLikedReviews = async () => {
     const data = (await likedReviewLikst(access_token)).data;
     setLiked(pageId in data);
-    console.log(data);
   };
 
   useState(() => {
@@ -62,6 +61,12 @@ export default function ReviewContent({ reviewContent, pageId }) {
         <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
         <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>
       </Box>
+      <Rating
+        value={reviewContent.starRating}
+        readOnly
+        sx={{ marginBottom: '2rem' }}
+      />
+
       <div dangerouslySetInnerHTML={{ __html: reviewContent?.content }} />
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
