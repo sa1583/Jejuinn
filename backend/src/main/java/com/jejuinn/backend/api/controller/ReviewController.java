@@ -180,7 +180,7 @@ public class ReviewController {
 
         // 리뷰 저장
 
-        TravelPlaceReview review = travelPlaceReviewRepository.save(req.toTravelPlaceReview(reviewUid));
+        TravelPlaceReview review = travelPlaceReviewService.update(req, reviewUid);
         log.info("리뷰 내용 업데이트 완료");
 
         // 관광지 평점 수정
