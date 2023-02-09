@@ -4,11 +4,6 @@ import { selectAccessToken } from '../store/user';
 
 const api = apiInstance();
 
-const Access_token = () => {
-  const token = useSelector(selectAccessToken);
-  return token;
-};
-
 const allGuestHouseList = () => {
   return api.get('/api/guest-houses');
 };
@@ -17,58 +12,80 @@ const guestHouseDetail = (guestHouseUid) => {
   return api.get(`/api/guest-houses/${guestHouseUid}`);
 };
 
-const guestHouseCreate = (body) => {
+const guestHouseCreate = (token, body) => {
   const config = {
     headers: {
-      access_token: `Bearer ${Access_token()}`,
+      accessToken: `Bearer ${token}`,
     },
   };
   return api.post('/auth/guest-house', body, config);
 };
 
-const guestHouseUpdate = (guestHouseUid, body) => {
+const guestHouseUpdate = (token, guestHouseUid, body) => {
   const config = {
     headers: {
-      access_token: `Bearer ${Access_token()}`,
+      accessToken: `Bearer ${token}`,
     },
   };
   return api.put(`/auth/guest-houses/${guestHouseUid}`, body, config);
 };
 
-const guestHouseDelete = (guestHouseUid) => {
+const guestHouseDelete = (token, guestHouseUid) => {
   const config = {
     headers: {
-      access_token: `Bearer ${Access_token()}`,
+      accessToken: `Bearer ${token}`,
     },
   };
   return api.delete(`/auth/guest-houses/${guestHouseUid}`, config);
 };
 
-const myGuestHouseList = () => {
+const myGuestHouseList = (token, userUid) => {
   const config = {
     headers: {
-      access_token: `Bearer ${Access_token()}`,
+      accessToken: `Bearer ${token}`,
     },
   };
-  return api.get('/auth/my-guest-house', config);
+  return api.get(`/auth/my-guest-houses/${userUid}`, config);
 };
 
-const myStaffList = (guestHouseUid) => {
+const myStaffList = (token, guestHouseUid) => {
   const config = {
     headers: {
-      access_token: `Bearer ${Access_token()}`,
+      accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(`/auth/guest-house/staff/${guestHouseUid}`, config);
+  return api.get(
+    `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}`,
+    config,
+  );
 };
 
-const myJobOfferList = (guestHouseUid) => {
+const myJobOfferList = (token, guestHouseUid) => {
   const config = {
     headers: {
-      access_token: `Bearer ${Access_token()}`,
+      accessToken: `Bearer ${token}`,
     },
   };
   return api.get(`/auth/job-offer/${guestHouseUid}`, config);
+};
+
+const myApplicantList = (token, workUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.get(`/auth/recruitment/${workUid}`, config);
+};
+
+// 아직 api 구현 안됨
+const myRecommendList = (token, workUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.get(`/auth/recommend/${workUid}`, config);
 };
 
 export {
@@ -80,4 +97,6 @@ export {
   myGuestHouseList,
   myStaffList,
   myJobOfferList,
+  myApplicantList,
+  myRecommendList,
 };

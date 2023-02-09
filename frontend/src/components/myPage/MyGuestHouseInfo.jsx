@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../store/user';
 import { v4 as uuidv4 } from 'uuid';
 import { Box, Typography, Popover, Switch } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -9,6 +11,8 @@ import MyStaff from './MyStaff';
 import MyJobOffer from './MyJobOffer';
 
 export default function MyGuestHouseInfo({ guestHouseUid }) {
+  const access_token = useSelector(selectAccessToken);
+
   const [checked, setChecked] = useState(true);
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -23,73 +27,73 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   };
   const open = Boolean(anchorEl);
 
-  //   const [myStaffs, setMyStaffs] = useState([]);
-  //   async function getMyStaff() {
-  //     const data = await myStaffList(guestHouseUid);
-  //     console.log(data);
-  //     setMyStaffs(data);
-  //   }
+  const [myStaffs, setMyStaffs] = useState([]);
+  async function getMyStaff() {
+    const data = await myStaffList(access_token, guestHouseUid);
+    console.log(data);
+    setMyStaffs(data);
+  }
 
-  const myStaffs = [
-    {
-      uid: '1',
-      guestHouseUid: '5',
-      userUid: '5',
-      name: '장정민',
-      startDate: '2023-01-20',
-      endDate: '2023-03-20',
-      workName: '리셉션',
-    },
-    {
-      uid: '2',
-      guestHouseUid: '5',
-      userUid: '6',
-      name: '최다은',
-      startDate: '2023-01-20',
-      endDate: '2023-04-20',
-      workName: '스탭',
-    },
-  ];
+  // const myStaffs = [
+  //   {
+  //     uid: '1',
+  //     guestHouseUid: '5',
+  //     userUid: '5',
+  //     name: '장정민',
+  //     startDate: '2023-01-20',
+  //     endDate: '2023-03-20',
+  //     workName: '리셉션',
+  //   },
+  //   {
+  //     uid: '2',
+  //     guestHouseUid: '5',
+  //     userUid: '6',
+  //     name: '최다은',
+  //     startDate: '2023-01-20',
+  //     endDate: '2023-04-20',
+  //     workName: '스탭',
+  //   },
+  // ];
 
-  // const [myJobOffers, setMyJobOffers] = useState([]);
-  // async function getMyJobOffer() {
-  //   const data = await myJobOfferList(guestHouseUid);
-  //   console.log(data);
-  //   setMyJobOffers(data);
-  // }
+  const [myJobOffers, setMyJobOffers] = useState([]);
+  async function getMyJobOffer() {
+    const data = await myJobOfferList(access_token, guestHouseUid);
+    console.log(data.data);
+    setMyJobOffers(data.data);
+  }
 
-  const myJobOffers = [
-    {
-      guestHouseUid: '1',
-      c: '제주게토 게스트하우스 청소 및 스텝 모집',
-      content: '여기 좋아요',
-      welfare: '복지로 아침도 드려요',
-      work: [
-        {
-          workName: '스탭',
-          personnel: '3',
-          workType: '2일 근무, 2일 휴무',
-          minimumWorkPeriod: '1달 이상',
-          workTime: '근무 시 09시 ~ 16시',
-          workDescriptoin: '투숙객 안내 및 파티 주도',
-        },
-        {
-          workName: '청소',
-          personnel: '1',
-          workType: '2일 근무, 2일 휴무',
-          minimumWorkPeriod: '1달 이상',
-          workTime: '근무 날짜에 11시 ~ 15시',
-          workDescriptoin: '방 청소 및 게스트하우수 마당 청소',
-        },
-      ],
-      pictures: ['abasdaf1.jpg', 'abasda2f.jpg', 'abasdaf3.jpg'],
-    },
-  ];
+  // const myJobOffers = [
+  //   {
+  //     guestHouseUid: '1',
+  //     c: '제주게토 게스트하우스 청소 및 스텝 모집',
+  //     content: '여기 좋아요',
+  //     welfare: '복지로 아침도 드려요',
+  //     work: [
+  //       {
+  //         workName: '스탭',
+  //         personnel: '3',
+  //         workType: '2일 근무, 2일 휴무',
+  //         minimumWorkPeriod: '1달 이상',
+  //         workTime: '근무 시 09시 ~ 16시',
+  //         workDescriptoin: '투숙객 안내 및 파티 주도',
+  //       },
+  //       {
+  //         workName: '청소',
+  //         personnel: '1',
+  //         workType: '2일 근무, 2일 휴무',
+  //         minimumWorkPeriod: '1달 이상',
+  //         workTime: '근무 날짜에 11시 ~ 15시',
+  //         workDescriptoin: '방 청소 및 게스트하우수 마당 청소',
+  //       },
+  //     ],
+  //     pictures: ['abasdaf1.jpg', 'abasda2f.jpg', 'abasdaf3.jpg'],
+  //   },
+  // ];
 
-  // useEffect(() => {
-  //   getMyStaff();
-  //   getMyJobOffer();
-  // }, []);
+  useEffect(() => {
+    getMyStaff();
+    getMyJobOffer();
+  }, []);
 
   return (
     <div>
@@ -179,9 +183,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
             return (
               <WhiteBox
                 key={uuidv4()}
-                cpn={
-                  <MyJobOffer nowRecruiting={myJobOffer} checked={checked} />
-                }
+                cpn={<MyJobOffer myJobOffer={myJobOffer} checked={checked} />}
               />
             );
           })}
