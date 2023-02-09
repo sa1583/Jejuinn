@@ -5,17 +5,19 @@ import MyResumeWrite from './MyResumeWrite';
 import { useState } from 'react';
 import { getResume } from '../../api/resume';
 import NaverAuth from '../naverAuth/NaverAuth';
+import { useSelector } from 'react-redux';
+import { selectUserInfo } from '../../store/user';
 
 export default function MyResume() {
   const [onModify, setOnModify] = useState(false);
   const [resume, setResume] = useState(getResume());
   // resume 요청해서 있으면 가져오고 없으면 null
 
-  // const userInfo = useSelector(selectUserInfo);
+  const userInfo = useSelector(selectUserInfo);
 
-  const userInfo = {
-    authorities: ['naver'],
-  };
+  // const userInfo = {
+  //   authorities: ['naver'],
+  // };
 
   const changeApplyComp = () => {
     setOnModify(!onModify);
