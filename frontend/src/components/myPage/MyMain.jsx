@@ -108,12 +108,14 @@ export default function MyMain() {
         name: '게토 게스트하우스',
         title: '성별 무관 스탭2명 모집중',
         imageUrl: images.sample_profile,
+        isRead: true,
       },
       {
         uid: 103,
         name: '정민 게스트하우스',
         title: '장정민이 있는 하남자 게스트하우스',
         imageUrl: null,
+        isRead: false,
       },
     ]);
   }, []);
