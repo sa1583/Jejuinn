@@ -16,13 +16,11 @@ import java.util.List;
 public class GetGuestHouseDetailPostRes {
     private GuestHouse guestHouse;
     private List<Image> images;
-    private List<Comment> comments;
 
-    public static GetGuestHouseDetailPostRes of(GuestHouse guestHouse, List<Image> images, List<Comment> comments){
+    public static GetGuestHouseDetailPostRes of(GuestHouse guestHouse, List<Image> images){
         return GetGuestHouseDetailPostRes.builder()
                 .guestHouse(guestHouse)
                 .images(images)
-                .comments(comments)
                 .build();
     }
 
