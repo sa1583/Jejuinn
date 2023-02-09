@@ -2,6 +2,8 @@ package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.recruitment.InsertRecruitmentPostReq;
 import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkPostReq;
+import com.jejuinn.backend.api.dto.request.recruitment.ModifyWorkPutReq;
+import com.jejuinn.backend.api.dto.request.recruitment.WorkPostReq;
 import com.jejuinn.backend.api.dto.response.recruitment.MyRecruitmentListRes;
 import com.jejuinn.backend.api.dto.response.recruitment.RecruitmentDetailRes;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
@@ -144,5 +146,41 @@ public class RecruitmentController {
     public ResponseEntity<?> getApplicant(@PathVariable Long workUid) {
 
         return null;
+    }
+
+    @DeleteMapping("/auth/work/{workUid}")
+    @ApiOperation(value = "직무 삭제", notes = "workUid를 이용하여 채용공고에 대한 직무를 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> deleteWork(@PathVariable Long workUid) {
+        workRepository.deleteById(workUid);
+        return ResponseEntity.status(200).build();
+    }
+    
+    @PostMapping("/auth/work")
+    @ApiOperation(value = "직무 작성", notes = "WorkPostReq를 이용하여 채용공고에 대한 직무를 작성합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(작성 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> insertWork(@RequestBody WorkPostReq workPostReq) {
+        workRepository.save(workPostReq.toWork());
+        return ResponseEntity.status(200).build();
+    }
+
+    @PutMapping("/auth/work")
+    @ApiOperation(value = "직무 수정", notes = "ModifyWorkPutReq를 이용하여 채용공고에 대한 직무를 작성합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(작성 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> modifyWork(@RequestBody ModifyWorkPutReq modifyWorkPutReq) {
+        workRepository.save(modifyWorkPutReq.toWork());
+        return ResponseEntity.status(200).build();
     }
 }
