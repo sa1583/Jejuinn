@@ -1,12 +1,24 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { deleteWorkDetail, updateWorkDetail } from '../../api/work';
+import { selectAccessToken } from '../../store/user';
+import { useSelector } from 'react-redux';
 
 export default function WorkDetail({ work }) {
   const navigate = useNavigate();
+  const accessToken = useSelector(selectAccessToken);
+
   const onRecruitmentDetail = () => {
-    navigate(`/worklist/detail/${work.recruitmentUid}`);
+    navigate(`/worklist/detail/${work.recruitmentUid}/${work.uid}`);
   };
-  console.log(work);
+
+  function handleWorkUpdate() {
+    updateWorkDetail();
+  }
+  function handleWorkDelete() {
+    deleteWorkDetail(14, accessToken);
+  }
+
   return (
     <>
       <Box
@@ -14,6 +26,8 @@ export default function WorkDetail({ work }) {
         onClick={onRecruitmentDetail}
       >
         <h2 style={{ color: '#FF7600' }}>{work.workName}</h2>
+        <Button onClick={handleWorkUpdate}>수정</Button>
+        <Button onClick={handleWorkDelete}>삭제</Button>
         <Grid container>
           <Grid item md={6}>
             근무방식

@@ -12,8 +12,12 @@ import {
   GetWorkStartTime,
   GetWorkEndTime,
   GetWorkDescription,
+  SelectGusetHouse,
 } from './WorkWriteForms';
 import { writeRecruitment } from '../../api/work';
+import { createWork } from '../../api/work';
+import { selectAccessToken } from '../../store/user';
+import { useSelector } from 'react-redux';
 
 const CustomButton = styled(Button)({
   variant: 'contained',
@@ -34,7 +38,10 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkWrite({ OnClick }) {
+export default function WorkWrite({ OnClick, myGuestHouses }) {
+  const accessToken = useSelector(selectAccessToken);
+  const houseCount = myGuestHouses.length;
+
   const [workInfo, setWorkInfo] = useState({
     workName: '',
     gender: '',
@@ -45,6 +52,7 @@ export default function WorkWrite({ OnClick }) {
     workDays: 2,
     daysOff: 2,
     minWorkPeriod: 0,
+    recruitmentUid: 2,
   });
 
   const handleWorkInfo = (e) => {
@@ -69,17 +77,22 @@ export default function WorkWrite({ OnClick }) {
     setWorkInfo({ ...workInfo, workTime: `${workStartTime}~${workEndTime}` });
   }, [workEndTime, workStartTime]);
 
-  const TwoCalls = () => {
-    OnClick(); // workListBox에서 상속받은 함수. 작성 완료 후 클릭하면 onWrite false로 변경
-    // writeRecruitment(workInfo); // 서버에 post/put 하기 정민 직무 추가하는거 만들어줘!!
+  const workCreate = async () => {
+    const data = await createWork(workInfo, accessToken);
+    console.log(data);
   };
+
+  function TwoCalls() {
+    OnClick();
+    workCreate();
+  }
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <form>
         <Grid container spacing={2}>
           <Grid item md={12}>
-            0000게스트 하우스 채용 직무 추가
+            000게스트하우스의 채용 추가
           </Grid>
           <Grid item md={12}>
             <GetWorkName handleWorkInfo={handleWorkInfo} />

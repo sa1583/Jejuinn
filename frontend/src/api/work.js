@@ -30,10 +30,47 @@ const recruitmentDetail = (recruitmentUid) => {
 const writeRecruitment = (body) => {
   const config = {
     headers: {
-      access_token: `Bearer ${Access_token()}`,
+      accessToken: `Bearer ${Access_token()}`,
     },
   };
   return api.post('/auth/job-offer', body, config);
 };
 
-export { recruitmentDetail, allWorkList, filteredWorkList, writeRecruitment };
+function createWork(body, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/work', body, config);
+}
+
+function getMyGuestHouses() {
+  // return api.post('/auth/myhouses', body, config);
+
+  return [['게토'], ['게토']];
+}
+
+function updateWorkDetail() {
+  return api.put();
+}
+
+function deleteWorkDetail(workUid, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.delete(`/auth/work/${13}`, config);
+}
+
+export {
+  recruitmentDetail,
+  allWorkList,
+  filteredWorkList,
+  writeRecruitment,
+  createWork,
+  getMyGuestHouses,
+  updateWorkDetail,
+  deleteWorkDetail,
+};

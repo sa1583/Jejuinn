@@ -1,4 +1,12 @@
-import { styled, TextField, MenuItem, Stack } from '@mui/material';
+import {
+  styled,
+  TextField,
+  MenuItem,
+  Stack,
+  Typography,
+  Button,
+  Popover,
+} from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,6 +15,8 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import { Box } from '@mui/system';
 import Autocomplete from '@mui/material/Autocomplete';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeIsOnWrite, selectIsOnWrite } from '../../store/work';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -279,8 +289,6 @@ function GetWorkDescription({ handleWorkInfo }) {
   );
 }
 
-// 채용공고 정보 입력
-
 function GetRecruitmentTitle({ onTitle }) {
   return <CustomTextField label="채용 공고 제목" onInput={onTitle} />;
 }
@@ -337,6 +345,53 @@ function GetRecruitmentPersontype({ onPersontype }) {
   );
 }
 
+// 게하 여러개 일 때 직무 추가할 게스트하우스 선택하는 팝오버
+function SelectGusetHousePopover({ myGuestHouses }) {
+  const dispatch = useDispatch();
+  // onWrite 상태 바꾸고
+
+  //
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const onClick = () => {
+    dispatch(changeIsOnWrite());
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  return (
+    <div>
+      <Button onClick={handleClick}>+</Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <Typography sx={{ p: 2 }}>
+          어떤 게스트하우스에 직무를 추가할까요?
+          {myGuestHouses.map((myGuestHouse) => (
+            <Button onClick={onClick}>{myGuestHouse}</Button>
+          ))}
+        </Typography>
+      </Popover>
+    </div>
+  );
+}
+
 export {
   GetWorkName,
   GetWorkGender,
@@ -352,4 +407,5 @@ export {
   GetRecruitmentWelfare,
   GetRecruitmentTitle,
   GetRecruitmentPersontype,
+  SelectGusetHousePopover,
 };

@@ -4,9 +4,11 @@ import WorkListBox from '../../components/work/WorkListBox';
 import { Box } from '@mui/material';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function WorkList() {
   const [works, setWorks] = useState([]);
+  const myhouse = useSelector();
 
   async function getWorks() {
     const data = await allWorkList();
