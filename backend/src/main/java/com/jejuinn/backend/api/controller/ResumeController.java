@@ -117,4 +117,17 @@ public class ResumeController {
             return ResponseEntity.status(400).build();
         }
     }
+
+    @GetMapping("/auth/my-applicant/{userUid}")
+    @ApiOperation(value = "내 지원목록 확인", notes = "userUid를 통해 내 지원목록을 확인합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "데이터가 없습니다"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyApplicant(@PathVariable Long userUid) {
+        System.out.println();
+        return null;
+    }
 }
