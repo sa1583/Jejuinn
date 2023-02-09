@@ -200,7 +200,7 @@ public class ReviewController {
 
         // 사진 저장
         try {
-            if (!images.isEmpty()){
+            if (!images.isEmpty() && images != null){
                 s3Uploader.uploadImages(images, REVIEW_TYPE, review.getUid());
                 log.info("사진 저장 완료");
             }
