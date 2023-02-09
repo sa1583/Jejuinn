@@ -4,11 +4,10 @@ import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkResumeInfoPostR
 import com.jejuinn.backend.api.dto.request.resumeinfo.InsertResumeInfoPostReq;
 import com.jejuinn.backend.api.dto.request.resumeinfo.UpdateResumeInfoPutReq;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
-import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetail;
-import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
-import com.jejuinn.backend.api.dto.response.resumeinfo.StaffRecordDetail;
-import com.jejuinn.backend.api.dto.response.resumeinfo.UserDetail;
+import com.jejuinn.backend.api.dto.response.resumeinfo.*;
+import com.jejuinn.backend.api.service.RecruitmentService;
 import com.jejuinn.backend.api.service.ResumeInfoService;
+import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.db.entity.WorkResumeInfo;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
 import com.jejuinn.backend.db.repository.StaffRecordRepository;
@@ -23,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Api(tags = "구직 관련 기능 API")
@@ -34,6 +34,7 @@ public class ResumeController {
     private final WorkResumeInfoRepository workResumeInfoRepository;
     private final UserRepository userRepository;
     private final StaffRecordRepository staffRecordRepository;
+    private final RecruitmentService recruitmentService;
 
     @PostMapping("/auth/job-search")
     @ApiOperation(value = "지원서 작성", notes = "InsertResumeInfoPostReq를 입력받아 지원서를 작성합니다.")
@@ -72,7 +73,7 @@ public class ResumeController {
                 ResumeInfoDetailRes.of(
                         ResumeInfoDetail.of(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid)),
                         UserDetail.of(userRepository.findById(userUid)),
-                        StaffRecordDetail.of(staffRecordRepository.findAllByuserUidAndIsActiveTrueOrderByStartDateDesc(userUid))
+                        StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid))
                 )
         );
     }
@@ -118,7 +119,7 @@ public class ResumeController {
         }
     }
 
-    @GetMapping("/auth/my-applicant/{userUid}")
+    // @GetMapping("/auth/my-applicant/{userUid}")
     @ApiOperation(value = "내 지원목록 확인", notes = "userUid를 통해 내 지원목록을 확인합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -127,7 +128,12 @@ public class ResumeController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyApplicant(@PathVariable Long userUid) {
-        System.out.println();
-        return null;
+        List<Long> recruitmentUids = userRepository.findRecruitmentUidByUserUid(userUid);
+        // List<MyApplicantRes> result = recruitmentService.getMyApplicant(recruitmentUids);
+        return ResponseEntity.status(200).body(
+                recruitmentUids
+        );
     }
+
+
 }
