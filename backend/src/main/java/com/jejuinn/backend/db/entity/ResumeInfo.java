@@ -54,6 +54,8 @@ public class ResumeInfo {
 
     private boolean isDeleted;
 
+    private boolean isRead;
+
     @ManyToMany
     @JoinTable(
             name = "resume_info_area_join",
