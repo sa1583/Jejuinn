@@ -42,10 +42,9 @@ public class CommentController {
         Long userUid = userService.getUserUidFromAccessToken(request);
 
         // 타입 체크
-        if(PostType.valueOf(req.getPostType()) == null) return ResponseEntity.status(400).build();
+        System.out.println(req.getPostType());
+        if(req.getPostType() == null || req.getPostType().equals("")) return ResponseEntity.status(400).build();
 
-        // userUid 정보를 통해 staff 여부를 확인 차후 구현
-        boolean isStaff = false;
         commentRepository.save(req.toComment(userUid));
 
         return ResponseEntity.status(200).build();
