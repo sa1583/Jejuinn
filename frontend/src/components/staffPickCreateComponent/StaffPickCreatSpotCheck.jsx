@@ -8,7 +8,6 @@ export default function StaffPickCreatSpotCheck({
   newtype,
   shortArea,
 }) {
-  console.log(spotName);
   return (
     <Box
       sx={{

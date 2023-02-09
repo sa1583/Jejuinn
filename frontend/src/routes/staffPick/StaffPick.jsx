@@ -9,7 +9,6 @@ import StaffPickReviews from '../../components/staffPickComponent/StaffPickRevie
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
   getSpotsPin,
   getSpotsImg,
@@ -58,10 +57,14 @@ export default function StaffPick() {
 
   // 명소 이미지 리스트 받아오기
   const [spotImgs, setSpotImgs] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
 
   const getSpotsImgs = async () => {
-    const data = (await getSpotsImg()).data.content;
-    setSpotImgs(data);
+    const data = (await getSpotsImg(pageNum)).data.content;
+    setPageNum((prev) => prev + 1);
+    console.log(data);
+    // setSpotImgs(data);
+    setSpotImgs((prev) => prev.concat(data));
   };
 
   // 명소 정보 받아오기
@@ -98,7 +101,6 @@ export default function StaffPick() {
     }
   }, [pageId]);
 
-  // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <SpeedDialComponent actions={actions} />

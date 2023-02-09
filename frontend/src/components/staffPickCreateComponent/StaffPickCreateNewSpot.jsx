@@ -12,7 +12,11 @@ import StaffPickCreatSpotCheck from './StaffPickCreatSpotCheck';
 import StaffPickCreateSpotType from './StaffPickCreateSpotType';
 import { createNewSpot } from '../../api/staffPick';
 
-export default function StaffPickCreateNewSpot({ open, handleClose }) {
+export default function StaffPickCreateNewSpot({
+  open,
+  handleClose,
+  getSpotsPins,
+}) {
   const steps = [
     '위치 선택',
     '이름 선택',
@@ -49,7 +53,10 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
       formData.append('image', file[0]);
 
       await createNewSpot(formData);
+
       handleClose();
+      getSpotsPins();
+      setActiveStep(0);
     }
   };
   // 이전 스텝
