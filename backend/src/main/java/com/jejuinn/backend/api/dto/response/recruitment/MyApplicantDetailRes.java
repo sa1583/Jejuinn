@@ -23,12 +23,15 @@ public class MyApplicantDetailRes {
 
     private List<PersonType> personTypes;
 
+    private String content;
+
     public static MyApplicantDetailRes toMyApplicantDetailRes(ResumeInfo resumeInfo, User user) {
         return MyApplicantDetailRes.builder()
                 .userUid(user.getUid())
                 .userName(user.getUsername())
                 .gender(user.getUsername())
                 .age(user.getAge())
+                .content(resumeInfo.getContent())
                 .personTypes(resumeInfo.getPersonTypes())
                 .build();
     }
