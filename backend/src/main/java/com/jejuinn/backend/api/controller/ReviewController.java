@@ -189,7 +189,7 @@ public class ReviewController {
 
         // 사진 삭제
         try {
-            if(!list.isEmpty() && list != null){
+            if(list != null && !list.isEmpty()){
                 s3Uploader.deleteImages(list);
                 log.info("사진 삭제 완료");
             }
@@ -200,7 +200,7 @@ public class ReviewController {
 
         // 사진 저장
         try {
-            if (!images.isEmpty() && images != null){
+            if (images != null && !images.isEmpty()){
                 s3Uploader.uploadImages(images, REVIEW_TYPE, review.getUid());
                 log.info("사진 저장 완료");
             }
