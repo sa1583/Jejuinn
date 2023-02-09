@@ -34,6 +34,8 @@ public class UpdateResumeInfoPutReq {
 
     private LocalDate dateCreated;
 
+    private String instagramLink;
+
     public List<PersonType> toPersonType() {
         List<PersonType> list = new ArrayList<>();
         for(String s : this.getPersonTypes()) {
@@ -61,6 +63,7 @@ public class UpdateResumeInfoPutReq {
                 .dateCreated(LocalDate.now())
                 .personTypes(toPersonType())
                 .interestAreas(toArea())
+                .instagramLink(this.instagramLink)
                 .build();
     }
 }

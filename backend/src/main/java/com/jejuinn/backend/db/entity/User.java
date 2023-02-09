@@ -66,9 +66,6 @@ public class User {
    @Column(columnDefinition = "DECIMAL(5,3)")
    private double sugarContent; //감귤당도 : 1 ~ 20, start: 8 단위 브릭스
 
-   @Column(length = 50)
-   private String InstagramLink;
-
    @ManyToMany
    @JoinTable(
       name = "user_authority_join",
