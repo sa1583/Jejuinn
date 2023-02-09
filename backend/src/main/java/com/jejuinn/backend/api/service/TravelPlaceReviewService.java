@@ -1,6 +1,7 @@
 package com.jejuinn.backend.api.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.jejuinn.backend.api.dto.request.UpdateReviewPutReq;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.TravelPlaceRepository;
@@ -27,6 +28,14 @@ public class TravelPlaceReviewService {
     private final UserRepository userRepository;
     private final TravelPlaceRepository travelPlaceRepository;
     private final TravelPlaceReviewRepository travelPlaceReviewRepository;
+
+    @Transactional
+    public TravelPlaceReview update(UpdateReviewPutReq reviewPutReq, Long reviewUid){
+        TravelPlaceReview review = travelPlaceReviewRepository.findById(reviewUid).get();
+        review.setStarRating(reviewPutReq.getStarRating());
+        review.setContent(reviewPutReq.getContent());
+        return review;
+    }
 
     @Transactional
     public void addLike(final Long userUid, Long reviewUid) {
