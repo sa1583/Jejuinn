@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.dto.response;
+package com.jejuinn.backend.api.dto.response.user;
 
 import lombok.*;
 

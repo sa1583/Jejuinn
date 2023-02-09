@@ -1,10 +1,12 @@
 package com.jejuinn.backend.api.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.TravelPlaceRepository;
 import com.jejuinn.backend.db.repository.TravelPlaceReviewRepository;
 import com.jejuinn.backend.db.repository.UserRepository;
+import com.jejuinn.backend.db.repository.WorkResumeInfoRepository;
 import com.jejuinn.backend.exception.DuplicateDataException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class TravelPlaceReviewService {
+    private final WorkResumeInfoRepository workResumeInfoRepository;
+    private final UserService userService;
     private final UserRepository userRepository;
     private final TravelPlaceRepository travelPlaceRepository;
     private final TravelPlaceReviewRepository travelPlaceReviewRepository;
@@ -33,6 +37,9 @@ public class TravelPlaceReviewService {
                 throw new DuplicateDataException("이미 좋아요를 누른 리뷰 입니다.");
         }
         travelPlaceReviewRepository.increaseLikeCount(reviewUid);
+        Long writerUid = getUserUidFromReviewUid(reviewUid);
+        userService.updateSugarContent(0.2, writerUid);
+
         user.get().getLikes().add(TravelPlaceReview.builder()
                 .uid(reviewUid).build());
     }
@@ -45,11 +52,19 @@ public class TravelPlaceReviewService {
         for (int i = 0; i < review.size(); i++) {
             if(review.get(i).getUid() == reviewUid){
                 travelPlaceReviewRepository.decreaseLikeCount(reviewUid);
+                Long writerUid = getUserUidFromReviewUid(reviewUid);
+                userService.updateSugarContent(-0.2, writerUid);
                 review.remove(i);
                 user.setLikes(review);
                 return;
             }
         }
         throw new DuplicateDataException("좋아요를 누른 리뷰가 아닙니다.");
+    }
+
+    public Long getUserUidFromReviewUid(Long reviewUid){
+        TravelPlaceReview review = travelPlaceReviewRepository.findById(reviewUid)
+                .orElseThrow( () -> new NotFoundException("리뷰 등록자가 없습니다."));
+        return review.getUserUid();
     }
 }

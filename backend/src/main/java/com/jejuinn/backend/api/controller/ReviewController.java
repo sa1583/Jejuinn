@@ -88,6 +88,9 @@ public class ReviewController {
         // 리뷰 저장
         TravelPlaceReview review = travelPlaceReviewRepository.save(req.toTravelPlaceReview(userUid));
 
+        // 사용자 평점 업데이트
+        userService.updateSugarContent(0.1, userUid);
+
         // 관광지 평점 업데이트
         travelPlaceService.updateReviewCountAndRating(review.getTravelPlaceUid(), review.getStarRating(), "INSERT");
 
