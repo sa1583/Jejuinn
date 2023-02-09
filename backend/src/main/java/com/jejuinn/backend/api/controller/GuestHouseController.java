@@ -112,9 +112,9 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateGuestHouse(@RequestPart("upload-images") List<MultipartFile> images,
+    public ResponseEntity<?> updateGuestHouse(@RequestPart(value = "upload-images", required = false) List<MultipartFile> images,
                                               @RequestPart("guest-house") InsertGuestHousePostReq req,
-                                              @RequestPart("delete-images") List<Long> list,
+                                              @RequestPart(value = "delete-images", required = false) List<Long> list,
                                               @PathVariable String guestHouseUid){
 
         // 게스트 하우스 저장

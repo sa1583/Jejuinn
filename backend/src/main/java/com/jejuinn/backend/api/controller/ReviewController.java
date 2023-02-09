@@ -172,7 +172,7 @@ public class ReviewController {
     })
     public ResponseEntity<?> updateTravelPlaceReview(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> images,
                                                       @RequestPart("reviewContent") UpdateReviewPutReq req,
-                                                      @RequestPart("deleteImages") List<Long> list,
+                                                      @RequestPart(value = "deleteImages", required = false) List<Long> list,
                                                       @PathVariable Long reviewUid){
         log.info("관광지 리뷰 수정 요청");
 
