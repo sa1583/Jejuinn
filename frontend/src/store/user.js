@@ -7,6 +7,7 @@ import {
   loginNormal,
   loginFacebook,
   signUpApi,
+  processNaverAuth,
 } from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
@@ -112,7 +113,18 @@ export const getNormalAuthTokenInSignUp = createAsyncThunk(
   },
 );
 
-// userInfo에는 유저 인가코드가 들어가는건가?
+export const naverAuth = createAsyncThunk(
+  'user/naverAuth',
+  async (accessToken, socialToken, thunkAPI) => {
+    try {
+      await processNaverAuth(accessToken, socialToken);
+      return true;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ errorMessage: '네이버 인증 실패' });
+    }
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -127,6 +139,7 @@ const userSlice = createSlice({
       state.userInfo = null;
       state.accessToken = null;
       state.refreshToken = null;
+      state.authorities = [];
     },
   },
   extraReducers: (builder) => {
@@ -140,8 +153,6 @@ const userSlice = createSlice({
         state.refreshToken = payload.refreshToken;
       })
       .addCase(getKakaoToken.fulfilled, (state, action) => {
-        // state.userInfo = action.payload;
-        // state.isLogin = true;
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
       })
@@ -149,7 +160,6 @@ const userSlice = createSlice({
         alert('실패!');
       })
       .addCase(getGoogleToken.fulfilled, (state, action) => {
-        // console.log(action);
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
       })
@@ -167,10 +177,6 @@ const userSlice = createSlice({
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
       });
-    // .addCase(getUserInfoByToken.fulfilled, (state, action) => {
-    //   state.userInfo = action.payload;
-    //   state.isLogin = true;
-    // })
   },
 });
 

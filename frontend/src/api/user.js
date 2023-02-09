@@ -71,6 +71,14 @@ function getPasswordCode(body) {
   return api.post('/api/users/pw/reset', body);
 }
 
+const processNaverAuth = (accessToken, socialToken) => {
+  const header = {
+    accessToken,
+    socialToken,
+  };
+  return api.post('/api/users/social/auth/users/naver-auth', {}, header);
+};
+
 export {
   getOurTokens,
   getUserInfo,
@@ -81,4 +89,5 @@ export {
   checkEmail,
   getPasswordCode,
   signUpApi,
+  processNaverAuth,
 };
