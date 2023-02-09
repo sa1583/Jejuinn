@@ -28,6 +28,7 @@ import FindPassword from './routes/logIn/FindPassword';
 import MyApplicantList from './components/myPage/MyApplicantList';
 import GuestHouseCreate from './routes/guestHouseCreate/GuestHouseCreate';
 import VideoInterview from './routes/videoInterview/VideoInterview';
+import NaverAuthRedirect from './routes/naverAuth/NaverAuthRedirect';
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
         element: <StaffPick />,
       },
       {
+        path: 'staffpicklist/:spotid',
+        element: <StaffPick />,
+      },
+      {
         path: 'staffpicklist/detail/:id',
         element: <StaffPickDetail />,
       },
@@ -121,6 +126,10 @@ const router = createBrowserRouter([
       {
         path: 'interview',
         element: <VideoInterview />,
+      },
+      {
+        path: 'auth/naver',
+        element: <NaverAuthRedirect />,
       },
     ],
   },

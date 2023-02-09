@@ -1,29 +1,48 @@
 import { useState } from 'react';
-import axios from 'axios';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
 import { Box } from '@mui/system';
-import { Button, Typography } from '@mui/material';
+import { Button, Rating, Typography } from '@mui/material';
 import ImageUploader from '../articleCreateComponent/ImageUploader';
-export default function StaffPickCreateForm() {
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../store/user';
+import { createSpotReview } from '../../api/staffPick';
+import { useNavigate } from 'react-router';
+export default function StaffPickCreateForm({ nowPickId }) {
   const [content, setContent] = useState('');
-  // const submit = (e) => {
-  //   e.preventDefault();
-  //   axios({
-  //     url: 'https://jejuiin-default-rtdb.asia-southeast1.firebasedatabase.app/',
-  //     method: 'post',
-  //     data: form,
-  //   });
-  // };
+  const acces_token = useSelector(selectAccessToken);
+  const navigate = useNavigate();
+
+  const submit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    const review = {
+      content,
+      travelPlaceUid: nowPickId,
+      starRating,
+    };
+    const blob = new Blob([JSON.stringify(review)], {
+      type: 'application/json',
+    });
+    formData.append('review', blob);
+    files.forEach((file) => {
+      formData.append('images', file);
+    });
+    await createSpotReview(acces_token, formData);
+    navigate(`/staffpicklist/${nowPickId}`);
+  };
+
+  const [starRating, setStarRating] = useState(1);
 
   const getContent = (value) => {
     setContent(value);
-    console.log(content);
   };
 
   const [files, setFiles] = useState([]);
+
   const handleFiles = (datas) => {
     setFiles(datas);
   };
+
   return (
     <form
       encType="multipart/form-data"
@@ -33,7 +52,7 @@ export default function StaffPickCreateForm() {
         사진 (최대 10개)
       </Typography>
 
-      <ImageUploader handleFiles={handleFiles} files={files} />
+      <ImageUploader handleFiles={handleFiles} files={files} maxNum={10} />
 
       <Typography variant="h3" sx={{ marginBottom: '1rem', marginTop: '2rem' }}>
         글 내용
@@ -46,10 +65,31 @@ export default function StaffPickCreateForm() {
         value={content}
         getContent={getContent}
       />
+
+      <Box
+        sx={{
+          alignSelf: 'center',
+          marginTop: '5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="h3">평점</Typography>
+        <Rating
+          value={starRating}
+          onChange={(event, newValue) => {
+            setStarRating(newValue);
+          }}
+          size="large"
+          sx={{ fontSize: '3rem' }}
+        />
+      </Box>
+
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           type="submit"
-          // onClick={submit}
+          onClick={submit}
           sx={{
             marginTop: '5rem',
             width: '40%',

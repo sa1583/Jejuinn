@@ -1,6 +1,7 @@
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-export default function ImageSlider({ images }) {
+import { images } from '../../assets/images';
+export default function ImageSlider({ items }) {
   return (
     <Carousel
       autoPlay
@@ -9,10 +10,26 @@ export default function ImageSlider({ images }) {
       infiniteLoop="true"
       thumbWidth={40}
     >
-      {images.map((image) => {
+      {items?.map((item) => {
         return (
-          <div className="slide" key={image}>
-            <img src={image} alt="임의지 엌" />
+          <div
+            className="slide"
+            key={item}
+            style={{
+              width: '100%',
+              aspectRatio: '1/1',
+              borderRadius: '39px',
+              overflow: 'hidden',
+            }}
+          >
+            <img
+              src={`${images.defalut_url}${item.imgPath}`}
+              alt="명소 사진"
+              style={{
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
           </div>
         );
       })}

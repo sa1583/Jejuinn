@@ -6,16 +6,8 @@ import CommentBox from '../commentComponent/CommentBox';
 import CommentInput from '../commentComponent/CommentInput';
 import CommentList from '../commentComponent/CommentList';
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
-export default function ReviewContent() {
-  const images = [
-    'https://cdn.pixabay.com/photo/2019/06/11/07/36/shiroyama-hiji-peak-4266254__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/10/jeju-island-4206829__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-    'https://cdn.pixabay.com/photo/2019/05/16/10/11/shiroyama-hiji-peak-4206838__340.jpg',
-  ];
+
+export default function ReviewContent({ reviewContent }) {
   const comments = [
     {
       img: 'J',
@@ -35,19 +27,17 @@ export default function ReviewContent() {
   // useEffect(() => {
   //   setComments(review.comments)
   // },[review])
+
   return (
-    <Box sx={{ padding: '5%' }}>
-      <ImageSlider images={images} />
+    <Box sx={{ padding: '5%', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ width: '100%', alignSelf: 'center' }}>
+        <ImageSlider items={reviewContent?.images} />
+      </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
         <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>
       </Box>
-      <h2>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga dicta
-        repellat adipisci veniam excepturi hic ea cupiditate itaque eum
-        obcaecati saepe odit assumenda, voluptatum explicabo earum mollitia
-        deserunt eveniet quidem?
-      </h2>
+      <div dangerouslySetInnerHTML={{ __html: reviewContent?.content }} />
       <h2 style={{ color: '#FF7600' }}>댓글</h2>
       <CommentBox cpn={<CommentInput />} />
       <div
