@@ -170,7 +170,7 @@ public class ReviewController {
             @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateTravelPlaceReview(@RequestPart("uploadImages") List<MultipartFile> images,
+    public ResponseEntity<?> updateTravelPlaceReview(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> images,
                                                       @RequestPart("reviewContent") UpdateReviewPutReq req,
                                                       @RequestPart("deleteImages") List<Long> list,
                                                       @PathVariable Long reviewUid){
