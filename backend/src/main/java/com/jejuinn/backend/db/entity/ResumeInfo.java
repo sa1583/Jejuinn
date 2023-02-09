@@ -54,8 +54,7 @@ public class ResumeInfo {
 
     private boolean isDeleted;
 
-    @Column(name = "is_read")
-    private boolean isRead;
+    private LocalDate isRead;
 
     @ManyToMany
     @JoinTable(
