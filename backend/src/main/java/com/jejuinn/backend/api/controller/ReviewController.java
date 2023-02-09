@@ -189,7 +189,7 @@ public class ReviewController {
 
         // 사진 삭제
         try {
-            if(!list.isEmpty()){
+            if(!list.isEmpty() && list != null){
                 s3Uploader.deleteImages(list);
                 log.info("사진 삭제 완료");
             }
