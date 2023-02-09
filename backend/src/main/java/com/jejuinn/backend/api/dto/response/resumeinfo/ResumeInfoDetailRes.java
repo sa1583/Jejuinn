@@ -62,7 +62,7 @@ public class ResumeInfoDetailRes {
                 .gender(userDetail.getGender())
                 .age(userDetail.getAge())
                 .profileImageUrl(userDetail.getProfileImageUrl())
-                .InstagramLink(userDetail.getInstagramLink())
+                .InstagramLink(resumeInfoDetail.getInstagramLink())
                 .build();
     }
 
