@@ -1,6 +1,7 @@
 package com.jejuinn.backend.api.service;
 
 import com.jejuinn.backend.api.dto.request.user.SignupPostReq;
+import com.jejuinn.backend.api.dto.response.resumeinfo.MyApplicantRes;
 import com.jejuinn.backend.db.entity.Authority;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.UserRepository;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -21,5 +22,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     String findNicknameById(@Param("userUid") Long userUid);
 
     Optional<User> findById(Long userUid);
+
+    @Query(value = "select k.recruitment_uid from users u right outer join resume_infos r on u.uid = r.user_uid " +
+            "right outer join work_resume_info_join w on r.uid = w.resume_info_uid " +
+            "right outer join works k on w.work_uid = k.uid where u.uid = :userUid", nativeQuery = true)
+    List<Long> findRecruitmentUidByUserUid(@Param("userUid") Long userUid);
 
 }

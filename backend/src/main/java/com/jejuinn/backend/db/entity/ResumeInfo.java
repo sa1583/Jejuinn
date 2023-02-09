@@ -54,6 +54,7 @@ public class ResumeInfo {
 
     private boolean isDeleted;
 
+    @Column(name = "is_read")
     private boolean isRead;
 
     @ManyToMany
