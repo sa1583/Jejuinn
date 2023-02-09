@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.GuestHouseDto;
 import com.jejuinn.backend.api.dto.request.InsertGuestHousePostReq;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
@@ -168,5 +169,20 @@ public class GuestHouseController {
 //                    .addressDetail(i+"동").build());
 //        }
 //    }
+
+    @GetMapping("/auth/my-guest-houses/{userUid}")
+    @ApiOperation(value = "내 게스트하우스 리스트 보기", notes = "userUid를 입력받아 내 게스트하우스 리스트를 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyGuestHouseList(@PathVariable Long userUid) {
+        return ResponseEntity.status(200).body(
+                guestHouseRepository.findAllByRepresentativeUid(userUid).stream().map(
+                        guestHouse -> GuestHouseDto.of(guestHouse)
+                )
+        );
+    }
 
 }
