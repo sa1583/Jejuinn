@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { deepOrange } from '@mui/material/colors';
 import ImageSlider from '../imageSlider/ImageSlider';
@@ -6,8 +6,27 @@ import CommentBox from '../commentComponent/CommentBox';
 import CommentInput from '../commentComponent/CommentInput';
 import CommentList from '../commentComponent/CommentList';
 import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
+import { likedReviewLikst, likeReview } from '../../api/staffPick';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../store/user';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+export default function ReviewContent({ reviewContent, pageId }) {
+  const access_token = useSelector(selectAccessToken);
 
-export default function ReviewContent({ reviewContent }) {
+  const getLikedReviews = async () => {
+    const data = (await likedReviewLikst(access_token)).data;
+    setLiked(pageId in data);
+    console.log(data);
+  };
+
+  useState(() => {
+    getLikedReviews();
+  }, []);
+
+  const [liked, setLiked] = useState(false);
+
   const comments = [
     {
       img: 'J',
@@ -28,6 +47,12 @@ export default function ReviewContent({ reviewContent }) {
   //   setComments(review.comments)
   // },[review])
 
+  // 좋아요 보내긔
+  const goLike = async () => {
+    const data = await likeReview(access_token, pageId);
+    console.log(data);
+  };
+
   return (
     <Box sx={{ padding: '5%', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ width: '100%', alignSelf: 'center' }}>
@@ -38,6 +63,28 @@ export default function ReviewContent({ reviewContent }) {
         <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>
       </Box>
       <div dangerouslySetInnerHTML={{ __html: reviewContent?.content }} />
+
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {liked && (
+          <button
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            <FavoriteIcon sx={{ fontSize: '1.3rem', color: 'red' }} />
+          </button>
+        )}
+        {!liked && (
+          <button
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            onClick={goLike}
+          >
+            <FavoriteBorderIcon sx={{ color: 'red', fontWeight: 'bolder' }} />
+          </button>
+        )}
+        <Typography sx={{ marginLeft: '1rem', fontSize: '1rem' }}>
+          좋아요
+        </Typography>
+      </Box>
+
       <h2 style={{ color: '#FF7600' }}>댓글</h2>
       <CommentBox cpn={<CommentInput />} />
       <div

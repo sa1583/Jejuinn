@@ -39,8 +39,9 @@ function getSpotsPin() {
 }
 
 // 명소 리스트 이미지
-function getSpotsImg() {
-  return api.get('/api/travel-places');
+function getSpotsImg(pageNumber) {
+  console.log(pageNumber);
+  return api.get(`/api/travel-places?pageNumber=${pageNumber}`);
 }
 
 // 명소 리스트 필터
@@ -91,6 +92,28 @@ function deleteReviewDetail(reviewUid, token) {
   return api.delete(`/auth/travel-place/reviews/${reviewUid}`, config);
 }
 
+// 좋아요 누른 리뷰 리스트
+function likedReviewLikst(token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+
+  return api.get(`/auth/travel-place/reviews/like`, config);
+}
+
+// 리뷰 좋아요 누르기
+function likeReview(token, uid) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+
+  return api.put(`/auth/travel-place/reviews/${uid}/like`, config);
+}
+
 export {
   getSpotsPin,
   getSpotInfo,
@@ -103,4 +126,6 @@ export {
   createNewSpot,
   deleteReviewDetail,
   updateSpotReview,
+  likedReviewLikst,
+  likeReview,
 };

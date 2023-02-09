@@ -15,7 +15,6 @@ export default function StaffPickCreateSpotName({
 }) {
   const getNameRecommend = async () => {
     const datas = (await getRecommendName(spotName)).data.items;
-    console.log(datas);
     setNameList(datas);
   };
 

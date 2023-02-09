@@ -27,7 +27,6 @@ export default function CommentInput() {
       postType,
     };
     const data = await createComment(body, accessToken);
-    console.log(data);
   };
 
   return (

@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
 import { Box } from '@mui/system';
 import { Button, Rating, Typography } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getReviewDetail, updateSpotReview } from '../../api/staffPick';
-import ImageUploaderUpdate from '../articleCreateComponent/ImageUploaderUpdate';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../store/user';
+import ImageUploader from '../articleCreateComponent/ImageUploader';
 
 export default function StaffPickUpdateForm() {
+  const navigate = useNavigate();
   const acces_token = useSelector(selectAccessToken);
   const location = useLocation();
   const pageId = location.pathname.split('update/')[1];
@@ -61,16 +62,28 @@ export default function StaffPickUpdateForm() {
     const blob = new Blob([JSON.stringify(UpdateReviewPutReq)], {
       type: 'application/json',
     });
-    formData.append('UpdateReviewPutReq', blob);
+    formData.append('reviewContent', blob);
     files.forEach((file) => {
       formData.append('uploadImages', file);
     });
+    // formData.append('uploadImages', files);
     const blob2 = new Blob([JSON.stringify(deleteImages)], {
       type: 'application/json',
     });
     formData.append('deleteImages', blob2);
+
+    // for (let key of formData.keys()) {
+    //   console.log(key);
+    // }
+
+    // FormData의 value 확인
+    for (let value of formData.values()) {
+      console.log(value);
+    }
+
     const data = await updateSpotReview(acces_token, formData, pageId);
     console.log(data);
+    navigate(`/staffpicklist/detail/${pageId}`);
   };
 
   return (
@@ -81,14 +94,20 @@ export default function StaffPickUpdateForm() {
       <Typography variant="h3" sx={{ marginBottom: '1rem' }}>
         사진 (최대 10개)
       </Typography>
-      <ImageUploaderUpdate
+      {/* <ImageUploaderUpdate
+        preImages={preImages}
+        files={files}
+        handleFiles={handleFiles}
+        maxNum={10}
+        handlePreImages={handlePreImages}
+      /> */}
+      <ImageUploader
         preImages={preImages}
         files={files}
         handleFiles={handleFiles}
         maxNum={10}
         handlePreImages={handlePreImages}
       />
-      {/* <ImageUploader handleFiles={handleFiles} files={files} maxNum={10} /> */}
 
       <Typography variant="h3" sx={{ marginBottom: '1rem', marginTop: '2rem' }}>
         글 내용

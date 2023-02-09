@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import { useState } from 'react';
 import StaffPickCreateNewSpot from './StaffPickCreateNewSpot';
-export default function StaffPickCreateInfo({ nowPick }) {
+export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,7 +51,11 @@ export default function StaffPickCreateInfo({ nowPick }) {
             sx={{ fontSize: '3rem', color: 'primary.main' }}
           />
         </button>
-        <StaffPickCreateNewSpot open={open} handleClose={handleClose} />
+        <StaffPickCreateNewSpot
+          open={open}
+          handleClose={handleClose}
+          getSpotsPins={getSpotsPins}
+        />
         <h1 style={{ margin: 0 }}>기존 명소에 리뷰 등록</h1>
         <Box
           sx={{

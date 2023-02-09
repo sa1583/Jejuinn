@@ -27,6 +27,8 @@ export default function FindPasswordForm() {
     setEmail(e.target.value);
   };
 
+  const [code, setCode] = useState('');
+  const [checkCode, setCheckCode] = useState('');
   // 인증 번호 받기 눌렀을 때 로직
   // 응답에 따라서 인증번호 입력칸을 활성화 할지
   // 아니면 alert를 실행할지
@@ -34,7 +36,8 @@ export default function FindPasswordForm() {
     const res = await getPasswordCode(email);
     switch (res.status) {
       case 200:
-        return console.log('인증번호 전송');
+        setCode(res.data.code);
+        return alert('인증번호 전송 완료');
     }
   };
   return (
@@ -48,7 +51,7 @@ export default function FindPasswordForm() {
         marginTop: '3vh',
       }}
     >
-      <h1>비밀번호 찾기</h1>
+      <h1>비밀번호 재발급</h1>
       <CustomTextField
         label="이메일"
         name="email"
@@ -56,7 +59,15 @@ export default function FindPasswordForm() {
         type="email"
         onChange={handleEmail}
       />
-      <Button>인증 번호 받기</Button>
+      <Button onClick={getCode}>인증 번호 받기</Button>
+
+      <CustomTextField
+        label="인증번호 입력"
+        name="인증번호 입력"
+        value={checkCode}
+        onChange={(e) => setCheckCode(e.target.value)}
+        disabled={code.length === 0}
+      />
     </Box>
   );
 }
