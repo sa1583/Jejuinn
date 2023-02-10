@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 export default function WorkList() {
   const [works, setWorks] = useState([]);
-  const myhouse = useSelector();
+  // const myhouse = useSelector();
 
   async function getWorks() {
     const data = await allWorkList();
@@ -28,7 +28,6 @@ export default function WorkList() {
     <>
       <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
         <WhiteBox cpn={<WorkFilterBox onSearch={onSearch} />} />
-        <h2> 검색결과</h2>
         <WorkListBox works={works} />
       </Box>
       {/* <Button>모집글 추가하는 버튼 우측 하단에 고정...!</Button> */}

@@ -346,7 +346,7 @@ function GetRecruitmentPersontype({ onPersontype }) {
 }
 
 // 게하 여러개 일 때 직무 추가할 게스트하우스 선택하는 팝오버
-function SelectGusetHousePopover({ myGuestHouses }) {
+function SelectGusetHousePopover({ myGuestHouses, onSelect }) {
   const dispatch = useDispatch();
   // onWrite 상태 바꾸고
 
@@ -357,9 +357,11 @@ function SelectGusetHousePopover({ myGuestHouses }) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const onClick = () => {
+  function onClick(input) {
     dispatch(changeIsOnWrite());
-  };
+    console.log(input.target.value);
+    onSelect(input.target.value);
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -384,7 +386,9 @@ function SelectGusetHousePopover({ myGuestHouses }) {
         <Typography sx={{ p: 2 }}>
           어떤 게스트하우스에 직무를 추가할까요?
           {myGuestHouses.map((myGuestHouse) => (
-            <Button onClick={onClick}>{myGuestHouse}</Button>
+            <Button onClick={onClick} value={myGuestHouse.uid} key={uuidv4()}>
+              {myGuestHouse.uid}
+            </Button>
           ))}
         </Typography>
       </Popover>

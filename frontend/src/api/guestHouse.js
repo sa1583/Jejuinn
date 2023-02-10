@@ -10,4 +10,14 @@ const allGuestHouseList = () => {
   return api.get('/api/guest-houses');
 };
 
-export { guestHouseDetail, allGuestHouseList };
+const getMyGuestHouses = (token, userUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  // return api.get(`/auth/my-guest-houses/${userUid}`, config);
+  return { data: [{ uid: 1 }, { uid: 2 }] };
+};
+
+export { guestHouseDetail, allGuestHouseList, getMyGuestHouses };

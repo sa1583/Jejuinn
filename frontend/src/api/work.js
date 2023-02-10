@@ -10,7 +10,7 @@ const Access_token = () => {
 };
 
 const allWorkList = () => {
-  return api.get('/api/job-offer');
+  return api.get(`/api/job-offer?pageNumber=${1}`);
 };
 
 const filteredWorkList = (filterValues) => {
@@ -45,12 +45,6 @@ function createWork(body, token) {
   return api.post('/auth/work', body, config);
 }
 
-function getMyGuestHouses() {
-  // return api.post('/auth/myhouses', body, config);
-
-  return [['게토'], ['게토']];
-}
-
 function updateWorkDetail() {
   return api.put();
 }
@@ -64,13 +58,28 @@ function deleteWorkDetail(workUid, token) {
   return api.delete(`/auth/work/${13}`, config);
 }
 
+const getMyWorks = (token, guestHouseUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.get(`/auth/recruitment-work-list/${guestHouseUid}`, config);
+  // return [{ uid: 1 }, { uid: 2 }, { uid: 3 }];
+};
+
+const getMyRecruitments = (guestHouseUid) => {
+  return api.get(`/api/guest-house-recruitment/${guestHouseUid}`);
+};
+
 export {
   recruitmentDetail,
   allWorkList,
   filteredWorkList,
   writeRecruitment,
   createWork,
-  getMyGuestHouses,
   updateWorkDetail,
   deleteWorkDetail,
+  getMyWorks,
+  getMyRecruitments,
 };

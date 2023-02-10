@@ -38,9 +38,8 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkWrite({ OnClick, myGuestHouses }) {
+export default function WorkWrite({ OnClick }) {
   const accessToken = useSelector(selectAccessToken);
-  const houseCount = myGuestHouses.length;
 
   const [workInfo, setWorkInfo] = useState({
     workName: '',
