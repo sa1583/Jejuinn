@@ -1,6 +1,11 @@
 import { Box } from '@mui/system';
 import { v4 as uuidv4 } from 'uuid';
-import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import {
+  Button,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { images } from '../../assets/images';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +14,11 @@ import { useNavigate } from 'react-router-dom';
 // import { getSpots } from '../../api/staffPick';
 // import { useState } from 'react';
 
-export default function StaffPickSpotList({ selectSpot, spotImgs }) {
+export default function StaffPickSpotList({
+  selectSpot,
+  spotImgs,
+  getNextSpotImgs,
+}) {
   const navigate = useNavigate();
   const goReviews = (e) => {
     navigate(`/staffpicklist/${e.target.id}`);
@@ -18,7 +27,7 @@ export default function StaffPickSpotList({ selectSpot, spotImgs }) {
   return (
     <Box sx={{ padding: '3vh' }}>
       <h2>
-        <span style={{ color: '#FF7600' }}>{spotImgs.length}건</span>의 명소
+        <span style={{ color: '#FF7600' }}>{spotImgs.length}개</span>의 명소
       </h2>
       {/* <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'scroll' }}> */}
       <Box sx={{ width: '100%' }}>
@@ -40,6 +49,13 @@ export default function StaffPickSpotList({ selectSpot, spotImgs }) {
             </ImageListItem>
           ))}
         </ImageList>
+        <Button
+          variant="contained"
+          onClick={getNextSpotImgs}
+          sx={{ width: '100%', fontWeight: 'bolder', fontSize: '1rem' }}
+        >
+          명소 더 가져오기
+        </Button>
       </Box>
     </Box>
   );
