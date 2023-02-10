@@ -15,6 +15,7 @@ const getMyGuestHouses = (token, userUid) => {
   // return api.get(`/auth/my-guest-houses/${userUid}`, config);
   return { data: [{ uid: 1 }, { uid: 2 }] };
 };
+
 const getApplicantByUid = async (uid, token) => {
   const config = {
     headers: {
@@ -78,7 +79,7 @@ const myStaffList = (token, guestHouseUid) => {
 };
 
 const myJobOfferList = (guestHouseUid) => {
-  return api.get(`/api/job-offer/${guestHouseUid}`);
+  return api.get(`/api/on-recruitment/${guestHouseUid}`);
 };
 
 const myApplicantList = (token, workUid) => {

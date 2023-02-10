@@ -81,7 +81,7 @@ export default function MyGuestHouse() {
 
   async function getMyGuestHouse() {
     const data = await myGuestHouseList(access_token, userInfo.uid);
-    console.log(data.data);
+    console.log('my-guest-house:', data.data);
     setMyGuestHouses(data.data);
   }
 

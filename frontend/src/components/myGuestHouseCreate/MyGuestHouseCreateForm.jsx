@@ -20,6 +20,14 @@ export default function MyGuestHouseCreateForm() {
   const [lng, setLng] = useState('');
   const [lat, setLat] = useState('');
   const [areaName, setAreaName] = useState('');
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [options, setOptions] = useState([
+    '교통이 편리한 게하',
+    '파티가 있는 게하',
+    '조용한 시골에 있는 게하',
+    '쉼이 있는 게하',
+    '사람들과 함께 하는 게하',
+  ]);
 
   const [form, setForm] = useState({});
 
@@ -29,16 +37,21 @@ export default function MyGuestHouseCreateForm() {
     setForm({ ...form, [name]: value });
   };
 
+  const handleChange = (event) => {
+    setDetailAddress(event.target.value);
+  };
+
   const submit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     const guestHouse = {
       ...form,
       address,
+      detailAddress,
       lng,
       lat,
       areaName,
-      introduction: content,
+      guestHouseTypes: selectedValues,
       representativeUid: userUid,
     };
     const blob = new Blob([JSON.stringify(guestHouse)], {
@@ -50,9 +63,9 @@ export default function MyGuestHouseCreateForm() {
       formData.append('images', file);
     });
 
-    // await guestHouseCreate(access_token, formData);
-    // // navigate(`/guesthouse/detail/${guestHouseUid}`);
-    // navigate(`/mypage/guesthouse`);
+    await guestHouseCreate(access_token, formData);
+    // navigate(`/guesthouse/detail/${guestHouseUid}`);
+    navigate(`/mypage/guesthouse`);
   };
 
   const getContent = (value) => {
@@ -160,14 +173,15 @@ export default function MyGuestHouseCreateForm() {
           sx={{ marginY: '2vh' }}
           inputProps={{ style: { fontSize: 20 } }} // font size of input text
           InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-          onChange={handleForm}
+          onChange={handleChange}
         />
         <Autocomplete
           multiple
           limitTags={5}
           id="guestHouseTypes"
           name="guestHouseTypes"
-          options={['파티', '조용한', '혼자', '술', 'ㅋㅋ']}
+          options={options}
+          onChange={(event, newValue) => setSelectedValues(newValue)}
           sx={{ marginY: '2vh', marginBottom: '30px' }}
           renderInput={(params) => (
             <TextField

@@ -32,6 +32,7 @@ import VideoInterview from './routes/videoInterview/VideoInterview';
 import StaffPickUpdate from './routes/staffPickUpdate/StaffPickUpdate';
 import MyRecommendList from './components/myPage/myGuestHouse/MyRecommendList';
 import NaverAuthRedirect from './routes/naverAuth/NaverAuthRedirect';
+import GuestHouseUpdate from './components/guestHouseDetail/GuestHouseUpdate';
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: 'guesthouse/detail/:id',
         element: <GuestHouseDetail />,
+      },
+      {
+        path: 'guesthouse/detail/update/:id',
+        element: <GuestHouseUpdate />,
       },
       {
         path: 'worklist',
