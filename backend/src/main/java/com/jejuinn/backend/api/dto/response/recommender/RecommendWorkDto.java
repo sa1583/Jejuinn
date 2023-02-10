@@ -43,7 +43,7 @@ public class RecommendWorkDto {
         this.daysOff = daysOff;
         this.guestHouseUid = guestHouseUid;
         this.area = area.getAreaName();
-        this.guestHouseType = List.of(guestHouseType.split("#"));
+        this.guestHouseType = List.of(guestHouseType.split(","));
 //        this.guestHouseType = this.getPersonType().subList(1, this.guestHouseType.size());
         this.personType = recruitment.getWanted().stream().map(pType -> pType.getType()).collect(Collectors.toList());
     }
