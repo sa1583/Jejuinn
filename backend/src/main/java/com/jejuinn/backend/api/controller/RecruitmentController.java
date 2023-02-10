@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,8 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQEUST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getWorkList(@PageableDefault(size = 15) Pageable pageable) {
+    public ResponseEntity<?> getWorkList(@RequestParam("pageNumber") int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber-1, 15);
         return ResponseEntity.status(200)
                 .body(workRepository.findAll(pageable)
                         .map(work -> WorkListRes.of(work)));
