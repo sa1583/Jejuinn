@@ -18,7 +18,7 @@ export default function NaverAuthRedirect() {
 
   const fetchToken = async () => {
     const socialToken = window.location.href.split('=')[1].split('&')[0];
-    dispatch(naverAuth(accessToken, socialToken));
+    dispatch(naverAuth({ accessToken, socialToken }));
     dispatch(getUserInfoByToken(accessToken));
     return navigate('/mypage/resume');
   };
