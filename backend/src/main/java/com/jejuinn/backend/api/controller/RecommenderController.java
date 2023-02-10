@@ -1,6 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.dto.recommend.RecommendWorkDto;
+import com.jejuinn.backend.api.dto.response.recommender.RecommendWorkDto;
 import com.jejuinn.backend.api.service.RecommenderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,11 +9,8 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @Api(tags = "스태프 추천 관련 기능 API")

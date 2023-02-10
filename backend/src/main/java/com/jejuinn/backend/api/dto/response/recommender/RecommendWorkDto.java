@@ -1,11 +1,13 @@
-package com.jejuinn.backend.api.dto.recommend;
+package com.jejuinn.backend.api.dto.response.recommender;
 
 import com.jejuinn.backend.db.entity.Area;
+import com.jejuinn.backend.db.entity.PersonType;
 import com.jejuinn.backend.db.entity.Work;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -27,12 +29,12 @@ public class RecommendWorkDto {
 
     private Long guestHouseUid;
 
-    private Area area;
+    private String area;
 
     private List<String> personTypes;
 
     @QueryProjection
-    public RecommendWorkDto(String workName, String gender, int minWorkPeriod, String workTime, int workDays, int daysOff, Long guestHouseUid, Area area) {
+    public RecommendWorkDto(String workName, String gender, int minWorkPeriod, String workTime, int workDays, int daysOff, Long guestHouseUid, Area area, List<PersonType> personTypes) {
         this.workName = workName;
         this.gender = gender;
         this.minWorkPeriod = minWorkPeriod;
@@ -40,7 +42,8 @@ public class RecommendWorkDto {
         this.workDays = workDays;
         this.daysOff = daysOff;
         this.guestHouseUid = guestHouseUid;
-        this.area = area;
+        this.area = area.getAreaName();
+        this.personTypes = personTypes.stream().map(personType -> personType.getType()).collect(Collectors.toList());
     }
 
     public static RecommendWorkDto of(Work work){

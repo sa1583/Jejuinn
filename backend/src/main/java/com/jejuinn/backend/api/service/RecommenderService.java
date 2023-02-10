@@ -1,7 +1,6 @@
 package com.jejuinn.backend.api.service;
 
-import com.jejuinn.backend.api.dto.recommend.RecommendWorkDto;
-import com.jejuinn.backend.db.entity.PersonType;
+import com.jejuinn.backend.api.dto.response.recommender.RecommendWorkDto;
 import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
 import com.jejuinn.backend.db.repository.GuestHouseRepository;
@@ -10,7 +9,6 @@ import com.jejuinn.backend.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
