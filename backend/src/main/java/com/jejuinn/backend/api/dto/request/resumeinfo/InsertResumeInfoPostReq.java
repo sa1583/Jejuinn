@@ -30,7 +30,6 @@ public class InsertResumeInfoPostReq {
     @NotNull
     private int minWorkPeriod;
 
-    @NotNull
     private List<String> guestHouseTypes;
 
     @NotNull
