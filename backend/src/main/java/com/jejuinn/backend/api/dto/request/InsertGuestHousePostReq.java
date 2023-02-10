@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.dto.request;
 
+import com.jejuinn.backend.db.entity.Area;
 import com.jejuinn.backend.db.entity.GuestHouse;
 import lombok.*;
 
@@ -32,6 +33,8 @@ public class InsertGuestHousePostReq {
 
     private List<String> guestHouseTypes;
 
+    private String areaName;
+
     public String toGuestHouseType() {
         String type = "";
         for(String s : this.getGuestHouseTypes()) {
@@ -56,6 +59,7 @@ public class InsertGuestHousePostReq {
                 .lat(this.getLat())
                 .lng(this.getLng())
                 .tags(toGuestHouseType())
+                .area(Area.builder().areaName(this.getAreaName()).build())
                 .build();
     }
 
@@ -72,6 +76,7 @@ public class InsertGuestHousePostReq {
                 .lat(this.getLat())
                 .lng(this.getLng())
                 .tags(toGuestHouseType())
+                .area(Area.builder().areaName(this.getAreaName()).build())
                 .build();
     }
 }
