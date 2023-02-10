@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +67,6 @@ public class TravelPlaceController {
 
     /**
      * 관광지 정보를 리뷰 최신 순으로 pagenation 합니다.
-     * @param pageable
      * @return TravelPlaceListRes : uid, 위도, 경도, 메인 이미지
      */
     @GetMapping("/api/travel-places")
@@ -76,8 +76,9 @@ public class TravelPlaceController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getTravelPlaceList(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<?> getTravelPlaceList(@RequestParam("pageNumber") int pageNumber){
         log.info("리뷰 최신순으로 관광지 조회");
+        Pageable pageable = PageRequest.of(pageNumber-1, 15);
         return ResponseEntity.status(200)
                 .body(travelPlaceRepository.findAllByOrderByDateUpdatedDesc(pageable)
                         .map(travelPlace
