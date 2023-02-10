@@ -19,6 +19,10 @@ public class GuestHouseDto {
 
     private String addressDetail;
 
+    private double lat;
+
+    private double lng;
+
     public static GuestHouseDto of(GuestHouse guestHouse){
         if(guestHouse == null) return null;
         return GuestHouseDto.builder()
@@ -27,6 +31,8 @@ public class GuestHouseDto {
                 .representativeUid(guestHouse.getRepresentativeUid())
                 .address(guestHouse.getAddress())
                 .addressDetail(guestHouse.getAddressDetail())
+                .lat(guestHouse.getLat())
+                .lng(guestHouse.getLng())
                 .build();
     }
 }

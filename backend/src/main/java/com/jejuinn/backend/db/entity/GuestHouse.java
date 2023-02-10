@@ -49,6 +49,10 @@ public class GuestHouse {
     @Column(length = 50)
     private String addressDetail;
 
+    private double lat;
+
+    private double lng;
+
     @OneToOne
     @JoinColumn(name = "area_name")
     private Area area;
