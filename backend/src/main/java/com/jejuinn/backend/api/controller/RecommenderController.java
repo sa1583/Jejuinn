@@ -23,7 +23,7 @@ import java.util.List;
 public class RecommenderController {
     private final RecommenderService recommenderService;
 
-    @GetMapping("/auth/job-offer/recommend")
+    @GetMapping("/api/job-offer/recommend")
     @ApiOperation(value = "모집중인 직무 모두 보기(시간 순서대로)", notes = "구인 공고의 모든 직무 정보들을 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -32,16 +32,15 @@ public class RecommenderController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getRecommendStaffList(@RequestParam("workUid") Long workUid){
-        log.info("");
         // 직무 정보를 가져옵니다.
         RecommendWorkDto recommendWorkDto = recommenderService.getWorkInfo(workUid);
 
         // 현재 구직 중인 staff 정보를 가져옵니다.
         List<RecommendResumeDto> recommendResumeDto = recommenderService.getResumeInfo(recommendWorkDto);
-
-
-
-
+        int num = 0;
+        for (RecommendResumeDto dto : recommendResumeDto) {
+            log.info("RecommendResumeDto {} : {}", ++num, dto);
+        }
         return null;
     }
 }
