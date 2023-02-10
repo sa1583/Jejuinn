@@ -48,6 +48,13 @@ export default function StaffPick() {
 
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
+    {
+      icon: <ModeEditOutlinedIcon />,
+      name: '테스트',
+      handle: () => {
+        console.log(pageNum);
+      },
+    },
   ];
 
   // spots 정보 저장할 함수
@@ -65,11 +72,12 @@ export default function StaffPick() {
   const [pageNum, setPageNum] = useState(1);
 
   const getSpotsImgs = async () => {
-    const data = (await getSpotsImg(pageNum)).data.content;
-    // console.log(data);
-    // setSpotImgs(data);
-    setSpotImgs(data);
-    // setPageNum(2);
+    setSpotImgs([]);
+    for (let i = 1; i < pageNum + 1; i++) {
+      const data = (await getSpotsImg(i)).data.content;
+      setSpotImgs((prev) => prev.concat(data));
+      console.log(i);
+    }
   };
 
   const getNextSpotImgs = async () => {

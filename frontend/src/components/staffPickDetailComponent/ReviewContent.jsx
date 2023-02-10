@@ -13,7 +13,7 @@ import { selectAccessToken } from '../../store/user';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentsList from '../commentComponent/CommentsList';
-export default function ReviewContent({ reviewContent, pageId }) {
+export default function ReviewContent({ reviewContent, pageId, islogined }) {
   const access_token = useSelector(selectAccessToken);
 
   const getLikedReviews = async () => {
@@ -24,15 +24,21 @@ export default function ReviewContent({ reviewContent, pageId }) {
   };
 
   useState(() => {
-    getLikedReviews();
+    if (islogined) {
+      getLikedReviews();
+    }
   }, []);
 
   const [liked, setLiked] = useState(false);
 
   // 좋아요 보내긔
   const goLike = async () => {
-    await likeReview(access_token, pageId);
-    setLiked((prev) => !prev);
+    if (islogined) {
+      await likeReview(access_token, pageId);
+      setLiked((prev) => !prev);
+    } else {
+      alert('로그인이 필요합니다.');
+    }
   };
 
   // 좋아요 취소 보내긔
