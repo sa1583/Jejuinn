@@ -2,6 +2,7 @@ package com.jejuinn.backend.api.dto.response.recommender;
 
 import com.jejuinn.backend.db.entity.Area;
 import com.jejuinn.backend.db.entity.PersonType;
+import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
@@ -11,9 +12,6 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class RecommendWorkDto {
     private String workName;
 
@@ -31,10 +29,12 @@ public class RecommendWorkDto {
 
     private String area;
 
-    private List<String> personTypes;
+    private List<String> guestHouseType;
+
+    private List<String> personType;
 
     @QueryProjection
-    public RecommendWorkDto(String workName, String gender, int minWorkPeriod, String workTime, int workDays, int daysOff, Long guestHouseUid, Area area, List<PersonType> personTypes) {
+    public RecommendWorkDto(String workName, String gender, int minWorkPeriod, String workTime, int workDays, int daysOff, Long guestHouseUid, Area area, String guestHouseType,Recruitment recruitment) {
         this.workName = workName;
         this.gender = gender;
         this.minWorkPeriod = minWorkPeriod;
@@ -43,19 +43,8 @@ public class RecommendWorkDto {
         this.daysOff = daysOff;
         this.guestHouseUid = guestHouseUid;
         this.area = area.getAreaName();
-        this.personTypes = personTypes.stream().map(personType -> personType.getType()).collect(Collectors.toList());
+        this.guestHouseType = List.of(guestHouseType.split("#"));
+//        this.guestHouseType = this.getPersonType().subList(1, this.guestHouseType.size());
+        this.personType = recruitment.getWanted().stream().map(pType -> pType.getType()).collect(Collectors.toList());
     }
-
-    public static RecommendWorkDto of(Work work){
-        if(work == null) return null;
-        return RecommendWorkDto.builder()
-                .workName(work.getWorkName())
-                .gender(work.getGender())
-                .minWorkPeriod(work.getMinWorkPeriod())
-                .workTime(work.getWorkTime())
-                .workDays(work.getWorkDays())
-                .daysOff(work.getDaysOff())
-                .build();
-    }
-
 }

@@ -48,4 +48,5 @@ public class WorkListRes {
                 .salary(work.getSalary())
                 .build();
     }
+
 }
