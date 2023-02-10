@@ -5,7 +5,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
 
 export default function GuestHouseInfo({ guestHouse }) {
-  const hashTags = ['파티', '오션뷰', '조식', '서핑', '친목'];
+  const hashTags = guestHouse?.guestHouseTypes;
 
   return (
     <div style={{ display: 'block', padding: '3vh 3vh', marginBottom: '3vh' }}>
@@ -17,7 +17,7 @@ export default function GuestHouseInfo({ guestHouse }) {
           paddingBottom: '20px',
         }}
       >
-        {hashTags.map((hashTag) => {
+        {hashTags?.map((hashTag) => {
           return (
             <Box
               key={uuidv4()}

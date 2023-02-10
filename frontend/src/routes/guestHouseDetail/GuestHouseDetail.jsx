@@ -18,7 +18,7 @@ export default function GuestHouseDetail() {
   const guestHouseUid = location.pathname.split('detail/')[1];
   const access_token = useSelector(selectAccessToken);
   const [spots, setSpots] = useState([]);
-  const [guestHouse, setGuestHouse] = useState('');
+  const [guestHouse, setGuestHouse] = useState([]);
 
   async function getGuestHouseDetail() {
     const data = (await guestHouseDetail(guestHouseUid)).data;
@@ -39,13 +39,13 @@ export default function GuestHouseDetail() {
 
   const navigate = useNavigate();
   const goModifiy = () => {
-    navigate('create');
+    navigate(`/guesthouse/detail/update/${guestHouseUid}`);
   };
 
   async function DeleteGuestHouse() {
     guestHouseDelete(access_token, guestHouseUid);
     alert('게스트하우스가 삭제되었습니다.');
-    navigate(`/guesthouse`);
+    navigate('/guesthouse');
   }
 
   const actions = [

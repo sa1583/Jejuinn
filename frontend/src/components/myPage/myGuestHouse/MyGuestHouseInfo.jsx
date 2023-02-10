@@ -27,38 +27,38 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   };
   const open = Boolean(anchorEl);
 
-  // const [myStaffs, setMyStaffs] = useState([]);
-  // async function getMyStaff() {
-  //   const data = await myStaffList(access_token, guestHouseUid);
-  //   console.log(data.data);
-  //   setMyStaffs(data.data);
-  // }
+  const [myStaffs, setMyStaffs] = useState([]);
+  async function getMyStaff() {
+    const data = await myStaffList(access_token, guestHouseUid);
+    console.log('my-staffs:', data.data);
+    setMyStaffs(data.data);
+  }
 
-  const myStaffs = [
-    {
-      uid: '1',
-      guestHouseUid: '5',
-      userUid: '5',
-      name: '장정민',
-      startDate: '2023-01-20',
-      endDate: '2023-03-20',
-      workName: '리셉션',
-    },
-    {
-      uid: '2',
-      guestHouseUid: '5',
-      userUid: '6',
-      name: '최다은',
-      startDate: '2023-01-20',
-      endDate: '2023-04-20',
-      workName: '스탭',
-    },
-  ];
+  // const myStaffs = [
+  //   {
+  //     uid: '1',
+  //     guestHouseUid: '5',
+  //     userUid: '5',
+  //     name: '장정민',
+  //     startDate: '2023-01-20',
+  //     endDate: '2023-03-20',
+  //     workName: '리셉션',
+  //   },
+  //   {
+  //     uid: '2',
+  //     guestHouseUid: '5',
+  //     userUid: '6',
+  //     name: '최다은',
+  //     startDate: '2023-01-20',
+  //     endDate: '2023-04-20',
+  //     workName: '스탭',
+  //   },
+  // ];
 
   const [myJobOffers, setMyJobOffers] = useState([]);
   async function getMyJobOffer() {
-    const data = await myJobOfferList(access_token, guestHouseUid);
-    console.log(data.data);
+    const data = await myJobOfferList(guestHouseUid);
+    console.log('my-job-offers:', data.data);
     setMyJobOffers(data.data);
   }
 
@@ -91,7 +91,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   // ];
 
   useEffect(() => {
-    // getMyStaff();
+    getMyStaff();
     getMyJobOffer();
   }, []);
 
@@ -129,7 +129,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
             marginY: '15px',
           }}
         >
-          <Typography style={{ fontSize: '1.3rem' }}>진행중인 공고</Typography>
+          <Typography style={{ fontSize: '1.3rem' }}>진행중인 직무</Typography>
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
             <div>
               <Typography
