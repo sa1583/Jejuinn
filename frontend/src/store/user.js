@@ -114,7 +114,7 @@ export const getNormalAuthTokenInSignUp = createAsyncThunk(
 
 export const naverAuth = createAsyncThunk(
   'user/naverAuth',
-  async (accessToken, socialToken, thunkAPI) => {
+  async ({ accessToken, socialToken }, thunkAPI) => {
     try {
       await processNaverAuth(accessToken, socialToken);
       return true;

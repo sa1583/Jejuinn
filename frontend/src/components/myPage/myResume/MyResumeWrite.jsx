@@ -8,7 +8,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { FilterDate, FilterArea, FilterStyle } from '../../work/Filters';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { registMyResume } from '../../../api/resume';
 import { useSelector } from 'react-redux';
@@ -80,7 +80,6 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
   };
 
   const submitResume = async () => {
-    console.log('resume', resume);
     if (resume) {
     } else {
       try {
@@ -120,7 +119,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
         newInteresAreas.push(areaName);
       });
       setMyStyleTags(newMyStyleTags);
-      setInstagramUrl(resume.instagramLink);
+      setInstagramUrl(resume.instagramLink ? resume.instagramLink : '');
       setGuestHouseStyleTags(newGuestHouseType);
       setArea(newInteresAreas);
       setStartDate(resume.possibleStartDate);
@@ -129,16 +128,6 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(
-      area,
-      myStyleTag,
-      instagramUrl,
-      guestHouseStyleTag,
-      startDate,
-      intro,
-    );
-  }, [area, myStyleTag, instagramUrl, guestHouseStyleTag, startDate, intro]);
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <Stack direction="column" spacing={2}>
