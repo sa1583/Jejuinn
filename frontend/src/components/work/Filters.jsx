@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled, TextField, InputAdornment, MenuItem } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import { v4 as uuidv4 } from 'uuid';
@@ -66,10 +66,7 @@ function FilterName({ onName }) {
   );
 }
 
-function FilterArea({ onArea }) {
-  const [value, setValue] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-
+function FilterArea({ value, setValue }) {
   return (
     <Autocomplete
       sx={{ width: '100%' }}
@@ -79,11 +76,6 @@ function FilterArea({ onArea }) {
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
-        onArea(newValue);
-      }}
-      inputValue={inputValue}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
       }}
       renderInput={(params) => (
         <CustomTextField
@@ -96,22 +88,19 @@ function FilterArea({ onArea }) {
   );
 }
 
-function FilterDate({ onStartDate }) {
-  const [selectDate, setSelectDate] = useState();
+function FilterDate({ value, setValue }) {
   const handelOnChange = (event) => {
-    console.log(event);
-    setSelectDate(event.$d.toISOString().split('T')[0]);
-    onStartDate(event.$d.toISOString().split('T')[0]);
+    setValue(event.$d.toISOString().split('T')[0]);
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="입도가능날짜"
-        value={selectDate}
+        value={value}
         inputFormat="YYYY-MM-DD"
         mask={'____-__-__'}
         onChange={(newValue) => {
-          // twoCalls(newValue);
+          handelOnChange(newValue);
         }}
         renderInput={(params) => (
           <CustomTextField {...params} sx={{ width: '100%' }} />
@@ -121,10 +110,21 @@ function FilterDate({ onStartDate }) {
   );
 }
 
-function FilterStyle({ onStyleTags }) {
-  const wishStyles = ['파티', '조용한', '술', '나혼자'];
-  const [value, setValue] = useState([]);
-  const [inputValue, setInputValue] = useState('');
+function FilterStyle({ value, setValue }) {
+  const wishStyles = [
+    '꼼꼼',
+    '대처 능력',
+    '빠른 습득',
+    '빠른 일처리',
+    '스탭 경험자',
+    '아침형 인간',
+    '열정',
+    '의사소통 기술',
+    '저녁형 인간',
+    '책임감',
+    '친절함',
+    '활발한 성격',
+  ];
 
   return (
     <Autocomplete
@@ -132,16 +132,13 @@ function FilterStyle({ onStyleTags }) {
       multiple
       limitTags={3}
       options={wishStyles.map((option) => option)}
-      freeSolo
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
-        onStyleTags(newValue);
       }}
-      inputValue={inputValue}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
+      // onInputChange={(event, newInputValue) => {
+      //   setInputValue(newInputValue);
+      // }}
       renderInput={(params) => (
         <CustomTextField
           {...params}

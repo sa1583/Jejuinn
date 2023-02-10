@@ -8,7 +8,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { FilterDate, FilterArea, FilterStyle } from '../../work/Filters';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { registMyResume } from '../../../api/resume';
 import { useSelector } from 'react-redux';
@@ -69,18 +69,6 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
   const userInfo = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
 
-  const writeArea = (imp) => {
-    setArea(imp);
-  };
-  const writeMyStyleTags = (imp) => {
-    setMyStyleTags(imp);
-  };
-  const writeGuestHouseStyleTags = (imp) => {
-    setGuestHouseStyleTags(imp);
-  };
-  const writeStartDate = (imp) => {
-    setStartDate(imp.$d.toISOString().split('T')[0]);
-  };
   const writeIntro = (imp) => {
     setIntro(imp.target.value);
   };
@@ -92,13 +80,15 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
   };
 
   const submitResume = async () => {
+    console.log('resume', resume);
     if (resume) {
     } else {
       try {
+        console.log(startDate);
         const body = {
           autoApply: false,
           content: intro,
-          guestHouseType: guestHouseStyleTag,
+          guestHouseTypes: guestHouseStyleTag,
           interestAreas: area,
           minWorkPeriod,
           personTypes: myStyleTag,
@@ -115,7 +105,27 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
 
   useEffect(() => {
     if (resume) {
-      console.log(resume);
+      const newMyStyleTags = [];
+      resume.personTypes.map(({ type }) => {
+        newMyStyleTags.push(type);
+      });
+
+      const newGuestHouseType = [];
+      resume.guestHouseTypes?.map((type) => {
+        newGuestHouseType.push(type);
+      });
+
+      const newInteresAreas = [];
+      resume.interestAreas.map(({ areaName }) => {
+        newInteresAreas.push(areaName);
+      });
+      setMyStyleTags(newMyStyleTags);
+      setInstagramUrl(resume.instagramLink);
+      setGuestHouseStyleTags(newGuestHouseType);
+      setArea(newInteresAreas);
+      setStartDate(resume.possibleStartDate);
+      setMinWorkPeriod(resume.minWorkPeriod);
+      setIntro(resume.content);
     }
   }, []);
 
@@ -134,30 +144,35 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
       <Stack direction="column" spacing={2}>
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>내 스타일</Typography>
-          <FilterStyle onStyleTags={writeMyStyleTags} />
+          <FilterStyle value={myStyleTag} setValue={setMyStyleTags} />
         </Stack>
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>인스타그램 주소</Typography>
           <CustomTextField
             sx={{ width: '100%' }}
+            value={instagramUrl}
             onChange={writeInstagramUrl}
           />
         </Stack>
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>선호하는 스타일</Typography>
-          <FilterStyle onStyleTags={writeGuestHouseStyleTags} />
+          <FilterStyle
+            value={guestHouseStyleTag}
+            setValue={setGuestHouseStyleTags}
+          />
         </Stack>
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>선호 지역</Typography>
-          <FilterArea onArea={writeArea} />
+          <FilterArea value={area} setValue={setArea} />
         </Stack>
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>입도 가능일</Typography>
-          <FilterDate onStartDate={writeStartDate} />
+          <FilterDate value={startDate} setValue={setStartDate} />
         </Stack>
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>최소 근무 기간</Typography>
           <CustomTextField
+            value={minWorkPeriod}
             onChange={writeMinWorkPeriod}
             InputProps={{
               endAdornment: (
@@ -171,6 +186,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>자기소개</Typography>
           <CustomTextField
+            value={intro}
             onChange={writeIntro}
             variant="standard"
             sx={{ width: '100%' }}
