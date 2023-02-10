@@ -46,7 +46,7 @@ public class ReviewDetailRes {
                 .like(review.getLikeCount())
                 .dateCreated(review.getDateCreated())
                 .travelPlaceUid(review.getTravelPlaceUid())
-                .writer_uid(review.getUid())
+                .writer_uid(review.getUserUid())
                 .writer_nickname(nickname)
                 .images(images).build();
     }
