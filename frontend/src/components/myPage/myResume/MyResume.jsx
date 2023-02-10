@@ -11,6 +11,7 @@ import { selectAccessToken, selectUserInfo } from '../../../store/user';
 export default function MyResume() {
   const [onModify, setOnModify] = useState(false);
   const [resume, setResume] = useState();
+  const [isAuth, setIsAuth] = useState(false);
 
   const userInfo = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
@@ -28,18 +29,24 @@ export default function MyResume() {
       // const res = getResume(accessToken, userInfoTest.uid);
       setResume(res.data);
     }
-    // getAndSetResume();
-    setResume({});
+    getAndSetResume();
+    // setResume({});
     console.log(onModify);
   }, []);
 
   useEffect(() => {
-    console.log('useEffect', userInfo);
+    console.log(
+      'useEffect',
+      userInfo.authorities.indexOf({ authorityName: 'ROLE_AUTH' }),
+    );
+    userInfo?.authorities?.map((auth) => {
+      if (auth.authorityName == 'ROLE_AUTH') setIsAuth(true);
+    });
   }, [userInfo]);
 
   return (
     <>
-      {userInfo.authorities?.indexOf({ authorityName: 'ROLE_AUTH' }) > -1 ? (
+      {isAuth ? (
         <Box sx={{ p: '3%' }}>
           <MyResumeInfo />
           <hr />

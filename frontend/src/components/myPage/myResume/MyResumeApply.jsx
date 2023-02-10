@@ -5,6 +5,7 @@ import {
   Popover,
   Typography,
   Stack,
+  Chip,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
@@ -20,8 +21,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [autoRecommand, setAutoRecommand] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(false);
   const [historyList, setHistoryList] = useState([
     {
       uid: 1,
@@ -44,22 +44,20 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-  const handleChangeAutoRecommand = (event) => {
-    setAutoRecommand(event.target.checked);
+
+  const handleChangeAutoApply = async () => {
+    await changeAutoApply(accessToken, userInfo.uid);
+    setAnchorEl((prev) => !prev);
   };
 
   useEffect(() => {
-    // 자동추천 여부를 변경하는 요청을 보냄
-    async function getData() {
-      await changeAutoApply(accessToken, userInfo.uid);
-    }
-    getData();
-  }, [autoRecommand]);
+    console.log(resume.autoApply);
+    setAnchorEl(resume.autoApply);
+  }, []);
 
-  const handleChangeAutoApply = async () => {
-    const newAnchor = await changeAutoApply(accessToken, userInfo.uid);
-    setAnchorEl(newAnchor);
-  };
+  useEffect(() => {
+    console.log(anchorEl);
+  }, [anchorEl]);
 
   const open = Boolean(anchorEl);
   return (
@@ -97,19 +95,33 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         </Popover>
         <FormControlLabel
           value="start"
-          control={<Switch color="primary" onChange={handleChangeAutoApply} />}
+          control={
+            <Switch
+              color="primary"
+              onChange={handleChangeAutoApply}
+              checked={anchorEl}
+            />
+          }
           label="자동추천"
           labelPlacement="start"
         />
         <Button onClick={changeApplyComp}>수정</Button>
       </Stack>
-      <Stack direction="row">
+      <Stack direction="row" alignItems="center">
         <Typography minWidth="100px">선호 스타일</Typography>
-        <Typography>{resume.tag}</Typography>
+        <Stack direction="row" spacing={1}>
+          {resume.personTypes.map(({ type }) => {
+            return <Chip label={'#' + type} color="primary" />;
+          })}
+        </Stack>
       </Stack>
-      <Stack direction="row">
+      <Stack direction="row" alignItems="center">
         <Typography minWidth="100px">선호 지역</Typography>
-        <Typography>{resume.interestAreas}</Typography>
+        <Stack direction="row" alignItems="center">
+          {resume.interestAreas.map((area) => {
+            return <Chip label={'#' + area.areaName} color="primary" />;
+          })}
+        </Stack>
       </Stack>
       <Stack direction="row">
         <Typography minWidth="100px">입도 가능일</Typography>

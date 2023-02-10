@@ -86,16 +86,6 @@ function logout(uid) {
   return api.post(`/auth/users/logout/${uid}`);
 }
 
-const changeAutoApply = (accessToken, uid) => {
-  const header = {
-    headers: {
-      accessToken: `Bearer ${accessToken}`,
-    },
-  };
-  console.log('header', header);
-  return api.put(`/auth/auto-apply/${uid}`, {}, header);
-};
-
 export {
   getOurTokens,
   getUserInfo,
@@ -107,6 +97,5 @@ export {
   getPasswordCode,
   signUpApi,
   processNaverAuth,
-  changeAutoApply,
   getTokenHeader,
 };
