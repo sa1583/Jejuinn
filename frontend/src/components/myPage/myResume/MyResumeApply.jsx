@@ -51,13 +51,8 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   };
 
   useEffect(() => {
-    console.log(resume.autoApply);
     setAnchorEl(resume.autoApply);
   }, []);
-
-  useEffect(() => {
-    console.log(anchorEl);
-  }, [anchorEl]);
 
   const open = Boolean(anchorEl);
   return (
@@ -67,8 +62,6 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
           color="primary"
           onMouseEnter={handlePopoverOpen}
           onMouseLeave={handlePopoverClose}
-          justifyItems="flex-end"
-          alignItems="flex-end"
         />
         <Popover
           id="mouse-over-popover"
@@ -111,7 +104,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         <Typography minWidth="100px">선호 스타일</Typography>
         <Stack direction="row" spacing={1}>
           {resume.personTypes.map(({ type }) => {
-            return <Chip label={'#' + type} color="primary" />;
+            return <Chip key={type} label={'#' + type} color="primary" />;
           })}
         </Stack>
       </Stack>
@@ -119,7 +112,9 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         <Typography minWidth="100px">선호 지역</Typography>
         <Stack direction="row" alignItems="center">
           {resume.interestAreas.map((area) => {
-            return <Chip label={'#' + area.areaName} color="primary" />;
+            return (
+              <Chip key={area} label={'#' + area.areaName} color="primary" />
+            );
           })}
         </Stack>
       </Stack>
