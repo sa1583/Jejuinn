@@ -4,21 +4,10 @@ import 'react-quill/dist/quill.snow.css';
 
 export default function MarkDownInput({ getContent, content }) {
   const modules = {
-    toolbar: [[{ header: [1, 2, 3, false] }], ['bold'], ['link']],
+    toolbar: [[{ header: [1, 2, false] }], ['bold'], ['link']],
   };
 
-  const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-  ];
+  const formats = ['header', 'bold', 'link'];
   return (
     <ReactQuill
       theme="snow"
@@ -29,6 +18,7 @@ export default function MarkDownInput({ getContent, content }) {
       modules={modules}
       formats={formats}
       value={content}
+      placeholder="큰 글자 폰트를 권장합니다."
     />
   );
 }
