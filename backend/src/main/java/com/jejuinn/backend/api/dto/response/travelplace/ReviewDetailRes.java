@@ -37,9 +37,7 @@ public class ReviewDetailRes {
 
     private List<Image> images;
 
-    private List<Comment> comments;
-
-    public static ReviewDetailRes of(TravelPlaceReview review, String nickname,List<Image> images, List<Comment> comments){
+    public static ReviewDetailRes of(TravelPlaceReview review, String nickname,List<Image> images){
         if(review == null) return null;
         return ReviewDetailRes.builder()
                 .uid(review.getUid())
@@ -50,7 +48,6 @@ public class ReviewDetailRes {
                 .travelPlaceUid(review.getTravelPlaceUid())
                 .writer_uid(review.getUid())
                 .writer_nickname(nickname)
-                .comments(comments)
                 .images(images).build();
     }
 }

@@ -34,6 +34,10 @@ public class ResumeInfoDetail {
 
     private List<PersonType> personTypes;
 
+    private LocalDate isRead;
+
+    private String instagramLink;
+
     public static ResumeInfoDetail of(Optional<ResumeInfo> resumeInfo) {
         if(resumeInfo.isEmpty()) return null;
         return ResumeInfoDetail.builder()
@@ -46,6 +50,24 @@ public class ResumeInfoDetail {
                 .dateCreated(resumeInfo.get().getDateCreated())
                 .interestAreas(resumeInfo.get().getInterestAreas())
                 .personTypes(resumeInfo.get().getPersonTypes())
+                .isRead(resumeInfo.get().getIsRead())
+                .instagramLink(resumeInfo.get().getInstagramLink())
+                .build();
+    }
+
+    public static ResumeInfoDetail ofCEO(Optional<ResumeInfo> resumeInfo) {
+        if(resumeInfo.isEmpty()) return null;
+        return ResumeInfoDetail.builder()
+                .uid(resumeInfo.get().getUid())
+                .content(resumeInfo.get().getContent())
+                .possibleStartDate(resumeInfo.get().getPossibleStartDate())
+                .minWorkPeriod(resumeInfo.get().getMinWorkPeriod())
+                .autoApply(resumeInfo.get().isAutoApply())
+                .guestHouseType(resumeInfo.get().getGuestHouseType())
+                .dateCreated(resumeInfo.get().getDateCreated())
+                .interestAreas(resumeInfo.get().getInterestAreas())
+                .personTypes(resumeInfo.get().getPersonTypes())
+                .instagramLink(resumeInfo.get().getInstagramLink())
                 .build();
     }
 }

@@ -4,12 +4,10 @@ import com.jejuinn.backend.api.dto.GuestHouseDto;
 import com.jejuinn.backend.api.dto.request.InsertGuestHousePostReq;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
+import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.db.entity.GuestHouse;
-import com.jejuinn.backend.db.repository.CommentRepository;
-import com.jejuinn.backend.db.repository.GuestHouseRepository;
-import com.jejuinn.backend.db.repository.GuestHouseRepositorySupport;
-import com.jejuinn.backend.db.repository.ImageRepository;
+import com.jejuinn.backend.db.repository.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,6 +31,7 @@ public class GuestHouseController {
     private final ImageRepository imageRepository;
     private final CommentRepository commentRepository;
     private final S3Uploader s3Uploader;
+    private final RecruitmentRepository recruitmentRepository;
     private static final String GUEST_TYPE = "GUEST_HOUSE";
 
     /**
@@ -69,8 +68,8 @@ public class GuestHouseController {
                 .body(guestHouseRepository.findById(guestHouseUid)
                         .map(guestHouse ->
                                 GetGuestHouseDetailPostRes.of(guestHouse,
-                                        imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()),
-                                        commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(GUEST_TYPE, guestHouse.getUid()))));
+                                        imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid())
+                                )));
     }
 
     @PostMapping("/auth/guest-house")
@@ -182,6 +181,19 @@ public class GuestHouseController {
                 guestHouseRepository.findAllByRepresentativeUid(userUid).stream().map(
                         guestHouse -> GuestHouseDto.of(guestHouse)
                 )
+        );
+    }
+
+    @GetMapping("/api/on-recruitment/{guestHouseUid}")
+    @ApiOperation(value = "게스트하우스에 대한 모집 직무 리스트", notes = "guestHouseUid를 받아 그에 대한 모집 직무 리스트 제공")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyGuestHouseWorkList(@PathVariable Long guestHouseUid) {
+        return ResponseEntity.status(200).body(
+                WorkDetailRes.ofDetail(recruitmentRepository.findWorkByGuestHouseUid(guestHouseUid))
         );
     }
 
