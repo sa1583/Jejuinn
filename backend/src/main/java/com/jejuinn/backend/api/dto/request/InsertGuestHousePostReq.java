@@ -3,6 +3,8 @@ package com.jejuinn.backend.api.dto.request;
 import com.jejuinn.backend.db.entity.GuestHouse;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -28,6 +30,20 @@ public class InsertGuestHousePostReq {
 
     private double lng;
 
+    private List<String> guestHouseTypes;
+
+    public String toGuestHouseType() {
+        String type = "";
+        for(String s : this.getGuestHouseTypes()) {
+            type += s + ",";
+        }
+        if(type.equals("") || type.equals(null)) {
+            return null;
+        }
+        type = type.substring(0,type.length()-1);
+        return type;
+    }
+
     public GuestHouse toGuestHouse(){
         return GuestHouse.builder()
                 .guestHouseName(this.getGuestHouseName())
@@ -39,6 +55,7 @@ public class InsertGuestHousePostReq {
                 .introduction(this.getIntroduction())
                 .lat(this.getLat())
                 .lng(this.getLng())
+                .tags(toGuestHouseType())
                 .build();
     }
 
@@ -54,6 +71,7 @@ public class InsertGuestHousePostReq {
                 .introduction(this.getIntroduction())
                 .lat(this.getLat())
                 .lng(this.getLng())
+                .tags(toGuestHouseType())
                 .build();
     }
 }

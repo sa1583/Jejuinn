@@ -31,7 +31,7 @@ public class InsertResumeInfoPostReq {
     private int minWorkPeriod;
 
     @NotNull
-    private String guestHouseType;
+    private List<String> guestHouseTypes;
 
     @NotNull
     private boolean autoApply;
@@ -41,6 +41,18 @@ public class InsertResumeInfoPostReq {
     private List<String> personTypes;
 
     private List<String> interestAreas;
+
+    public String toGuestHouseType() {
+        String type = "";
+        for(String s : this.getGuestHouseTypes()) {
+            type += s + ",";
+        }
+        if(type.equals("") || type.equals(null)) {
+            return null;
+        }
+        type = type.substring(0,type.length()-1);
+        return type;
+    }
 
     public List<PersonType> toPersonType() {
         List<PersonType> list = new ArrayList<>();
@@ -65,7 +77,7 @@ public class InsertResumeInfoPostReq {
                 .possibleStartDate(this.possibleStartDate)
                 .minWorkPeriod(this.minWorkPeriod)
                 .autoApply(this.autoApply)
-                .guestHouseType(this.guestHouseType)
+                .guestHouseType(toGuestHouseType())
                 .personTypes(toPersonType())
                 .interestAreas(toArea())
                 .instagramLink(this.instagramLink)
