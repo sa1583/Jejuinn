@@ -8,6 +8,15 @@ const allGuestHouseList = () => {
   return api.get('/api/guest-houses');
 };
 
+const getMyGuestHouses = (token, userUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  // return api.get(`/auth/my-guest-houses/${userUid}`, config);
+  return { data: [{ uid: 1 }, { uid: 2 }] };
+};
 const getApplicantByUid = async (uid, token) => {
   const config = {
     headers: {
@@ -109,4 +118,5 @@ export {
   myJobOfferList,
   myApplicantList,
   myRecommendList,
+  getMyGuestHouses,
 };

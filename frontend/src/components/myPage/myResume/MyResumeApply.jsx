@@ -6,7 +6,7 @@ import {
   Typography,
   Stack,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import React from 'react';
 import WorkHistory from '../WorkHistory';
@@ -21,6 +21,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const userInfo = useSelector(selectUserInfo);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [autoRecommand, setAutoRecommand] = useState(true);
   const [historyList, setHistoryList] = useState([
     {
       uid: 1,
@@ -43,6 +44,17 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
+  const handleChangeAutoRecommand = (event) => {
+    setAutoRecommand(event.target.checked);
+  };
+
+  useEffect(() => {
+    // 자동추천 여부를 변경하는 요청을 보냄
+    async function getData() {
+      await changeAutoApply(accessToken, userInfo.uid);
+    }
+    getData();
+  }, [autoRecommand]);
 
   const handleChangeAutoApply = async () => {
     const newAnchor = await changeAutoApply(accessToken, userInfo.uid);

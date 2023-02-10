@@ -42,17 +42,17 @@ export default function WorkFilterBox({ onSearch }) {
     setName(imp.target.value);
   };
   const onArea = (imp) => {
-    setArea(imp.target.value);
+    setArea(imp);
   };
   const onStartDate = (imp) => {
-    setStartDate(imp.$d.toISOString().split('T')[0]);
+    setStartDate(imp);
   };
   const onStyleTags = (imp) => {
     setStyleTags(imp);
   };
-  // useEffect(() => {
-  //   console.log(name, area, startDate, styleTags);
-  // }, [name, area, startDate, styleTags]);
+  useEffect(() => {
+    console.log(name, area, startDate, styleTags);
+  }, [name, area, startDate, styleTags]);
 
   return (
     <Box sx={{ padding: '3vh', height: '100%' }}>
