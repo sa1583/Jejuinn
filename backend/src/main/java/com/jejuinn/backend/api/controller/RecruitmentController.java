@@ -127,6 +127,23 @@ public class RecruitmentController {
         return ResponseEntity.status(200).build();
     }
 
+    @GetMapping("/auth/recruitment-work-list/{guestHouseUid}")
+    @ApiOperation(value = "특정 게스트하우스에 대한 직무 리스트 확인", notes = "gusetHouseUid를 통해 특정 게스트하우스가 모집중인 직무 목록을 보여줍니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "데이터가 없습니다."),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyWorkList(@PathVariable Long guestHouseUid) {
+        return ResponseEntity.status(200).body(
+                recruitmentRepository.findWorkByGuestHouseUid(guestHouseUid).stream().map(
+                        work -> WorkListRes.of(work,
+                                workRepository.findUserUidByWorkUid(work.getUid())
+                )
+        ));
+    }
+
     @GetMapping("/api/guest-house-recruitment/{guestHouseUid}")
     @ApiOperation(value = "특정 게스트하우스에 대한 모집공고 리스트 확인", notes = "gusetHouseUid를 통해 특정 게스트하우스에 대한 모든 모집공고 목록을 보여줍니다.")
     @ApiResponses({
