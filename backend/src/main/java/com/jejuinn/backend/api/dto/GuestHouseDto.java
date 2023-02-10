@@ -23,6 +23,8 @@ public class GuestHouseDto {
 
     private double lng;
 
+    private String guestHouseType;
+
     public static GuestHouseDto of(GuestHouse guestHouse){
         if(guestHouse == null) return null;
         return GuestHouseDto.builder()
@@ -33,6 +35,7 @@ public class GuestHouseDto {
                 .addressDetail(guestHouse.getAddressDetail())
                 .lat(guestHouse.getLat())
                 .lng(guestHouse.getLng())
+                .guestHouseType(guestHouse.getTags())
                 .build();
     }
 }

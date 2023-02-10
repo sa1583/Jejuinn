@@ -36,6 +36,20 @@ public class UpdateResumeInfoPutReq {
 
     private String instagramLink;
 
+    private List<String> guestHouseTypes;
+
+    public String toGuestHouseType() {
+        String type = "";
+        for(String s : this.getGuestHouseTypes()) {
+            type += s + ",";
+        }
+        if(type.equals("") || type.equals(null)) {
+            return null;
+        }
+        type = type.substring(0,type.length()-1);
+        return type;
+    }
+
     public List<PersonType> toPersonType() {
         List<PersonType> list = new ArrayList<>();
         for(String s : this.getPersonTypes()) {
@@ -64,6 +78,7 @@ public class UpdateResumeInfoPutReq {
                 .personTypes(toPersonType())
                 .interestAreas(toArea())
                 .instagramLink(this.instagramLink)
+                .guestHouseType(toGuestHouseType())
                 .build();
     }
 }
