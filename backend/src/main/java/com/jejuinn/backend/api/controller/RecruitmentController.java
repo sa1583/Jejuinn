@@ -6,6 +6,7 @@ import com.jejuinn.backend.api.dto.request.recruitment.ModifyWorkPutReq;
 import com.jejuinn.backend.api.dto.request.recruitment.WorkPostReq;
 import com.jejuinn.backend.api.dto.response.recruitment.*;
 import com.jejuinn.backend.api.service.ResumeInfoService;
+import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
@@ -15,10 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +41,7 @@ public class RecruitmentController {
     private final S3Uploader s3Uploader;
     private static final String RECRUITMENT_TYPE = "RECRUITMENT";
     private final WorkResumeInfoRepository workResumeInfoRepository;
+    private final UserService userService;
 
     @GetMapping("/api/job-offer")
     @ApiOperation(value = "모집중인 직무 모두 보기(시간 순서대로)", notes = "구인 공고의 모든 직무 정보들을 리턴합니다.")
@@ -50,10 +51,13 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQEUST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getWorkList(@PageableDefault(size = 15) Pageable pageable) {
+    public ResponseEntity<?> getWorkList(@RequestParam("pageNumber") int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber-1, 15);
         return ResponseEntity.status(200)
                 .body(workRepository.findAll(pageable)
-                        .map(work -> WorkListRes.of(work)));
+                        .map(work -> WorkListRes.of(work,
+                                workRepository.findUserUidByWorkUid(work.getUid())
+                                )));
     }
 
     @GetMapping("/api/job-offer/{recruitmentUid}")
@@ -70,7 +74,8 @@ public class RecruitmentController {
                         .map(recruitment ->
                                 RecruitmentDetailRes.of(recruitment,
                                         WorkDetailRes.ofDetail(workRepository.findAllByRecruitmentUid(recruitmentUid)),
-                                        imageRepository.findAllByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid)
+                                        imageRepository.findAllByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid),
+                                        recruitmentRepository.findUserUidByRecruitmentUid(recruitment.getUid())
                                 )));
     }
 
@@ -105,8 +110,11 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteRecruitment(@PathVariable Long recruitmentUid) {
+    public ResponseEntity<?> deleteRecruitment(@PathVariable Long recruitmentUid, HttpServletRequest request) {
         Optional<List<Long>> list = imageRepository.findUidByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid);
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        Long writerUid = recruitmentRepository.findUserUidByRecruitmentUid(recruitmentUid);
+        if(userUid != writerUid) return ResponseEntity.status(401).build();
         recruitmentRepository.deleteById(recruitmentUid);
         for(Long uid : list.get()) {
             try {
@@ -119,7 +127,7 @@ public class RecruitmentController {
         return ResponseEntity.status(200).build();
     }
 
-    @GetMapping("/auth/job-offer/{guestHouseUid}")
+    @GetMapping("/api/guest-house-recruitment/{guestHouseUid}")
     @ApiOperation(value = "특정 게스트하우스에 대한 모집공고 리스트 확인", notes = "gusetHouseUid를 통해 특정 게스트하우스에 대한 모든 모집공고 목록을 보여줍니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -159,6 +167,11 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteWork(@PathVariable Long workUid, HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        Long writerUid = workRepository.findUserUidByWorkUid(workUid);
+        if(userUid != writerUid) {
+            return ResponseEntity.status(401).build();
+        }
         workRepository.deleteById(workUid);
         return ResponseEntity.status(200).build();
     }
@@ -182,7 +195,12 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> modifyWork(@RequestBody ModifyWorkPutReq modifyWorkPutReq) {
+    public ResponseEntity<?> modifyWork(@RequestBody ModifyWorkPutReq modifyWorkPutReq, HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        Long writerUid = workRepository.findUserUidByWorkUid(modifyWorkPutReq.getWorkUid());
+        if(userUid != writerUid) {
+            return ResponseEntity.status(401).build();
+        }
         workRepository.save(modifyWorkPutReq.toWork());
         return ResponseEntity.status(200).build();
     }

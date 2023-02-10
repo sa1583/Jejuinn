@@ -10,6 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 public class WorkListRes {
 
+    private Long writerUid;
+
     private Long workUid;
 
     private Long recruitmentUid;
@@ -30,9 +32,10 @@ public class WorkListRes {
 
     private String salary;
 
-    public static WorkListRes of(Work work) {
+    public static WorkListRes of(Work work, Long userUid) {
         if(work == null) return null;
         return WorkListRes.builder()
+                .writerUid(userUid)
                 .workUid(work.getUid())
                 .recruitmentUid(work.getRecruitment().getUid())
                 .workName(work.getWorkName())

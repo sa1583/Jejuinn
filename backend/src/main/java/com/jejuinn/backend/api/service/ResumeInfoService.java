@@ -45,10 +45,13 @@ public class ResumeInfoService {
         ResumeInfo resumeInfo = null;
         if(temp.isPresent()) {
             resumeInfo = temp.get();
+            boolean autoApply = resumeInfo.isAutoApply();
+            resumeInfo.setAutoApply(!autoApply);
+            return resumeInfo;
+        } else {
+            return null;
         }
-        boolean autoApply = resumeInfo.isAutoApply();
-        resumeInfo.setAutoApply(!autoApply);
-        return resumeInfo;
+
     }
 
     @Transactional

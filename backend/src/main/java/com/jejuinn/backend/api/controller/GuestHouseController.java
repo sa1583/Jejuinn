@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,6 @@ public class GuestHouseController {
 
     /**
      *
-     * @param pageable
      * @return
      */
     @GetMapping("/api/guest-houses")
@@ -47,7 +47,8 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getGuestHouseList(@PageableDefault(size = 15) Pageable pageable){
+    public ResponseEntity<?> getGuestHouseList(@RequestParam("pageNumber") int pageNumber){
+        Pageable pageable = PageRequest.of(pageNumber-1, 15);
         return ResponseEntity.status(200)
                 .body(guestHouseRepository.findAll(pageable)
                         .map(guestHouse ->
