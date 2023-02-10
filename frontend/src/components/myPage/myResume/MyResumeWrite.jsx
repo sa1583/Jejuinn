@@ -1,4 +1,11 @@
-import { Box, Grid, styled, Button, TextField } from '@mui/material';
+import {
+  Box,
+  styled,
+  Button,
+  TextField,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { FilterDate, FilterArea, FilterStyle } from '../../work/Filters';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -18,18 +25,50 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function MyResumeWrite({ changeApplyComp }) {
-  const [area, setArea] = useState('');
+const CustomTextField = styled(TextField)({
+  '& label': {
+    color: '#000000',
+    marginTop: '2px',
+  },
+  '& label.Mui-focused': {
+    color: '#FF7600',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#d1d1d1',
+      opacity: '83%',
+      height: '100%',
+      borderRadius: '62px',
+      margin: 'auto',
+    },
+    '&:hover fieldset': {
+      borderColor: '#FF7600',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#FF7600',
+    },
+  },
+});
+
+const minWidth = '150px';
+
+export default function MyResumeWrite({ resume, changeApplyComp }) {
+  const [area, setArea] = useState([]);
   const [startDate, setStartDate] = useState('');
-  const [styleTags, setStyleTags] = useState([]);
+  const [instagramUrl, setInstagramUrl] = useState('');
+  const [myStyleTag, setMyStyleTags] = useState([]);
+  const [guestHouseStyleTag, setGuestHouseStyleTags] = useState([]);
   const [intro, setIntro] = useState('');
   // twoCalls 사용해서
 
   const writeArea = (imp) => {
-    setArea(imp.target.value);
+    setArea(imp);
   };
-  const writeStyleTags = (imp) => {
-    setStyleTags(imp);
+  const writeMyStyleTags = (imp) => {
+    setMyStyleTags(imp);
+  };
+  const writeGuestHouseStyleTags = (imp) => {
+    setGuestHouseStyleTags(imp);
   };
   const writeStartDate = (imp) => {
     setStartDate(imp.$d.toISOString().split('T')[0]);
@@ -37,46 +76,70 @@ export default function MyResumeWrite({ changeApplyComp }) {
   const writeIntro = (imp) => {
     setIntro(imp.target.value);
   };
+  const writeInstagramUrl = (event) => {
+    setInstagramUrl(event.target.value);
+  };
+
   const submitResume = () => {};
 
   useEffect(() => {
-    console.log(area, styleTags, startDate, intro);
-  }, [area, styleTags, startDate, intro]);
+    if (resume) {
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(
+      area,
+      myStyleTag,
+      instagramUrl,
+      guestHouseStyleTag,
+      startDate,
+      intro,
+    );
+  }, [area, myStyleTag, instagramUrl, guestHouseStyleTag, startDate, intro]);
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <form>
-        <Grid container spacing={2}>
-          <Grid item md={4}>
-            선호하는 스타일
-          </Grid>
-          <Grid item md={8}>
-            <FilterStyle onStyleTags={writeStyleTags} />
-          </Grid>
-
-          <Grid item md={4}>
-            선호 지역
-          </Grid>
-          <Grid item md={8}>
+        <Stack direction="column" spacing={2}>
+          <Stack direction="row" alignItems="center">
+            <Typography minWidth={minWidth}>내 스타일</Typography>
+            <FilterStyle onStyleTags={writeMyStyleTags} />
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Typography minWidth={minWidth}>인스타그램 주소</Typography>
+            <CustomTextField
+              sx={{ width: '100%' }}
+              onChange={writeInstagramUrl}
+            />
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Typography minWidth={minWidth}>선호하는 스타일</Typography>
+            <FilterStyle onStyleTags={writeGuestHouseStyleTags} />
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Typography minWidth={minWidth}>선호 지역</Typography>
             <FilterArea onArea={writeArea} />
-          </Grid>
-
-          <Grid item md={4}>
-            입도 가능일
-          </Grid>
-          <Grid item md={8}>
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Typography minWidth={minWidth}>입도 가능일</Typography>
             <FilterDate onStartDate={writeStartDate} />
-          </Grid>
-
-          <Grid item md={4}>
-            자기소개
-          </Grid>
-          <Grid item md={8}>
-            <TextField onChange={writeIntro} />
-          </Grid>
-          <CustomButton onClick={changeApplyComp} onSubmit={submitResume}>
-            지원서 저장
-          </CustomButton>
-        </Grid>
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Typography minWidth={minWidth}>자기소개</Typography>
+            <CustomTextField
+              onChange={writeIntro}
+              variant="standard"
+              sx={{ width: '100%' }}
+              multiline
+              rows={3}
+            />
+          </Stack>
+          <Box display="flex" justifyContent="center">
+            <CustomButton onClick={changeApplyComp} onSubmit={submitResume}>
+              지원서 저장
+            </CustomButton>
+          </Box>
+        </Stack>
       </form>
     </Box>
   );

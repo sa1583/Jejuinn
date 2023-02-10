@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { images } from '../../assets/images';
 import WhiteBox from '../whiteBox/WhiteBox';
 
 export default function NaverAuth() {
