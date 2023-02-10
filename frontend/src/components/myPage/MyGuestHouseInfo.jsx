@@ -27,33 +27,33 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   };
   const open = Boolean(anchorEl);
 
-  const [myStaffs, setMyStaffs] = useState([]);
-  async function getMyStaff() {
-    const data = await myStaffList(access_token, guestHouseUid);
-    console.log(data);
-    setMyStaffs(data);
-  }
+  // const [myStaffs, setMyStaffs] = useState([]);
+  // async function getMyStaff() {
+  //   const data = await myStaffList(access_token, guestHouseUid);
+  //   console.log(data.data);
+  //   setMyStaffs(data.data);
+  // }
 
-  // const myStaffs = [
-  //   {
-  //     uid: '1',
-  //     guestHouseUid: '5',
-  //     userUid: '5',
-  //     name: '장정민',
-  //     startDate: '2023-01-20',
-  //     endDate: '2023-03-20',
-  //     workName: '리셉션',
-  //   },
-  //   {
-  //     uid: '2',
-  //     guestHouseUid: '5',
-  //     userUid: '6',
-  //     name: '최다은',
-  //     startDate: '2023-01-20',
-  //     endDate: '2023-04-20',
-  //     workName: '스탭',
-  //   },
-  // ];
+  const myStaffs = [
+    {
+      uid: '1',
+      guestHouseUid: '5',
+      userUid: '5',
+      name: '장정민',
+      startDate: '2023-01-20',
+      endDate: '2023-03-20',
+      workName: '리셉션',
+    },
+    {
+      uid: '2',
+      guestHouseUid: '5',
+      userUid: '6',
+      name: '최다은',
+      startDate: '2023-01-20',
+      endDate: '2023-04-20',
+      workName: '스탭',
+    },
+  ];
 
   const [myJobOffers, setMyJobOffers] = useState([]);
   async function getMyJobOffer() {
@@ -91,7 +91,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   // ];
 
   useEffect(() => {
-    getMyStaff();
+    // getMyStaff();
     getMyJobOffer();
   }, []);
 

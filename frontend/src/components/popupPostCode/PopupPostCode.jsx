@@ -6,6 +6,10 @@ import DaumPostcode from 'react-daum-postcode';
 const PopupPostCode = (props) => {
   // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
   const setAddress = props.setAddress;
+  const setDetailAddress = props.setDetailAddress;
+  const setAreaName = props.setAreaName;
+  const setLng = props.setLng;
+  const setLat = props.setLat;
 
   const handlePostCode = (data) => {
     let fullAddress = data.address;
@@ -22,9 +26,13 @@ const PopupPostCode = (props) => {
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
     console.log(data);
-    console.log(fullAddress);
-    console.log(data.zonecode);
-    setAddress(fullAddress);
+    // console.log(fullAddress);
+    // console.log(data.zonecode);
+    setAddress(data.address);
+    setDetailAddress(`(${extraAddress})`);
+    setAreaName(data.bname1 ? data.bname1 : data.sigungu);
+
+    handleComplete(data);
 
     props.onClose();
   };
@@ -43,13 +51,13 @@ const PopupPostCode = (props) => {
       if (result.data !== undefined || result.data !== null) {
         if (result.data.documents[0].x && result.data.documents[0].y) {
           // Kakao Local API로 검색한 주소 정보 및 위도, 경도값 저장
-          const address_name = result.data.documents[0].address.address_name;
-          const region_2depth_name =
-            result.data.documents[0].address.region_2depth_name;
-          const x = result.data.documents[0].x;
-          const y = result.data.documents[0].y;
-          console.log(address_name, region_2depth_name);
-          console.log(x, y);
+          // const address_name = result.data.documents[0].address.address_name;
+          // const region_2depth_name =
+          //   result.data.documents[0].address.region_2depth_name;
+          setLng(result.data.documents[0].x);
+          setLat(result.data.documents[0].y);
+          // console.log(address_name, region_2depth_name);
+          // console.log(lng, lat);
         }
       }
     });
