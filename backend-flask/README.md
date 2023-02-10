@@ -3,19 +3,19 @@
 - Facebook : [Fasttext](https://fasttext.cc/docs/en/crawl-vectors.html)
 
 ## Docker RUN
-### Docker image build
+### 1. Docker image build
 ```commandline
  docker build -t jejuinn/flask-backend .
 ```
-### Docker hub login
+### 2. Docker hub login
 ```commandline
 docker login -u <<user>> -p <<password>>
 ```
-### Docker hub push
+### 3. Docker hub push
 ```commandline
  docker push jejuinn/backend-flask
 ```
-### Docker image run
+### 4. Docker image run
 ```commandline
  docker run -d -p 0.0.0.0:5000:5000/tcp --name backend-flask jejuinn/backend-flask
 ```
