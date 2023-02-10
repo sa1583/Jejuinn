@@ -33,7 +33,7 @@ export default function MyResume() {
 
   return (
     <>
-      {userInfo.authorities?.indexOf('naver') > -1 ? (
+      {userInfo?.authorities?.indexOf('naver') > -1 ? (
         <Box sx={{ p: '3%' }}>
           <MyResumeInfo />
           <hr />
