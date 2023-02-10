@@ -24,6 +24,10 @@ public class InsertGuestHousePostReq {
 
     private String introduction;
 
+    private double lat;
+
+    private double lng;
+
     public GuestHouse toGuestHouse(){
         return GuestHouse.builder()
                 .guestHouseName(this.getGuestHouseName())
@@ -33,6 +37,8 @@ public class InsertGuestHousePostReq {
                 .address(this.getAddress())
                 .addressDetail(this.getAddressDetail())
                 .introduction(this.getIntroduction())
+                .lat(this.getLat())
+                .lng(this.getLng())
                 .build();
     }
 
@@ -46,6 +52,8 @@ public class InsertGuestHousePostReq {
                 .address(this.getAddress())
                 .addressDetail(this.getAddressDetail())
                 .introduction(this.getIntroduction())
+                .lat(this.getLat())
+                .lng(this.getLng())
                 .build();
     }
 }
