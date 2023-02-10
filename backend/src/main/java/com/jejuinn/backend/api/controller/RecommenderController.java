@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.response.recommender.RecommendResumeDto;
 import com.jejuinn.backend.api.dto.response.recommender.RecommendWorkDto;
 import com.jejuinn.backend.api.service.RecommenderService;
 import io.swagger.annotations.Api;
@@ -7,14 +8,18 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @Api(tags = "스태프 추천 관련 기능 API")
 @RequiredArgsConstructor
+@Slf4j
 public class RecommenderController {
     private final RecommenderService recommenderService;
 
@@ -27,10 +32,14 @@ public class RecommenderController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getRecommendStaffList(@RequestParam("workUid") Long workUid){
+        log.info("");
         // 직무 정보를 가져옵니다.
         RecommendWorkDto recommendWorkDto = recommenderService.getWorkInfo(workUid);
 
         // 현재 구직 중인 staff 정보를 가져옵니다.
+        List<RecommendResumeDto> recommendResumeDto = recommenderService.getResumeInfo(recommendWorkDto);
+
+
 
 
         return null;
