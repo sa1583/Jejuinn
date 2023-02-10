@@ -14,13 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class RecruitmentDetailRes {
+    private Long writerUid;
     private Recruitment recruitment;
     private List<WorkDetailRes> works;
     private List<Image> images;
 
-    public static RecruitmentDetailRes of(Recruitment recruitment, List<WorkDetailRes> works, List<Image> images) {
+    public static RecruitmentDetailRes of(Recruitment recruitment, List<WorkDetailRes> works, List<Image> images, Long writerUid) {
         return RecruitmentDetailRes.builder()
                 .recruitment(recruitment)
+                .writerUid(writerUid)
                 .works(works)
                 .images(images)
                 .build();
