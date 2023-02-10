@@ -67,26 +67,51 @@ function FilterName({ onName }) {
 }
 
 function FilterArea({ onArea }) {
+  const [value, setValue] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
   return (
-    <CustomTextField
+    <Autocomplete
       sx={{ width: '100%' }}
-      label="선호하는 지역"
-      select
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start" style={{ color: '#FF7600' }}>
-            <FmdGoodOutlinedIcon />
-          </InputAdornment>
-        ),
+      multiple
+      limitTags="3"
+      options={selectedSections.map((option) => option)}
+      value={value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+        onArea(newValue);
       }}
-      onChange={onArea}
-    >
-      {selectedSections.map((selectedSection) => (
-        <MenuItem key={uuidv4()} value={selectedSection}>
-          {selectedSection}
-        </MenuItem>
-      ))}
-    </CustomTextField>
+      inputValue={inputValue}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
+      renderInput={(params) => (
+        <CustomTextField
+          {...params}
+          label="선호하는 지역"
+          placeholder="원하는 지역을 입력하세요"
+        />
+      )}
+    />
+    // <CustomTextField
+    //   sx={{ width: '100%' }}
+    //   label="선호하는 지역"
+    //   select
+    //   InputProps={{
+    //     startAdornment: (
+    //       <InputAdornment position="start" style={{ color: '#FF7600' }}>
+    //         <FmdGoodOutlinedIcon />
+    //       </InputAdornment>
+    //     ),
+    //   }}
+    //   onChange={onArea}
+    // >
+    //   {selectedSections.map((selectedSection) => (
+    //     <MenuItem key={uuidv4()} value={selectedSection}>
+    //       {selectedSection}
+    //     </MenuItem>
+    //   ))}
+    // </CustomTextField>
   );
 }
 
@@ -104,10 +129,14 @@ function FilterDate({ onStartDate }) {
       <DatePicker
         label="입도가능날짜"
         value={selectDate}
+        inputFormat="YYYY-MM-DD"
+        mask={'____-__-__'}
         onChange={(newValue) => {
           twoCalls(newValue);
         }}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => (
+          <CustomTextField {...params} sx={{ width: '100%' }} />
+        )}
       />
     </LocalizationProvider>
   );
@@ -120,6 +149,7 @@ function FilterStyle({ onStyleTags }) {
 
   return (
     <Autocomplete
+      sx={{ width: '100%' }}
       multiple
       limitTags={3}
       options={wishStyles.map((option) => option)}

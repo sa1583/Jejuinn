@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import React from 'react';
-import WorkHistory from './WorkHistory';
+import WorkHistory from '../WorkHistory';
 
 // resume.autoApply
 

@@ -1,5 +1,5 @@
 import { Stack, Avatar, Typography } from '@mui/material';
-import { images } from '../../assets/images';
+import { images } from '../../../assets/images';
 export default function MyMainArticle({ post }) {
   return (
     <Stack direction="row" sx={{ p: '2%' }} spacing={7}>

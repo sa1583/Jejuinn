@@ -3,7 +3,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import WhiteBox from '../whiteBox/WhiteBox';
+import WhiteBox from '../../whiteBox/WhiteBox';
 import MyMainArticle from './MyMainArticle';
 import MyMainRecruitment from './MyMainRecruitment';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { images } from '../../assets/images';
+import { images } from '../../../assets/images';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
