@@ -12,6 +12,8 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetail {
+    private long userUid;
+
     private String userName;
 
     private String gender;
@@ -23,6 +25,7 @@ public class UserDetail {
     public static UserDetail of(Optional<User> user) {
         if(user.isEmpty()) return null;
         return UserDetail.builder()
+                .userUid(user.get().getUid())
                 .userName(user.get().getUsername())
                 .gender(user.get().getGender())
                 .age(user.get().getAge())

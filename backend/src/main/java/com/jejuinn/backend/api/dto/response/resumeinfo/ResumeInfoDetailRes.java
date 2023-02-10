@@ -17,6 +17,8 @@ import java.util.Optional;
 public class ResumeInfoDetailRes {
     private long uid;
 
+    private long writerUid;
+
     private String content;
 
     private LocalDate possibleStartDate;
@@ -49,6 +51,7 @@ public class ResumeInfoDetailRes {
                                          UserDetail userDetail, List<StaffRecordDetail> staffRecordDetail) {
         return ResumeInfoDetailRes.builder()
                 .uid(resumeInfoDetail.getUid())
+                .writerUid(userDetail.getUserUid())
                 .content(resumeInfoDetail.getContent())
                 .possibleStartDate(resumeInfoDetail.getPossibleStartDate())
                 .minWorkPeriod(resumeInfoDetail.getMinWorkPeriod())

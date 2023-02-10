@@ -14,6 +14,12 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> 
 
     @Query("select w from Recruitment r left outer join Work w on r.uid = w.recruitment.uid where r.guestHouseUid = :guestHouseUid")
     List<Work> findWorkByGuestHouseUid(@Param("guestHouseUid") Long guestHouseUid);
+
+    @Query(value = "select g.representative_uid from recruitments r left outer join guest_houses g on r.guest_house_uid = g.uid" +
+            " where r.uid = :recruitmentUid", nativeQuery = true)
+    Long findUserUidByRecruitmentUid(@Param("recruitmentUid") Long recruitmentUid);
+
+
     /*@Query("select new com.jejuinn.backend.api.dto.response.resumeinfo(g.guestHouseName, r.title, r.uid) from Recruitment r " +
             "left outer join GuestHouse g on r.guestHouseUid = g.uid " +
             "where r.uid in (:uids)")
