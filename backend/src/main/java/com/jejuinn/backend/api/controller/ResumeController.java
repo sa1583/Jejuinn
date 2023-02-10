@@ -45,7 +45,7 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertResumeInfo(@Valid @RequestPart InsertResumeInfoPostReq insertResumeInfoPostReq) {
+    public ResponseEntity<?> insertResumeInfo(@Valid @RequestBody InsertResumeInfoPostReq insertResumeInfoPostReq) {
         resumeInfoRepository.save(insertResumeInfoPostReq.toResumeInfo());
         return ResponseEntity.status(200).build();
     }
