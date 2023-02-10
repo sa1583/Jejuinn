@@ -30,7 +30,17 @@ export default function StaffPickDetail() {
   // 명소 좌표 정보
   const [spots, setSpots] = useState([]);
 
-  const [reviewContent, setReviewContent] = useState([]);
+  const [reviewContent, setReviewContent] = useState({
+    content: '',
+    dateCreated: '',
+    images: [],
+    like: 0,
+    starRating: 0,
+    travelPlaceUid: '',
+    uid: '',
+    writer_nickname: '',
+    writer_uid: '',
+  });
   // 리뷰 정보와 명소 정보 받아오기
   const getReviewContent = async () => {
     const data = (await getReviewDetail(pageId)).data;
@@ -58,33 +68,36 @@ export default function StaffPickDetail() {
     navigate(`/staffpicklist/detail/update/${pageId}`);
   };
 
-  console.log(reviewContent);
-
-  const loginedUserUid = useSelector(selectUserInfo);
+  const loginedUserUid = useSelector(selectUserInfo).uid;
   const islogined = useSelector(selectIsLogin);
+
   const goCreate = () => {
     !islogined
       ? alert('로그인이 필요합니다.')
       : navigate('/staffpicklist/create');
   };
 
-  const actions = [
-    {
-      icon: <DeleteOutlineOutlinedIcon />,
-      name: '리뷰 삭제',
-      handle: deleteReview,
-    },
-    {
-      icon: <DriveFileRenameOutlineOutlinedIcon />,
-      name: '리뷰 수정',
-      handle: goUpdateReview,
-    },
-    { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
-  ];
+  const actions = () => {
+    return loginedUserUid === reviewContent.writer_uid
+      ? [
+          {
+            icon: <DeleteOutlineOutlinedIcon />,
+            name: '리뷰 삭제',
+            handle: deleteReview,
+          },
+          {
+            icon: <DriveFileRenameOutlineOutlinedIcon />,
+            name: '리뷰 수정',
+            handle: goUpdateReview,
+          },
+          { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
+        ]
+      : [{ icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate }];
+  };
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-      <SpeedDialComponent actions={actions} />
+      <SpeedDialComponent actions={actions()} />
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Grid container spacing={4}>

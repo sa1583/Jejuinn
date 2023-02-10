@@ -69,7 +69,7 @@ export default function StaffPick() {
     // console.log(data);
     // setSpotImgs(data);
     setSpotImgs(data);
-    setPageNum(2);
+    // setPageNum(2);
   };
 
   const getNextSpotImgs = async () => {
