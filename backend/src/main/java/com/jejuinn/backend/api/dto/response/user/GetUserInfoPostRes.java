@@ -1,7 +1,10 @@
 package com.jejuinn.backend.api.dto.response.user;
 
+import com.jejuinn.backend.db.entity.Authority;
 import com.jejuinn.backend.db.entity.User;
 import lombok.*;
+
+import java.util.Set;
 
 /**
  * 회원정보 응답 DTO ([Post] : /auth/users)
@@ -32,6 +35,10 @@ public class GetUserInfoPostRes {
 
     private String age;
 
+    private Set<Authority> authorities;
+
+    private String[] authorites;
+
     public static GetUserInfoPostRes from(User user) {
         System.out.println(user.getUsername());
         return GetUserInfoPostRes.builder()
@@ -43,6 +50,7 @@ public class GetUserInfoPostRes {
                 .profileImageUrl(user.getProfileImageUrl())
                 .gender(user.getGender())
                 .age(user.getAge())
+                .authorities(user.getAuthorities())
                 .phone(user.getPhone()).build();
     }
 }
