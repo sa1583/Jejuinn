@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { selectAccessToken, selectUserInfo } from '../../store/user';
+import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -14,7 +13,6 @@ import { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 import { deepOrange, grey } from '@mui/material/colors';
 import MyGuestHouseInfo from './MyGuestHouseInfo';
-import { myGuestHouseList } from '../../api/guestHouse';
 
 const Tab = styled(TabUnstyled)`
   font-family: SUIT-Regular, sans-serif;

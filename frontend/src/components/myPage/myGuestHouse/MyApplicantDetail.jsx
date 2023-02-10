@@ -8,17 +8,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import SendSMS from '../sendSMS/SendSMS';
-import { images } from '../../assets/images';
-import WorkHistory from './WorkHistory';
+import SendSMS from '../../sendSMS/SendSMS';
+import { images } from '../../../assets/images';
+import WorkHistory from '../WorkHistory';
 import { useNavigate } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
-import { getApplicantByUid } from '../../api/guestHouse';
+import { getApplicantByUid } from '../../../api/guestHouse';
 import { useSelector } from 'react-redux';
-import { selectAccessToken } from '../../store/user';
+import { selectAccessToken } from '../../../store/user';
 
 const style = {
   position: 'absolute',

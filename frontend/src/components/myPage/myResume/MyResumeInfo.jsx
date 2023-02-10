@@ -1,7 +1,6 @@
 import { Box, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { selectUserInfo } from '../../store/user';
+import { selectUserInfo } from '../../../store/user';
 
 export default function MyResumeInfo() {
   // redux에서 유저 정보 가져오기

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import { images } from '../../assets/images';
+import { images } from '../../../assets/images';
 
 export default function MyStaff({ myStaff }) {
   return (

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { selectAccessToken } from '../../store/user';
+import { selectAccessToken } from '../../../store/user';
 import { v4 as uuidv4 } from 'uuid';
 import { Box, Typography, Popover, Switch } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { myStaffList, myJobOfferList } from '../../api/guestHouse';
-import WhiteBox from '../whiteBox/WhiteBox';
+import { myStaffList, myJobOfferList } from '../../../api/guestHouse';
+import WhiteBox from '../../whiteBox/WhiteBox';
 import MyStaff from './MyStaff';
 import MyJobOffer from './MyJobOffer';
 

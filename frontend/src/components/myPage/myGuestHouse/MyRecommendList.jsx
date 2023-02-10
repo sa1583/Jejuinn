@@ -2,22 +2,22 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { selectAccessToken } from '../../store/user';
+import { selectAccessToken } from '../../../store/user';
 import { Box } from '@mui/material';
-import WhiteBox from '../whiteBox/WhiteBox';
+import WhiteBox from '../../whiteBox/WhiteBox';
 import MyApplicantCom from './MyApplicantCom';
-import { myApplicantList } from '../../api/guestHouse';
+import { myRecommendList } from '../../../api/guestHouse';
 
-export default function MyApplicantList() {
+export default function MyRecommendList() {
   const access_token = useSelector(selectAccessToken);
   const location = useLocation();
-  const workUid = location.pathname.split('applicantlist/')[1];
+  const workUid = location.pathname.split('recommendlist/')[1];
 
-  const [myApplicants, setMyApplicants] = useState([]);
-  async function getMyApplicants() {
-    const data = await myApplicantList(access_token, workUid);
+  const [myRecommends, setMyRecommends] = useState([]);
+  async function getMyRecommends() {
+    const data = await myRecommendList(access_token, workUid);
     console.log(data);
-    setMyApplicants(data);
+    setMyRecommends(data);
   }
 
   // const myApplicants = [
@@ -40,14 +40,14 @@ export default function MyApplicantList() {
   // ];
 
   useEffect(() => {
-    getMyApplicants();
+    getMyRecommends();
   }, []);
 
   return (
     <div>
       <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
         <h1 style={{ fontSize: '1.8rem', paddingBottom: '15px' }}>
-          지원자 목록
+          추천스탭 목록
         </h1>
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

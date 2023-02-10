@@ -3,10 +3,10 @@ import MyResumeInfo from './MyResumeInfo';
 import MyResumeApply from './MyResumeApply';
 import MyResumeWrite from './MyResumeWrite';
 import { useState } from 'react';
-import { getResume } from '../../api/resume';
-import NaverAuth from '../naverAuth/NaverAuth';
+import { getResume } from '../../../api/resume';
+import NaverAuth from '../../naverAuth/NaverAuth';
 import { useSelector } from 'react-redux';
-import { selectUserInfo } from '../../store/user';
+import { selectUserInfo } from '../../../store/user';
 
 export default function MyResume() {
   const [onModify, setOnModify] = useState(false);

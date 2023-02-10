@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, Modal } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import { images } from '../../assets/images';
+import { images } from '../../../assets/images';
 import MyApplicantDetail from './MyApplicantDetail';
 
 export default function MyStaff({ myApplicant }) {
