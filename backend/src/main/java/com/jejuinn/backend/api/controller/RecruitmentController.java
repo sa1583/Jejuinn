@@ -136,8 +136,10 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyWorkList(@PathVariable Long guestHouseUid) {
+        List<Work> works = recruitmentRepository.findWorkByGuestHouseUid(guestHouseUid);
+        if(works == null || works.size() == 0) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(
-                recruitmentRepository.findWorkByGuestHouseUid(guestHouseUid).stream().map(
+                works.stream().map(
                         work -> WorkListRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid())
                 )
