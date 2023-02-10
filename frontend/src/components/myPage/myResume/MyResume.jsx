@@ -26,19 +26,12 @@ export default function MyResume() {
     // resume 요청해서 있으면 가져오고 없으면 null
     async function getAndSetResume() {
       const res = await getResume(accessToken, userInfo.uid);
-      // const res = getResume(accessToken, userInfoTest.uid);
       setResume(res.data);
     }
     getAndSetResume();
-    // setResume({});
-    console.log(onModify);
   }, []);
 
   useEffect(() => {
-    console.log(
-      'useEffect',
-      userInfo.authorities.indexOf({ authorityName: 'ROLE_AUTH' }),
-    );
     userInfo?.authorities?.map((auth) => {
       if (auth.authorityName == 'ROLE_AUTH') setIsAuth(true);
     });

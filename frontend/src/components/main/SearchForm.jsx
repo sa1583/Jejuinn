@@ -93,15 +93,18 @@ export default function SearchForm() {
                   {...params}
                   label="선호하는 지역"
                   placeholder="선호하는 지역을 입력하세요"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        style={{ color: '#FF7600' }}
+                      >
+                        <FmdGoodOutlinedIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               )}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start" style={{ color: '#FF7600' }}>
-                    <FmdGoodOutlinedIcon />
-                  </InputAdornment>
-                ),
-              }}
             />
           </Stack>
           <Stack spacing={3} sx={{ width: 400, marginTop: '2vh' }}>

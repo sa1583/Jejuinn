@@ -71,7 +71,7 @@ function FilterArea({ value, setValue }) {
     <Autocomplete
       sx={{ width: '100%' }}
       multiple
-      limitTags="3"
+      limitTags={3}
       options={selectedSections.map((option) => option)}
       value={value}
       onChange={(event, newValue) => {
