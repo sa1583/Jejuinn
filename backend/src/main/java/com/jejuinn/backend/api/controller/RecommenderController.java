@@ -41,6 +41,8 @@ public class RecommenderController {
         for (RecommendResumeDto dto : recommendResumeDto) {
             log.info("RecommendResumeDto {} : {}", ++num, dto);
         }
+
+        List<Long> bestResumeUid = recommenderService.getScoreFromFlask(recommendWorkDto, recommendResumeDto);
         return null;
     }
 }
