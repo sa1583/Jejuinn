@@ -27,6 +27,7 @@ export default function StaffPickCreateForm({ nowPickId }) {
     files.forEach((file) => {
       formData.append('images', file);
     });
+
     await createSpotReview(acces_token, formData);
     navigate(`/staffpicklist/${nowPickId}`);
   };
@@ -62,8 +63,9 @@ export default function StaffPickCreateForm({ nowPickId }) {
         name="content"
         id="content"
         type="text"
-        value={content}
+        // value={content}
         getContent={getContent}
+        content={content}
       />
 
       <Box

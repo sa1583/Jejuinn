@@ -20,15 +20,16 @@ import StaffPickCreate from './routes/staffPickCreate/StaffPickCreate';
 import SendSMS from './components/sendSMS/SendSMS';
 import { createTheme, ThemeProvider } from '@mui/material';
 import MyPage from './routes/myPage/MyPage';
-import MyMain from './components/myPage/MyMain';
-import MyResume from './components/myPage/MyResume';
-import MyGuestHouse from './components/myPage/MyGuestHouse';
+import MyMain from './components/myPage/main/MyMain';
+import MyResume from './components/myPage/myResume/MyResume';
+import MyGuestHouse from './components/myPage/myGuestHouse/MyGuestHouse';
 import SignUpBox from './components/signUp/SignUpBox';
 import FindPassword from './routes/logIn/FindPassword';
-import MyApplicantList from './components/myPage/MyApplicantList';
+import MyApplicantList from './components/myPage/myGuestHouse/MyApplicantList';
 import GuestHouseCreate from './routes/guestHouseCreate/GuestHouseCreate';
 import VideoInterview from './routes/videoInterview/VideoInterview';
-import MyRecommendList from './components/myPage/MyRecommendList';
+import StaffPickUpdate from './routes/staffPickUpdate/StaffPickUpdate';
+import MyRecommendList from './components/myPage/myGuestHouse/MyRecommendList';
 import NaverAuthRedirect from './routes/naverAuth/NaverAuthRedirect';
 
 const router = createBrowserRouter([
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
       {
         path: 'staffpicklist/create',
         element: <StaffPickCreate />,
+      },
+      {
+        path: 'staffpicklist/detail/update/:id',
+        element: <StaffPickUpdate />,
       },
       {
         path: 'sendSMS',

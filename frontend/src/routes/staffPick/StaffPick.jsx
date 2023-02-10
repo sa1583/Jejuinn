@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
 import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
@@ -9,7 +9,6 @@ import StaffPickReviews from '../../components/staffPickComponent/StaffPickRevie
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
   getSpotsPin,
   getSpotsImg,
@@ -17,6 +16,8 @@ import {
   getSpotsByFilter,
 } from '../../api/staffPick';
 import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../../store/user';
 export default function StaffPick() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,8 +39,11 @@ export default function StaffPick() {
     setSpots(data);
   };
 
+  const islogined = useSelector(selectIsLogin);
   const goCreate = () => {
-    navigate('/staffpicklist/create');
+    !islogined
+      ? alert('로그인이 필요합니다.')
+      : navigate('/staffpicklist/create');
   };
 
   const actions = [
@@ -58,19 +62,25 @@ export default function StaffPick() {
 
   // 명소 이미지 리스트 받아오기
   const [spotImgs, setSpotImgs] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
 
   const getSpotsImgs = async () => {
-    const data = (await getSpotsImg()).data.content;
+    const data = (await getSpotsImg(pageNum)).data.content;
+    // console.log(data);
+    // setSpotImgs(data);
     setSpotImgs(data);
+    setPageNum(2);
+  };
+
+  const getNextSpotImgs = async () => {
+    const data = (await getSpotsImg(pageNum + 1)).data.content;
+    setPageNum((prev) => prev + 1);
+    setSpotImgs((prev) => prev.concat(data));
   };
 
   // 명소 정보 받아오기
   const [selectedSpot, setSelectedSpot] = useState(false);
 
-  // 클릭한 명소의 uid, name을 받고
-  // uid를 이용해 해당 명소의 리뷰 리스트를 받아오는 로직
-  // 나중에 fetch 우리서버랑 통신으로 바꿔줘야함
-  //
   const selectSpot = async () => {
     const data = (await getSpotInfo(pageId)).data.travelPlace;
     setSelectedSpot(data);
@@ -82,10 +92,12 @@ export default function StaffPick() {
   };
 
   useEffect(() => {
-    // if (!pageId) {
-    getSpotsPins();
-    // }
+    if (!pageId) {
+      getSpotsPins();
+    }
   }, []);
+
+  // 이 아래는 무한스크롤 구현 완료되면 지워도 되려나
   useEffect(() => {
     if (!pageId) {
       getSpotsImgs();
@@ -98,7 +110,34 @@ export default function StaffPick() {
     }
   }, [pageId]);
 
-  // 반응형 안할꺼면 다 xs값에 md값 넣어주면 됨
+  // const [bottom, setBottom] = useState(null);
+  // const bottomObserver = useRef(null);
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting) {
+  //         console.log(pageNum);
+  //       }
+  //     },
+  //     { threshold: 0.5, rootMargin: '80px' },
+  //   );
+  //   bottomObserver.current = observer;
+  // }, []);
+
+  // useEffect(() => {
+  //   const observer = bottomObserver.current;
+  //   if (bottom) {
+  //     observer.observe(bottom);
+  //   }
+  //   setPageNum(2);
+  //   console.log(1);
+  //   return () => {
+  //     if (bottom) {
+  //       observer.unobserve(bottom);
+  //     }
+  //   };
+  // }, [bottom]);
+
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <SpeedDialComponent actions={actions} />
@@ -144,12 +183,14 @@ export default function StaffPick() {
                 <StaffPickSpotList
                   selectSpot={selectSpot}
                   spotImgs={spotImgs}
+                  getNextSpotImgs={getNextSpotImgs}
                 />
               }
             />
           </Grid>
         )}
       </Grid>
+      {/* <div ref={setBottom} /> */}
     </Box>
   );
 }

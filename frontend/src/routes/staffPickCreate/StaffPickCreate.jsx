@@ -39,7 +39,14 @@ export default function StaffPickCreate() {
       <Grid container spacing={4}>
         <Grid item xs={12} lg={4}>
           <Grid item xs={12}>
-            <WhiteBox cpn={<StaffPickCreateInfo nowPick={nowPick} />} />
+            <WhiteBox
+              cpn={
+                <StaffPickCreateInfo
+                  nowPick={nowPick}
+                  getSpotsPins={getSpotsPins}
+                />
+              }
+            />
           </Grid>
         </Grid>
 

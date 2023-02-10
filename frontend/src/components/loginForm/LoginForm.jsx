@@ -43,7 +43,7 @@ export default function LoginForm() {
     },
     null,
     {
-      name: '비밀번호 찾기',
+      name: '비밀번호 재발급',
       url: '/login/findpassword',
     },
   ];

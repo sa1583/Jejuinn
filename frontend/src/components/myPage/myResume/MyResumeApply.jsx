@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import React from 'react';
-import WorkHistory from './WorkHistory';
+import WorkHistory from '../WorkHistory';
 
 // resume.autoApply
 
@@ -100,14 +100,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         <Typography minWidth="100px">근무이력</Typography>
         <Stack direction="row" spacing={2}>
           {historyList.map((history) => {
-            return (
-              <WorkHistory
-                key={history.uid}
-                guestHouseName={history.guestHouseName}
-                startDate={history.startDate}
-                endDate={history.endDate}
-              />
-            );
+            return <WorkHistory key={history.uid} history={history} />;
           })}
         </Stack>
       </Stack>

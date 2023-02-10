@@ -1,5 +1,5 @@
 import { Box, Stack, Avatar, Typography } from '@mui/material';
-import { images } from '../../assets/images';
+import { images } from '../../../assets/images';
 
 export default function MyMainLike({ recruitment }) {
   return (
