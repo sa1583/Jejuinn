@@ -81,7 +81,7 @@ public class GuestHouseController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> insertGuestHouse(@RequestPart("images") List<MultipartFile> images,
-                                              @RequestPart("guest-house") InsertGuestHousePostReq req){
+                                              @RequestPart("guestHouse") InsertGuestHousePostReq req){
 
         // 게스트 하우스 저장
         GuestHouse guestHouse = guestHouseRepository.save(req.toGuestHouse());
@@ -112,9 +112,9 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateGuestHouse(@RequestPart(value = "upload-images", required = false) List<MultipartFile> images,
-                                              @RequestPart("guest-house") InsertGuestHousePostReq req,
-                                              @RequestPart(value = "delete-images", required = false) List<Long> list,
+    public ResponseEntity<?> updateGuestHouse(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> images,
+                                              @RequestPart("guestHouse") InsertGuestHousePostReq req,
+                                              @RequestPart(value = "deleteImages", required = false) List<Long> list,
                                               @PathVariable String guestHouseUid){
 
         // 게스트 하우스 저장
