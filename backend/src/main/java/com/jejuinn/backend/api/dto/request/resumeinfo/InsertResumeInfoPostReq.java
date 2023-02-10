@@ -36,6 +36,8 @@ public class InsertResumeInfoPostReq {
     @NotNull
     private boolean autoApply;
 
+    private String instagramLink;
+
     private List<String> personTypes;
 
     private List<String> interestAreas;
@@ -66,6 +68,7 @@ public class InsertResumeInfoPostReq {
                 .guestHouseType(this.guestHouseType)
                 .personTypes(toPersonType())
                 .interestAreas(toArea())
+                .instagramLink(this.instagramLink)
                 .build();
     }
 }

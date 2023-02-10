@@ -54,8 +54,10 @@ public class ResumeInfo {
 
     private boolean isDeleted;
 
-    @Column(name = "is_read")
-    private boolean isRead;
+    private LocalDate isRead;
+
+    @Column(length = 50)
+    private String instagramLink;
 
     @ManyToMany
     @JoinTable(

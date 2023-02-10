@@ -26,6 +26,11 @@ public class GetUserInfoPostRes {
 
     private int sugarContent;
 
+    private String profileImageUrl;
+
+    private String gender;
+
+    private String age;
 
     public static GetUserInfoPostRes from(User user) {
         System.out.println(user.getUsername());
@@ -35,6 +40,9 @@ public class GetUserInfoPostRes {
                 .username(user.getUsername())
                 .nickname(user.getNickname())
                 .sugarContent((int) user.getSugarContent())
+                .profileImageUrl(user.getProfileImageUrl())
+                .gender(user.getGender())
+                .age(user.getAge())
                 .phone(user.getPhone()).build();
     }
 }
