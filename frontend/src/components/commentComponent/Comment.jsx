@@ -4,6 +4,7 @@ import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { deleteComment, updateComment } from '../../api/comment';
 import { images } from '../../assets/images';
+import { deepOrange } from '@mui/material/colors';
 
 export default function CommentList({
   comment,
@@ -14,20 +15,20 @@ export default function CommentList({
   const [putComment, setPutComment] = useState(comment.content);
   const changeComment = async () => {
     if (putComment !== '') {
-      await updateComment(putComment, comment.commentUid, accessToken);
+      await updateComment(putComment, comment?.commentUid, accessToken);
       getComments();
     } else {
       alert('내용을 입력해주세요.');
     }
   };
   const commentDelete = async () => {
-    await deleteComment(comment.commentUid, accessToken);
+    await deleteComment(comment?.commentUid, accessToken);
     getComments();
   };
 
   const [changeStatus, setChangeStatus] = useState(false);
-  const commentWriter = comment.userUid;
-  const loginedUser = userInfo.uid;
+  const commentWriter = comment?.userUid;
+  const loginedUser = userInfo?.uid;
 
   const profileImage = () => {
     const purl = comment.profileImgUrl;
@@ -53,7 +54,12 @@ export default function CommentList({
       >
         <Avatar
           src={profileImage()}
-          sx={{ width: '2rem', height: '2rem', marginTop: '0.5rem' }}
+          sx={{
+            width: '2rem',
+            height: '2rem',
+            marginTop: '0.5rem',
+            bgcolor: deepOrange[500],
+          }}
         ></Avatar>
         <Box sx={{ width: '100%' }}>
           <Box

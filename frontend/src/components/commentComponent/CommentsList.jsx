@@ -6,7 +6,11 @@ import CommentBox from './CommentBox';
 import { v4 as uuidv4 } from 'uuid';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
-import { selectAccessToken, selectUserInfo } from '../../store/user';
+import {
+  selectAccessToken,
+  selectIsLogin,
+  selectUserInfo,
+} from '../../store/user';
 import { useSelector } from 'react-redux';
 
 export default function CommentsList() {
@@ -16,7 +20,7 @@ export default function CommentsList() {
   const postType = post === 'guesthouse' ? 'GUEST_HOUSE' : 'REVIEW';
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
-
+  const isLogined = useSelector(selectIsLogin);
   const [comments, setComments] = useState([]);
   const getComments = async () => {
     const data = (await getCommentList(postType, postUid)).data;
@@ -37,6 +41,7 @@ export default function CommentsList() {
             getComments={getComments}
             accessToken={accessToken}
             userInfo={userInfo}
+            isLogined={isLogined}
           />
         }
       />
