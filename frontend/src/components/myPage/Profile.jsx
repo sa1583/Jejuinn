@@ -1,7 +1,9 @@
-import { Box, styled, Button, Avatar, Stack } from '@mui/material';
+import { styled, Button, Avatar, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { images } from '../../assets/images';
 import WhiteBox from '../whiteBox/WhiteBox';
+import { useSelector } from 'react-redux';
+import { selectUserInfo } from '../../store/user';
 
 const CustomButton = styled(Button)({
   color: '#FFFFFF',
@@ -16,6 +18,8 @@ const CustomButton = styled(Button)({
 });
 
 export default function Profile() {
+  const userInfo = useSelector(selectUserInfo);
+
   const navigate = useNavigate();
   const onMypage = () => {
     navigate('/mypage');

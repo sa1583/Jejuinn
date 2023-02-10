@@ -1,9 +1,16 @@
 import { apiInstance } from './index';
+import { useSelector } from 'react-redux';
+import { selectAccessToken, selectUserInfo } from '../store/user';
 
 const api = apiInstance();
 
+const Access_token = () => {
+  const token = useSelector(selectAccessToken);
+  return token;
+};
+
 const allWorkList = () => {
-  return api.get('/api/job-offer');
+  return api.get(`/api/job-offer?pageNumber=${1}`);
 };
 
 const filteredWorkList = (filterValues) => {
@@ -14,13 +21,65 @@ const filteredWorkList = (filterValues) => {
     },
   };
   return api.post('/api/job-offer/filter', config, {});
-  // props 정상적으로 작동하는지 확인해보려고 만든 리턴
-  // API 연결 후 위의 리턴 주석 해지
-  // return [['work1'], ['work5']];
 };
 
 const recruitmentDetail = (recruitmentUid) => {
   return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
 };
 
-export { recruitmentDetail, allWorkList, filteredWorkList };
+const writeRecruitment = (body) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${Access_token()}`,
+    },
+  };
+  return api.post('/auth/job-offer', body, config);
+};
+
+function createWork(body, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/work', body, config);
+}
+
+function updateWorkDetail() {
+  return api.put();
+}
+
+function deleteWorkDetail(workUid, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.delete(`/auth/work/${13}`, config);
+}
+
+const getMyWorks = (token, guestHouseUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.get(`/auth/recruitment-work-list/${guestHouseUid}`, config);
+  // return [{ uid: 1 }, { uid: 2 }, { uid: 3 }];
+};
+
+const getMyRecruitments = (guestHouseUid) => {
+  return api.get(`/api/guest-house-recruitment/${guestHouseUid}`);
+};
+
+export {
+  recruitmentDetail,
+  allWorkList,
+  filteredWorkList,
+  writeRecruitment,
+  createWork,
+  updateWorkDetail,
+  deleteWorkDetail,
+  getMyWorks,
+  getMyRecruitments,
+};

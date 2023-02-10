@@ -131,6 +131,8 @@ const userSlice = createSlice({
     userInfo: null,
     accessToken: null,
     refreshToken: null,
+    myGuestHouses: [],
+    myRecruitments: [],
   },
   reducers: {
     logout: (state) => {

@@ -33,4 +33,4 @@ function getResume(accessToken, userUid) {
   return api.get(`/auth/job-search/${userUid}`, header);
 }
 
-export { myCareerList, getResume };
+export { myCareerList, getResume, Access_token };

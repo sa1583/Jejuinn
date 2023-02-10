@@ -93,36 +93,15 @@ function FilterArea({ onArea }) {
         />
       )}
     />
-    // <CustomTextField
-    //   sx={{ width: '100%' }}
-    //   label="선호하는 지역"
-    //   select
-    //   InputProps={{
-    //     startAdornment: (
-    //       <InputAdornment position="start" style={{ color: '#FF7600' }}>
-    //         <FmdGoodOutlinedIcon />
-    //       </InputAdornment>
-    //     ),
-    //   }}
-    //   onChange={onArea}
-    // >
-    //   {selectedSections.map((selectedSection) => (
-    //     <MenuItem key={uuidv4()} value={selectedSection}>
-    //       {selectedSection}
-    //     </MenuItem>
-    //   ))}
-    // </CustomTextField>
   );
 }
 
 function FilterDate({ onStartDate }) {
   const [selectDate, setSelectDate] = useState();
-  const twoCalls = (imp) => {
-    handleDate(imp);
-    onStartDate(imp);
-  };
-  const handleDate = (inIsland) => {
-    setSelectDate(inIsland);
+  const handelOnChange = (event) => {
+    console.log(event);
+    setSelectDate(event.$d.toISOString().split('T')[0]);
+    onStartDate(event.$d.toISOString().split('T')[0]);
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -132,7 +111,7 @@ function FilterDate({ onStartDate }) {
         inputFormat="YYYY-MM-DD"
         mask={'____-__-__'}
         onChange={(newValue) => {
-          twoCalls(newValue);
+          // twoCalls(newValue);
         }}
         renderInput={(params) => (
           <CustomTextField {...params} sx={{ width: '100%' }} />
