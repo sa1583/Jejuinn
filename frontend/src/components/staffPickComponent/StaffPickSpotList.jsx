@@ -23,7 +23,7 @@ export default function StaffPickSpotList({
   const goReviews = (e) => {
     navigate(`/staffpicklist/${e.target.id}`);
   };
-
+  console.log(spotImgs);
   return (
     <Box sx={{ padding: '3vh' }}>
       <h2>
@@ -43,9 +43,9 @@ export default function StaffPickSpotList({
                 onClick={(e) => {
                   goReviews(e);
                 }}
-                // name={item.name}
+                // name={item.travelPlaceName}
               />
-              {/* <ImageListItemBar title={item.name} /> */}
+              <ImageListItemBar title={item.travelPlaceName} />
             </ImageListItem>
           ))}
         </ImageList>
