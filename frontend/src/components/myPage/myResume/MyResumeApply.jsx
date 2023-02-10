@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import React from 'react';
 import WorkHistory from '../WorkHistory';
-import { changeAutoApply } from '../../../api/user';
+import { changeAutoApply } from '../../../api/resume';
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
 
@@ -56,6 +56,11 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
     getData();
   }, [autoRecommand]);
 
+  const handleChangeAutoApply = async () => {
+    const newAnchor = await changeAutoApply(accessToken, userInfo.uid);
+    setAnchorEl(newAnchor);
+  };
+
   const open = Boolean(anchorEl);
   return (
     <Stack p="3%" spacing={3}>
@@ -92,13 +97,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         </Popover>
         <FormControlLabel
           value="start"
-          control={
-            <Switch
-              color="primary"
-              defaultChecked
-              onChange={handleChangeAutoRecommand}
-            />
-          }
+          control={<Switch color="primary" onChange={handleChangeAutoApply} />}
           label="자동추천"
           labelPlacement="start"
         />
