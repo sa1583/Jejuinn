@@ -4,7 +4,7 @@ import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
 
-export default function GuestHouseInfo() {
+export default function GuestHouseInfo({ guestHouse }) {
   const hashTags = ['파티', '오션뷰', '조식', '서핑', '친목'];
 
   return (
@@ -40,15 +40,15 @@ export default function GuestHouseInfo() {
 
       <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
         <PhoneAndroidIcon sx={{ color: '#FF7600', padding: '5px' }} />
-        <p>010-1234-1234</p>
+        <p>{guestHouse?.phone}</p>
       </Box>
       <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
         <EmailIcon sx={{ color: '#FF7600', padding: '5px' }} />
-        <p>aldkjfl@gmail.com</p>
+        <p>{guestHouse?.email}</p>
       </Box>
       <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
         <HomeIcon sx={{ color: '#FF7600', padding: '5px' }} />
-        <p>제주특별자치도 제주시 구좌읍 행원로</p>
+        <p>{guestHouse?.address}</p>
       </Box>
     </div>
   );

@@ -75,28 +75,28 @@ const TabsList = styled(TabsListUnstyled)(
 export default function MyGuestHouse() {
   const access_token = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
-  // const [myGuestHouses, setMyGuestHouses] = useState([]);
+  const [myGuestHouses, setMyGuestHouses] = useState([]);
 
-  // async function getMyGuestHouse() {
-  //   const data = await myGuestHouseList(access_token, userInfo.uid);
-  //   console.log(data.data);
-  //   setMyGuestHouses(data.data);
-  // }
+  async function getMyGuestHouse() {
+    const data = await myGuestHouseList(access_token, userInfo.uid);
+    console.log(data.data);
+    setMyGuestHouses(data.data);
+  }
 
-  const myGuestHouses = [
-    {
-      uid: '1',
-      gusetHouseName: '게토게스트하우스',
-    },
-    {
-      uid: '2',
-      gusetHouseName: '간장남게스트하우스',
-    },
-  ];
+  // const myGuestHouses = [
+  //   {
+  //     uid: '1',
+  //     gusetHouseName: '게토게스트하우스',
+  //   },
+  //   {
+  //     uid: '2',
+  //     gusetHouseName: '간장남게스트하우스',
+  //   },
+  // ];
 
-  // useEffect(() => {
-  //   getMyGuestHouse();
-  // }, []);
+  useEffect(() => {
+    getMyGuestHouse();
+  }, []);
 
   return (
     <>
@@ -135,7 +135,7 @@ export default function MyGuestHouse() {
           <TabsUnstyled defaultValue={0}>
             <TabsList>
               {myGuestHouses.map((myGuestHouse) => {
-                return <Tab key={uuidv4()}>{myGuestHouse.gusetHouseName}</Tab>;
+                return <Tab key={uuidv4()}>{myGuestHouse.guestHouseName}</Tab>;
               })}
             </TabsList>
             {myGuestHouses.map((myGuestHouse, index) => {
