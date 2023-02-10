@@ -68,7 +68,7 @@ export default function StaffPickDetail() {
     navigate(`/staffpicklist/detail/update/${pageId}`);
   };
 
-  const loginedUserUid = useSelector(selectUserInfo).uid;
+  const loginedUserUid = useSelector(selectUserInfo)?.uid;
   const islogined = useSelector(selectIsLogin);
 
   const goCreate = () => {
@@ -113,7 +113,11 @@ export default function StaffPickDetail() {
         <Grid item xs={12} md={8}>
           <WhiteBox
             cpn={
-              <ReviewContent reviewContent={reviewContent} pageId={pageId} />
+              <ReviewContent
+                reviewContent={reviewContent}
+                pageId={pageId}
+                islogined={islogined}
+              />
             }
           />
         </Grid>

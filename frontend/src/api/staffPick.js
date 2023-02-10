@@ -40,7 +40,6 @@ function getSpotsPin() {
 
 // 명소 리스트 이미지
 function getSpotsImg(pageNumber) {
-  console.log(pageNumber);
   return api.get(`/api/travel-places?pageNumber=${pageNumber}`);
 }
 
