@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetCommentListPostRes {
+    private Long commentUid;
+
     private String postType;
 
     private Long postUid;
@@ -24,14 +26,18 @@ public class GetCommentListPostRes {
 
     private LocalDateTime dateCreated;
 
+    private String profileImgUrl;
+
     public static GetCommentListPostRes of(Comment comment, User user) {
         return GetCommentListPostRes.builder()
+                .commentUid(comment.getUid())
                 .postType(comment.getPostType())
                 .postUid(comment.getPostUid())
                 .userUid(comment.getUserUid())
                 .nickname(user.getNickname())
                 .content(comment.getContent())
                 .dateCreated(comment.getDateCreated())
+                .profileImgUrl(user.getProfileImageUrl())
                 .build();
     }
 }
