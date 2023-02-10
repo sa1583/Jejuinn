@@ -13,11 +13,11 @@ export default function MyResume() {
   const [resume, setResume] = useState(getResume());
   // resume 요청해서 있으면 가져오고 없으면 null
 
-  const userInfo = useSelector(selectUserInfo);
+  // const userInfo = useSelector(selectUserInfo);
 
-  // const userInfo = {
-  //   authorities: ['naver'],
-  // };
+  const userInfo = {
+    authorities: ['naver'],
+  };
 
   const changeApplyComp = () => {
     setOnModify(!onModify);
@@ -25,7 +25,7 @@ export default function MyResume() {
 
   return (
     <>
-      {userInfo.authorities?.indexOf('naver') > -1 ? (
+      {userInfo?.authorities?.indexOf('naver') > -1 ? (
         <Box sx={{ p: '3%' }}>
           <MyResumeInfo />
           <hr />
