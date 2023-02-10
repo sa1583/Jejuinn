@@ -12,10 +12,10 @@ export default function MyResume() {
   const [onModify, setOnModify] = useState(false);
   const [resume, setResume] = useState();
 
-  const userInfoTest = useSelector(selectUserInfo);
+  const userInfo = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
 
-  const userInfo = { ...userInfoTest, authorities: ['naver'] };
+  // const userInfo = { ...userInfoTest, authorities: ['naver'] };
 
   const changeApplyComp = () => {
     setOnModify(!onModify);
@@ -24,16 +24,22 @@ export default function MyResume() {
   useEffect(() => {
     // resume 요청해서 있으면 가져오고 없으면 null
     async function getAndSetResume() {
-      const res = await getResume(accessToken, userInfoTest.uid);
+      const res = await getResume(accessToken, userInfo.uid);
       // const res = getResume(accessToken, userInfoTest.uid);
       setResume(res.data);
     }
-    getAndSetResume();
+    // getAndSetResume();
+    setResume({});
+    console.log(onModify);
   }, []);
+
+  useEffect(() => {
+    console.log('useEffect', userInfo);
+  }, [userInfo]);
 
   return (
     <>
-      {userInfo?.authorities?.indexOf('naver') > -1 ? (
+      {userInfo.authorities?.indexOf({ authorityName: 'ROLE_AUTH' }) > -1 ? (
         <Box sx={{ p: '3%' }}>
           <MyResumeInfo />
           <hr />

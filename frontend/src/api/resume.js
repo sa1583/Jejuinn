@@ -33,4 +33,22 @@ function getResume(accessToken, userUid) {
   return api.get(`/auth/job-search/${userUid}`, header);
 }
 
-export { myCareerList, getResume, Access_token };
+const registMyResume = (token, body) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/job-search', body, header);
+};
+
+const changeAutoApply = (token, uid) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put(`/auth/auto-apply/${uid}`, {}, header);
+};
+
+export { myCareerList, getResume, registMyResume, changeAutoApply };
