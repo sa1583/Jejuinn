@@ -5,14 +5,7 @@ import GuestHouseReviewCreate from './GuestHouseReviewCreate';
 import GuestHouseReviewList from './GuestHouseReviewList';
 import WhiteBox from '../whiteBox/WhiteBox';
 
-export default function GuestHouseContent() {
-  const images = [
-    'https://cdn.pixabay.com/photo/2021/08/23/01/03/cubic-house-6566412_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2021/08/08/14/16/road-6531031__340.jpg',
-    'https://cdn.pixabay.com/photo/2014/07/10/17/18/large-home-389271_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070__340.jpg',
-    'https://cdn.pixabay.com/photo/2017/03/28/12/10/chairs-2181947__340.jpg',
-  ];
+export default function GuestHouseContent({ guestHouse, images }) {
   const comments = [
     {
       img: 'Jin',
@@ -28,17 +21,9 @@ export default function GuestHouseContent() {
 
   return (
     <Box sx={{ padding: '5%' }}>
-      <ImageSlider images={images} />
+      <ImageSlider items={images} />
       <h2 style={{ color: '#FF7600' }}>소개글</h2>
-      <p style={{ fontSize: '1.1rem' }}>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga dicta
-        repellat adipisci veniam excepturi hic ea cupiditate itaque eum
-        obcaecati saepe odit assumenda, voluptatum explicabo earum mollitia
-        deserunt eveniet quidem? Lorem ipsum dolor, sit amet consectetur
-        adipisicing elit. Quibusdam placeat maxime maiores nihil cumque optio
-        beatae consequuntur ratione ducimus, rerum, iusto et doloribus, natus
-        earum repellat sit expedita velit excepturi.
-      </p>
+      <p style={{ fontSize: '1.1rem' }}>{guestHouse?.introduction}</p>
       <br />
 
       <h2 style={{ color: '#FF7600' }}>리뷰</h2>

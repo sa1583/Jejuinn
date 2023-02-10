@@ -1,11 +1,9 @@
 import { apiInstance } from './index';
-import { useSelector } from 'react-redux';
-import { selectAccessToken } from '../store/user';
 
 const api = apiInstance();
 
-const allGuestHouseList = () => {
-  return api.get('/api/guest-houses');
+const allGuestHouseList = (pageNumber) => {
+  return api.get(`/api/guest-houses?pageNumber=${pageNumber}`);
 };
 
 const getMyGuestHouses = (token, userUid) => {
@@ -34,9 +32,10 @@ const guestHouseCreate = (token, body) => {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
-  return api.post('/auth/guest-house', body, config);
+  return api.post(`/auth/guest-house`, body, config);
 };
 
 const guestHouseUpdate = (token, guestHouseUid, body) => {
@@ -78,13 +77,8 @@ const myStaffList = (token, guestHouseUid) => {
   );
 };
 
-const myJobOfferList = (token, guestHouseUid) => {
-  const config = {
-    headers: {
-      accessToken: `Bearer ${token}`,
-    },
-  };
-  return api.get(`/auth/job-offer/${guestHouseUid}`, config);
+const myJobOfferList = (guestHouseUid) => {
+  return api.get(`/api/job-offer/${guestHouseUid}`);
 };
 
 const myApplicantList = (token, workUid) => {
