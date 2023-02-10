@@ -1,7 +1,6 @@
 import { Box, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { selectUserInfo } from '../../store/user';
+import { selectUserInfo } from '../../../store/user';
 
 export default function MyResumeInfo() {
   // redux에서 유저 정보 가져오기
@@ -15,28 +14,28 @@ export default function MyResumeInfo() {
           이름
         </Grid>
         <Grid item md={8}>
-          {userInfo.username}
+          {userInfo?.username}
         </Grid>
 
         <Grid item md={4}>
           나이 (성별)
         </Grid>
         <Grid item md={8}>
-          {userInfo.age} ({userInfo.gender})
+          {userInfo?.age} ({userInfo?.gender})
         </Grid>
 
         <Grid item md={4}>
           휴대폰번호
         </Grid>
         <Grid item md={8}>
-          {userInfo.phone}
+          {userInfo?.phone}
         </Grid>
 
         <Grid item md={4}>
           이메일
         </Grid>
         <Grid item md={8}>
-          {userInfo.email}
+          {userInfo?.email}
         </Grid>
       </Grid>
     </Box>

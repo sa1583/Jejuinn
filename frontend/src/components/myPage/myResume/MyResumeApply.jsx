@@ -6,15 +6,22 @@ import {
   Typography,
   Stack,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import React from 'react';
-import WorkHistory from './WorkHistory';
+import WorkHistory from '../WorkHistory';
+import { changeAutoApply } from '../../../api/user';
+import { useSelector } from 'react-redux';
+import { selectAccessToken, selectUserInfo } from '../../../store/user';
 
 // resume.autoApply
 
 export default function MyResumeApply({ resume, changeApplyComp }) {
+  const accessToken = useSelector(selectAccessToken);
+  const userInfo = useSelector(selectUserInfo);
+
   const [anchorEl, setAnchorEl] = useState(null);
+  const [autoRecommand, setAutoRecommand] = useState(true);
   const [historyList, setHistoryList] = useState([
     {
       uid: 1,
@@ -37,6 +44,17 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
+  const handleChangeAutoRecommand = (event) => {
+    setAutoRecommand(event.target.checked);
+  };
+
+  useEffect(() => {
+    // 자동추천 여부를 변경하는 요청을 보냄
+    async function getData() {
+      await changeAutoApply(accessToken, userInfo.uid);
+    }
+    getData();
+  }, [autoRecommand]);
 
   const open = Boolean(anchorEl);
   return (
@@ -74,7 +92,13 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         </Popover>
         <FormControlLabel
           value="start"
-          control={<Switch color="primary" defaultChecked />}
+          control={
+            <Switch
+              color="primary"
+              defaultChecked
+              onChange={handleChangeAutoRecommand}
+            />
+          }
           label="자동추천"
           labelPlacement="start"
         />

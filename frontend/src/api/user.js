@@ -73,16 +73,30 @@ function getPasswordCode(body) {
 
 const processNaverAuth = (accessToken, socialToken) => {
   const header = {
-    accessToken,
-    socialToken,
+    headers: {
+      accessToken: `Bearer ${accessToken}`,
+      socialToken: `Bearer ${socialToken}`,
+    },
   };
   return api.post('/api/users/social/auth/users/naver-auth', {}, header);
 };
+
 
 // 로그아웃
 function logout(uid) {
   return api.post(`/auth/users/logout/${uid}`);
 }
+
+const changeAutoApply = (accessToken, uid) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${accessToken}`,
+    },
+  };
+  console.log('header', header);
+  return api.put(`/auth/auto-apply/${uid}`, {}, header);
+};
+
 
 export {
   getOurTokens,
@@ -95,4 +109,5 @@ export {
   getPasswordCode,
   signUpApi,
   processNaverAuth,
+  changeAutoApply,
 };
