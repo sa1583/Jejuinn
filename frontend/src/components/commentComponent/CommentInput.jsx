@@ -4,29 +4,47 @@ import { Button, Typography } from '@mui/material';
 // import styles from './CommentInput.module.css';
 import { deepOrange } from '@mui/material/colors';
 import { useSelector } from 'react-redux';
-import { selectAccessToken, selectUserInfo } from '../../store/user';
+import { selectUserInfo } from '../../store/user';
 import { useState } from 'react';
-import { useLocation } from 'react-router';
 import { createComment } from '../../api/comment';
+import { images } from '../../assets/images';
 
-export default function CommentInput() {
+export default function CommentInput({
+  postUid,
+  postType,
+  getComments,
+  accessToken,
+  userInfo,
+}) {
   // 여기서 로그인한 유저 정보 redux에서 받아와서 AVATAR, 닉네임 넣으면 됨
-  const userInfo = useSelector(selectUserInfo);
-  const accessToken = useSelector(selectAccessToken);
-  const location = useLocation();
-  const postUid = location.pathname.split('detail/')[1];
-  const post = location.pathname.split('/')[1];
 
   const [content, setContent] = useState('');
-
   const commentCreate = async () => {
-    const postType = post === 'guesthouse' ? 'GUEST_HOUSE' : 'REVIEW';
-    const body = {
-      content,
-      postUid,
-      postType,
-    };
-    const data = await createComment(body, accessToken);
+    if (content !== '') {
+      const body = {
+        content,
+        postUid,
+        postType,
+      };
+      await createComment(body, accessToken);
+      await getComments();
+      setContent('');
+    } else {
+      alert('내용을 입력해주세요.');
+    }
+  };
+
+  const profileImage = () => {
+    const purl = userInfo.profileImageUrl;
+    if (purl) {
+      if (purl.slice(0, 4) == 'http') {
+        return purl;
+      } else {
+        return `${images.defalut_url}${purl}`;
+      }
+    } else {
+      return '';
+    }
   };
 
   return (
@@ -45,11 +63,12 @@ export default function CommentInput() {
             bgcolor: deepOrange[500],
             marginTop: '0.5rem',
           }}
-        >
-          Cho
-        </Avatar>
+          src={profileImage()}
+        ></Avatar>
         <Box sx={{ width: '100%' }}>
-          <Typography sx={{ fontWeight: 'bolder' }}>초이유태</Typography>
+          <Typography sx={{ fontWeight: 'bolder' }}>
+            {userInfo.nickname}
+          </Typography>
           <Box
             sx={{
               display: 'flex',
