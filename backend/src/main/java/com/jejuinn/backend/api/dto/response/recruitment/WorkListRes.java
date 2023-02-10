@@ -3,6 +3,8 @@ package com.jejuinn.backend.api.dto.response.recruitment;
 import com.jejuinn.backend.db.entity.Work;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -32,6 +34,8 @@ public class WorkListRes {
 
     private String salary;
 
+    private LocalDate entryDate;
+
     public static WorkListRes of(Work work, Long userUid) {
         if(work == null) return null;
         return WorkListRes.builder()
@@ -46,6 +50,7 @@ public class WorkListRes {
                 .workTime(work.getWorkTime())
                 .daysOff(work.getDaysOff())
                 .salary(work.getSalary())
+                .entryDate(work.getEntryDate())
                 .build();
     }
 
