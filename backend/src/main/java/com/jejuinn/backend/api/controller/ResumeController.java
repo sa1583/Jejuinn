@@ -3,7 +3,6 @@ package com.jejuinn.backend.api.controller;
 import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkResumeInfoPostReq;
 import com.jejuinn.backend.api.dto.request.resumeinfo.InsertResumeInfoPostReq;
 import com.jejuinn.backend.api.dto.request.resumeinfo.UpdateResumeInfoPutReq;
-import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
 import com.jejuinn.backend.api.dto.response.resumeinfo.*;
 import com.jejuinn.backend.api.service.RecruitmentService;
 import com.jejuinn.backend.api.service.ResumeInfoService;
@@ -76,11 +75,12 @@ public class ResumeController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyResumeInfo(@PathVariable Long userUid) {
+        ResumeInfoDetail resumeInfoDetail = ResumeInfoDetail.of(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid));
+        if(resumeInfoDetail == null) return ResponseEntity.status(204).build();
         ResumeInfoDetailRes resumeInfoDetailRes = ResumeInfoDetailRes.of(
-                ResumeInfoDetail.of(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid)),
+                resumeInfoDetail,
                 UserDetail.of(userRepository.findById(userUid)),
                 StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid)));
-        if(resumeInfoDetailRes == null) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(
                 resumeInfoDetailRes
         );
