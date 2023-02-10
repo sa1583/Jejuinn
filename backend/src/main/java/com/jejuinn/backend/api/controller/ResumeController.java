@@ -8,6 +8,7 @@ import com.jejuinn.backend.api.dto.response.resumeinfo.*;
 import com.jejuinn.backend.api.service.RecruitmentService;
 import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.api.service.UserService;
+import com.jejuinn.backend.db.entity.ResumeInfo;
 import com.jejuinn.backend.db.entity.WorkResumeInfo;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
 import com.jejuinn.backend.db.repository.StaffRecordRepository;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class ResumeController {
     private final UserRepository userRepository;
     private final StaffRecordRepository staffRecordRepository;
     private final RecruitmentService recruitmentService;
+    private final UserService userService;
 
     @PostMapping("/auth/job-search")
     @ApiOperation(value = "지원서 작성", notes = "InsertResumeInfoPostReq를 입력받아 지원서를 작성합니다.")
@@ -53,9 +56,13 @@ public class ResumeController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "userUid와 writerUid가 다른경우, 권한 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteResumeInfo(@PathVariable Long resumeInfoUid) {
+    public ResponseEntity<?> deleteResumeInfo(@PathVariable Long resumeInfoUid, HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        Long writeUid = resumeInfoRepository.findById(resumeInfoUid).get().getUid();
+        if(userUid != writeUid) return ResponseEntity.status(401).build();
         resumeInfoRepository.deleteById(resumeInfoUid);
         return ResponseEntity.status(200).build();
     }
@@ -69,30 +76,13 @@ public class ResumeController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyResumeInfo(@PathVariable Long userUid) {
+        ResumeInfoDetailRes resumeInfoDetailRes = ResumeInfoDetailRes.of(
+                ResumeInfoDetail.of(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid)),
+                UserDetail.of(userRepository.findById(userUid)),
+                StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid)));
+        if(resumeInfoDetailRes == null) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(
-                ResumeInfoDetailRes.of(
-                        ResumeInfoDetail.of(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid)),
-                        UserDetail.of(userRepository.findById(userUid)),
-                        StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid))
-                )
-        );
-    }
-
-    @GetMapping("/auth/applicant-resume-info/{userUid}")
-    @ApiOperation(value = "지원서 상세 조회", notes = "userUid를 통해 지원서를 상세 조회합니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(조회 성공)"),
-            @ApiResponse(code = 204, message = "작성된 이력서가 없습니다."),
-            @ApiResponse(code = 400, message = "BAD REQUEST"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<?> getApplicantResumeInfo(@PathVariable Long userUid) {
-        return ResponseEntity.status(200).body(
-                ResumeInfoDetailRes.of(
-                        resumeInfoService.updateIsRead(userUid),
-                        UserDetail.of(userRepository.findById(userUid)),
-                        StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid))
-                )
+                resumeInfoDetailRes
         );
     }
 
@@ -103,8 +93,9 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateAutoApply(@PathVariable Long userUid) {
-        resumeInfoService.update(userUid);
+    public ResponseEntity<?> updateAutoApply(@PathVariable Long userUid, HttpServletRequest request) {
+        ResumeInfo resumeInfo = resumeInfoService.update(userUid);
+        if(resumeInfo == null) return ResponseEntity.status(400).build();
         return ResponseEntity.status(200).build();
     }
 
@@ -124,7 +115,7 @@ public class ResumeController {
     @ApiOperation(value = "지원서 제출", notes = "userUid와 workUid를 통해 지원서를 제출합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(제출 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(지원서가 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> applyWork(@Valid @RequestPart InsertWorkResumeInfoPostReq insertWorkResumeInfoPostReq) {
