@@ -111,7 +111,17 @@ function likeReview(token, uid) {
     },
   };
 
-  return api.put(`/auth/travel-place/reviews/${uid}/like`, config);
+  return api.put(`/auth/travel-place/reviews/${uid}/like`, {}, config);
+}
+
+// 리뷰 좋아요 취소
+function dislikeReview(token, reviewUid) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put(`/auth/travel-place/reviews/${reviewUid}/dislike`, {}, config);
 }
 
 export {
@@ -128,4 +138,5 @@ export {
   updateSpotReview,
   likedReviewLikst,
   likeReview,
+  dislikeReview,
 };

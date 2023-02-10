@@ -13,7 +13,8 @@ export default function KakaoRedirect() {
   async function getKakaoUser() {
     const access_token = (await getKakaoAccessToken(token)).data.access_token;
     const { payload } = await dispatch(getKakaoToken(access_token));
-    dispatch(getUserInfoByToken(payload.accesstoken));
+    const dum = await dispatch(getUserInfoByToken(payload.accesstoken));
+    console.log(dum);
     navigate('/');
   }
 

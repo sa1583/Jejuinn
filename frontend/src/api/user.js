@@ -81,6 +81,12 @@ const processNaverAuth = (accessToken, socialToken) => {
   return api.post('/api/users/social/auth/users/naver-auth', {}, header);
 };
 
+
+// 로그아웃
+function logout(uid) {
+  return api.post(`/auth/users/logout/${uid}`);
+}
+
 const changeAutoApply = (accessToken, uid) => {
   const header = {
     headers: {
@@ -90,6 +96,7 @@ const changeAutoApply = (accessToken, uid) => {
   console.log('header', header);
   return api.put(`/auth/auto-apply/${uid}`, {}, header);
 };
+
 
 export {
   getOurTokens,
