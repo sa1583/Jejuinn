@@ -1,23 +1,28 @@
 package com.jejuinn.backend.api.service;
 
+import com.jejuinn.backend.api.dto.request.recommender.GetSimilarityFlaskReq;
+import com.jejuinn.backend.api.dto.response.comment.GetSimilarityFlaskRes;
 import com.jejuinn.backend.api.dto.response.recommender.RecommendResumeDto;
 import com.jejuinn.backend.api.dto.response.recommender.RecommendWorkDto;
-import com.jejuinn.backend.db.entity.Recruitment;
+import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
 import com.jejuinn.backend.db.entity.ResumeInfo;
-import com.jejuinn.backend.db.entity.Work;
-import com.jejuinn.backend.db.repository.GuestHouseRepository;
 import com.jejuinn.backend.db.repository.RecommendRepositorySupport;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
-import com.jejuinn.backend.db.repository.WorkRepository;
-import com.jejuinn.backend.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecommenderService {
     private final ResumeInfoRepository resumeInfoRepository;
     private final RecommendRepositorySupport recommendRepositorySupport;
@@ -35,5 +40,33 @@ public class RecommenderService {
             resume.setPersonTypes(list);
         }
         return resumes;
+    }
+
+    public List<Long> getScoreFromFlask(RecommendWorkDto recommendWorkDto, List<RecommendResumeDto> recommendResumeDto) {
+        log.info("유사도 체크 시작!");
+        GetSimilarityFlaskReq reqToFlask = new GetSimilarityFlaskReq(recommendWorkDto, recommendResumeDto);
+
+        HttpEntity<GetSimilarityFlaskReq> entity = new HttpEntity<>(reqToFlask);
+
+
+        var uri = UriComponentsBuilder
+                .fromUriString("http://localhost:5000/sim")
+                .build()
+                .encode()
+                .toUri();
+
+        var responseType = new ParameterizedTypeReference<GetSimilarityFlaskRes>(){};
+
+        var responseEntity = new RestTemplate()
+                .exchange(
+                        uri,
+                        HttpMethod.POST,
+                        entity,
+                        responseType
+                );
+        GetSimilarityFlaskRes resumes = responseEntity.getBody();
+        System.out.println(resumes.getData().get(0).getSimilarity());
+        log.info("완료!!!");
+        return null;
     }
 }
