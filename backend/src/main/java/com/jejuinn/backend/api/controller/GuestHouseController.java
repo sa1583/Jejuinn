@@ -6,7 +6,9 @@ import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRe
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GuestHouseDeatilDto;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
+import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
+import com.jejuinn.backend.db.entity.Favorite;
 import com.jejuinn.backend.db.entity.GuestHouse;
 import com.jejuinn.backend.db.repository.*;
 import io.swagger.annotations.Api;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,9 +34,11 @@ public class GuestHouseController {
     private final GuestHouseRepository guestHouseRepository;
     private final GuestHouseRepositorySupport guestHouseRepositorySupport;
     private final ImageRepository imageRepository;
+    private final UserService userService;
     private final CommentRepository commentRepository;
     private final S3Uploader s3Uploader;
     private final RecruitmentRepository recruitmentRepository;
+    private final FavoriteRepository favoriteRepository;
     private static final String GUEST_TYPE = "GUEST_HOUSE";
 
     /**
@@ -65,12 +70,14 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getGuestHouseDetail(@PathVariable Long guestHouseUid){
+    public ResponseEntity<?> getGuestHouseDetail(@PathVariable Long guestHouseUid, HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
         return ResponseEntity.status(200)
                 .body(guestHouseRepository.findById(guestHouseUid)
                         .map(guestHouse ->
                                 GetGuestHouseDetailPostRes.of(GuestHouseDeatilDto.of(guestHouse),
-                                        imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid())
+                                        imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()),
+                                        favoriteRepository.findByUserUidAndTypeUid(userUid, guestHouse.getUid())
                                 )));
     }
 

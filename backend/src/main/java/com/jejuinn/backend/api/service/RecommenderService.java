@@ -42,20 +42,22 @@ public class RecommenderService {
         return resumes;
     }
 
-    public List<Long> getScoreFromFlask(RecommendWorkDto recommendWorkDto, List<RecommendResumeDto> recommendResumeDto) {
+    public GetSimilarityFlaskReq getScoreFromFlask(RecommendWorkDto recommendWorkDto, List<RecommendResumeDto> recommendResumeDto) {
         log.info("유사도 체크 시작!");
         GetSimilarityFlaskReq reqToFlask = new GetSimilarityFlaskReq(recommendWorkDto, recommendResumeDto);
 
         HttpEntity<GetSimilarityFlaskReq> entity = new HttpEntity<>(reqToFlask);
 
+        String url = "http://localhost:5000/sim";
+//        String url = "https://jejuinn.com/sim";
 
         var uri = UriComponentsBuilder
-                .fromUriString("http://localhost:5000/sim")
+                .fromUriString(url)
                 .build()
                 .encode()
                 .toUri();
 
-        var responseType = new ParameterizedTypeReference<GetSimilarityFlaskRes>(){};
+        var responseType = new ParameterizedTypeReference<GetSimilarityFlaskReq>(){};
 
         var responseEntity = new RestTemplate()
                 .exchange(
@@ -64,9 +66,8 @@ public class RecommenderService {
                         entity,
                         responseType
                 );
-        GetSimilarityFlaskRes resumes = responseEntity.getBody();
-        System.out.println(resumes.getData().get(0).getSimilarity());
+        GetSimilarityFlaskReq resumes = responseEntity.getBody();
         log.info("완료!!!");
-        return null;
+        return resumes;
     }
 }

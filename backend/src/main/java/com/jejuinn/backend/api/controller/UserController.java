@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.user.ChangePwReq;
 import com.jejuinn.backend.api.dto.request.user.LoginPostReq;
 import com.jejuinn.backend.api.dto.request.user.SimpleEmailReq;
 import com.jejuinn.backend.api.dto.response.user.GetUserInfoPostRes;
@@ -211,8 +212,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getPasswordResetCode(@Valid @RequestBody SimpleEmailReq simpleEmailReq){
-
-        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null) == null){
+        Optional<User> user = userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null);
+        if(!user.isPresent()){
             return ResponseEntity.status(400).build();
         }
 
@@ -220,6 +221,7 @@ public class UserController {
         try {
             res = SimpleCodeRes.builder()
                     .code(emailService.sendMessage(simpleEmailReq.getEmail()))
+                    .userUid(user.get().getUid())
                     .build();
         } catch (Exception e) {
             return ResponseEntity.status(401).build();
@@ -250,6 +252,22 @@ public class UserController {
                 ||passwordEncoder.matches(request.getHeader("password"), user.get().getPassword()))
             return ResponseEntity.status(400).build();
 
+        return ResponseEntity.status(200).build();
+    }
+
+    @PostMapping("/api/users/pw-change")
+    @ApiOperation(value = "비밀번호 변경", notes = "비밀번호<를 입력받아 입력받은 비밀번호 변경합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(비밀번호 변경 완료)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> changePassword(@RequestBody ChangePwReq changePwReq){
+        Optional<User> user = userRepository.findById(changePwReq.getUserUid());
+        if(user.isPresent()) {
+            user.get().setPassword(passwordEncoder.encode(changePwReq.getPassword()));
+            userRepository.save(user.get());
+        }
         return ResponseEntity.status(200).build();
     }
 
