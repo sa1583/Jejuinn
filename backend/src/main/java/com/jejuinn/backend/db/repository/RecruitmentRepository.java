@@ -1,6 +1,6 @@
 package com.jejuinn.backend.db.repository;
 
-import com.jejuinn.backend.api.dto.response.resumeinfo.MyApplicantRes;
+import com.jejuinn.backend.api.dto.response.recruitment.MyApplyList;
 import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,8 +22,11 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> 
     @Query("select w from GuestHouse g left outer join Recruitment r on g.uid = r.guestHouseUid " +
             "left outer join Work w on w.recruitment.uid = r.uid where g.uid = :guestHouseUid")
     List<Work> findAllWorkByGuestHouseUid(@Param("guestHouseUid") Long guestHouseUid);
-    /*@Query("select new com.jejuinn.backend.api.dto.response.resumeinfo(g.guestHouseName, r.title, r.uid) from Recruitment r " +
-            "left outer join GuestHouse g on r.guestHouseUid = g.uid " +
-            "where r.uid in (:uids)")
-    List<MyApplicantRes> findAllByRecruitmentUid(@Param("uids") List<Long> recruitmentUids);*/
+
+    @Query("select new com.jejuinn.backend.api.dto.response.recruitment.MyApplyList(g.uid, r.uid, g.guestHouseName, r.title, wri.isRead) " +
+            "from GuestHouse g left outer join" +
+            " Recruitment r on g.uid = r.guestHouseUid left outer join Work w on r.uid = w.recruitment.uid left outer join " +
+            "WorkResumeInfo wri on wri.work.uid = w.uid left outer join ResumeInfo ri on wri.resumeInfo.uid = ri.uid" +
+            " where ri.user.uid = :userUid")
+    List<MyApplyList> findMyApplyListByUserUid(@Param("userUid") Long userUid);
 }
