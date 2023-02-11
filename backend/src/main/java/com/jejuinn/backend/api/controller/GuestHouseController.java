@@ -70,14 +70,12 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getGuestHouseDetail(@PathVariable Long guestHouseUid, HttpServletRequest request) {
-        Long userUid = userService.getUserUidFromAccessToken(request);
+    public ResponseEntity<?> getGuestHouseDetail(@PathVariable Long guestHouseUid) {
         return ResponseEntity.status(200)
                 .body(guestHouseRepository.findById(guestHouseUid)
                         .map(guestHouse ->
                                 GetGuestHouseDetailPostRes.of(GuestHouseDeatilDto.of(guestHouse),
-                                        imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()),
-                                        favoriteRepository.findByUserUidAndTypeUid(userUid, guestHouse.getUid())
+                                        imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid())
                                 )));
     }
 
