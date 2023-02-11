@@ -19,11 +19,11 @@ docker login -u <<user>> -p <<password>>
 ```
 ### 3. Docker image push to hub
 ```commandline
-docker push jejuinn/backend-flask
+docker push jejuinn/flask-backend
 ```
 ### 4. Docker image pull from hub
 ```commandline
-docker pull jejuinn/backend-flask
+docker pull jejuinn/flask-backend
 ```
 ### 5. Docker image run
 ```commandline
