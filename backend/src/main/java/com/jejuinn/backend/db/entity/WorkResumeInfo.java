@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "work_resume_info_join")
@@ -27,4 +28,6 @@ public class WorkResumeInfo {
     @ManyToOne
     @JoinColumn(name = "resume_info_uid")
     private ResumeInfo resumeInfo;
+
+    private LocalDateTime isRead;
 }
