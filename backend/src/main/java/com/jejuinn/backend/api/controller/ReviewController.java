@@ -238,7 +238,7 @@ public class ReviewController {
     }
 
     @GetMapping("/auth/travel-place/reviews/like")
-    @ApiOperation(value = "좋아요 누른 관광지 리뷰 목록", notes = "<strong>리뷰의 uid</strong>와 내용을 입력받아 사용자가 좋아요를 취소합니다.")
+    @ApiOperation(value = "좋아요 누른 관광지 리뷰 목록", notes = "좋아요 누른 관광지 리뷰 목록을 불러옵니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(옳바르지 않은 사용자)"),
