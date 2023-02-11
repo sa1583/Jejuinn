@@ -17,4 +17,7 @@ import javax.validation.constraints.Size;
 public class SimpleCodeRes {
     @NotNull
     String code;
+
+    @NotNull
+    Long userUid;
 }

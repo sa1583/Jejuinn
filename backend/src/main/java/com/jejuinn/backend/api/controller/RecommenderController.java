@@ -42,7 +42,6 @@ public class RecommenderController {
             log.info("RecommendResumeDto {} : {}", ++num, dto);
         }
 
-        List<Long> bestResumeUid = recommenderService.getScoreFromFlask(recommendWorkDto, recommendResumeDto);
-        return null;
+        return ResponseEntity.status(200).body(recommenderService.getScoreFromFlask(recommendWorkDto, recommendResumeDto));
     }
 }
