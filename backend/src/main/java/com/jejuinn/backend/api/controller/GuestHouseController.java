@@ -4,6 +4,7 @@ import com.jejuinn.backend.api.dto.GuestHouseDto;
 import com.jejuinn.backend.api.dto.request.InsertGuestHousePostReq;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
+import com.jejuinn.backend.api.dto.response.guesthouse.GuestHouseDeatilDto;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.db.entity.GuestHouse;
@@ -68,7 +69,7 @@ public class GuestHouseController {
         return ResponseEntity.status(200)
                 .body(guestHouseRepository.findById(guestHouseUid)
                         .map(guestHouse ->
-                                GetGuestHouseDetailPostRes.of(GuestHouseDto.of(guestHouse),
+                                GetGuestHouseDetailPostRes.of(GuestHouseDeatilDto.of(guestHouse),
                                         imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid())
                                 )));
     }
