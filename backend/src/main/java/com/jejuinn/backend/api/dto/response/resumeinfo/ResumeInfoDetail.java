@@ -7,6 +7,7 @@ import com.jejuinn.backend.exception.NoContentException;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class ResumeInfoDetail {
 
     private boolean autoApply;
 
-    private String guestHouseType;
+    private List<String> guestHouseTypes;
 
     private LocalDate dateCreated;
 
@@ -38,6 +39,11 @@ public class ResumeInfoDetail {
 
     private String instagramLink;
 
+    public static List<String> toGuestHouseTypes(String guestHouseTypes) {
+        List<String> result = Arrays.asList(guestHouseTypes.split(","));
+        return result;
+    }
+
     public static ResumeInfoDetail of(Optional<ResumeInfo> resumeInfo) {
         if(resumeInfo.isEmpty()) return null;
         return ResumeInfoDetail.builder()
@@ -46,7 +52,7 @@ public class ResumeInfoDetail {
                 .possibleStartDate(resumeInfo.get().getPossibleStartDate())
                 .minWorkPeriod(resumeInfo.get().getMinWorkPeriod())
                 .autoApply(resumeInfo.get().isAutoApply())
-                .guestHouseType(resumeInfo.get().getGuestHouseType())
+                .guestHouseTypes(toGuestHouseTypes(resumeInfo.get().getGuestHouseType()))
                 .dateCreated(resumeInfo.get().getDateCreated())
                 .interestAreas(resumeInfo.get().getInterestAreas())
                 .personTypes(resumeInfo.get().getPersonTypes())
@@ -63,7 +69,7 @@ public class ResumeInfoDetail {
                 .possibleStartDate(resumeInfo.get().getPossibleStartDate())
                 .minWorkPeriod(resumeInfo.get().getMinWorkPeriod())
                 .autoApply(resumeInfo.get().isAutoApply())
-                .guestHouseType(resumeInfo.get().getGuestHouseType())
+                .guestHouseTypes(toGuestHouseTypes(resumeInfo.get().getGuestHouseType()))
                 .dateCreated(resumeInfo.get().getDateCreated())
                 .interestAreas(resumeInfo.get().getInterestAreas())
                 .personTypes(resumeInfo.get().getPersonTypes())
