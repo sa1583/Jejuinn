@@ -27,5 +27,5 @@ docker pull jejuinn/flask-backend
 ```
 ### 5. Docker image run
 ```commandline
- docker run -d -p 0.0.0.0:5000:5000/tcp  --memory="10g" --name backend-flask jejuinn/flask-backend 
+docker run -d -p 0.0.0.0:5000:5000/tcp  --memory="10g" --name backend-flask jejuinn/flask-backend 
 ```
