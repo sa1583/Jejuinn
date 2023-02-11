@@ -4,6 +4,8 @@ import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -32,6 +34,8 @@ public class ModifyWorkPutReq {
 
     private String salary;
 
+    private LocalDate entryDate;
+
     public Work toWork() {
         return Work.builder()
                 .uid(this.workUid)
@@ -45,6 +49,7 @@ public class ModifyWorkPutReq {
                 .daysOff(this.daysOff)
                 .workDescription(this.workDescription)
                 .salary(this.salary)
+                .entryDate(this.entryDate)
                 .build();
     }
 }

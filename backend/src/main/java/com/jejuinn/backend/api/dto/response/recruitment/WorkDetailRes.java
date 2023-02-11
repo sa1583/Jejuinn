@@ -4,6 +4,7 @@ import com.jejuinn.backend.db.entity.Work;
 import lombok.*;
 
 import javax.persistence.Column;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class WorkDetailRes {
 
     private String workDescription;
 
+    private LocalDate entryDate;
+
     public static List<WorkDetailRes> ofDetail(List<Work> works) {
         List<WorkDetailRes> result = new ArrayList<>();
         for(Work work : works) {
@@ -47,6 +50,7 @@ public class WorkDetailRes {
                     .daysOff(work.getDaysOff())
                     .salary(work.getSalary())
                     .workDescription(work.getWorkDescription())
+                    .entryDate(work.getEntryDate())
                     .build();
             result.add(workDetailRes);
         }

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -48,6 +49,9 @@ public class InsertWorkPostReq {
     @NotNull
     private String salary;
 
+    @NotNull
+    private LocalDate entryDate;
+
     public Work toWork(Recruitment recruitment) {
         return Work.builder()
                 .recruitment(recruitment)
@@ -60,6 +64,7 @@ public class InsertWorkPostReq {
                 .daysOff(this.daysOff)
                 .workDescription(this.workDescription)
                 .salary(this.salary)
+                .entryDate(this.entryDate)
                 .build();
     }
 }

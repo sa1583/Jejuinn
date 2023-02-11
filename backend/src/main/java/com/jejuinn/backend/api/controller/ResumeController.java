@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Api(tags = "구직 관련 기능 API")
@@ -45,7 +46,12 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertResumeInfo(@Valid @RequestBody InsertResumeInfoPostReq insertResumeInfoPostReq) {
+    public ResponseEntity<?> insertResumeInfo(@Valid @RequestBody InsertResumeInfoPostReq insertResumeInfoPostReq, HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid);
+        if(resumeInfo.isPresent()) {
+            return ResponseEntity.status(400).build();
+        }
         resumeInfoRepository.save(insertResumeInfoPostReq.toResumeInfo());
         return ResponseEntity.status(200).build();
     }
