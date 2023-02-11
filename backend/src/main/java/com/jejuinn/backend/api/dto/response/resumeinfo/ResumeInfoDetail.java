@@ -3,7 +3,6 @@ package com.jejuinn.backend.api.dto.response.resumeinfo;
 import com.jejuinn.backend.db.entity.Area;
 import com.jejuinn.backend.db.entity.PersonType;
 import com.jejuinn.backend.db.entity.ResumeInfo;
-import com.jejuinn.backend.exception.NoContentException;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -35,8 +34,6 @@ public class ResumeInfoDetail {
 
     private List<PersonType> personTypes;
 
-    private LocalDate isRead;
-
     private String instagramLink;
 
     public static List<String> toGuestHouseTypes(String guestHouseTypes) {
@@ -56,7 +53,6 @@ public class ResumeInfoDetail {
                 .dateCreated(resumeInfo.get().getDateCreated())
                 .interestAreas(resumeInfo.get().getInterestAreas())
                 .personTypes(resumeInfo.get().getPersonTypes())
-                .isRead(resumeInfo.get().getIsRead())
                 .instagramLink(resumeInfo.get().getInstagramLink())
                 .build();
     }

@@ -54,17 +54,6 @@ public class ResumeInfoService {
 
     }
 
-    @Transactional
-    public ResumeInfoDetail updateIsRead(Long userUid) {
-        Optional<ResumeInfo> temp = resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid);
-        ResumeInfoDetail resumeInfo = null;
-        if(temp.isPresent()) {
-            resumeInfo = ResumeInfoDetail.ofCEO(temp);
-            temp.get().setIsRead(LocalDate.now());
-        }
-        return resumeInfo;
-    }
-
     public WorkResumeInfo insertWorkResumeInfo(InsertWorkResumeInfoPostReq insertWorkResumeInfoPostReq) {
         Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findByUserUidAndIsDeletedFalse(insertWorkResumeInfoPostReq.getUserUid());
         Optional<Work> work = workRepository.findById(insertWorkResumeInfoPostReq.getWorkUid());

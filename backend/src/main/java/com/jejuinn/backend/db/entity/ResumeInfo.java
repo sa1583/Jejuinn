@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -53,8 +52,6 @@ public class ResumeInfo {
     private LocalDate dateCreated;
 
     private boolean isDeleted;
-
-    private LocalDate isRead;
 
     @Column(length = 50)
     private String instagramLink;
