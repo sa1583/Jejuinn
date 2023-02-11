@@ -27,15 +27,6 @@ const recruitmentDetail = (recruitmentUid) => {
   return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
 };
 
-const writeRecruitment = (body) => {
-  const config = {
-    headers: {
-      accessToken: `Bearer ${Access_token()}`,
-    },
-  };
-  return api.post('/auth/job-offer', body, config);
-};
-
 function createWork(body, token) {
   const config = {
     headers: {
@@ -72,14 +63,22 @@ const getMyRecruitments = (guestHouseUid) => {
   return api.get(`/api/guest-house-recruitment/${guestHouseUid}`);
 };
 
+const postRecruitment = (token, body) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/job-offer', body, config);
+};
 export {
   recruitmentDetail,
   allWorkList,
   filteredWorkList,
-  writeRecruitment,
   createWork,
   updateWorkDetail,
   deleteWorkDetail,
   getMyWorks,
   getMyRecruitments,
+  postRecruitment,
 };

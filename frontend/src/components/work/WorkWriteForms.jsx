@@ -289,16 +289,36 @@ function GetWorkDescription({ handleWorkInfo }) {
   );
 }
 
-function GetRecruitmentTitle({ onTitle }) {
-  return <CustomTextField label="채용 공고 제목" onInput={onTitle} />;
+// 채용공고 입력
+
+function GetRecruitmentTitle({ handleRecruimentInfo }) {
+  return (
+    <CustomTextField
+      label="채용 공고 제목"
+      name="title"
+      onInput={handleRecruimentInfo}
+    />
+  );
 }
 
-function GetRecruitmentWelfare({ onWelfare }) {
-  return <CustomTextField label="복지" onInput={onWelfare} />;
+function GetRecruitmentWelfare({ handleRecruimentInfo }) {
+  return (
+    <CustomTextField
+      label="복지"
+      name="welfare"
+      onInput={handleRecruimentInfo}
+    />
+  );
 }
 
-function GetRecruitmentInfo({ onAddInfo }) {
-  return <CustomTextField label="추가정보" onInput={onAddInfo} />;
+function GetRecruitmentInfo({ handleRecruimentInfo }) {
+  return (
+    <CustomTextField
+      label="추가정보"
+      name="addInfo"
+      onInput={handleRecruimentInfo}
+    />
+  );
 }
 
 const selectedPersontypes = [
@@ -326,9 +346,10 @@ function GetRecruitmentPersontype({ onPersontype }) {
       limitTags={3}
       options={selectedPersontypes.map((option) => option)}
       value={value}
+      name="persontype"
       onChange={(event, newValue) => {
         setValue(newValue);
-        onPersontype(newValue);
+        onPersontype(value);
       }}
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {
@@ -387,7 +408,7 @@ function SelectGusetHousePopover({ myGuestHouses, onSelect }) {
           어떤 게스트하우스에 직무를 추가할까요?
           {myGuestHouses.map((myGuestHouse) => (
             <Button onClick={onClick} value={myGuestHouse.uid} key={uuidv4()}>
-              {myGuestHouse.uid}
+              {myGuestHouse.guestHouseName}
             </Button>
           ))}
         </Typography>

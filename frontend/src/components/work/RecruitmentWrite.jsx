@@ -7,38 +7,46 @@ import {
   GetRecruitmentWelfare,
   GetRecruitmentPersontype,
 } from './WorkWriteForms';
-import { writeRecruitment } from '../../api/work';
+import { postRecruitment } from '../../api/work';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../store/user';
 
 export default function RecruitmentWrite({ onClick }) {
-  // Recruitment, work id 받아서
-
-  const [title, setTitle] = useState('');
-  const [welfare, setWelfare] = useState('');
+  const token = useSelector(selectAccessToken);
   const [persontype, setPersontype] = useState([]);
-  const [addInfo, setAddInfo] = useState('');
+  function onPersontype(input) {
+    setPersontype([...input]);
+  }
+  const [recruimentInfo, setRecruimentInfo] = useState({
+    title: '',
+    welfare: '',
+    persontype: [],
+    addInfo: '',
+  });
 
-  const onTitle = (imp) => {
-    console.log(imp.target.value);
-    setTitle(imp.target.value);
+  const handleRecruimentInfo = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setRecruimentInfo({ ...recruimentInfo, [name]: value });
   };
-  const onWelfare = (imp) => {
-    setWelfare(imp.target.value);
-  };
-  const onPersontype = (imp) => {
-    setPersontype(imp);
-  };
-  const onAddInfo = (imp) => {
-    setAddInfo(imp.target.value);
+
+  useEffect(() => {
+    setRecruimentInfo({ ...recruimentInfo, persontype: persontype });
+  }, [persontype]);
+
+  const twoCalls = () => {
+    onClick();
+    postRecruitment(token, recruimentInfo);
   };
 
   return (
     <Box sx={{ paddingY: '3vh', height: '100%' }}>
       <Grid container>
         <Grid item md={10}>
-          <GetRecruitmentTitle onTitle={onTitle} />
+          <GetRecruitmentTitle handleRecruimentInfo={handleRecruimentInfo} />
         </Grid>
         <Grid item md={2}>
-          <Button onClick={onClick}>저장</Button>
+          <Button onClick={twoCalls}>저장</Button>
         </Grid>
       </Grid>
 
@@ -48,7 +56,9 @@ export default function RecruitmentWrite({ onClick }) {
             복지
           </Grid>
           <Grid item md={9}>
-            <GetRecruitmentWelfare onWelfare={onWelfare} />
+            <GetRecruitmentWelfare
+              handleRecruimentInfo={handleRecruimentInfo}
+            />
           </Grid>
 
           <Grid item md={3}>
@@ -62,7 +72,7 @@ export default function RecruitmentWrite({ onClick }) {
             추가 정보
           </Grid>
           <Grid item md={9}>
-            <GetRecruitmentInfo onAddInfo={onAddInfo} />
+            <GetRecruitmentInfo handleRecruimentInfo={handleRecruimentInfo} />
           </Grid>
         </Grid>
         <div>

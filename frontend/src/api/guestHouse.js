@@ -14,8 +14,8 @@ const getMyGuestHouses = (token, userUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  // return api.get(`/auth/my-guest-houses/${userUid}`, config);
-  return { data: [{ uid: 1 }, { uid: 2 }] };
+  return api.get(`/auth/my-guest-houses/${userUid}`, config);
+  // return { data: [{ uid: 1 }, { uid: 2 }] };
 };
 const getApplicantByUid = async (uid, token) => {
   const config = {

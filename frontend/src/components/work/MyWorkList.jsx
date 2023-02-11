@@ -11,7 +11,7 @@ import WhiteBox from '../whiteBox/WhiteBox';
 import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import MyWorkDetail from './MyWorkDetail';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyWorkList() {
   const navigate = useNavigate();
@@ -35,7 +35,9 @@ export default function MyWorkList() {
 
   async function setHouseAndWork() {
     // 내 게하리스트 받아와
-    const myGuestHousesFromServer = await getMyGuestHouses(token, userUid).data;
+    const myGuestHousesFromServer = (await getMyGuestHouses(token, userUid))
+      .data;
+    console.log(myGuestHousesFromServer);
     // 게하 정보가 있으면 게하 목록 저장하고, 직무 목록 받아
     if (myGuestHousesFromServer.length > 0) {
       setMyGuestHouses((prevArray) => [
@@ -56,6 +58,7 @@ export default function MyWorkList() {
   async function getRecruitment(ghuid) {
     const selectedRecruitment = (await getMyRecruitments(ghuid)).data;
     console.log(typeof selectedRecruitment);
+    console.log(selectedRecruitment);
     if (selectedRecruitment === []) {
       console.log('왜않돼?');
       navigate('/recruitment-write');
