@@ -6,6 +6,7 @@ import com.jejuinn.backend.db.entity.ResumeInfo;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class ResumeInfoDetailRes {
 
     private boolean autoApply;
 
-    private String guestHouseType;
+    private List<String> guestHouseTypes;
 
     private LocalDate dateCreated;
 
@@ -56,7 +57,7 @@ public class ResumeInfoDetailRes {
                 .possibleStartDate(resumeInfoDetail.getPossibleStartDate())
                 .minWorkPeriod(resumeInfoDetail.getMinWorkPeriod())
                 .autoApply(resumeInfoDetail.isAutoApply())
-                .guestHouseType(resumeInfoDetail.getGuestHouseType())
+                .guestHouseTypes(resumeInfoDetail.getGuestHouseTypes())
                 .dateCreated(resumeInfoDetail.getDateCreated())
                 .interestAreas(resumeInfoDetail.getInterestAreas())
                 .personTypes(resumeInfoDetail.getPersonTypes())
