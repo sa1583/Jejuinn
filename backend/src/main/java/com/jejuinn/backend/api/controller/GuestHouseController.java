@@ -68,7 +68,7 @@ public class GuestHouseController {
         return ResponseEntity.status(200)
                 .body(guestHouseRepository.findById(guestHouseUid)
                         .map(guestHouse ->
-                                GetGuestHouseDetailPostRes.of(guestHouse,
+                                GetGuestHouseDetailPostRes.of(GuestHouseDto.of(guestHouse),
                                         imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid())
                                 )));
     }
