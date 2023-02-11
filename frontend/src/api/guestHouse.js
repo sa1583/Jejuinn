@@ -43,8 +43,10 @@ const guestHouseUpdate = (token, guestHouseUid, body) => {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
+  console.log('body', body);
   return api.put(`/auth/guest-houses/${guestHouseUid}`, body, config);
 };
 

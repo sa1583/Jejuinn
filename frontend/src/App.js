@@ -76,7 +76,7 @@ const router = createBrowserRouter([
         element: <GuestHouseDetail />,
       },
       {
-        path: 'guesthouse/detail/update/:id',
+        path: 'guesthouse/update/:id',
         element: <GuestHouseUpdate />,
       },
       {

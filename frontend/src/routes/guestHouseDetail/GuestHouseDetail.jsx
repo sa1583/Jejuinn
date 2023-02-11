@@ -12,6 +12,7 @@ import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import MapApi from '../../components/mapApi/MapApi';
 import { guestHouseDetail, guestHouseDelete } from '../../api/guestHouse';
 import { selectAccessToken, selectUserInfo } from '../../store/user';
+import CommentsList from '../../components/commentComponent/CommentsList';
 
 export default function GuestHouseDetail() {
   const location = useLocation();
@@ -39,7 +40,7 @@ export default function GuestHouseDetail() {
 
   const navigate = useNavigate();
   const goModifiy = () => {
-    navigate(`/guesthouse/detail/update/${guestHouseUid}`);
+    navigate(`/guesthouse/update/${guestHouseUid}`);
   };
 
   async function DeleteGuestHouse() {
@@ -61,7 +62,7 @@ export default function GuestHouseDetail() {
     <>
       <SpeedDialComponent actions={actions} />
       <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
-        <h1 style={{ color: '#FF7600' }}>
+        <h1 style={{ color: 'primary.main' }}>
           | {guestHouse?.guestHouse?.guestHouseName}
         </h1>
         <Grid container spacing={4}>
@@ -83,6 +84,15 @@ export default function GuestHouseDetail() {
                     guestHouse={guestHouse.guestHouse}
                     images={guestHouse.images}
                   />
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <WhiteBox
+                cpn={
+                  <Box px="3%" mt="10px">
+                    <CommentsList />
+                  </Box>
                 }
               />
             </Grid>
