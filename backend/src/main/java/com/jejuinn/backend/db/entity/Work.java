@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,9 @@ public class Work {
 
     @Column(name = "salary", length = 25)
     private String salary;
+
+    @Column(name = "entry_date")
+    private LocalDate entryDate;
 
     @JsonIgnore
     @OneToMany(mappedBy = "work", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
