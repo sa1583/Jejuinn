@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.dto.response;
+package com.jejuinn.backend.api.dto.response.guesthouse;
 
 import com.jejuinn.backend.db.entity.GuestHouse;
 import lombok.*;
