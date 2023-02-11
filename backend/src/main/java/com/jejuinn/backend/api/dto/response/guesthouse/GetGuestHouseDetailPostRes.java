@@ -18,13 +18,11 @@ import java.util.List;
 public class GetGuestHouseDetailPostRes {
     private GuestHouseDeatilDto guestHouse;
     private List<Image> images;
-    private boolean favorite;
 
-    public static GetGuestHouseDetailPostRes of(GuestHouseDeatilDto guestHouseDetailDto, List<Image> images, Favorite favorite){
+    public static GetGuestHouseDetailPostRes of(GuestHouseDeatilDto guestHouseDetailDto, List<Image> images){
         return GetGuestHouseDetailPostRes.builder()
                 .guestHouse(guestHouseDetailDto)
                 .images(images)
-                .favorite(favorite != null ? true : false)
                 .build();
     }
 
