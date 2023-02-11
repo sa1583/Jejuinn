@@ -1,7 +1,7 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.GuestHouseDto;
-import com.jejuinn.backend.api.dto.request.InsertGuestHousePostReq;
+import com.jejuinn.backend.api.dto.request.guesthouse.InsertGuestHousePostReq;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GuestHouseDeatilDto;
@@ -14,9 +14,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -197,6 +197,24 @@ public class GuestHouseController {
         return ResponseEntity.status(200).body(
                 WorkDetailRes.ofDetail(recruitmentRepository.findWorkByGuestHouseUid(guestHouseUid))
         );
+    }
+
+    @GetMapping("/api/guest-house/search")
+    @ApiOperation(value = "게스트하우스 필터 조회", notes = "게스트하우스 스타일, 지역, 게스트하우스명을 입력받아 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(게스트하우스 정보 없음)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getGuestHouseByFilter(@RequestParam(value = "pageNumber") int pageNumber,
+                                                   @RequestParam(value = "styles") List<String> styles,
+                                                   @RequestParam(value = "areaName") String areaName,
+                                                   @RequestParam(value = "word") String word) {
+        Pageable pageable = PageRequest.of(pageNumber-1, 15);
+        return ResponseEntity.status(200).body(
+                guestHouseRepositorySupport.searchGuestHouseWithFilter(styles, areaName, word, pageable).map(
+                        guestHouse ->  GetGuestHouseListPostRes.of(guestHouse,
+                                imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()))));
     }
 
 }

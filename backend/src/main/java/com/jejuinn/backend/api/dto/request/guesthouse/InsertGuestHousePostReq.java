@@ -1,4 +1,4 @@
-package com.jejuinn.backend.api.dto.request;
+package com.jejuinn.backend.api.dto.request.guesthouse;
 
 import com.jejuinn.backend.db.entity.Area;
 import com.jejuinn.backend.db.entity.GuestHouse;
