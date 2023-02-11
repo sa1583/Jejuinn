@@ -1,71 +1,88 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
 import { Box, TextField, Button, Autocomplete } from '@mui/material';
 import ImageUploader from '../articleCreateComponent/ImageUploader';
 import PopupDom from '../popupPostCode/PopupDom';
 import PopupPostCode from '../popupPostCode/PopupPostCode';
-import { guestHouseCreate } from '../../api/guestHouse';
-import { useNavigate } from 'react-router';
+import {
+  guestHouseCreate,
+  guestHouseDetail,
+  guestHouseUpdate,
+} from '../../api/guestHouse';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../store/user';
+import { FilterStyle } from '../work/Filters';
+import MapApi from '../mapApi/MapApi';
 
 export default function MyGuestHouseCreateForm() {
-  const access_token = useSelector(selectAccessToken);
+  const accessToken = useSelector(selectAccessToken);
   const userUid = useSelector(selectUserInfo).uid;
   const navigate = useNavigate();
 
-  const [content, setContent] = useState('');
+  const [isCreate, setIsCreate] = useState();
+  const [postUid, setPostUid] = useState();
+  const [preImages, setPreImages] = useState([]);
+  const [deleteImages, setDeleteImages] = useState([]);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
-  const [lng, setLng] = useState('');
-  const [lat, setLat] = useState('');
+  const [addressDetail, setAddressDetail] = useState('');
+  const [content, setContent] = useState('');
+  const [pos, setPos] = useState();
   const [areaName, setAreaName] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
-  const [options, setOptions] = useState([
-    '교통이 편리한 게하',
-    '파티가 있는 게하',
-    '조용한 시골에 있는 게하',
-    '쉼이 있는 게하',
-    '사람들과 함께 하는 게하',
-  ]);
-
-  const [form, setForm] = useState({});
-
-  const handleForm = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setForm({ ...form, [name]: value });
-  };
-
-  const handleChange = (event) => {
-    setDetailAddress(event.target.value);
-  };
 
   const submit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     const guestHouse = {
-      ...form,
       address,
-      detailAddress,
-      lng,
-      lat,
+      addressDetail,
       areaName,
+      lng: pos.lng,
+      lat: pos.lat,
+      areaName,
+      introduction: content,
+      email,
+      phone: phoneNumber,
       guestHouseTypes: selectedValues,
       representativeUid: userUid,
     };
-    const blob = new Blob([JSON.stringify(guestHouse)], {
+    console.log(guestHouse);
+    const guestHouseBlob = new Blob([JSON.stringify(guestHouse)], {
       type: 'application/json',
     });
-    console.log(guestHouse);
-    formData.append('guestHouse', blob);
-    files.forEach((file) => {
-      formData.append('images', file);
-    });
+    console.log('guestHouseBlob', guestHouseBlob);
+    formData.append('guestHouse', guestHouseBlob);
 
-    await guestHouseCreate(access_token, formData);
-    // navigate(`/guesthouse/detail/${guestHouseUid}`);
-    navigate(`/mypage/guesthouse`);
+    files.forEach((file) => {
+      formData.append('uploadImages', file);
+    });
+    let id;
+    if (!isCreate) {
+      const deleteImagesBlob = new Blob([JSON.stringify(deleteImages)], {
+        type: 'application/json',
+      });
+      formData.append('deleteImages', deleteImagesBlob);
+      id = location.pathname.split('/')[3];
+
+      for (let value of formData.values()) {
+        console.log(value);
+      }
+
+      await guestHouseUpdate(accessToken, id, formData);
+    } else {
+      id = await guestHouseCreate(accessToken, formData);
+    }
+    navigate(`/guesthouse/detail/${id}`);
+  };
+
+  const handlePreImages = (id) => {
+    setDeleteImages((prev) => [...prev, id]);
+    setPreImages(preImages.filter((image) => image.uid !== id));
   };
 
   const getContent = (value) => {
@@ -87,6 +104,49 @@ export default function MyGuestHouseCreateForm() {
     setIsPopupOpen(false);
   };
 
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.split('/')[2] === 'create') {
+      setIsCreate(true);
+    } else {
+      setIsCreate(false);
+      setPostUid(location.pathname.split('/')[3]);
+    }
+  }, []);
+
+  const getGuestHouseInfo = async () => {
+    const { data } = await guestHouseDetail(postUid);
+    console.log(data);
+    setName(data.guestHouse.guestHouseName);
+    setEmail(data.guestHouse.email);
+    setPhoneNumber(data.guestHouse.phone);
+    setAddress(data.guestHouse.address);
+    setAddressDetail(data.guestHouse.addressDetail);
+    setSelectedValues(data.guestHouse.guestHouseTypes);
+    setContent(data.guestHouse.introduction);
+    setPos({ id: 1, lat: data.guestHouse.lat, lng: data.guestHouse.lng });
+    console.log(data.images);
+    setPreImages(data.images);
+    // data.images.map((image) => {
+    //   imageUrltoFile(image.imgPath);
+    // });
+  };
+
+  useEffect(() => {
+    if (postUid) {
+      getGuestHouseInfo();
+    }
+  }, [postUid]);
+
+  useEffect(() => {
+    console.log(files);
+  }, [files]);
+
+  useEffect(() => {
+    console.log(pos);
+  }, [pos]);
+
   return (
     <Box>
       <form
@@ -97,65 +157,60 @@ export default function MyGuestHouseCreateForm() {
 
         <TextField
           required
-          name="guestHouseName"
-          id="guestHouseName"
           label="게스트하우스 이름"
           variant="standard"
           placeholder="게스트하우스 이름을 입력하세요."
           sx={{ marginY: '2vh' }}
           inputProps={{ style: { fontSize: 20 } }} // font size of input text
           InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-          onChange={handleForm}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
 
         <TextField
           required
-          name="email"
-          id="email"
           label="이메일"
           variant="standard"
           placeholder="이메일을 입력하세요."
           sx={{ marginY: '2vh' }}
           inputProps={{ style: { fontSize: 20 } }} // font size of input text
           InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-          onChange={handleForm}
+          value={email}
+          onChange={({ target: { value } }) => setEmail(value)}
         />
 
         <TextField
           required
-          name="phone"
-          id="phone"
           label="전화번호"
           variant="standard"
           placeholder="전화번호를 입력하세요."
           sx={{ marginY: '2vh' }}
           inputProps={{ style: { fontSize: 20 } }} // font size of input text
           InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-          onChange={handleForm}
+          value={phoneNumber}
+          onChange={({ target: { value } }) => setPhoneNumber(value)}
         />
 
         <TextField
           onClick={openPostCode}
           required
-          name="address"
-          id="address"
           label="주소"
           variant="standard"
           placeholder="주소를 입력하세요."
+          disabled
           value={address}
           sx={{ marginY: '2vh' }}
           inputProps={{ style: { fontSize: 20 } }} // font size of input text
           InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-          onChange={handleForm}
+          onChange={({ target: { value } }) => setAddress(value)}
         />
         <div id="popupDom">
           {isPopupOpen && (
             <PopupDom>
               <PopupPostCode
                 setAddress={setAddress}
-                setDetailAddress={setDetailAddress}
-                setLng={setLng}
-                setLat={setLat}
+                setDetailAddress={setAddressDetail}
+                setPos={setPos}
                 setAreaName={setAreaName}
                 onClose={closePostCode}
               />
@@ -164,41 +219,32 @@ export default function MyGuestHouseCreateForm() {
         </div>
 
         <TextField
-          name="addressDetail"
-          id="addressDetail"
           label="상세주소"
-          placeholder="상세주소를 입력하세요."
-          value={detailAddress}
+          value={addressDetail}
           variant="standard"
           sx={{ marginY: '2vh' }}
           inputProps={{ style: { fontSize: 20 } }} // font size of input text
           InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-          onChange={handleChange}
+          onChange={({ target: { value } }) => setAddressDetail(value)}
         />
-        <Autocomplete
-          multiple
-          limitTags={5}
-          id="guestHouseTypes"
-          name="guestHouseTypes"
-          options={options}
-          onChange={(event, newValue) => setSelectedValues(newValue)}
-          sx={{ marginY: '2vh', marginBottom: '30px' }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="standard"
-              label="게스트하우스 스타일"
-              InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-              placeholder="등록하려는 게스트하우스의 스타일을 선택해주세요."
-            />
-          )}
-        />
+
+        <MapApi spots={[pos]} startSpot={[pos]} />
+
+        <Box my="20px" />
+
+        <FilterStyle value={selectedValues} setValue={setSelectedValues} />
         <br />
 
         <label htmlFor="image" style={{ fontSize: 20 }}>
           사진 (최대 10개)
         </label>
-        <ImageUploader handleFiles={handleFiles} files={files} maxNum={10} />
+        <ImageUploader
+          preImages={preImages}
+          handlePreImages={handlePreImages}
+          handleFiles={handleFiles}
+          files={files}
+          maxNum={10}
+        />
 
         <br />
         <br />
@@ -216,7 +262,7 @@ export default function MyGuestHouseCreateForm() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             type="submit"
-            onClick={submit}
+            onClick={(e) => submit(e)}
             sx={{
               marginTop: '6rem',
               height: '3rem',
@@ -225,7 +271,7 @@ export default function MyGuestHouseCreateForm() {
             }}
             variant="contained"
           >
-            글 작성
+            {isCreate ? '글 작성' : '글 수정'}
           </Button>
         </Box>
       </form>
