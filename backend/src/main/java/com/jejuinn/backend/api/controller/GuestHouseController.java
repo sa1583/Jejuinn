@@ -123,7 +123,7 @@ public class GuestHouseController {
 
         // 사진 삭제
         try {
-            s3Uploader.deleteImages(list);
+            if(list != null && !list.isEmpty()) s3Uploader.deleteImages(list);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(400).build();
@@ -131,7 +131,7 @@ public class GuestHouseController {
 
         // 사진 저장
         try {
-            s3Uploader.uploadImages(images, GUEST_TYPE, guestHouse.getUid());
+            if(images != null && !images.isEmpty()) s3Uploader.uploadImages(images, GUEST_TYPE, guestHouse.getUid());
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(400).build();

@@ -134,7 +134,7 @@ public class ResumeController {
         }
     }
 
-    // @GetMapping("/auth/my-applicant/{userUid}")
+    @GetMapping("/auth/my-apply-list")
     @ApiOperation(value = "내 지원목록 확인", notes = "userUid를 통해 내 지원목록을 확인합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
@@ -142,11 +142,10 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyApplicant(@PathVariable Long userUid) {
-        List<Long> recruitmentUids = userRepository.findRecruitmentUidByUserUid(userUid);
-        // List<MyApplicantRes> result = recruitmentService.getMyApplicant(recruitmentUids);
+    public ResponseEntity<?> getMyApplicant(HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
         return ResponseEntity.status(200).body(
-                recruitmentUids
+                null
         );
     }
 
