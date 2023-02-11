@@ -1,8 +1,8 @@
-FROM python:3.11
+FROM python:3.10
 
 COPY . /app
 
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 RUN pip freeze > requirements.txt
 RUN pip install -r requirements.txt
 RUN pip install Flask==2.2.2

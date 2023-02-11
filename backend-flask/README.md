@@ -5,7 +5,7 @@
 ## Docker RUN
 ### 1. Docker image build
 ```commandline
- docker build -t jejuinn/flask-backend .
+ docker build --platform amd64 -t jejuinn/flask-backend .
 ```
 ### 2. Docker hub login
 ```commandline
@@ -17,5 +17,5 @@ docker login -u <<user>> -p <<password>>
 ```
 ### 4. Docker image run
 ```commandline
- docker run -d -p 0.0.0.0:5000:5000/tcp --name backend-flask jejuinn/backend-flask
+ docker run -d -p 0.0.0.0:5000:5000/tcp --name backend-flask jejuinn/flask-backend 
 ```
