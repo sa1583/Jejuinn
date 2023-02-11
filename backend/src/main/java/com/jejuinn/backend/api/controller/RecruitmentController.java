@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +38,7 @@ public class RecruitmentController {
 
     private final WorkRepository workRepository;
     private final RecruitmentRepository recruitmentRepository;
+    private final GuestHouseRepositorySupport guestHouseRepositorySupport;
     private final ImageRepository imageRepository;
     private final ResumeInfoService resumeInfoService;
     private final S3Uploader s3Uploader;
@@ -138,6 +141,9 @@ public class RecruitmentController {
     public ResponseEntity<?> getMyWorkList(@PathVariable Long guestHouseUid) {
         List<Work> works = recruitmentRepository.findWorkByGuestHouseUid(guestHouseUid);
         if(works == null || works.size() == 0) return ResponseEntity.status(204).build();
+        System.out.println(works.size());
+        Long uid = workRepository.findUserUidByWorkUid(works.get(0).getUid());
+        System.out.println(uid);
         return ResponseEntity.status(200).body(
                 works.stream().map(
                         work -> WorkListRes.of(work,
@@ -222,5 +228,29 @@ public class RecruitmentController {
         }
         workRepository.save(modifyWorkPutReq.toWork());
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/api/job-offer/search")
+    @ApiOperation(value = "직무 필터 조회", notes = "스타일(styles), 지역명(areaName), 게스트하우스명(word), 입도날짜(entryDate)를 받아" +
+            " 그에 맞는 직무를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(검색 조건에 맞는 직무가 없습니다.)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getWorkByFilter(@RequestParam("pageNumber") int pageNumber,
+                                             @RequestParam(value = "styles") List<String> styles,
+                                             @RequestParam(value = "areaName") String areaName,
+                                             @RequestParam(value = "word") String word,
+                                             @RequestParam(value = "entryDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate entryDate) {
+        Pageable pageable = PageRequest.of(pageNumber-1, 15);
+        List<Long> guestHouseUidList = guestHouseRepositorySupport.searchGuestHouseUidWithFilter(styles, areaName, word);
+        if(guestHouseUidList.size() == 0 || guestHouseUidList == null) return ResponseEntity.status(400).build();
+        return ResponseEntity.status(200).body(
+                workRepository.findByGuestHouseUidAndEntryDate(guestHouseUidList, entryDate, pageable).map(
+                        work -> WorkListRes.of(work,
+                                workRepository.findUserUidByWorkUid(work.getUid()))
+                )
+        );
     }
 }
