@@ -9,10 +9,7 @@ import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.db.entity.ResumeInfo;
 import com.jejuinn.backend.db.entity.WorkResumeInfo;
-import com.jejuinn.backend.db.repository.ResumeInfoRepository;
-import com.jejuinn.backend.db.repository.StaffRecordRepository;
-import com.jejuinn.backend.db.repository.UserRepository;
-import com.jejuinn.backend.db.repository.WorkResumeInfoRepository;
+import com.jejuinn.backend.db.repository.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -36,7 +33,7 @@ public class ResumeController {
     private final WorkResumeInfoRepository workResumeInfoRepository;
     private final UserRepository userRepository;
     private final StaffRecordRepository staffRecordRepository;
-    private final RecruitmentService recruitmentService;
+    private final RecruitmentRepository recruitmentRepository;
     private final UserService userService;
 
     @PostMapping("/auth/job-search")
@@ -145,9 +142,8 @@ public class ResumeController {
     public ResponseEntity<?> getMyApplicant(HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         return ResponseEntity.status(200).body(
-                null
+                recruitmentRepository.findMyApplyListByUserUid(userUid)
         );
     }
-
 
 }
