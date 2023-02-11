@@ -31,9 +31,9 @@ public class RecommendWorkDto {
 
     private String area;
 
-    private List<String> guestHouseType;
+    private List<String> guestHouseTypes;
 
-    private List<String> personType;
+    private List<String> personTypes;
 
     @QueryProjection
     public RecommendWorkDto(String workName, String gender, int minWorkPeriod, String workTime, int workDays, int daysOff, Long guestHouseUid, Area area, String guestHouseType,Recruitment recruitment) {
@@ -45,8 +45,8 @@ public class RecommendWorkDto {
         this.daysOff = daysOff;
         this.guestHouseUid = guestHouseUid;
         this.area = area.getAreaName();
-        this.guestHouseType = List.of(guestHouseType.split(","));
+        this.guestHouseTypes = List.of(guestHouseType.split(","));
 //        this.guestHouseType = this.getPersonType().subList(1, this.guestHouseType.size());
-        this.personType = recruitment.getWanted().stream().map(pType -> pType.getType()).collect(Collectors.toList());
+        this.personTypes = recruitment.getWanted().stream().map(pType -> pType.getType()).collect(Collectors.toList());
     }
 }

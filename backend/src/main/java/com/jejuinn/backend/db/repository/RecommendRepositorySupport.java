@@ -47,7 +47,6 @@ public class RecommendRepositorySupport {
     }
 
     public List<RecommendResumeDto> getResumeInfo(RecommendWorkDto request){
-        System.out.println(request.getArea());
         return factory.select(new QRecommendResumeDto(
                     qResumeInfo.uid,
                     qResumeInfo.guestHouseType

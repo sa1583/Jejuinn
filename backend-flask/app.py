@@ -1,36 +1,71 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, jsonify, request
 import gensim
-# 파일로 남기기 위해서는 filename='test.log' 파라미터, 어느 로그까지 남길 것인지를 level 로 설정 가능
+import sys
+import logging
+import datetime
+from pytz import timezone
+
 
 app = Flask(__name__)
-print("START FLASK SERVER BOOT")
-print("MODEL LOAD...")
-ko_model = gensim.models.fasttext.load_facebook_model('cc.ko.300.bin')
-print("MODEL LOAD DONE")
+
+print("START FLASK SERVER BOOT", file=sys.stdout)
+print("MODEL LOAD...", file=sys.stdout)
+# 위키피디아 데이터셋 학습 모델
+ko_model = gensim.models.fasttext.load_facebook_model('kowiki.bin')
+print("MODEL LOAD DONE", file=sys.stdout)
+
+
+def log(message):
+    log_date = get_log_date()
+    log_message = "{0}/{2}".format(log_date, message)
+    print(log_message, file=sys.stdout)
+
+
+def log(req, message):
+    log_date = get_log_date()
+    log_message = "{0}/{1}/{2}".format(log_date, str(req), message)
+    print(log_message, file=sys.stdout)
+
+
+def error_log(req, error_code, error_message):
+    log_date = get_log_date()
+    log_message = "{0}/{1}/{2}/{3}".format(log_date, str(req), error_code, error_message)
+    print(log_message, file=sys.sterr)
+
+
+def get_log_date():
+    dt = datetime.datetime.now(timezone("Asia/Seoul"))
+    log_date = dt.strftime("%Y%m%d_%H:%M:%S")
+    return log_date
+
+
+def calc_score(work, resume):
+    w = 10
+    d = 1
+    pw = 2
+    avg = 0
+    cnt = 0
+    for i in work["guestHouseTypes"]:
+        for j in resume["guestHouseTypes"]:
+            avg += ko_model.wv.similarity(i, j)
+            cnt += 1
+
+    for i in work["personTypes"]:
+        for j in resume["personTypes"]:
+            avg += ko_model.wv.similarity(i, j) * pw
+            cnt += 1
+    return str(int(avg ** 2 / cnt * w) + d)
 
 
 @app.post('/sim')
-def get_similarity():  # put application's code here
+def app_main():  # put application's code here
+    log(request, "FUNC CALL")
     params = request.get_json()
-    print(params["work"])
     size = len(params["resumes"])
     for i in range(size):
-        print(params["resumes"][i])
-        params["resumes"][i]["similarity"] = ko_model.wv.similarity("안녕", "시발")
-        print(params["resumes"][i])
-    # gh_words = params["guestHouse"]["tags"]
-    # tg_words = params["target"]["tags"]
-    #
-    # n = len(gh_words)
-    # m = len(tg_words)
-    # result = 0
-    # for i in range(n):
-    #     for j in range(m):
-    #         similarity = ko_model.wv.similarity(gh_words[i], tg_words[j])
-    #         result += similarity
-    # result /= n*m
-    print(params)
+        params["resumes"][i]["score"] = calc_score(params["work"], params["resumes"][i])
+    log(request, "FUNC PROCESS DONE")
     return jsonify(params), 200
 
 

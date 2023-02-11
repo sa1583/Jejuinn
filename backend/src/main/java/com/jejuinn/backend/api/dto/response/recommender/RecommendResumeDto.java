@@ -17,7 +17,7 @@ public class RecommendResumeDto {
     private Long resumeInfoUid;
     private List<String> guestHouseTypes;
     private List<String> personTypes;
-    private double similarity;
+    private double score;
 
     @QueryProjection
     public RecommendResumeDto(Long resumeInfoUid, String guestHouseType) {
