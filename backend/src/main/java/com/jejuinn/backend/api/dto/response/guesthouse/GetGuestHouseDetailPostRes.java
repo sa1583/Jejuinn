@@ -15,12 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class GetGuestHouseDetailPostRes {
-    private GuestHouseDto guestHouse;
+    private GuestHouseDeatilDto guestHouse;
     private List<Image> images;
 
-    public static GetGuestHouseDetailPostRes of(GuestHouseDto guestHouse, List<Image> images){
+    public static GetGuestHouseDetailPostRes of(GuestHouseDeatilDto guestHouseDetailDto, List<Image> images){
         return GetGuestHouseDetailPostRes.builder()
-                .guestHouse(guestHouse)
+                .guestHouse(guestHouseDetailDto)
                 .images(images)
                 .build();
     }
