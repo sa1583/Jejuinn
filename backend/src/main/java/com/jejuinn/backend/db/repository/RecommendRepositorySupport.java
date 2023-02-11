@@ -11,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.querydsl.jpa.JPAExpressions.select;
@@ -46,14 +47,17 @@ public class RecommendRepositorySupport {
     }
 
     public List<RecommendResumeDto> getResumeInfo(RecommendWorkDto request){
+        System.out.println(request.getArea());
         return factory.select(new QRecommendResumeDto(
                     qResumeInfo.uid,
                     qResumeInfo.guestHouseType
                 ))
                 .from(qResumeInfo)
-                .where(qResumeInfo.isDeleted.eq(false),
-                        qResumeInfo.autoApply.eq(true),
-                        qResumeInfo.interestAreas.any().in(Area.builder().areaName(request.getArea()).build()))
+                .where(qResumeInfo.isDeleted.eq(false), // 삭제 되지 않은 지원서만
+                        qResumeInfo.autoApply.eq(true), // 자동 지원 대상자만
+                        genderEq(request.getGender()), // 성별 같은 사람만
+//                        qResumeInfo.possibleStartDate.lt(LocalDate.now()),
+                        qResumeInfo.interestAreas.any().in(Area.builder().areaName(request.getArea()).build())) // 지역이 해당하는 사람만
                 .fetch();
     }
 
@@ -63,5 +67,10 @@ public class RecommendRepositorySupport {
                 .innerJoin(qRecruitment.wanted, qPersonType)
                 .where(qRecruitment.uid.eq(uid))
                 .fetch();
+    }
+
+    private BooleanExpression genderEq (String gender){
+        if (gender.equals("무관")) return null;
+        return qResumeInfo.user.gender.eq(gender);
     }
 }
