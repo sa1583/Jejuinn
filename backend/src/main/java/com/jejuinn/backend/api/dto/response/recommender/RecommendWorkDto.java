@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RecommendWorkDto {
     private String workName;
 
