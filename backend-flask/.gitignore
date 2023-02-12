@@ -8,7 +8,7 @@ instance/*
 .env
 static/
 templates/
-cc.ko.300.bin
+kowiki.bin
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
