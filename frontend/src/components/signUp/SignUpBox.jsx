@@ -36,12 +36,12 @@ export default function SignUpBox() {
           flexDirection: 'column',
           alignItems: 'center',
           width: '90%',
-          paddingX: '5%',
-          paddingTop: '3vh',
+          paddingTop: '2rem',
+          margin: 'auto',
         }}
       >
         <h1>회원가입</h1>
-        <Box sx={{ width: '100%', marginTop: '1%' }}>
+        <Box sx={{ width: '100%', marginTop: '0.5rem' }}>
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((label) => (
               <Step

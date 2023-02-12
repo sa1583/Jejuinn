@@ -48,13 +48,6 @@ export default function StaffPick() {
 
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
-    {
-      icon: <ModeEditOutlinedIcon />,
-      name: '테스트',
-      handle: () => {
-        console.log(pageNum);
-      },
-    },
   ];
 
   // spots 정보 저장할 함수
@@ -65,25 +58,6 @@ export default function StaffPick() {
   const getSpotsPins = async () => {
     const SpotsList = (await getSpotsPin()).data;
     setSpots(SpotsList);
-  };
-
-  // 명소 이미지 리스트 받아오기
-  const [spotImgs, setSpotImgs] = useState([]);
-  const [pageNum, setPageNum] = useState(1);
-
-  const getSpotsImgs = async () => {
-    setSpotImgs([]);
-    for (let i = 1; i < pageNum + 1; i++) {
-      const data = (await getSpotsImg(i)).data.content;
-      setSpotImgs((prev) => prev.concat(data));
-      console.log(i);
-    }
-  };
-
-  const getNextSpotImgs = async () => {
-    const data = (await getSpotsImg(pageNum + 1)).data.content;
-    setPageNum((prev) => prev + 1);
-    setSpotImgs((prev) => prev.concat(data));
   };
 
   // 명소 정보 받아오기
@@ -105,47 +79,26 @@ export default function StaffPick() {
     }
   }, []);
 
-  // 이 아래는 무한스크롤 구현 완료되면 지워도 되려나
-  useEffect(() => {
-    if (!pageId) {
-      getSpotsImgs();
-    }
-  }, [pageId]);
-
   useEffect(() => {
     if (pageId) {
       selectSpot();
     }
   }, [pageId]);
 
-  // const [bottom, setBottom] = useState(null);
-  // const bottomObserver = useRef(null);
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting) {
-  //         console.log(pageNum);
-  //       }
-  //     },
-  //     { threshold: 0.5, rootMargin: '80px' },
-  //   );
-  //   bottomObserver.current = observer;
-  // }, []);
+  const [spotImgs, setSpotImgs] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
+  const getNextSpotImgs = async () => {
+    const data = (await getSpotsImg(pageNum)).data.content;
+    setSpotImgs((prev) => prev.concat(data));
+  };
 
-  // useEffect(() => {
-  //   const observer = bottomObserver.current;
-  //   if (bottom) {
-  //     observer.observe(bottom);
-  //   }
-  //   setPageNum(2);
-  //   console.log(1);
-  //   return () => {
-  //     if (bottom) {
-  //       observer.unobserve(bottom);
-  //     }
-  //   };
-  // }, [bottom]);
+  useEffect(() => {
+    getNextSpotImgs();
+  }, [pageNum]);
 
+  const plusPageNum = () => {
+    setPageNum((prev) => prev + 1);
+  };
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
       <SpeedDialComponent actions={actions} />
@@ -189,16 +142,14 @@ export default function StaffPick() {
             <WhiteBox
               cpn={
                 <StaffPickSpotList
-                  selectSpot={selectSpot}
                   spotImgs={spotImgs}
-                  getNextSpotImgs={getNextSpotImgs}
+                  plusPageNum={() => plusPageNum()}
                 />
               }
             />
           </Grid>
         )}
       </Grid>
-      {/* <div ref={setBottom} /> */}
     </Box>
   );
 }
