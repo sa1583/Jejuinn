@@ -72,30 +72,11 @@ export default function SearchForm() {
             spacing={3}
             sx={{ width: 400, marginTop: '2vh', marginRight: '1vh' }}
           >
-            <FilterArea value={selectedAreas} setValue={setSelectedAreas} />
-            {/* <Autocomplete
-              multiple
-              id="tags-outlined"
-              options={['북부', '서부', '남부', '동부']}
-              filterSelectedOptions
-              renderInput={(params) => (
-                <CustomTextField
-                  {...params}
-                  label="선호하는 지역"
-                  placeholder="선호하는 지역을 입력하세요"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment
-                        position="start"
-                        style={{ color: '#FF7600' }}
-                      >
-                        <FmdGoodOutlinedIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
-            /> */}
+            <FilterArea
+              value={selectedAreas}
+              setValue={setSelectedAreas}
+              limit={1}
+            />
           </Stack>
           <Stack spacing={3} sx={{ width: 400, marginTop: '2vh' }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import GroupsIcon from '@mui/icons-material/Groups';
-import { FilterGuestHouseStyle } from '../work/Filters';
+import { FilterArea, FilterGuestHouseStyle } from '../work/Filters';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -70,6 +70,8 @@ export default function GuestHouseFilter({ getFilter, filter }) {
 
   const [pickForm, setPickForm] = useState(filter);
   const [guestHouseStyles, setGuestHouseStyles] = useState([]);
+  const [selectedAreas, setSelectedAreas] = useState([]);
+
   const handlePickForm = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -91,27 +93,7 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         setValue={setGuestHouseStyles}
       />
 
-      <CustomTextField
-        id="outlined-select-currency"
-        select
-        label="선호하는 지역"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start" style={{ color: '#FF7600' }}>
-              <FmdGoodOutlinedIcon />
-            </InputAdornment>
-          ),
-        }}
-        value={pickForm.section}
-        onChange={handlePickForm}
-        name="section"
-      >
-        {selectedSections.map((selectedSection) => (
-          <MenuItem key={uuidv4()} value={selectedSection}>
-            {selectedSection}
-          </MenuItem>
-        ))}
-      </CustomTextField>
+      <FilterArea value={selectedAreas} setValue={setSelectedAreas} limit={3} />
 
       <CustomTextField
         label="검색어로 찾기"

@@ -49,7 +49,7 @@ function FilterName({ onName }) {
   );
 }
 
-function FilterArea({ value, setValue }) {
+function FilterArea({ value, setValue, limit }) {
   const areas = [
     '전체',
     '서귀포시',
@@ -71,6 +71,7 @@ function FilterArea({ value, setValue }) {
       sx={{ width: '100%' }}
       multiple
       options={areas}
+      limitTags={limit}
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
@@ -79,7 +80,7 @@ function FilterArea({ value, setValue }) {
         <CustomTextField
           {...params}
           label="선호하는 지역"
-          placeholder="원하는 지역을 입력하세요"
+          placeholder={value ? null : '원하는 지역을 입력하세요'}
           InputProps={{
             ...params.InputProps,
             startAdornment: (
