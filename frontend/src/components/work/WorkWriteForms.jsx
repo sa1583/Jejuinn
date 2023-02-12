@@ -296,7 +296,11 @@ function GetRecruitmentTitle({ handleRecruimentInfo }) {
     <CustomTextField
       label="채용 공고 제목"
       name="title"
+      variant="standard"
       onInput={handleRecruimentInfo}
+      sx={{
+        width: '100%',
+      }}
     />
   );
 }
@@ -307,6 +311,9 @@ function GetRecruitmentWelfare({ handleRecruimentInfo }) {
       label="복지"
       name="welfare"
       onInput={handleRecruimentInfo}
+      sx={{
+        width: '100%',
+      }}
     />
   );
 }
@@ -316,7 +323,17 @@ function GetRecruitmentInfo({ handleRecruimentInfo }) {
     <CustomTextField
       label="추가정보"
       name="addInfo"
+      multiline
       onInput={handleRecruimentInfo}
+      sx={{
+        width: '100%',
+        '& .MuiOutlinedInput-root': {
+          height: '20vh',
+          '& fieldset': {
+            borderRadius: '30px',
+          },
+        },
+      }}
     />
   );
 }
@@ -369,10 +386,6 @@ function GetRecruitmentPersontype({ onPersontype }) {
 // 게하 여러개 일 때 직무 추가할 게스트하우스 선택하는 팝오버
 function SelectGusetHousePopover({ myGuestHouses, onSelect }) {
   const dispatch = useDispatch();
-  // onWrite 상태 바꾸고
-
-  //
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {

@@ -36,17 +36,22 @@ function createWork(body, token) {
   return api.post('/auth/work', body, config);
 }
 
-function updateWorkDetail() {
-  return api.put();
-}
-
-function deleteWorkDetail(workUid, token) {
+function updateWork(body, token) {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.delete(`/auth/work/${13}`, config);
+  return api.put('/auth/work', body, config);
+}
+
+function deleteWork(workUid, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.delete(`/auth/work/${workUid}`, config);
 }
 
 const getMyWorks = (token, guestHouseUid) => {
@@ -76,8 +81,8 @@ export {
   allWorkList,
   filteredWorkList,
   createWork,
-  updateWorkDetail,
-  deleteWorkDetail,
+  updateWork,
+  deleteWork,
   getMyWorks,
   getMyRecruitments,
   postRecruitment,

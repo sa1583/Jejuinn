@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { recruitmentDetail } from '../../api/work';
 import { Box, Button, Grid } from '@mui/material';
 
-export default function RecruitmentInfo({ recruitmentUid, onClick }) {
+export default function RecruitmentInfo({ id, onClick }) {
   const [recruitment, setRecruitment] = useState({});
 
   async function getWork() {
