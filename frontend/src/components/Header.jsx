@@ -11,6 +11,7 @@ import { useRef, useState } from 'react';
 import { logout, selectIsLogin, selectUserInfo } from '../store/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { images } from '../assets/images';
 
 const pages = [
   { name: '게스트하우스', url: 'guesthouse' },
@@ -32,7 +33,7 @@ export default function ButtonAppBar() {
 
   useEffect(() => {
     const name = location.pathname.split('/')[1];
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 4; i++) {
       toolbarRef.current.childNodes[i].childNodes[0].style.color = 'black';
     }
     switch (name) {
@@ -44,6 +45,11 @@ export default function ButtonAppBar() {
         break;
       case 'staffpicklist':
         toolbarRef.current.childNodes[3].childNodes[0].style.color = '#FF7600';
+        break;
+      case 'login':
+      case '':
+      case 'signup':
+        toolbarRef.current.childNodes[4].childNodes[0].style.color = '#FF7600';
         break;
     }
   });
@@ -106,10 +112,7 @@ export default function ButtonAppBar() {
               }}
               key={page.name}
             >
-              <Link
-                to={page.url}
-                style={{ textDecoration: 'none', color: 'black' }}
-              >
+              <Link to={page.url} style={{ textDecoration: 'none' }}>
                 {page.name}
               </Link>
             </Typography>
@@ -125,7 +128,6 @@ export default function ButtonAppBar() {
                 to={'login'}
                 style={{
                   textDecoration: 'none',
-                  color: '#FF7600',
                 }}
               >
                 로그인
@@ -135,7 +137,10 @@ export default function ButtonAppBar() {
           {isLogin && (
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, flexGrow: 1 }}>
               {userInfo.profileImg ? (
-                <Avatar alt="Remy Sharp" src={userInfo.profileImg} />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={`${images.defalut_url}${userInfo.profileImg}`}
+                />
               ) : (
                 <Avatar sx={{ backgroundColor: 'primary.main' }}>
                   {userInfo.nickname[0].toUpperCase()}
