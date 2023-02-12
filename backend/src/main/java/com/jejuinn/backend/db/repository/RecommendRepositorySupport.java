@@ -37,6 +37,8 @@ public class RecommendRepositorySupport {
                                     qWork.daysOff,
                                     qGuestHouse.uid,
                                     qGuestHouse.area,
+                                    qWork.recruitment.addInfo,
+                                    qWork.recruitment.welfare,
                                     qGuestHouse.tags,
                                     qWork.recruitment
                             ))
@@ -49,6 +51,8 @@ public class RecommendRepositorySupport {
     public List<RecommendResumeDto> getResumeInfo(RecommendWorkDto request){
         return factory.select(new QRecommendResumeDto(
                     qResumeInfo.uid,
+                    qResumeInfo.user.uid,
+                    qResumeInfo.content,
                     qResumeInfo.guestHouseType
                 ))
                 .from(qResumeInfo)

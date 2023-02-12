@@ -15,13 +15,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RecommendResumeDto {
     private Long resumeInfoUid;
+    private Long userUid;
+    private String content;
     private List<String> guestHouseTypes;
     private List<String> personTypes;
     private double score;
 
     @QueryProjection
-    public RecommendResumeDto(Long resumeInfoUid, String guestHouseType) {
+    public RecommendResumeDto(Long resumeInfoUid, Long userUid, String content, String guestHouseType) {
         this.resumeInfoUid = resumeInfoUid;
+        this.userUid = userUid;
+        this.content = content;
         if(guestHouseType != null || !guestHouseType.isEmpty()){
             this.guestHouseTypes = List.of(guestHouseType.split(","));
         }
