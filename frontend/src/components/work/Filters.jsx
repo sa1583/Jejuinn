@@ -32,23 +32,6 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const selectedSections = [
-  '전체',
-  '서귀포시',
-  '제주시',
-  '한경면',
-  '한림읍',
-  '애월읍',
-  '조천읍',
-  '구좌읍',
-  '성산읍',
-  '표선면',
-  '남원읍',
-  '안덕면',
-  '대정읍',
-  '우도면',
-];
-
 function FilterName({ onName }) {
   return (
     <CustomTextField
@@ -67,12 +50,27 @@ function FilterName({ onName }) {
 }
 
 function FilterArea({ value, setValue }) {
+  const areas = [
+    '전체',
+    '서귀포시',
+    '제주시',
+    '한경면',
+    '한림읍',
+    '애월읍',
+    '조천읍',
+    '구좌읍',
+    '성산읍',
+    '표선면',
+    '남원읍',
+    '안덕면',
+    '대정읍',
+    '우도면',
+  ];
   return (
     <Autocomplete
       sx={{ width: '100%' }}
       multiple
-      limitTags={3}
-      options={selectedSections.map((option) => option)}
+      options={areas}
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
@@ -82,6 +80,17 @@ function FilterArea({ value, setValue }) {
           {...params}
           label="선호하는 지역"
           placeholder="원하는 지역을 입력하세요"
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: (
+              <>
+                <InputAdornment position="start">
+                  <FmdGoodOutlinedIcon color="primary" />
+                </InputAdornment>
+                {params.InputProps.startAdornment}
+              </>
+            ),
+          }}
         />
       )}
     />
@@ -136,9 +145,6 @@ function FilterStyle({ value, setValue }) {
       onChange={(event, newValue) => {
         setValue(newValue);
       }}
-      // onInputChange={(event, newInputValue) => {
-      //   setInputValue(newInputValue);
-      // }}
       renderInput={(params) => (
         <CustomTextField
           {...params}
@@ -150,4 +156,52 @@ function FilterStyle({ value, setValue }) {
   );
 }
 
-export { FilterDate, FilterArea, FilterName, FilterStyle };
+function FilterGuestHouseStyle({ value, setValue }) {
+  const wishStyles = [
+    '꼼꼼',
+    '대처 능력',
+    '빠른 습득',
+    '빠른 일처리',
+    '스탭 경험자',
+    '아침형 인간',
+    '열정',
+    '의사소통 기술',
+    '저녁형 인간',
+    '책임감',
+    '친절함',
+    '활발한 성격',
+  ];
+
+  const maxSelections = 5;
+
+  return (
+    <Autocomplete
+      sx={{ width: '100%' }}
+      multiple={3}
+      limitTags={3}
+      options={wishStyles}
+      getOptionDisabled={(option) =>
+        value.length === maxSelections || value.includes(option) ? true : false
+      }
+      value={value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}
+      renderInput={(params) => (
+        <CustomTextField
+          {...params}
+          label="스타일"
+          placeholder="원하는 스타일을 입력하세요"
+        />
+      )}
+    />
+  );
+}
+
+export {
+  FilterDate,
+  FilterArea,
+  FilterName,
+  FilterStyle,
+  FilterGuestHouseStyle,
+};

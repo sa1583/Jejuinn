@@ -7,9 +7,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { FilterArea, FilterGuestHouseStyle } from '../work/Filters';
 
 export default function SearchForm() {
   const [selectDate, setSelectDate] = useState(null);
+  const [selectStyle, setSelectStyle] = useState([]);
+  const [selectedAreas, setSelectedAreas] = useState([]);
   const handleDate = (inIsland) => {
     setSelectDate(inIsland);
   };
@@ -59,23 +62,9 @@ export default function SearchForm() {
         boxShadow="0px 2px 74px 2px rgba(0, 0, 0, 0.1)"
       >
         <Stack spacing={3}>
-          <Autocomplete
-            multiple
-            id="tags-outlined"
-            options={[
-              '조용한 게하',
-              '파티가 있는 게하',
-              '수영장이 있는 게하',
-              '뷰가 좋은 게하',
-            ]}
-            filterSelectedOptions
-            renderInput={(params) => (
-              <CustomTextField
-                {...params}
-                label="선호하는 스타일"
-                placeholder="원하는 스타일을 입력하세요"
-              />
-            )}
+          <FilterGuestHouseStyle
+            value={selectStyle}
+            setValue={setSelectStyle}
           />
         </Stack>
         <Box sx={{ display: 'flex' }}>
@@ -83,7 +72,8 @@ export default function SearchForm() {
             spacing={3}
             sx={{ width: 400, marginTop: '2vh', marginRight: '1vh' }}
           >
-            <Autocomplete
+            <FilterArea value={selectedAreas} setValue={setSelectedAreas} />
+            {/* <Autocomplete
               multiple
               id="tags-outlined"
               options={['북부', '서부', '남부', '동부']}
@@ -105,7 +95,7 @@ export default function SearchForm() {
                   }}
                 />
               )}
-            />
+            /> */}
           </Stack>
           <Stack spacing={3} sx={{ width: 400, marginTop: '2vh' }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
