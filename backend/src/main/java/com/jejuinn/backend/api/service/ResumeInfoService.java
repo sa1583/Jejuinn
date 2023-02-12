@@ -10,6 +10,7 @@ import com.jejuinn.backend.db.entity.WorkResumeInfo;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
 import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.db.repository.WorkRepository;
+import com.jejuinn.backend.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,15 @@ public class ResumeInfoService {
             }
         }
         return result;
+    }
+
+    public MyApplicantDetailRes getMyApplicant(Long resumeInfoUid) {
+        Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findById(resumeInfoUid);
+        Optional<User> user = userRepository.findById(resumeInfo.get().getUser().getUid());
+        if(user.isPresent()) {
+            return MyApplicantDetailRes.toMyApplicantDetailRes(resumeInfo.get(), user.get());
+        }
+        return null;
     }
 
     @Transactional
