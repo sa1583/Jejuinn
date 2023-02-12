@@ -54,7 +54,7 @@ public class SMSController {
                     "귀하는 저희 게스트하우스의 면접 대상자로 선정되셨습니다. " +
                     "%s 다음 번호로 연락주시면 감사하겠습니다.", guestHouse.get().getGuestHouseName(), guestHouse.get().getPhone());
         }
-        MessageDto messageDto = MessageDto.builder().content(content).to("01022690343").build();
+        MessageDto messageDto = MessageDto.builder().content(content).to(smsSendReq.getTo()).build();
         SMSResponseDto response = smsService.sendSms(messageDto);
         if(response == null) {
             return ResponseEntity.status(400).build();
