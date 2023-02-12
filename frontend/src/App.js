@@ -6,8 +6,8 @@ import SignUp from './routes/signUp/SignUp';
 import GuestHouse from './routes/guestHouse/GuestHouse';
 import GuestHouseDetail from './routes/guestHouseDetail/GuestHouseDetail';
 import WorkList from './routes/work/WorkList';
-import RecruitmentWrite from './components/work/RecruitmentWrite';
-import RecruitmentDetail from './routes/work/RecruitmentDetail';
+import WorkRecruitmentWrite from './routes/work/WorkRecruitmentWrite';
+import WorkDetail from './routes/work/WorkDetail';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
@@ -83,9 +83,14 @@ const router = createBrowserRouter([
         path: 'worklist',
         element: <WorkList />,
       },
+
+      {
+        path: 'work-recruitment-write/:guestHouseUid/:workUid',
+        element: <WorkRecruitmentWrite />,
+      },
       {
         path: 'worklist/detail/:recruitmentUid/:workUid',
-        element: <RecruitmentDetail />,
+        element: <WorkDetail />,
       },
       {
         path: 'staffpicklist',

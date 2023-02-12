@@ -27,15 +27,6 @@ const recruitmentDetail = (recruitmentUid) => {
   return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
 };
 
-const writeRecruitment = (body) => {
-  const config = {
-    headers: {
-      accessToken: `Bearer ${Access_token()}`,
-    },
-  };
-  return api.post('/auth/job-offer', body, config);
-};
-
 function createWork(body, token) {
   const config = {
     headers: {
@@ -45,17 +36,22 @@ function createWork(body, token) {
   return api.post('/auth/work', body, config);
 }
 
-function updateWorkDetail() {
-  return api.put();
-}
-
-function deleteWorkDetail(workUid, token) {
+function updateWork(body, token) {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.delete(`/auth/work/${13}`, config);
+  return api.put('/auth/work', body, config);
+}
+
+function deleteWork(workUid, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.delete(`/auth/work/${workUid}`, config);
 }
 
 const getMyWorks = (token, guestHouseUid) => {
@@ -72,14 +68,33 @@ const getMyRecruitments = (guestHouseUid) => {
   return api.get(`/api/guest-house-recruitment/${guestHouseUid}`);
 };
 
+const updateRecruitment = (body, token) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put('/auth/job-offer', body, config);
+};
+
+const createRecruitment = (body, token) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/job-offer', body, config);
+};
+
 export {
   recruitmentDetail,
   allWorkList,
   filteredWorkList,
-  writeRecruitment,
   createWork,
-  updateWorkDetail,
-  deleteWorkDetail,
+  updateWork,
+  deleteWork,
   getMyWorks,
   getMyRecruitments,
+  createRecruitment,
+  updateRecruitment,
 };
