@@ -1,6 +1,6 @@
 import { Box, Grid, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { deleteWorkDetail, updateWorkDetail } from '../../api/work';
+import { deleteWork } from '../../api/work';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
 
@@ -9,14 +9,14 @@ export default function MyWorkDetail({ work }) {
   const accessToken = useSelector(selectAccessToken);
 
   const onRecruitmentDetail = () => {
-    navigate(`/worklist/detail/${work.recruitmentUid}/${work.uid}`);
+    navigate(`/worklist/detail/${work.workUid}`);
   };
 
   function handleWorkUpdate() {
-    updateWorkDetail();
+    navigate(`/work-recruitment-write/${work.guestHouseUid}/${work.workUid}`);
   }
   function handleWorkDelete() {
-    deleteWorkDetail(14, accessToken);
+    deleteWork(work.workUid, accessToken);
   }
 
   return (
