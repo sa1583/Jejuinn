@@ -7,16 +7,19 @@ import {
   GetRecruitmentPersontype,
 } from './WorkWriteForms';
 
-export default function RecruitmentWrite({ onRecruitmentWrite }) {
+export default function RecruitmentWrite({
+  onRecruitmentWrite,
+  currentRecruitmentInfo,
+}) {
   const [persontype, setPersontype] = useState([]);
   function onPersontype(input) {
     setPersontype([...input]);
   }
   const [recruimentInfo, setRecruimentInfo] = useState({
-    title: '',
-    welfare: '',
-    persontype: [],
-    addInfo: '',
+    title: currentRecruitmentInfo.title,
+    welfare: currentRecruitmentInfo.welfare,
+    persontype: currentRecruitmentInfo.persontype,
+    addInfo: currentRecruitmentInfo.addInfo,
   });
 
   const handleRecruimentInfo = (e) => {
@@ -25,7 +28,6 @@ export default function RecruitmentWrite({ onRecruitmentWrite }) {
     setRecruimentInfo({ ...recruimentInfo, [name]: value });
   };
 
-  // 이거 적용이 조금 이상해.. 수정 필요 반박자 늦어요..
   useEffect(() => {
     setRecruimentInfo({
       ...recruimentInfo,

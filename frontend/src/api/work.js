@@ -68,7 +68,16 @@ const getMyRecruitments = (guestHouseUid) => {
   return api.get(`/api/guest-house-recruitment/${guestHouseUid}`);
 };
 
-const postRecruitment = (token, body) => {
+const updateRecruitment = (body, token) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put('/auth/job-offer', body, config);
+};
+
+const createRecruitment = (body, token) => {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
@@ -76,6 +85,7 @@ const postRecruitment = (token, body) => {
   };
   return api.post('/auth/job-offer', body, config);
 };
+
 export {
   recruitmentDetail,
   allWorkList,
@@ -85,5 +95,6 @@ export {
   deleteWork,
   getMyWorks,
   getMyRecruitments,
-  postRecruitment,
+  createRecruitment,
+  updateRecruitment,
 };

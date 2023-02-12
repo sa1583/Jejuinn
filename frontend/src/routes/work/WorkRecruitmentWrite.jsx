@@ -4,10 +4,16 @@ import RecruitmentWrite from '../../components/work/RecruitmentWrite';
 import WorkWrite from '../../components/work/WorkWrite';
 import { useParams } from 'react-router-dom';
 import { Button, styled, Box } from '@mui/material';
-import { createWork, getMyRecruitments, updateWork } from '../../api/work';
+import {
+  createWork,
+  getMyRecruitments,
+  updateWork,
+  createRecruitment,
+  updateRecruitment,
+} from '../../api/work';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const CustomButton = styled(Button)({
   variant: 'contained',
@@ -32,60 +38,50 @@ export default function WorkRecruitmentWrite() {
   const { guestHouseUid } = useParams();
   const { workUid } = useParams();
   const accessToken = useSelector(selectAccessToken);
-  // 게하 아이디로 공고 확인
-  const recruitment = getMyRecruitments(guestHouseUid);
+  const [workInfo, setWorkInfo] = useState(
+    getMyRecruitments(guestHouseUid).work,
+  );
+  const [recruitmentInfo, setRecruimentInfo] = useState(
+    getMyRecruitments(guestHouseUid),
+  );
 
-  // 있으면 공고 불러와서 RecruitmentWrite로 내용 전달
-  if (recruitment) {
-    // 수정 (PUT 메서드 호출)
-  } else {
-    // 없으면 작성 (POST 매서드 호출)
-  }
-
-  // 직무 생성하는 API 호출
-  // 직무 작성하는 API 호출
-  const workCreate = async (workInfo) => {
-    const data = await createWork(workInfo, accessToken);
-    console.log(data);
+  const onWorkWrite = (input) => {
+    console.log(input);
+    setWorkInfo(input);
   };
-  // 직무 수정하는 API 호출도 만들어야해요
-  const workUpdate = async (workInfo) => {
-    const data = await updateWork(workInfo, accessToken);
-    console.log(data);
-  };
-
-  if (workUid === 'undefined') {
-    const workInfo = OnWorkWrite();
-    workCreate(workInfo);
-  } else {
-    const workInfo = OnWorkWrite();
-    workUpdate(workInfo);
-  }
-
-  function OnWorkWrite(input) {
-    const [workInfo, setWorkInfo] = useState(input);
-    setWorkInfo({ ...workInfo, recruitmentUid: recruitment.uid });
-    return workInfo;
-  }
 
   const onRecruitmentWrite = (input) => {
     console.log(input);
+    setRecruimentInfo(input);
+  };
+
+  const onClick = () => {
+    if (workUid === 'undefined') {
+      fetch(createWork(workInfo, accessToken));
+    } else {
+      // 기존 폼에 가져온 데이터 업로드
+      fetch(updateWork(workInfo, accessToken));
+    }
+
+    if (recruitmentInfo) {
+      // 기존 폼에 가져온 데이터 업로드
+
+      fetch(updateRecruitment(recruitmentInfo, accessToken));
+    } else {
+      fetch(createRecruitment(recruitmentInfo, accessToken));
+    }
   };
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-      <WhiteBox
-        cpn={
-          <HouseInfo
-          // geustHouseId={recruitmentInfo.guestHouseUid}
-          // images={images}
-          />
-        }
+      <div>!!!!!!!!!!이미지!!!!!!!!!!</div>
+      <RecruitmentWrite
+        onRecruitmentWrite={onRecruitmentWrite}
+        currentRecruitmentInfo={recruitmentInfo}
       />
-      <RecruitmentWrite onRecruitmentWrite={onRecruitmentWrite} />
-      <WorkWrite onWorkWrite={OnWorkWrite} />
+      <WorkWrite onWorkWrite={onWorkWrite} currentWorkInfo={workInfo} />
       <Box sx={{ paddingTop: '2rem' }}>
-        <CustomButton>저장</CustomButton>
+        <CustomButton onClick={onClick}>저장</CustomButton>
       </Box>
     </Box>
   );

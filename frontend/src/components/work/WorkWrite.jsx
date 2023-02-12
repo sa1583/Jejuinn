@@ -14,17 +14,17 @@ import {
   GetWorkDescription,
 } from './WorkWriteForms';
 
-export default function WorkWrite({ onWorkWrite }) {
+export default function WorkWrite({ onWorkWrite, currentWorkInfo }) {
   const [workInfo, setWorkInfo] = useState({
-    workName: '',
-    gender: '',
-    salary: '',
-    workTime: '',
-    workDescription: '',
-    intake: 0,
-    workDays: 2,
-    daysOff: 2,
-    minWorkPeriod: 0,
+    // workName: currentWorkInfo.workName,
+    // gender: currentWorkInfo.gender,
+    // salary: currentWorkInfo.salary,
+    // workTime: currentWorkInfo.workTime,
+    // workDescription: currentWorkInfo.GetWorkDescription,
+    // intake: currentWorkInfo.intake,
+    // workDays: currentWorkInfo.workDays,
+    // daysOff: currentWorkInfo.daysOff,
+    // minWorkPeriod: currentWorkInfo.minWorkPeriod,
   });
 
   const handleWorkInfo = (e) => {
