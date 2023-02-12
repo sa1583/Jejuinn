@@ -179,7 +179,7 @@ export default function ImageUploader({
               선택하세요.
             </Typography>
             <Typography sx={{ fontSize: '0.8rem' }}>
-              지원 확장자 : jpg, jpeg, png (최대 10개)
+              지원 확장자 : jpg, jpeg, png (최대 {maxNum}개)
             </Typography>
           </div>
         ) : (
