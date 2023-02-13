@@ -1,29 +1,49 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
-import SpotInfo from '../../components/staffPickDetailComponent/SpotInfo';
 import ReviewContent from '../../components/staffPickDetailComponent/ReviewContent';
 import MapApi from '../../components/mapApi/MapApi';
-import { getReviewDetail, getSpotInfo } from '../../api/staffPick';
-// import { getReview } from '../../api/staffPick';
-// import { useState } from 'react';
+import {
+  deleteReviewDetail,
+  getReviewDetail,
+  getSpotInfo,
+} from '../../api/staffPick';
+import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { useSelector } from 'react-redux';
+import {
+  selectAccessToken,
+  selectIsLogin,
+  selectUserInfo,
+} from '../../store/user';
+import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
 
 export default function StaffPickDetail() {
   // 리뷰 컨텐츠 내용
   const location = useLocation();
   const pageId = location.pathname.split('detail/')[1];
-
+  const navigate = useNavigate();
   // 명소 좌표 정보
   const [spots, setSpots] = useState([]);
 
-  const [travelPlaceUid, setTravelPlaceUid] = useState('');
-
-  const [reviewContent, setReviewContent] = useState([]);
+  const [reviewContent, setReviewContent] = useState({
+    content: '',
+    dateCreated: '',
+    images: [],
+    like: 0,
+    starRating: 0,
+    travelPlaceUid: '',
+    uid: '',
+    writer_nickname: '',
+    writer_uid: '',
+  });
+  // 리뷰 정보와 명소 정보 받아오기
   const getReviewContent = async () => {
     const data = (await getReviewDetail(pageId)).data;
-    setTravelPlaceUid(data.travelPlaceUid);
     setReviewContent(data);
     const info = (await getSpotInfo(data.travelPlaceUid)).data.travelPlace;
     setSpotInfo(info);
@@ -36,26 +56,53 @@ export default function StaffPickDetail() {
 
   // 명소 디테일 정보
   const [spotInfo, setSpotInfo] = useState([]);
+  const accessToken = useSelector(selectAccessToken);
 
-  // const getSpotdetail = async () => {
-  //   const data = (await getSpotInfo(pageId)).data.travelPlace;
-  //   setSpotInfo(data);
+  const deleteReview = async () => {
+    await deleteReviewDetail(pageId, accessToken);
+    alert('리뷰가 삭제되었습니다.');
+    navigate('/staffpicklist');
+  };
 
-  //   setSpots([{ id: data.uid, lat: data.lat, lng: data.lng }]);
-  // };
+  const goUpdateReview = () => {
+    navigate(`/staffpicklist/update/${pageId}`);
+  };
 
-  // useState(() => {
-  //   getSpotdetail();
-  // }, []);
+  const loginedUserUid = useSelector(selectUserInfo)?.uid;
+  const islogined = useSelector(selectIsLogin);
 
-  // const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
+  const goCreate = () => {
+    !islogined
+      ? alert('로그인이 필요합니다.')
+      : navigate('/staffpicklist/create');
+  };
+
+  const actions = () => {
+    return loginedUserUid === reviewContent.writer_uid
+      ? [
+          {
+            icon: <DeleteOutlineOutlinedIcon />,
+            name: '리뷰 삭제',
+            handle: deleteReview,
+          },
+          {
+            icon: <DriveFileRenameOutlineOutlinedIcon />,
+            name: '리뷰 수정',
+            handle: goUpdateReview,
+          },
+          { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
+        ]
+      : [{ icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate }];
+  };
+
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <SpeedDialComponent actions={actions()} />
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
-              <WhiteBox cpn={<SpotInfo spotInfo={spotInfo} />} />
+              <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={spotInfo} />} />
             </Grid>
             <Grid item xs={12}>
               <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
@@ -64,7 +111,15 @@ export default function StaffPickDetail() {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <WhiteBox cpn={<ReviewContent reviewContent={reviewContent} />} />
+          <WhiteBox
+            cpn={
+              <ReviewContent
+                reviewContent={reviewContent}
+                pageId={pageId}
+                islogined={islogined}
+              />
+            }
+          />
         </Grid>
       </Grid>
     </Box>

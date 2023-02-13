@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 
 export default function StaffPickSpotInfo({ selectedSpot }) {
   const inline = (title, content) => (
-    <Typography variant="h5" sx={{ fontWeight: 'bolder' }}>
+    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
       <Box component="span" sx={{ color: 'primary.main' }}>
         {title}
       </Box>{' '}
@@ -13,20 +13,40 @@ export default function StaffPickSpotInfo({ selectedSpot }) {
   return (
     <Box
       sx={{
-        width: '90%',
+        width: '100%',
         height: '20rem',
-        padding: '5%',
         display: 'flex',
         flexDirection: 'column',
-        gap: '1.5rem',
         justifyContent: 'center',
+        margin: 'auto',
       }}
     >
-      {inline('이름', selectedSpot?.name)}
-      {inline('유형', selectedSpot?.category)}
-      {inline('주소', selectedSpot?.address)}
-      {inline('리뷰 수', `${selectedSpot?.reviewCount} 개`)}
-      {inline('평점', `${selectedSpot?.starRatingAvg} 점`)}
+      <Typography
+        variant="h5"
+        sx={{
+          alignSelf: 'center',
+          color: 'primary.main',
+          marginTop: '1rem',
+          fontWeight: 'bold',
+        }}
+      >
+        {selectedSpot?.name}
+      </Typography>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '2rem  2rem ',
+          gap: '1rem',
+          justifyContent: 'center',
+        }}
+      >
+        {inline('유형', selectedSpot?.category)}
+        {inline('주소', selectedSpot?.address)}
+        {inline('리뷰 수', `${selectedSpot?.reviewCount} 개`)}
+        {inline('평점', `${selectedSpot?.starRatingAvg} 점`)}
+      </Box>
     </Box>
   );
 }

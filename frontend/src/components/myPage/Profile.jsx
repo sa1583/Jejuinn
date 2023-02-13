@@ -1,6 +1,9 @@
-import { Box, styled, Button, Avatar } from '@mui/material';
+import { styled, Button, Avatar, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { images } from '../../assets/images';
+import WhiteBox from '../whiteBox/WhiteBox';
+import { useSelector } from 'react-redux';
+import { selectUserInfo } from '../../store/user';
 
 const CustomButton = styled(Button)({
   color: '#FFFFFF',
@@ -15,34 +18,30 @@ const CustomButton = styled(Button)({
 });
 
 export default function Profile() {
+  const userInfo = useSelector(selectUserInfo);
+
   const navigate = useNavigate();
   const onMypage = () => {
     navigate('/mypage');
   };
   return (
-    <Box
-      sx={{
-        paddingTop: '1rem',
-        paddingBottom: '3rem',
-        paddingX: '10%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <h1 onClick={onMypage}>장정민</h1>
-      <Avatar
-        src={images.sample_profile}
-        alt="프로필 사진 들어가용~"
-        style={{
-          width: '20rem',
-          height: '20rem',
-          marginBottom: '20px',
-          cursor: 'pointer',
-        }}
-      />
-      <CustomButton>개인정보 수정</CustomButton>
-    </Box>
+    <WhiteBox
+      cpn={
+        <Stack direction="column" alignItems="center" sx={{ p: '2%' }}>
+          <h1 onClick={onMypage}>장정민</h1>
+          <Avatar
+            src={images.sample_profile}
+            alt="프로필 사진 들어가용~"
+            style={{
+              width: '20rem',
+              height: '20rem',
+              marginBottom: '20px',
+              cursor: 'pointer',
+            }}
+          />
+          <CustomButton>개인정보 수정</CustomButton>
+        </Stack>
+      }
+    />
   );
 }

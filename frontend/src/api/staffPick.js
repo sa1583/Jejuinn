@@ -11,6 +11,7 @@ const getAdminTokenHeader = (token) => {
   };
 };
 
+// 명소 리뷰 작성
 function createSpotReview(token, body) {
   const config = {
     headers: {
@@ -18,8 +19,18 @@ function createSpotReview(token, body) {
       'Content-Type': 'multipart/form-data',
     },
   };
-
   return api.post('/auth/travel-place/reviews', body, config);
+}
+
+// 명소 리뷰 수정
+function updateSpotReview(token, body, uid) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return api.put(`/auth/travel-place/reviews/${uid}`, body, config);
 }
 
 // 명소 리스트 핀
@@ -28,8 +39,8 @@ function getSpotsPin() {
 }
 
 // 명소 리스트 이미지
-function getSpotsImg() {
-  return api.get('/api/travel-places');
+function getSpotsImg(pageNumber) {
+  return api.get(`/api/travel-places?pageNumber=${pageNumber}`);
 }
 
 // 명소 리스트 필터
@@ -61,7 +72,55 @@ function getReviewDetail(uid) {
 
 // 새로운 명소 등록
 function createNewSpot(data) {
-  return api.post('/api/travel-place', data);
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return api.post('/api/travel-place', data, config);
+}
+
+// 리뷰 디테일 삭제
+function deleteReviewDetail(reviewUid, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+
+  return api.delete(`/auth/travel-place/reviews/${reviewUid}`, config);
+}
+
+// 좋아요 누른 리뷰 리스트
+function likedReviewLikst(token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+
+  return api.get(`/auth/travel-place/reviews/like`, config);
+}
+
+// 리뷰 좋아요 누르기
+function likeReview(token, uid) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+
+  return api.put(`/auth/travel-place/reviews/${uid}/like`, {}, config);
+}
+
+// 리뷰 좋아요 취소
+function dislikeReview(token, reviewUid) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put(`/auth/travel-place/reviews/${reviewUid}/dislike`, {}, config);
 }
 
 export {
@@ -74,4 +133,9 @@ export {
   getSpotsByFilter,
   createSpotReview,
   createNewSpot,
+  deleteReviewDetail,
+  updateSpotReview,
+  likedReviewLikst,
+  likeReview,
+  dislikeReview,
 };

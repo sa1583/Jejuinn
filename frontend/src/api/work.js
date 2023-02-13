@@ -1,11 +1,30 @@
 import { apiInstance } from './index';
+import { useSelector } from 'react-redux';
+import { selectAccessToken, selectUserInfo } from '../store/user';
 
 const api = apiInstance();
 
-const allWorkList = () => {
-  return api.get('/api/job-offer');
+const Access_token = () => {
+  const token = useSelector(selectAccessToken);
+  return token;
 };
 
+// 특정 게스트하우스에 대한 모집공고 리스트 확인
+const getMyRecruitments = (guestHouseUid) => {
+  return api.get(`/api/guest-house-recruitment/${guestHouseUid}`);
+};
+
+// 모집중인 직무 모두 보기
+const allWorkList = () => {
+  return api.get(`/api/job-offer?pageNumber=${1}`);
+};
+
+// recruitmentUid를 통해 모집공고 세부 정보 제공
+const recruitmentDetail = (recruitmentUid) => {
+  return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
+};
+
+// 직무 필터 조회
 const filteredWorkList = (filterValues) => {
   console.log(filterValues);
   const config = {
@@ -13,14 +32,80 @@ const filteredWorkList = (filterValues) => {
       filterValues,
     },
   };
-  return api.post('/api/job-offer/filter', config, {});
-  // props 정상적으로 작동하는지 확인해보려고 만든 리턴
-  // API 연결 후 위의 리턴 주석 해지
-  // return [['work1'], ['work5']];
+  return api.post('/api/job-offer/search', config, {});
 };
 
-const recruitmentDetail = (recruitmentUid) => {
-  return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
+// 모집공고 작성
+const createRecruitment = (body, token) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/job-offer', body, config);
 };
 
-export { recruitmentDetail, allWorkList, filteredWorkList };
+// 특정 게스트하우스에 대한 직무 리스트 확인
+const getMyWorks = (token, guestHouseUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.get(`/auth/recruitment-work-list/${guestHouseUid}`, config);
+  // return [{ uid: 1 }, { uid: 2 }, { uid: 3 }];
+};
+
+// 직무 작성
+function createWork(body, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/work', body, config);
+}
+
+// 직무 수정
+function updateWork(body, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put('/auth/work', body, config);
+}
+
+// 직무 삭제
+function deleteWork(workUid, token) {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.delete(`/auth/work/${workUid}`, config);
+}
+
+// 공고 수정 정민이가 만들어줄 예정
+const updateRecruitment = (body, token) => {
+  console.log(body);
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put('/auth/job-offer', body, config);
+};
+
+export {
+  recruitmentDetail,
+  allWorkList,
+  filteredWorkList,
+  createWork,
+  updateWork,
+  deleteWork,
+  getMyWorks,
+  getMyRecruitments,
+  createRecruitment,
+  updateRecruitment,
+};
