@@ -28,7 +28,7 @@ public class RecommenderController {
     private final RecommenderService recommenderService;
 
     @GetMapping("/api/job-offer/recommend")
-    @ApiOperation(value = "모집중인 직무 모두 보기(시간 순서대로)", notes = "구인 공고의 모든 직무 정보들을 리턴합니다.")
+    @ApiOperation(value = "스탭 추천", notes = "직무 uid를 입력받아 추천하는 스탭 리스트를 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "NO CONTENT(데이터가 없습니다)"),
