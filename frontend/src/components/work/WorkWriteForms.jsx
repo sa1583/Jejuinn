@@ -353,7 +353,7 @@ const selectedPersontypes = [
   '빠른 일처리 ',
 ];
 
-function GetRecruitmentPersontype({ onPersontype }) {
+function GetRecruitmentWanted({ onWanted }) {
   const [value, setValue] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
@@ -366,7 +366,7 @@ function GetRecruitmentPersontype({ onPersontype }) {
       name="persontype"
       onChange={(event, newValue) => {
         setValue(newValue);
-        onPersontype(value);
+        onWanted(value);
       }}
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {
@@ -444,6 +444,6 @@ export {
   GetRecruitmentInfo,
   GetRecruitmentWelfare,
   GetRecruitmentTitle,
-  GetRecruitmentPersontype,
+  GetRecruitmentWanted,
   SelectGusetHousePopover,
 };

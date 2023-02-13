@@ -30,9 +30,9 @@ export default function MyWorkList() {
   async function writeRecruitment(ghuid) {
     const selectedRecruitment = (await getMyRecruitments(ghuid)).data[0];
     if (selectedRecruitment) {
-      navigate(`/work-recruitment-write/${selectedRecruitment.uid}/undefined`);
+      navigate(`/work-recruitment-write/${selectedRecruitment.uid}`);
     } else {
-      navigate(`/work-recruitment-write/undefined/undefined`);
+      navigate(`/work-recruitment-write/undefined`);
     }
   }
 
