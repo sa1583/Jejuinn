@@ -20,7 +20,7 @@ public class CorsConfig {
         config.addExposedHeader("refreshToken");
         config.addExposedHeader("access_token");
         config.addExposedHeader("yutae"); // test 용
-         config.addAllowedOriginPattern("*");
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
