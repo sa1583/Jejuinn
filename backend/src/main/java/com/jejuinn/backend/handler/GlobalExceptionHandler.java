@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         log.info("Handler activate !!!!!");
         headers.add("Access-Control-Allow-Origin", "*");
-        return new ResponseEntity<>(ex, headers, HttpStatus.valueOf(String.valueOf(status)));
+        return new ResponseEntity<>(ex, headers, status);
     }
 
     private HttpStatus getStatus(Exception ex) {
