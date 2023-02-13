@@ -20,11 +20,12 @@ export default function MainOne() {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            paddingTop: '70px',
+            paddingTop: '80px',
           }}
         >
           <img
-            src={images.main_one}
+            src={images.main_one2}
+            alt=""
             style={{ height: '600px', marginLeft: '200px' }}
           ></img>
           <Box sx={{ fontFamily: 'SBAggroB' }}>

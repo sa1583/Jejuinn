@@ -92,7 +92,10 @@ export default function ButtonAppBar() {
         sx={{
           background: '#FFFFFF',
           height: '95px',
-          boxShadow: '0px 2px 6px -1px rgb(0 0 0 / 10%)',
+          boxShadow: 'none',
+          borderStyle: 'solid',
+          borderColor: '#e5e7eb',
+          borderWidth: 1,
         }}
       >
         <Toolbar sx={{ width: '80%', margin: 'auto' }} ref={toolbarRef}>
