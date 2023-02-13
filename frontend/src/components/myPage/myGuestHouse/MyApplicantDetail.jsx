@@ -8,7 +8,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import SendSMS from '../../sendSMS/SendSMS';
 import { images } from '../../../assets/images';
 import WorkHistory from '../WorkHistory';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +17,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
 import { getApplicantByUid } from '../../../api/guestHouse';
 import { useSelector } from 'react-redux';
-import { selectAccessToken } from '../../../store/user';
+import { selectAccessToken, selectUserInfo } from '../../../store/user';
 
 const style = {
   position: 'absolute',
@@ -32,20 +31,30 @@ const style = {
   borderRadius: '39px',
 };
 
-export default function MyApplicantDetail({ id, handleClose }) {
+export default function MyApplicantDetail({ myApplicant, handleClose }) {
   const navigate = useNavigate();
-  const [myApplicant, setMyApplicant] = React.useState();
   const accessToken = useSelector(selectAccessToken);
+  const userInfo = useSelector(selectUserInfo);
 
-  useEffect(() => {
-    let user;
-    async function getData() {
-      user = await getApplicantByUid(id, accessToken);
-      setMyApplicant(user.data);
-    }
-    getData();
-    // setMyApplicant(applicant());
-  }, []);
+  const sendMessage = async () => {
+    const body = {
+      guestHouseUid: 1,
+    };
+  };
+
+  const moveToInterview = () => {
+    navigate(`/interview/${userInfo.nickname}`);
+  };
+
+  // useEffect(() => {
+  //   let user;
+  //   async function getData() {
+  //     user = await getApplicantByUid(accessToken);
+  //     setMyApplicant(user.data);
+  //   }
+  //   getData();
+  //   // setMyApplicant(applicant());
+  // }, []);
 
   return (
     <div>
@@ -94,7 +103,7 @@ export default function MyApplicantDetail({ id, handleClose }) {
                           lineHeight: '58px',
                         }}
                       >
-                        {myApplicant.name ? myApplicant.name : '장정민'}
+                        {myApplicant.userName ? myApplicant.userName : '장정민'}
                       </Typography>
                       <Typography
                         style={{
@@ -281,6 +290,7 @@ export default function MyApplicantDetail({ id, handleClose }) {
                       <TextField
                         fullWidth
                         multiline
+                        rows={4}
                         variant="standard"
                         color="primary"
                         focused
@@ -303,8 +313,9 @@ export default function MyApplicantDetail({ id, handleClose }) {
                     <Button
                       variant="contained"
                       sx={{ borderRadius: '25px', width: '205px' }}
+                      onClick={sendMessage}
                     >
-                      <SendSMS />
+                      문자 보내기
                     </Button>
                     <Button
                       variant="contained"
@@ -313,7 +324,7 @@ export default function MyApplicantDetail({ id, handleClose }) {
                         borderRadius: '25px',
                         width: '205px',
                       }}
-                      onClick={() => navigate('/interview')}
+                      onClick={moveToInterview}
                     >
                       화상 면접
                     </Button>
