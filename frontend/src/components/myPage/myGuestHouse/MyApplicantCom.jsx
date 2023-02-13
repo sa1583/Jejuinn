@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar';
 import { images } from '../../../assets/images';
 import MyApplicantDetail from './MyApplicantDetail';
 
-export default function MyStaff({ myApplicant }) {
+export default function MyApplicantCom({ myApplicant }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
