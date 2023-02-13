@@ -12,6 +12,13 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { images } from '../../../assets/images';
+import {
+  getMyApplyList,
+  getMyInterestGuestHouses,
+  getMyInterestAttractions,
+} from '../../../api/job';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../../store/user';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -47,9 +54,11 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function MyMain() {
+  const accessToken = useSelector(selectAccessToken);
+
   const [isOpened, setIsOpened] = useState(true);
   const [tabNum, setTabNum] = useState('1');
-  const [myLikeRecruitment, setMyLikeRecruitment] = useState([]);
+  const [myInterestGuestHouses, setMyInterestGuestHouses] = useState([]);
   const [myLikePlaceList, setMyLikePlaceList] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
   const [myAppliedRecruitment, setMyAppliedRecruitment] = useState([]);
@@ -63,33 +72,25 @@ export default function MyMain() {
     setIsOpened(!prev);
   };
 
+  const loadMyApplyList = async () => {
+    const { data } = await getMyApplyList(accessToken);
+    setMyAppliedRecruitment(data);
+  };
+
+  const loadMyLikeRecruitment = async () => {
+    const { data } = await getMyInterestGuestHouses(accessToken);
+    setMyInterestGuestHouses(data);
+  };
+
+  const loadMyLikePlaceList = async () => {
+    const { data } = await getMyInterestAttractions(accessToken);
+    setMyLikePlaceList(data);
+  };
+
   useEffect(() => {
-    setMyLikeRecruitment([
-      {
-        uid: 0,
-        name: '가토게토하우스',
-        title: '성별 무관 스탭2명 모집중',
-        imageUrl: null,
-      },
-      {
-        uid: 1,
-        name: '가토게토하우스',
-        title: '성별 무관 스탭2명 모집중',
-        imageUrl: null,
-      },
-    ]);
-    setMyLikePlaceList([
-      {
-        uid: 45,
-        name: '낙지와 새우',
-        imageUrl: null,
-      },
-      {
-        uid: 46,
-        name: '우도 콧구멍',
-        imageUrl: null,
-      },
-    ]);
+    loadMyApplyList();
+    loadMyLikeRecruitment();
+    loadMyLikePlaceList();
     setMyPosts([
       {
         uid: 24,
@@ -100,22 +101,6 @@ export default function MyMain() {
         uid: 83,
         name: '윾태 폭포',
         imageUrl: null,
-      },
-    ]);
-    setMyAppliedRecruitment([
-      {
-        uid: 9,
-        name: '게토 게스트하우스',
-        title: '성별 무관 스탭2명 모집중',
-        imageUrl: images.sample_profile,
-        isRead: true,
-      },
-      {
-        uid: 103,
-        name: '정민 게스트하우스',
-        title: '장정민이 있는 하남자 게스트하우스',
-        imageUrl: null,
-        isRead: false,
       },
     ]);
   }, []);
@@ -159,7 +144,7 @@ export default function MyMain() {
               </Box>
               <TabPanel value="1">
                 <Stack direction="column" spacing={1}>
-                  {myLikeRecruitment.map((recruitment) => {
+                  {myInterestGuestHouses.map((recruitment) => {
                     return (
                       <WhiteBox
                         key={recruitment.uid}

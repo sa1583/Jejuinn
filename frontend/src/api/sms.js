@@ -1,6 +1,4 @@
-import { apiInstance } from '.';
-
-const api = apiInstance();
+import instance from '.';
 
 const sendMessageByIds = (body, token) => {
   const header = {
@@ -8,7 +6,7 @@ const sendMessageByIds = (body, token) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.post('/auth/interview/phone', body, header);
+  return instance.post('/auth/interview/phone', body, header);
 };
 
 export { sendMessageByIds };
