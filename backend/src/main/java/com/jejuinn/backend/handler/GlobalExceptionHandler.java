@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpStatusCodeException;
 
 @Slf4j
-@RestControllerAdvice
+//@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+//    @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
         HttpStatus status = getStatus(ex);
         HttpHeaders headers = new HttpHeaders();
         log.info("Handler activate !!!!!");
+        log.info("{}",status.value());
         headers.add("Access-Control-Allow-Origin", "*");
         return new ResponseEntity<>(ex, headers, status);
     }
