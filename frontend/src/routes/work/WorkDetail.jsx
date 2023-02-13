@@ -1,18 +1,23 @@
-import { Grid, Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useState, useEffect } from 'react';
 import { recruitmentDetail } from '../../api/work';
 import { useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
-import RecruitmentWrite from '../../components/work/RecruitmentWrite';
-import WorkDetailComponent from '../../components/work/WorkDetail';
+import { getMyGuestHouses } from '../../api/guestHouse';
 import WorkListBox from '../../components/work/WorkListBox';
 import WorkInfo from '../../components/work/WorkInfo';
+import { selectUserInfo, selectAccessToken } from '../../store/user';
+import { useSelector } from 'react-redux';
 
 export default function WorkDetail() {
   const { recruitmentUid } = useParams();
   const { workUid } = useParams();
+
+  const userUid = useSelector(selectUserInfo).uid;
+  const accessToken = useSelector(selectAccessToken);
+  const [myGuestHousesUid, setMyGuestHousesUid] = useState([]);
   const [images, setImages] = useState([]);
   const [works, setWorks] = useState([]);
   const [work, setWork] = useState([]);
@@ -22,10 +27,16 @@ export default function WorkDetail() {
 
   async function getWork() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
-    console.log(data);
     setImages(data.images);
     setWorks(data.works);
     setRecruitmentInfo(data.recruitment);
+  }
+
+  async function getGuesthousesUidList() {
+    const data = (await getMyGuestHouses(accessToken, userUid)).data;
+    data.map((guesthouse) => {
+      setMyGuestHousesUid((prevArray) => [...prevArray, guesthouse.uid]);
+    });
   }
 
   function OtherWork() {
@@ -43,13 +54,11 @@ export default function WorkDetail() {
 
   useEffect(() => {
     getWork();
+    getGuesthousesUidList();
   }, []);
   useEffect(() => {
     OtherWork();
   }, [works]);
-  console.log(recruitmentInfo);
-  // 받아온 데이터 피그마에 있는 모양으로 렌더링하기
-  // 공고 갯수 만큼 반복하면서 WorkDetailContent 컴포넌트 재사용
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
@@ -62,6 +71,10 @@ export default function WorkDetail() {
           />
         }
       />
+      {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
+        // 공고 안에 있는 워크리스트라 작성자 정보가 없슴...
+        <Button onClick={onClick}>수정</Button>
+      ) : null}
       <RecruitmentInfo id={recruitmentUid} onClick={onClick} />
       <WorkInfo work={work} />
       <h2 style={{ color: '#FF7600' }}>

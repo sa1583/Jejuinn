@@ -10,7 +10,7 @@ export default function MyWorkDetail({ work }) {
   console.log(work);
 
   const onRecruitmentDetail = () => {
-    navigate(`/worklist/detail/${work.workUid}`);
+    navigate(`/worklist/detail/${work.recruitmentUid}/${work.workUid}`);
   };
 
   function handleWorkUpdate() {
