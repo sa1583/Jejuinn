@@ -10,11 +10,6 @@ import WhiteBox from '../../components/whiteBox/WhiteBox';
 export default function StaffPickCreate() {
   const [nowPick, setNowPick] = useState({});
 
-  const [newSpotName, setNewSpotName] = useState('');
-  const handleNewSpotName = (e) => {
-    setNewSpotName(e.target.value);
-  };
-
   const [nowPickId, setNowPickId] = useState('');
 
   const handlePinClick = async (marker) => {

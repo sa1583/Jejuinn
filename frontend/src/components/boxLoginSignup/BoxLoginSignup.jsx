@@ -12,6 +12,7 @@ export default function BoxLoginSignup(props) {
         borderRadius: '24px',
         overflow: 'hidden',
         display: 'flex',
+        minWidth: '410px',
       }}
       container
     >
