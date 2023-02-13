@@ -120,7 +120,7 @@ public class ReviewController {
         return ResponseEntity.status(200)
                 .body(travelPlaceReviewRepository.findById(reviewUid)
                         .map(review -> ReviewDetailRes.of(review,
-                                userRepository.findNicknameById(review.getUserUid()),
+                                userRepository.findById(review.getUserUid()),
                                 imageRepository.findAllByPostTypeAndPostUid(REVIEW_TYPE, review.getUid())
                                 )));
     }
