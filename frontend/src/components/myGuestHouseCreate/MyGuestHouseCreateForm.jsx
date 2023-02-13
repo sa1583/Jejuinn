@@ -61,9 +61,6 @@ export default function MyGuestHouseCreateForm() {
       formData.append('uploadImages', file);
     });
 
-    if (!formData.get('uploadImages')) {
-      formData.append('uploadImages', null);
-    }
     let id;
     if (!isCreate) {
       const deleteImagesBlob = new Blob([JSON.stringify(deleteImages)], {
