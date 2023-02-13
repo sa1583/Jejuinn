@@ -159,7 +159,7 @@ public class ReviewController {
             return ResponseEntity.status(400).build();
         }
 
-        travelPlaceReviewRepository.deleteById(reviewUid);
+        travelPlaceService.deleteReview(review);
 
         return ResponseEntity.status(200).build();
     }
