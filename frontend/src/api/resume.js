@@ -1,8 +1,6 @@
-import { apiInstance } from './index';
+import instance from './index';
 import { useSelector } from 'react-redux';
-import { selectAccessToken, selectUserInfo } from '../store/user';
-
-const api = apiInstance();
+import { selectAccessToken } from '../store/user';
 
 const Access_token = () => {
   const token = useSelector(selectAccessToken);
@@ -30,7 +28,7 @@ function getResume(accessToken, userUid) {
       accessToken: `Bearer ${accessToken}`,
     },
   };
-  return api.get(`/auth/job-search/${userUid}`, header);
+  return instance.get(`/auth/job-search/${userUid}`, header);
 }
 
 const registMyResume = (token, body) => {
@@ -39,7 +37,7 @@ const registMyResume = (token, body) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.post('/auth/job-search', body, header);
+  return instance.post('/auth/job-search', body, header);
 };
 
 const changeAutoApply = (token, uid) => {
@@ -48,7 +46,7 @@ const changeAutoApply = (token, uid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.put(`/auth/auto-apply/${uid}`, {}, header);
+  return instance.put(`/auth/auto-apply/${uid}`, {}, header);
 };
 
 export { myCareerList, getResume, registMyResume, changeAutoApply };
