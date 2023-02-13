@@ -8,6 +8,7 @@ import {
   loginFacebook,
   signUpApi,
   processNaverAuth,
+  userLogout,
 } from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
@@ -134,9 +135,19 @@ export const naverAuth = createAsyncThunk(
   async ({ accessToken, socialToken }, thunkAPI) => {
     try {
       await processNaverAuth(accessToken, socialToken);
-      return true;
     } catch (error) {
       return thunkAPI.rejectWithValue({ errorMessage: '네이버 인증 실패' });
+    }
+  },
+);
+
+export const logout = createAsyncThunk(
+  'user/logout',
+  async ({ accessToken, uid }, thunkAPI) => {
+    try {
+      await userLogout(accessToken, uid);
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ errorMessage: '로그아웃 실패' });
     }
   },
 );
@@ -151,15 +162,7 @@ const userSlice = createSlice({
     myGuestHouses: [],
     myRecruitments: [],
   },
-  reducers: {
-    logout: (state) => {
-      state.isLogin = false;
-      state.userInfo = null;
-      state.accessToken = null;
-      state.refreshToken = null;
-      state.authorities = [];
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getUserInfoByToken.fulfilled, (state, { payload }) => {
@@ -197,6 +200,12 @@ const userSlice = createSlice({
       })
       .addCase(renewAccessTokenByRefreshToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken;
+      })
+      .addCase(logout.pending, (state, action) => {
+        state.isLogin = false;
+        state.userInfo = null;
+        state.accessToken = null;
+        state.refreshToken = null;
       });
   },
 });
@@ -206,4 +215,3 @@ export const selectIsLogin = (state) => state.user.isLogin;
 export const selectUserInfo = (state) => state.user.userInfo;
 export const selectAccessToken = (state) => state.user.accessToken;
 export const selectRefreshToken = (state) => state.user.refreshToken;
-export const { logout } = userSlice.actions;

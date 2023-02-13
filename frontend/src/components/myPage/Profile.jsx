@@ -39,7 +39,6 @@ export default function Profile() {
               cursor: 'pointer',
             }}
           />
-          <CustomButton>개인정보 수정</CustomButton>
         </Stack>
       }
     />

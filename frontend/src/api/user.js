@@ -95,8 +95,13 @@ const renewAccessToken = (refreshToken) => {
 };
 
 // 로그아웃
-function logout(uid) {
-  return instance.post(`/auth/users/logout/${uid}`);
+function userLogout(accessToken, uid) {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${accessToken}`,
+    },
+  };
+  return instance.post(`/auth/users/logout/${uid}`, {}, header);
 }
 
 // 비밀번호 초기화
@@ -117,5 +122,6 @@ export {
   processNaverAuth,
   getTokenHeader,
   renewAccessToken,
+  userLogout,
   resetPassword,
 };

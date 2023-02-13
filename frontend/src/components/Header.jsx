@@ -8,10 +8,16 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
-import { logout, selectIsLogin, selectUserInfo } from '../store/user';
+import {
+  logout,
+  selectAccessToken,
+  selectIsLogin,
+  selectUserInfo,
+} from '../store/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { images } from '../assets/images';
+import { userLogout } from '../api/user';
 
 const pages = [
   { name: '게스트하우스', url: 'guesthouse' },
@@ -73,8 +79,14 @@ export default function ButtonAppBar() {
     return navigate('mypage');
   };
 
+  const accessToken = useSelector(selectAccessToken);
+
   const handleLogout = () => {
-    dispatch(logout());
+    const info = {
+      accessToken,
+      uid: userInfo.uid,
+    };
+    dispatch(logout(info));
     handleCloseUserMenu();
     return navigate('/');
   };
