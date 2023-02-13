@@ -145,7 +145,7 @@ const router = createBrowserRouter([
         element: <GuestHouseCreate />,
       },
       {
-        path: 'interview',
+        path: 'interview/:sessionId',
         element: <VideoInterview />,
       },
       {

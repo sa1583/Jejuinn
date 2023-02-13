@@ -1,4 +1,4 @@
-import { Box, Fade } from '@mui/material';
+import { Box, Chip, Fade, Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ export default function MyJobOffer({ myJobOffer, checked }) {
     navigate(`recommendlist/${workUid}`);
   };
 
+  const getGenderInfo = `${myJobOffer.gender}: ${myJobOffer.intake}`;
+
   return (
     <Box
       sx={{
@@ -20,12 +22,17 @@ export default function MyJobOffer({ myJobOffer, checked }) {
         justifyContent: 'space-between',
       }}
     >
-      <Box sx={{ paddingX: '2vh' }}>
-        <h3 style={{ marginBottom: '2px' }}>{myJobOffer.title}</h3>
-        <p style={{ marginTop: '0', marginRight: '10px' }}>
-          게시일: {myJobOffer.dateCreated} | 지원인원: 13명
-        </p>
-      </Box>
+      <Stack
+        direction="row"
+        alignItems="center"
+        sx={{ paddingX: '2vh', py: '10px' }}
+      >
+        <Typography minWidth="100px">{myJobOffer.workName}</Typography>
+        <Chip label={getGenderInfo} color="primary" />
+        <Typography ml="10px">
+          {myJobOffer.workDays}일 근무 {myJobOffer.daysOff}일 휴식
+        </Typography>
+      </Stack>
       <Box>
         <Fade in={checked}>
           <Button
