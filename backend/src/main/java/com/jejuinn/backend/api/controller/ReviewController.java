@@ -102,8 +102,10 @@ public class ReviewController {
             e.printStackTrace();
             return ResponseEntity.status(400).build();
         }
-
-        return ResponseEntity.status(200).build();
+        Long reviewUid = review.getUid();
+        return ResponseEntity.status(200).body(
+                reviewUid
+        );
     }
 
     @GetMapping("/api/travel-place/reviews/{reviewUid}")
