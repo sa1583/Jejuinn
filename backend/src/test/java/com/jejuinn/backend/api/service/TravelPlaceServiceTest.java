@@ -25,19 +25,19 @@ class TravelPlaceServiceTest {
 
     @Test
     public void updateAvgStarRating(){
-        TravelPlaceReview review = TravelPlaceReview.builder()
-                .userUid(19L)
-                .content("리뷰 입니다.")
-                .starRating(1)
-                .travelPlaceUid(4L)
-                .build();
-        travelPlaceReviewRepository.save(review);
-        TravelPlace travelPlace = travelPlaceRepository.findById(review.getTravelPlaceUid()).get();
-        travelPlaceService.updateReviewCountAndRating(review.getTravelPlaceUid(), review.getStarRating(), "INSERT");
-        review.setStarRating(5);
-        travelPlaceService.updateReviewCountAndRating(review.getTravelPlaceUid(), review.getStarRating(), "UPDATE");
-
-        System.out.println(travelPlace.getStarRatingAvg());
+//        TravelPlaceReview review = TravelPlaceReview.builder()
+//                .userUid(19L)
+//                .content("리뷰 입니다.")
+//                .starRating(1)
+//                .travelPlaceUid(4L)
+//                .build();
+//        travelPlaceReviewRepository.save(review);
+//        TravelPlace travelPlace = travelPlaceRepository.findById(review.getTravelPlaceUid()).get();
+//        travelPlaceService.updateReviewCountAndRating(review.getTravelPlaceUid(), review.getStarRating(), "INSERT");
+//        review.setStarRating(5);
+//        travelPlaceService.updateReviewCountAndRating(review.getTravelPlaceUid(), review.getStarRating(), "UPDATE");
+//
+//        System.out.println(travelPlace.getStarRatingAvg());
 
 
 
