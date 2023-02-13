@@ -78,7 +78,7 @@ public class ReviewController {
             @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertReview(@RequestPart(value = "images", required = false) List<MultipartFile> images,
+    public ResponseEntity<?> insertReview(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> uploadImages,
                                           @Valid @RequestPart("review") InsertReviewPostReq req,
                                           HttpServletRequest request){
         log.info("관광지 리뷰 추가 요청");
@@ -96,7 +96,7 @@ public class ReviewController {
 
         // 사진 저장
         try {
-            s3Uploader.uploadImages(images, REVIEW_TYPE, review.getUid());
+            s3Uploader.uploadImages(uploadImages, REVIEW_TYPE, review.getUid());
         } catch (IOException e) {
             log.error("AWS S3 이미지 저장 에러");
             e.printStackTrace();
@@ -169,7 +169,7 @@ public class ReviewController {
             @ApiResponse(code = 400, message = "BAD REQUEST(관광지 정보 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateTravelPlaceReview(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> images,
+    public ResponseEntity<?> updateTravelPlaceReview(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> uploadImages,
                                                       @RequestPart("reviewContent") UpdateReviewPutReq req,
                                                       @RequestPart(value = "deleteImages", required = false) List<Long> list,
                                                       @PathVariable Long reviewUid){
@@ -199,8 +199,8 @@ public class ReviewController {
 
         // 사진 저장
         try {
-            if (images != null && !images.isEmpty()){
-                s3Uploader.uploadImages(images, REVIEW_TYPE, review.getUid());
+            if (uploadImages != null && !uploadImages.isEmpty()){
+                s3Uploader.uploadImages(uploadImages, REVIEW_TYPE, review.getUid());
                 log.info("사진 저장 완료");
             }
         } catch (IOException e) {
