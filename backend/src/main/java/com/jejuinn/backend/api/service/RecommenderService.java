@@ -49,9 +49,9 @@ public class RecommenderService {
 
         HttpEntity<GetSimilarityFlaskReq> entity = new HttpEntity<>(reqToFlask);
 
-        String url = "http://localhost:5000/sim"; // 로컬 테스트용
+//        String url = "http://localhost:5000/sim"; // 로컬 테스트용
 //        String url = "http://localhost:8082/sim"; // 로컬 도커 테스트용
-//        String url = "https://jejuinn.com/sim"; // ec2 서버
+        String url = "https://jejuinn.com/sim"; // ec2 서버
 
         var uri = UriComponentsBuilder
                 .fromUriString(url)
