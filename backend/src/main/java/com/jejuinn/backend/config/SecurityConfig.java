@@ -72,7 +72,8 @@ public class SecurityConfig {
                 .antMatchers("/api/**").permitAll()
                 .anyRequest().permitAll()
 
-
+                .and()
+                .cors()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
