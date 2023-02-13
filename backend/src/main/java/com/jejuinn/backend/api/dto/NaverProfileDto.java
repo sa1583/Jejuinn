@@ -27,6 +27,13 @@ public class NaverProfileDto {
     String mobile;
 
     public static NaverProfileDto init(Map<String, String> map){
+        if(map.get("gender").equals("F")) {
+            map.put("gender", "여자");
+        } else if(map.get("gender").equals("M")) {
+            map.put("gender", "남자");
+        } else {
+            map.put("gender", "무관");
+        }
         return NaverProfileDto.builder()
                 .nickname(map.get("nickname"))
                 .name(map.get("name"))
