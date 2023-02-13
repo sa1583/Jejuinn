@@ -86,6 +86,11 @@ function logout(uid) {
   return api.post(`/auth/users/logout/${uid}`);
 }
 
+// 비밀번호 초기화
+function resetPassword(body) {
+  return api.post('api/users/pw-change', body);
+}
+
 export {
   getOurTokens,
   getUserInfo,
@@ -98,4 +103,5 @@ export {
   signUpApi,
   processNaverAuth,
   getTokenHeader,
+  resetPassword,
 };

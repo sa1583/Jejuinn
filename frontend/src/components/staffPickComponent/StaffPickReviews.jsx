@@ -20,7 +20,6 @@ export default function StaffPickReviews({ spotname }) {
 
   const getReviewList = async () => {
     const data = (await getReviews(pageId)).data;
-    console.log(data);
     setSpotReviews(data);
   };
 
