@@ -19,7 +19,6 @@ export const useAxiosInterceptor = () => {
   const userInfo = useSelector(selectUserInfo);
 
   const handleError = async (err) => {
-    console.log(err.response.status);
     if (err.response.status === 401) {
       const api = err.request.responseURL.split('jejuinn.com')[1];
       if (api === '/api/users/refresh') {
@@ -30,11 +29,10 @@ export const useAxiosInterceptor = () => {
           if (refreshToken === null) {
             throw new Error('there is no refreshToken');
           }
-          const accessToken = await dispatch(
-            renewAccessTokenByRefreshToken(refreshToken),
-          );
+          await dispatch(renewAccessTokenByRefreshToken(refreshToken));
           dispatch(getUserInfoByToken(accessToken));
         } catch (error) {
+          dispatch(logout(accessToken, userInfo.uid));
           navigate('/login');
         }
       }
