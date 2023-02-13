@@ -33,11 +33,15 @@ public class FavoriteController {
     @ApiOperation(value = "게스트하우스 좋아요 등록", notes = "게스트하우스의 uid를 통해 사용자가 좋아요를 등록합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(좋아요 성공)"),
+            @ApiResponse(code = 202, message = "이미 좋아요를 누른 게스트하우스"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> likeGuestHouse(@PathVariable Long guestHouseUid, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
+        if(favoriteRepository.findByUserUidAndTypeUidAndTypeName(userUid, guestHouseUid, GUEST_TYPE) != null) {
+            return ResponseEntity.status(202).build();
+        }
         favoriteRepository.save(Favorite.builder().userUid(userUid).typeUid(guestHouseUid).typeName(GUEST_TYPE).build());
         return ResponseEntity.status(200).build();
     }
@@ -46,14 +50,19 @@ public class FavoriteController {
     @ApiOperation(value = "게스트하우스 좋아요 취소", notes = "게스트하우스의 uid를 통해 사용자가 좋아요를 취소합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(좋아요 성공)"),
+            @ApiResponse(code = 202, message = "이미 좋아요 취소를 한 게스트하우스"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> dislikeGuestHouse(@PathVariable Long guestHouseUid, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
-        Favorite favorite = favoriteRepository.findByUserUidAndTypeUid(userUid, guestHouseUid);
-        if(favorite != null) favoriteRepository.delete(favorite);
-        return ResponseEntity.status(200).build();
+        Favorite favorite = favoriteRepository.findByUserUidAndTypeUidAndTypeName(userUid, guestHouseUid, GUEST_TYPE);
+        if(favorite != null) {
+            favoriteRepository.delete(favorite);
+            return ResponseEntity.status(200).build();
+        } else {
+            return ResponseEntity.status(202).build();
+        }
     }
 
     @GetMapping("/auth/guest-house-list/like")

@@ -115,6 +115,17 @@ public class RecruitmentController {
         return ResponseEntity.status(200).build();
     }
 
+    @PutMapping("/auth/job-offer")
+    @ApiOperation(value = "모집공고 수정", notes = "모집공고(Recruitment), 직무(Work), 이미지(images)를 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> updateRecruitment() {
+        return null;
+    }
+
     @DeleteMapping("/auth/job-offer/{recruitmentUid}")
     @ApiOperation(value = "모집공고 삭제", notes = "모집공고(Recruitment), 직무(Work), 이미지(images)를 삭제합니다.")
     @ApiResponses({
