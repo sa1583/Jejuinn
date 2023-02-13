@@ -4,6 +4,7 @@ import com.jejuinn.backend.api.dto.request.InsertCommentPostReq;
 import com.jejuinn.backend.api.dto.response.comment.GetCommentListPostRes;
 import com.jejuinn.backend.api.service.CommentService;
 import com.jejuinn.backend.api.service.UserService;
+import com.jejuinn.backend.db.entity.Comment;
 import com.jejuinn.backend.db.enums.PostType;
 import com.jejuinn.backend.db.repository.CommentRepository;
 import com.jejuinn.backend.db.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @Api(tags = "댓글 관련 기능 API")
@@ -92,6 +94,23 @@ public class CommentController {
                 commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(postType, postUid).stream().map(
                         comment -> GetCommentListPostRes.of(comment, userRepository.findById(comment.getUserUid()).get())
                 )
+        );
+    }
+
+    @GetMapping("/auth/comment")
+    @ApiOperation(value = "내가 쓴 댓글 리스트 조회", notes = "Header의 userUid를 통해 내가 쓴 댓글 리스트를 불러옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "데이터가 없습니다"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyCommentList(HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        List<Comment> commentList = commentRepository.findAllByUserUidOrderByDateCreatedDesc(userUid);
+        if(commentList == null || commentList.size() == 0) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(
+                commentList
         );
     }
 }
