@@ -94,16 +94,6 @@ const myApplicantList = (token, workUid) => {
   return api.get(`/auth/recruitment/${workUid}`, config);
 };
 
-// 아직 api 구현 안됨
-const myRecommendList = (token, workUid) => {
-  const config = {
-    headers: {
-      accessToken: `Bearer ${token}`,
-    },
-  };
-  return api.get(`/auth/recommend/${workUid}`, config);
-};
-
 export {
   guestHouseDetail,
   allGuestHouseList,
@@ -115,6 +105,5 @@ export {
   myStaffList,
   myJobOfferList,
   myApplicantList,
-  myRecommendList,
   getMyGuestHouses,
 };

@@ -31,12 +31,10 @@ const style = {
   borderRadius: '39px',
 };
 
-export default function MyApplicantDetail({ id, handleClose }) {
+export default function MyApplicantDetail({ myApplicant, handleClose }) {
   const navigate = useNavigate();
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
-
-  const [myApplicant, setMyApplicant] = React.useState();
 
   const sendMessage = async () => {
     const body = {
@@ -48,15 +46,15 @@ export default function MyApplicantDetail({ id, handleClose }) {
     navigate(`/interview/${userInfo.nickname}`);
   };
 
-  useEffect(() => {
-    let user;
-    async function getData() {
-      user = await getApplicantByUid(id, accessToken);
-      setMyApplicant(user.data);
-    }
-    getData();
-    // setMyApplicant(applicant());
-  }, []);
+  // useEffect(() => {
+  //   let user;
+  //   async function getData() {
+  //     user = await getApplicantByUid(accessToken);
+  //     setMyApplicant(user.data);
+  //   }
+  //   getData();
+  //   // setMyApplicant(applicant());
+  // }, []);
 
   return (
     <div>
@@ -105,7 +103,7 @@ export default function MyApplicantDetail({ id, handleClose }) {
                           lineHeight: '58px',
                         }}
                       >
-                        {myApplicant.name ? myApplicant.name : '장정민'}
+                        {myApplicant.userName ? myApplicant.userName : '장정민'}
                       </Typography>
                       <Typography
                         style={{

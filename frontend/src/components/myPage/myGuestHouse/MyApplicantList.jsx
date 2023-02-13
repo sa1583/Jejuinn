@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import { selectAccessToken } from '../../../store/user';
 import { Box } from '@mui/material';
 import WhiteBox from '../../whiteBox/WhiteBox';
-import MyStaff from './MyStaff';
 import MyApplicantCom from './MyApplicantCom';
 
 export default function MyApplicantList() {

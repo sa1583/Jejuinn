@@ -9,6 +9,8 @@ export default function MyApplicantCom({ myApplicant }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  React.useEffect(() => console.log(myApplicant), []);
+
   return (
     <>
       <Box
@@ -49,7 +51,10 @@ export default function MyApplicantCom({ myApplicant }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <MyApplicantDetail id={myApplicant.uid} handleClose={handleClose} />
+        <MyApplicantDetail
+          myApplicant={myApplicant}
+          handleClose={handleClose}
+        />
       </Modal>
     </>
   );
