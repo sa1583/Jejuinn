@@ -18,9 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByEmailAndSocialLogin_Type(String email, int type); // 소셜 로그인 검색 (email + type)
 
-    @Query("select u.nickname from User u where u.uid = :userUid")
-    String findNicknameById(@Param("userUid") Long userUid);
-
     Optional<User> findById(Long userUid);
 
     @Query(value = "select k.recruitment_uid from users u right outer join resume_infos r on u.uid = r.user_uid " +
