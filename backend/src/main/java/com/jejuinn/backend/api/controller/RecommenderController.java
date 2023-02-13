@@ -2,7 +2,9 @@ package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.response.recommender.RecommendResumeDto;
 import com.jejuinn.backend.api.dto.response.recommender.RecommendWorkDto;
+import com.jejuinn.backend.api.dto.response.recruitment.MyApplicantDetailRes;
 import com.jejuinn.backend.api.service.RecommenderService;
+import com.jejuinn.backend.api.service.ResumeInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -15,16 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "스태프 추천 관련 기능 API")
 @RequiredArgsConstructor
 @Slf4j
 public class RecommenderController {
+    private final ResumeInfoService resumeInfoService;
     private final RecommenderService recommenderService;
 
     @GetMapping("/api/job-offer/recommend")
-    @ApiOperation(value = "모집중인 직무 모두 보기(시간 순서대로)", notes = "구인 공고의 모든 직무 정보들을 리턴합니다.")
+    @ApiOperation(value = "스탭 추천", notes = "직무 uid를 입력받아 추천하는 스탭 리스트를 리턴합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "NO CONTENT(데이터가 없습니다)"),
@@ -37,11 +41,22 @@ public class RecommenderController {
 
         // 현재 구직 중인 staff 정보를 가져옵니다.
         List<RecommendResumeDto> recommendResumeDto = recommenderService.getResumeInfo(recommendWorkDto);
-        int num = 0;
+
         for (RecommendResumeDto dto : recommendResumeDto) {
-            log.info("RecommendResumeDto {} : {}", ++num, dto);
+            log.info("RecommendResumeDto : Resume Uid {} ", dto.getResumeInfoUid());
         }
 
-        return ResponseEntity.status(200).body(recommenderService.getScoreFromFlask(recommendWorkDto, recommendResumeDto));
+        // 이력서를 평가합니다.
+        List<RecommendResumeDto> resumes = recommenderService.getScoreFromFlask(recommendWorkDto, recommendResumeDto);
+
+        List<MyApplicantDetailRes> result = resumes.stream().map(resumeDto -> {
+            Long resumeInfoUid = resumeDto.getResumeInfoUid();
+            return resumeInfoService.getMyApplicant(resumeInfoUid);
+        }).collect(Collectors.toList());
+
+        if(result.size() > 10){
+            return ResponseEntity.status(200).body(result.subList(0,10));
+        }
+        return ResponseEntity.status(200).body(result);
     }
 }
