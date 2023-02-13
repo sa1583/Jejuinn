@@ -1,9 +1,7 @@
-import { apiInstance } from '.';
-
-const api = apiInstance();
+import instance from '.';
 
 const getRecommandedList = (workUid) => {
-  return api.get(`api/job-offer/recommend?workUid=${workUid}`);
+  return instance.get(`api/job-offer/recommend?workUid=${workUid}`);
 };
 
 export { getRecommandedList };

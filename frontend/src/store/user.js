@@ -23,6 +23,23 @@ export const getUserInfoByToken = createAsyncThunk(
   },
 );
 
+/**
+ * refreshToken으로 accessToken을 재발급받아 store내의 accessToken을 업데이트한다
+ */
+export const renewAccessTokenByRefreshToken = createAsyncThunk(
+  'user/renewAccessTokenByRefreshToken',
+  async (refreshToken, thunkAPI) => {
+    console.log('refreshToken', refreshToken);
+    try {
+      return (await renewAccessTokenByRefreshToken(refreshToken)).data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({
+        errorMessage: 'accessToken 갱신 실패',
+      });
+    }
+  },
+);
+
 export const getOurTokensFromServer = createAsyncThunk(
   'user/getOurTokensFromServer',
   async (data, thunkAPI) => {
@@ -177,6 +194,9 @@ const userSlice = createSlice({
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
+      })
+      .addCase(renewAccessTokenByRefreshToken.fulfilled, (state, action) => {
+        state.accessToken = action.payload.accessToken;
       });
   },
 });
@@ -185,4 +205,5 @@ export default userSlice;
 export const selectIsLogin = (state) => state.user.isLogin;
 export const selectUserInfo = (state) => state.user.userInfo;
 export const selectAccessToken = (state) => state.user.accessToken;
+export const selectRefreshToken = (state) => state.user.refreshToken;
 export const { logout } = userSlice.actions;
