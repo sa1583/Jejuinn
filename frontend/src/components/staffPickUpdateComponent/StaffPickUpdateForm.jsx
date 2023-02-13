@@ -28,11 +28,8 @@ export default function StaffPickUpdateForm() {
 
   // 원래 있던 사진을 다루는 로직
   const handlePreImages = (id) => {
-    console.log('이전사진 다루기');
     setDeleteImages((prev) => [...prev, id]);
-    // const deletedList = preImages.filter((image) => image.uid !== id)
     setPreImages(preImages.filter((image) => image.uid !== id));
-    // setPreImages()
   };
 
   // 추가할 사진들을 저장할 리스트
@@ -48,7 +45,6 @@ export default function StaffPickUpdateForm() {
     setContent(review.content);
     setStarRating(review.starRating);
     setPreImages(review.images);
-    console.log(review.images);
   };
 
   useEffect(() => {
@@ -71,18 +67,7 @@ export default function StaffPickUpdateForm() {
       type: 'application/json',
     });
     formData.append('deleteImages', blob2);
-
-    // for (let key of formData.keys()) {
-    //   console.log(key);
-    // }
-
-    // FormData의 value 확인
-    for (let value of formData.values()) {
-      console.log(value);
-    }
-
-    const data = await updateSpotReview(acces_token, formData, pageId);
-    console.log(data);
+    await updateSpotReview(acces_token, formData, pageId);
     navigate(`/staffpicklist/detail/${pageId}`);
   };
 
@@ -94,13 +79,7 @@ export default function StaffPickUpdateForm() {
       <Typography variant="h3" sx={{ marginBottom: '1rem' }}>
         사진 (최대 10개)
       </Typography>
-      {/* <ImageUploaderUpdate
-        preImages={preImages}
-        files={files}
-        handleFiles={handleFiles}
-        maxNum={10}
-        handlePreImages={handlePreImages}
-      /> */}
+
       <ImageUploader
         preImages={preImages}
         files={files}
@@ -117,7 +96,6 @@ export default function StaffPickUpdateForm() {
         name="content"
         id="content"
         type="text"
-        // value={content}
         content={content}
         getContent={getContent}
       />

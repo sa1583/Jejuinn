@@ -49,7 +49,10 @@ export default function ButtonAppBar() {
       case 'login':
       case '':
       case 'signup':
-        toolbarRef.current.childNodes[4].childNodes[0].style.color = '#FF7600';
+        if (!isLogin) {
+          toolbarRef.current.childNodes[4].childNodes[0].style.color =
+            '#FF7600';
+        }
         break;
     }
   });
@@ -72,6 +75,16 @@ export default function ButtonAppBar() {
     handleCloseUserMenu();
     return navigate('/');
   };
+
+  const profileImage = () => {
+    const purl = userInfo.profileImageUrl;
+    if (purl.slice(0, 4) == 'http') {
+      return purl;
+    } else {
+      return `${images.defalut_url}${purl}`;
+    }
+  };
+
   return (
     <Box height="95px">
       <AppBar
@@ -136,13 +149,15 @@ export default function ButtonAppBar() {
           )}
           {isLogin && (
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, flexGrow: 1 }}>
-              {userInfo.profileImg ? (
-                <Avatar
-                  alt="Remy Sharp"
-                  src={`${images.defalut_url}${userInfo.profileImg}`}
-                />
+              {userInfo.profileImageUrl ? (
+                <Avatar alt="Remy Sharp" src={profileImage()} />
               ) : (
-                <Avatar sx={{ backgroundColor: 'primary.main' }}>
+                <Avatar
+                  sx={{
+                    backgroundColor: 'primary.main',
+                    fontFamily: 'SBAggroM',
+                  }}
+                >
                   {userInfo.nickname[0].toUpperCase()}
                 </Avatar>
               )}

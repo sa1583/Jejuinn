@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
-import SpotInfo from '../../components/staffPickDetailComponent/SpotInfo';
 import ReviewContent from '../../components/staffPickDetailComponent/ReviewContent';
 import MapApi from '../../components/mapApi/MapApi';
 import {
@@ -21,6 +20,7 @@ import {
 } from '../../store/user';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import StaffPickSpotInfo from '../../components/staffPickComponent/StaffPickSpotInfo';
 
 export default function StaffPickDetail() {
   // 리뷰 컨텐츠 내용
@@ -102,7 +102,8 @@ export default function StaffPickDetail() {
         <Grid item xs={12} md={4}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
-              <WhiteBox cpn={<SpotInfo spotInfo={spotInfo} />} />
+              {/* <WhiteBox cpn={<SpotInfo spotInfo={spotInfo} />} /> */}
+              <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={spotInfo} />} />
             </Grid>
             <Grid item xs={12}>
               <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />

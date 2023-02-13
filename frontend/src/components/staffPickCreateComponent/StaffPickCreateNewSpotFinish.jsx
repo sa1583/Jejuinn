@@ -14,12 +14,12 @@ export default function StaffPickCreateNewSpotFinish() {
       }}
     >
       <Typography
-        variant="h1"
+        variant="h3"
         sx={{ color: 'primary.main', fontWeight: 'bold', marginBottom: '2rem' }}
       >
         명소 등록 완료
       </Typography>
-      <Typography variant="h4">등록한 명소에 리뷰를 등록해주세요!</Typography>
+      <Typography variant="h5">등록한 명소에 리뷰를 등록해주세요!</Typography>
     </Box>
   );
 }

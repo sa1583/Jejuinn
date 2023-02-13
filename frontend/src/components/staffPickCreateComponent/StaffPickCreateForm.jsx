@@ -25,7 +25,7 @@ export default function StaffPickCreateForm({ nowPickId }) {
     });
     formData.append('review', blob);
     files.forEach((file) => {
-      formData.append('images', file);
+      formData.append('uploadImages', file);
     });
 
     await createSpotReview(acces_token, formData);
@@ -49,13 +49,13 @@ export default function StaffPickCreateForm({ nowPickId }) {
       encType="multipart/form-data"
       style={{ display: 'flex', flexDirection: 'column', padding: '5%' }}
     >
-      <Typography variant="h3" sx={{ marginBottom: '1rem' }}>
+      <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
         사진 (최대 10개)
       </Typography>
 
       <ImageUploader handleFiles={handleFiles} files={files} maxNum={10} />
 
-      <Typography variant="h3" sx={{ marginBottom: '1rem', marginTop: '2rem' }}>
+      <Typography variant="h5" sx={{ marginBottom: '1rem', marginTop: '4rem' }}>
         글 내용
       </Typography>
 
@@ -71,13 +71,13 @@ export default function StaffPickCreateForm({ nowPickId }) {
       <Box
         sx={{
           alignSelf: 'center',
-          marginTop: '5rem',
+          marginTop: '7rem',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3">평점</Typography>
+        <Typography variant="h5">평점</Typography>
         <Rating
           value={starRating}
           onChange={(event, newValue) => {
