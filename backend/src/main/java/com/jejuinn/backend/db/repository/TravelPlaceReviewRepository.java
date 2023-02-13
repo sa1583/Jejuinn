@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TravelPlaceReviewRepository extends JpaRepository<TravelPlaceReview, Long> {
-    Optional<List<TravelPlaceReview>> findAllByTravelPlaceUid(Long travelPlaceUid);
+    Optional<List<TravelPlaceReview>> findAllByTravelPlaceUidOrderByDateCreatedDesc(Long travelPlaceUid);
 
     @Modifying
     @Query("update TravelPlaceReview set likeCount = likeCount + 1 where uid = :reviewUid")
