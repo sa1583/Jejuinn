@@ -10,7 +10,6 @@ export default function StaffPickSpotInfo({ selectedSpot }) {
       : {content}
     </Typography>
   );
-  console.log(selectedSpot);
   return (
     <Box
       sx={{

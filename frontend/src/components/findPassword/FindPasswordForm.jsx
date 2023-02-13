@@ -37,9 +37,7 @@ export default function FindPasswordForm() {
 
   const [code, setCode] = useState('');
   const [checkCode, setCheckCode] = useState('');
-  // 인증 번호 받기 눌렀을 때 로직
-  // 응답에 따라서 인증번호 입력칸을 활성화 할지
-  // 아니면 alert를 실행할지
+
   const getCode = async () => {
     setIsLoading(true);
     try {
@@ -67,7 +65,7 @@ export default function FindPasswordForm() {
 
   // 비밀번호 형식
   const [newPW, setNewPW] = useState('');
-  const passwordTest = /^(?=.*?[a-z])(?=.*?[0-9]).{7,15}$/;
+  const passwordTest = /^[a-z0-9]{7,15}$/;
   const passwordTestResult = () => passwordTest.test(newPW);
 
   // 비밀번호 체크
@@ -78,14 +76,14 @@ export default function FindPasswordForm() {
   const completedBoxStyle = (condition) => ({
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: condition ? '#00b91f' : '#535353',
+        borderColor: condition ? '#00a732' : '#535353',
         opacity: '83%',
       },
       '&:hover fieldset': {
-        borderColor: condition ? '#00b91f' : '#535353',
+        borderColor: condition ? '#00a732' : '#535353',
       },
       '&.Mui-focused fieldset': {
-        borderColor: condition ? '#00b91f' : 'primary.main',
+        borderColor: condition ? '#00a732' : 'primary.main',
       },
       '&.Mui-error fieldset': {
         borderColor: !condition && '#ff0000',
@@ -95,9 +93,9 @@ export default function FindPasswordForm() {
   });
 
   const completedLabelStyle = (condition) => ({
-    color: condition ? '#00b91f' : '#535353',
+    color: condition ? '#00a732' : '#535353',
     '&.Mui-focused': {
-      color: condition ? '#00b91f' : 'primary.main',
+      color: condition ? '#00a732' : 'primary.main',
     },
     '&.Mui-error': {
       color: !condition && '#ff0000',

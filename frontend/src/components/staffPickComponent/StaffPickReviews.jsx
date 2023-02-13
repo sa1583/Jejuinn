@@ -49,7 +49,6 @@ export default function StaffPickReviews({ spotname }) {
         />
       </Box>
       <Box sx={{ width: '100%' }}>
-        {/* <Box sx={{ width: '100%', maxHeight: '15rem', overflowY: 'scroll' }}> */}
         <ImageList variant="masonry" cols={4} gap={8}>
           {spotReviews.map((item) => (
             <ImageListItem key={uuidv4()}>

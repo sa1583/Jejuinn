@@ -97,9 +97,6 @@ export default function StaffPickFilter({
           onChange={handlePickForm}
           name="category"
           defaultValue={'전체'}
-          // 여이가 라벨 사이즈 조정하는곳
-          // 근데 라벨 들어가는 칸은 조정이 안됨 ㅋ
-          // InputLabelProps={{ style: { fontSize: '18px' } }}
         >
           {selectedTypes.map((selectedtype) => (
             <MenuItem key={uuidv4()} value={selectedtype}>
@@ -155,7 +152,6 @@ export default function StaffPickFilter({
           startIcon={<SearchIcon />}
           onClick={(e) => {
             e.preventDefault();
-            //여기에 필터 검색 로직
             getFilterdSpots();
             navigate('/staffpicklist');
           }}

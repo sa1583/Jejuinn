@@ -41,6 +41,8 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
     }
   };
 
+  console.log(reviewContent);
+
   // 좋아요 취소 보내긔
   const goDisLike = async () => {
     await dislikeReview(access_token, pageId);
@@ -54,7 +56,9 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
-        <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>
+        <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>
+          {reviewContent.writer_nickname}
+        </p>
       </Box>
       <Rating
         value={reviewContent?.starRating}
@@ -81,9 +85,6 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
             <FavoriteBorderIcon sx={{ color: 'red', fontSize: '2rem' }} />
           </button>
         )}
-        {/* <Typography sx={{ marginLeft: '1rem', fontSize: '1rem' }}>
-          좋아요
-        </Typography> */}
       </Box>
       <CommentsList />
     </Box>

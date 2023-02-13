@@ -12,14 +12,10 @@ import {
 const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      // borderColor: nickNameTestResult() ? '#0011ff' : '#535353',
       borderColor: '#535353',
-      // borderColor: '#3bd643',
       opacity: '83%',
     },
-    '&:hover fieldset': {
-      // borderColor: '#FF7600',
-    },
+    '&:hover fieldset': {},
     '&.Mui-focused fieldset': {
       borderColor: '#FF7600',
     },
@@ -83,7 +79,8 @@ export default function SignUpInfo({ handleNext }) {
   const nickNameTest = /^[A-Za-z가-힣0-9]{2,10}$/;
   const nickNameTestResult = () => nickNameTest.test(signUpForm.nickname);
   // 비밀번호 형식
-  const passwordTest = /^(?=.*?[a-z])(?=.*?[0-9]).{7,15}$/;
+  // const passwordTest = /^(?=.*?[a-z])(?=.*?[0-9]).{7,15}$/;
+  const passwordTest = /^[a-z0-9]{7,15}$/;
   const passwordTestResult = () => passwordTest.test(signUpForm.password);
 
   // 비밀번호 체크
@@ -94,14 +91,14 @@ export default function SignUpInfo({ handleNext }) {
   const completedBoxStyle = (condition) => ({
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: condition ? '#41ff7a' : '#535353',
+        borderColor: condition ? '#00a732' : '#535353',
         opacity: '83%',
       },
       '&:hover fieldset': {
-        borderColor: condition ? '#41ff7a' : '#535353',
+        borderColor: condition ? '#00a732' : '#535353',
       },
       '&.Mui-focused fieldset': {
-        borderColor: condition ? '#41ff7a' : 'primary.main',
+        borderColor: condition ? '#00a732' : 'primary.main',
       },
       '&.Mui-error fieldset': {
         borderColor: !condition && '#ff0000',
@@ -112,9 +109,9 @@ export default function SignUpInfo({ handleNext }) {
 
   // 유효성 검사 완료시 TextArea 라벨 색깔 변경
   const completedLabelStyle = (condition) => ({
-    color: condition ? '#41ff7a' : '#535353',
+    color: condition ? '#00a732' : '#535353',
     '&.Mui-focused': {
-      color: condition ? '#41ff7a' : 'primary.main',
+      color: condition ? '#00a732' : 'primary.main',
     },
     '&.Mui-error': {
       color: !condition && '#ff0000',

@@ -47,14 +47,13 @@ export default function StaffPick() {
   };
 
   const actions = [
-    { icon: <ModeEditOutlinedIcon />, name: '글 작성', handle: goCreate },
+    { icon: <ModeEditOutlinedIcon />, name: '리뷰 작성', handle: goCreate },
   ];
 
   // spots 정보 저장할 함수
   const [spots, setSpots] = useState([]);
-  /**
-   * 놀고먹기 처음 들어갔을 때 전체 명소 리스트 받는 함수
-   */
+
+  //놀고먹기 처음 들어갔을 때 전체 명소 리스트 받는 함수
   const getSpotsPins = async () => {
     const SpotsList = (await getSpotsPin()).data;
     setSpots(SpotsList);
@@ -74,9 +73,9 @@ export default function StaffPick() {
   };
 
   useEffect(() => {
-    if (!pageId) {
-      getSpotsPins();
-    }
+    // if (!pageId) {
+    getSpotsPins();
+    // }
   }, []);
 
   useEffect(() => {
