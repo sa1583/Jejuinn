@@ -9,6 +9,7 @@ export default function ImageSlider({ items }) {
       transitionTime="500"
       infiniteLoop="true"
       thumbWidth={40}
+      showStatus={false}
     >
       {items?.map((item) => {
         return (

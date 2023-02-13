@@ -3,6 +3,7 @@ import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternate
 import { Typography } from '@mui/material';
 
 import { v4 as uuidv4 } from 'uuid';
+import { images } from '../../assets/images';
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -39,7 +40,13 @@ const img = {
   objectFit: 'cover',
 };
 
-export default function ImageUploader({ files, handleFiles }) {
+export default function ImageUploader({
+  files,
+  handleFiles,
+  maxNum,
+  preImages,
+  handlePreImages,
+}) {
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: {
       'image/*': [],
@@ -48,10 +55,13 @@ export default function ImageUploader({ files, handleFiles }) {
       const newImgs = acceptedFiles.map((file) =>
         Object.assign(file, { preview: URL.createObjectURL(file) }),
       );
-      console.log(newImgs);
-      handleFiles([...files, ...newImgs].splice(0, 10));
+      preImages
+        ? handleFiles(
+            [...files, ...newImgs].splice(0, maxNum - preImages.length),
+          )
+        : handleFiles([...files, ...newImgs].splice(0, maxNum));
     },
-    maxFiles: 10,
+    maxFiles: maxNum,
     noClick: true,
   });
 
@@ -85,8 +95,7 @@ export default function ImageUploader({ files, handleFiles }) {
   );
 
   const deleteImage = (f) => {
-    handleFiles(files.filter((file) => file != f));
-    console.log(f);
+    handleFiles(files.filter((file) => file !== f));
   };
 
   const thumbs = files.map((file) => (
@@ -98,13 +107,27 @@ export default function ImageUploader({ files, handleFiles }) {
           // Revoke data uri after image is loaded
           // onunload={() => {
           //   URL.revokeObjectURL(file.preview);
-          //   console.log(files);
           // }}
           onDoubleClick={() => deleteImage(file)}
         />
       </div>
     </div>
   ));
+
+  const preThumbs =
+    preImages &&
+    preImages.map((image) => (
+      <div style={thumb} key={uuidv4()}>
+        <div style={thumbInner}>
+          <img
+            src={`${images.defalut_url}${image.imgPath}`}
+            style={img}
+            alt="gogogo"
+            onDoubleClick={() => handlePreImages(image.uid)}
+          />
+        </div>
+      </div>
+    ));
 
   // useEffect(() => {
   //   // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
@@ -122,11 +145,12 @@ export default function ImageUploader({ files, handleFiles }) {
           alignItems: 'center',
           gap: '1rem',
           padding: '1rem',
+          minHeight: '208px',
         }}
       >
         <input {...getInputProps()} />
 
-        {files.length === 0 ? (
+        {files.length + (preImages ? preImages.length : 0) === 0 ? (
           <div
             onClick={(e) => {
               e.preventDefault();
@@ -155,12 +179,13 @@ export default function ImageUploader({ files, handleFiles }) {
               선택하세요.
             </Typography>
             <Typography sx={{ fontSize: '0.8rem' }}>
-              지원 확장자 : jpg, jpeg, png (최대 10개)
+              지원 확장자 : jpg, jpeg, png (최대 {maxNum}개)
             </Typography>
           </div>
         ) : (
           <>
             <aside style={thumbsContainer}>
+              {preThumbs}
               {thumbs}
               {addBtn}
             </aside>

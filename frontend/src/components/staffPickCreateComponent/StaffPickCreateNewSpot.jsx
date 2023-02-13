@@ -11,23 +11,33 @@ import StaffPickCreateSpotName from './StaffPickCreateSpotName';
 import StaffPickCreatSpotCheck from './StaffPickCreatSpotCheck';
 import StaffPickCreateSpotType from './StaffPickCreateSpotType';
 import { createNewSpot } from '../../api/staffPick';
+import StaffPickCreateNewSpotFinish from './StaffPickCreateNewSpotFinish';
 
-export default function StaffPickCreateNewSpot({ open, handleClose }) {
-  const steps = ['위치 선택', '이름 선택', '유형 선택', '확인', '등록 완료!'];
+export default function StaffPickCreateNewSpot({
+  open,
+  handleClose,
+  getSpotsPins,
+}) {
+  const steps = [
+    '위치 선택',
+    '이름 선택',
+    '유형·사진 선택',
+    '확인',
+    '등록 완료!',
+  ];
   const [activeStep, setActiveStep] = useState(0);
 
   // 다음 스텝
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep == 1) {
-      console.log(activeStep);
       const lng = nowPick[0].lng;
       const lat = nowPick[0].lat;
       const data = await getAddressBySpot(lng, lat);
       const address = data.data.documents[0].address_name;
       setArea(address);
     } else if (activeStep == 3) {
-      const body = {
+      const travelPlace = {
         name: spotName,
         category: newtype,
         address: area,
@@ -35,8 +45,15 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
         lat: nowPick[0].lat,
         lng: nowPick[0].lng,
       };
-      const data = await createNewSpot(body);
-      console.log(data);
+      const formData = new FormData();
+      const blob = new Blob([JSON.stringify(travelPlace)], {
+        type: 'application/json',
+      });
+
+      formData.append('travelPlace', blob);
+      formData.append('image', file[0]);
+
+      await createNewSpot(formData);
     }
   };
   // 이전 스텝
@@ -49,6 +66,11 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
   const handleSpotName = (e) => {
     setSpotName(e);
     getSpotFromStack();
+  };
+
+  const [file, setFile] = useState([]);
+  const handleFile = (data) => {
+    setFile(data);
   };
 
   // 좌표
@@ -82,19 +104,12 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
     const lng = e._lng;
     setNowPick([{ lat, lng }]);
     setStack({ lat, lng });
-    // const data = await getAddressBySpot(lng, lat);
-    // const address = data.data.documents[0].address_name;
-    // setArea(address);
   };
 
   const setNewPinByNameSearch = async (spot) => {
     const lng = spot.mapy;
     const lat = spot.mapx;
     setNowPick([{ lat, lng }]);
-    // const data = await getAddressBySpot(lng, lat);
-
-    // const address = data.data.documents[0].address_name;
-    // setArea(address);
   };
 
   // 새로운 명소 유형 선택
@@ -119,7 +134,6 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
             <div style={{ width: '100%' }}>
               <MapApi setNewPin={setNewPin} startSpot={nowPick} />{' '}
             </div>
-            {area}
           </Box>
         );
       case 1:
@@ -132,7 +146,12 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
         );
       case 2:
         return (
-          <StaffPickCreateSpotType newtype={newtype} handleType={handleType} />
+          <StaffPickCreateSpotType
+            newtype={newtype}
+            handleType={handleType}
+            file={file}
+            handleFile={handleFile}
+          />
         );
 
       case 3:
@@ -145,6 +164,8 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
             shortArea={shortArea}
           />
         );
+      case 4:
+        return <StaffPickCreateNewSpotFinish />;
     }
   };
 
@@ -165,7 +186,7 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
         }}
       >
         <Typography
-          sx={{ fontSize: '2vw', color: '#FF7600', fontWeight: 'bolder' }}
+          sx={{ fontSize: '2vw', color: 'primary.main', fontWeight: 'bolder' }}
         >
           새로운 명소 등록
         </Typography>
@@ -177,6 +198,7 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
             setActiveStep(0);
             setNewType('');
             setSpotName('');
+            getSpotsPins();
           }}
           sx={{ position: 'absolute', right: 5, top: 5 }}
         >
@@ -193,23 +215,23 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
                 key={label}
                 sx={{
                   '& .MuiStepLabel-root .Mui-completed': {
-                    color: '#FF7600', // circle color (COMPLETED)
+                    color: '#FF7600',
                   },
                   '& .MuiStepLabel-label.Mui-completed.MuiStepLabel-alternativeLabel':
                     {
-                      color: 'black', // Just text label (COMPLETED)
+                      color: 'black',
                       fontWeight: 'bolder',
                     },
                   '& .MuiStepLabel-root .Mui-active': {
-                    color: 'primary', // circle color (ACTIVE)
+                    color: 'primary',
                   },
                   '& .MuiStepLabel-label.Mui-active.MuiStepLabel-alternativeLabel':
                     {
-                      color: '#FF7600', // Just text label (ACTIVE)
+                      color: '#FF7600',
                       fontWeight: 'bolder',
                     },
                   '& .MuiStepLabel-root .Mui-active .MuiStepIcon-text': {
-                    fill: 'white', // circle's number (ACTIVE)
+                    fill: 'white',
                   },
                 }}
               >
@@ -230,7 +252,10 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
           }}
           size="large"
           disabled={
-            (activeStep === 0 && nowPick.length === 0) || activeStep === 4
+            (activeStep === 0 && nowPick.length === 0) ||
+            activeStep === 4 ||
+            (activeStep === 1 && spotName.length === 0) ||
+            (activeStep === 2 && (newtype === '' || file.length === 0))
           }
           onClick={handleNext}
         >
@@ -245,7 +270,6 @@ export default function StaffPickCreateNewSpot({ open, handleClose }) {
             color: 'secondary.main',
           }}
           size="large"
-          // disabled={activeStep === 0 && nowPick.length === 0}
           onClick={handlePrior}
           disabled={activeStep === 0 || activeStep === 4}
         >

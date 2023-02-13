@@ -8,10 +8,11 @@ export default function BoxLoginSignup(props) {
       sx={{
         width: '60%',
         background: 'white',
-        height: '68vh',
+        height: '710px',
         borderRadius: '24px',
         overflow: 'hidden',
         display: 'flex',
+        minWidth: '410px',
       }}
       container
     >
@@ -30,7 +31,7 @@ export default function BoxLoginSignup(props) {
         <img
           src={images.default_image}
           alt=""
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </Box>
     </Grid>

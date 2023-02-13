@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userSlice from './user';
+import workSlice from './work';
 import {
   persistStore,
   persistReducer,
@@ -19,6 +20,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
+  work: workSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

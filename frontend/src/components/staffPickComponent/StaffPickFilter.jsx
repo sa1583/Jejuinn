@@ -9,6 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Box } from '@mui/system';
+import { useNavigate } from 'react-router';
 const CustomTextField = styled(TextField)({
   '& label': {
     color: '#000000',
@@ -65,12 +66,7 @@ export default function StaffPickFilter({
     '우도면',
   ];
 
-  // const [pickForm, setPickForm] = useState(filter);
-  // const handlePickForm = (e) => {
-  //   const name = e.target.name;
-  //   const value = e.target.value;
-  //   setPickForm({ ...pickForm, [name]: value });
-  // };
+  const navigate = useNavigate();
 
   return (
     <form
@@ -101,9 +97,6 @@ export default function StaffPickFilter({
           onChange={handlePickForm}
           name="category"
           defaultValue={'전체'}
-          // 여이가 라벨 사이즈 조정하는곳
-          // 근데 라벨 들어가는 칸은 조정이 안됨 ㅋ
-          // InputLabelProps={{ style: { fontSize: '18px' } }}
         >
           {selectedTypes.map((selectedtype) => (
             <MenuItem key={uuidv4()} value={selectedtype}>
@@ -159,8 +152,8 @@ export default function StaffPickFilter({
           startIcon={<SearchIcon />}
           onClick={(e) => {
             e.preventDefault();
-            //여기에 필터 검색 로직
             getFilterdSpots();
+            navigate('/staffpicklist');
           }}
         >
           조건 검색

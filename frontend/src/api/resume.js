@@ -24,18 +24,31 @@ function myCareerList() {
   return [['career1'], ['career2']];
 }
 
-function getResume() {
-  let header = {
+function getResume(accessToken, userUid) {
+  const header = {
     headers: {
-      access_token: `Bearer ${Access_token}`,
+      accessToken: `Bearer ${accessToken}`,
     },
   };
-  // return api.get('/auth/job-search/{userUid}', {}, header);
-  
-  // props 정상적으로 작동하는지 확인해보려고 만든 리턴
-  // API 연결 후 위의 리턴 주석 해지
-
-  return ['resume!!!!!'];
+  return api.get(`/auth/job-search/${userUid}`, header);
 }
 
-export { myCareerList, getResume};
+const registMyResume = (token, body) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.post('/auth/job-search', body, header);
+};
+
+const changeAutoApply = (token, uid) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return api.put(`/auth/auto-apply/${uid}`, {}, header);
+};
+
+export { myCareerList, getResume, registMyResume, changeAutoApply };

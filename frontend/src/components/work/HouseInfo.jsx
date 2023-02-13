@@ -6,14 +6,13 @@ import WhiteBox from '../whiteBox/WhiteBox';
 import MapApi from '../mapApi/MapApi';
 
 export default function HouseInfo({ images, geustHouseId }) {
-  console.log(images, geustHouseId);
   const [guestHouse, setGuestHouse] = useState({});
+  // if images null : images= guesthouse.image
 
   async function getGuestHouse() {
     const data = (await guestHouseDetail(geustHouseId)).data.guestHouse;
     setGuestHouse(data);
   }
-  console.log(guestHouse);
 
   useEffect(() => {
     getGuestHouse();
