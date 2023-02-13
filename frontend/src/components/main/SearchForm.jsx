@@ -72,11 +72,7 @@ export default function SearchForm() {
             spacing={3}
             sx={{ width: 400, marginTop: '2vh', marginRight: '1vh' }}
           >
-            <FilterArea
-              value={selectedAreas}
-              setValue={setSelectedAreas}
-              limit={1}
-            />
+            <FilterArea value={selectedAreas} setValue={setSelectedAreas} />
           </Stack>
           <Stack spacing={3} sx={{ width: 400, marginTop: '2vh' }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
