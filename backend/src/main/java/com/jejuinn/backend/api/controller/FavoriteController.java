@@ -60,7 +60,7 @@ public class FavoriteController {
     @ApiOperation(value = "좋아요한 게스트하우스 리스트", notes = "사용자가 좋아요를 누른 게스트하우스 리스트를 제공합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(좋아요 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(이미 좋아요를 누른 리뷰)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyLikeGuestHouse(HttpServletRequest request) {

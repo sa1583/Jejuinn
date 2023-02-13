@@ -12,4 +12,7 @@ public interface WorkResumeInfoRepository extends JpaRepository<WorkResumeInfo, 
     @Query("select w.resumeInfo.uid from WorkResumeInfo w where w.work.uid = :workUid")
     List<Long> findResumeInfoUidByWorkUid(@Param("workUid") Long workUid);
 
+    @Query("select w from WorkResumeInfo w where w.resumeInfo.uid = :resumeInfoUid and w.work.uid = :workUid")
+    WorkResumeInfo findByResumeInfoUidAndWorkUid(@Param("resumeInfoUid") Long resumeInfoUid, @Param("workUid") Long workUid);
+
 }
