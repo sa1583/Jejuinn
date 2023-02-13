@@ -7,7 +7,9 @@ import com.jejuinn.backend.api.dto.SMS.SMSSendReq;
 import com.jejuinn.backend.api.service.SMSService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.db.entity.GuestHouse;
+import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.repository.GuestHouseRepository;
+import com.jejuinn.backend.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,6 +35,8 @@ public class SMSController {
 
     private final GuestHouseRepository guestHouseRepository;
 
+    private final UserRepository userRepository;
+
     private final UserService userService;
 
 
@@ -48,13 +52,21 @@ public class SMSController {
         String content = null;
 
         Optional<GuestHouse> guestHouse = guestHouseRepository.findById(smsSendReq.getGuestHouseUid());
-
+        Optional<User> user = userRepository.findById(smsSendReq.getUserUid());
         if(guestHouse.isPresent()) {
             content = String.format("안녕하십니까. %s입니다. " +
                     "귀하는 저희 게스트하우스의 면접 대상자로 선정되셨습니다. " +
                     "%s 다음 번호로 연락주시면 감사하겠습니다.", guestHouse.get().getGuestHouseName(), guestHouse.get().getPhone());
+        } else {
+            return ResponseEntity.status(400).build();
         }
-        MessageDto messageDto = MessageDto.builder().content(content).to(smsSendReq.getTo()).build();
+        user.get().setPhone(user.get().getPhone().replaceAll("-", ""));
+        MessageDto messageDto = null;
+        if(user.isPresent()) {
+            messageDto = MessageDto.builder().content(content).to(user.get().getPhone()).build();
+        } else {
+            return ResponseEntity.status(400).build();
+        }
         SMSResponseDto response = smsService.sendSms(messageDto);
         if(response == null) {
             return ResponseEntity.status(400).build();
