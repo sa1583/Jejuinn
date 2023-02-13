@@ -7,13 +7,14 @@ import { useSelector } from 'react-redux';
 export default function MyWorkDetail({ work }) {
   const navigate = useNavigate();
   const accessToken = useSelector(selectAccessToken);
+  console.log(work);
 
   const onRecruitmentDetail = () => {
     navigate(`/worklist/detail/${work.workUid}`);
   };
 
   function handleWorkUpdate() {
-    navigate(`/work-recruitment-write/${work.guestHouseUid}/${work.workUid}`);
+    navigate(`/work-recruitment-write/${work.recruitmentUid}/${work.workUid}`);
   }
   function handleWorkDelete() {
     deleteWork(work.workUid, accessToken);
@@ -21,14 +22,13 @@ export default function MyWorkDetail({ work }) {
 
   return (
     <>
-      <Box
-        sx={{ padding: '3vh', height: '100%' }}
-        onClick={onRecruitmentDetail}
-      >
-        <h2 style={{ color: '#FF7600' }}>{work.workName}</h2>
+      <Box sx={{ padding: '3vh', height: '100%' }}>
+        <h2 onClick={onRecruitmentDetail} style={{ color: '#FF7600' }}>
+          {work.workName}
+        </h2>
         <Button onClick={handleWorkUpdate}>수정</Button>
         <Button onClick={handleWorkDelete}>삭제</Button>
-        <Grid container>
+        <Grid container onClick={onRecruitmentDetail}>
           <Grid item md={6}>
             근무방식
           </Grid>

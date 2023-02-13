@@ -1,5 +1,3 @@
-import HouseInfo from '../../components/work/HouseInfo';
-import WhiteBox from '../../components/whiteBox/WhiteBox';
 import RecruitmentWrite from '../../components/work/RecruitmentWrite';
 import WorkWrite from '../../components/work/WorkWrite';
 import { useParams } from 'react-router-dom';
@@ -35,14 +33,14 @@ const CustomButton = styled(Button)({
 });
 
 export default function WorkRecruitmentWrite() {
-  const { guestHouseUid } = useParams();
+  const { recruitmentUid } = useParams();
   const { workUid } = useParams();
   const accessToken = useSelector(selectAccessToken);
   const [workInfo, setWorkInfo] = useState(
-    getMyRecruitments(guestHouseUid).work,
+    getMyRecruitments(recruitmentUid).work,
   );
   const [recruitmentInfo, setRecruimentInfo] = useState(
-    getMyRecruitments(guestHouseUid),
+    getMyRecruitments(recruitmentUid),
   );
 
   const onWorkWrite = (input) => {
@@ -63,12 +61,14 @@ export default function WorkRecruitmentWrite() {
       fetch(updateWork(workInfo, accessToken));
     }
 
-    if (recruitmentInfo) {
+    if (recruitmentUid === 'undefined') {
+      console.log('공고 없어~');
+      fetch(createRecruitment(recruitmentInfo, accessToken));
+    } else {
       // 기존 폼에 가져온 데이터 업로드
+      console.log(recruitmentUid);
 
       fetch(updateRecruitment(recruitmentInfo, accessToken));
-    } else {
-      fetch(createRecruitment(recruitmentInfo, accessToken));
     }
   };
 

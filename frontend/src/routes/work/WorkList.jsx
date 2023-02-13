@@ -32,9 +32,7 @@ export default function WorkList() {
     <>
       <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
         <WhiteBox cpn={<WorkFilterBox onSearch={onSearch} />} />
-        {/* {isLogin ?  */}
-        <MyWorkList />
-        {/* : null} */}
+        {isLogin ? <MyWorkList /> : null}
         <h2>진행중인 채용공고</h2>
         <WorkListBox works={works} />
       </Box>

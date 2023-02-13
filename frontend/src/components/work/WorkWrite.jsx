@@ -16,15 +16,15 @@ import {
 
 export default function WorkWrite({ onWorkWrite, currentWorkInfo }) {
   const [workInfo, setWorkInfo] = useState({
-    // workName: currentWorkInfo.workName,
-    // gender: currentWorkInfo.gender,
-    // salary: currentWorkInfo.salary,
-    // workTime: currentWorkInfo.workTime,
-    // workDescription: currentWorkInfo.GetWorkDescription,
-    // intake: currentWorkInfo.intake,
-    // workDays: currentWorkInfo.workDays,
-    // daysOff: currentWorkInfo.daysOff,
-    // minWorkPeriod: currentWorkInfo.minWorkPeriod,
+    workName: currentWorkInfo.workName,
+    gender: currentWorkInfo.gender,
+    salary: currentWorkInfo.salary,
+    workTime: currentWorkInfo.workTime,
+    workDescription: currentWorkInfo.GetWorkDescription,
+    intake: currentWorkInfo.intake,
+    workDays: currentWorkInfo.workDays,
+    daysOff: currentWorkInfo.daysOff,
+    minWorkPeriod: currentWorkInfo.minWorkPeriod,
   });
 
   const handleWorkInfo = (e) => {

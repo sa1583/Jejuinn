@@ -85,7 +85,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: 'work-recruitment-write/:guestHouseUid/:workUid',
+        path: 'work-recruitment-write/:recruitmentUid/:workUid',
         element: <WorkRecruitmentWrite />,
       },
       {
