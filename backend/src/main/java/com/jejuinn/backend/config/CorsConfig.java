@@ -20,10 +20,14 @@ public class CorsConfig {
         config.addExposedHeader("refreshToken");
         config.addExposedHeader("access_token");
         config.addExposedHeader("yutae"); // test 용
-        config.addAllowedOriginPattern("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
 
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("OPTIONS");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
