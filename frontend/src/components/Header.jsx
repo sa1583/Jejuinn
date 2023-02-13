@@ -33,8 +33,11 @@ export default function ButtonAppBar() {
 
   useEffect(() => {
     const name = location.pathname.split('/')[1];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 3; i++) {
       toolbarRef.current.childNodes[i].childNodes[0].style.color = 'black';
+    }
+    if (!isLogin) {
+      toolbarRef.current.childNodes[4].childNodes[0].style.color = 'black';
     }
     switch (name) {
       case 'guesthouse':
