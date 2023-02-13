@@ -1,10 +1,12 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.InsertCommentPostReq;
+import com.jejuinn.backend.api.dto.response.comment.GetCommentListPostRes;
 import com.jejuinn.backend.api.service.CommentService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.db.enums.PostType;
 import com.jejuinn.backend.db.repository.CommentRepository;
+import com.jejuinn.backend.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CommentController {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
     private final CommentService commentService;
     private final UserService userService;
 
@@ -42,24 +45,23 @@ public class CommentController {
         Long userUid = userService.getUserUidFromAccessToken(request);
 
         // 타입 체크
-        if(PostType.valueOf(req.getPostType()) == null) return ResponseEntity.status(400).build();
+        System.out.println(req.getPostType());
+        if(req.getPostType() == null || req.getPostType().equals("")) return ResponseEntity.status(400).build();
 
-        // userUid 정보를 통해 staff 여부를 확인 차후 구현
-        boolean isStaff = false;
-        commentRepository.save(req.toComment(userUid, isStaff));
+        commentRepository.save(req.toComment(userUid));
 
         return ResponseEntity.status(200).build();
     }
 
-    @DeleteMapping("/auth/comment/{uid}")
+    @DeleteMapping("/auth/comments/{uid}")
     @ApiOperation(value = "댓글 삭제", notes = "<strong>댓글의 uid</strong>을 입력받아 댓글을 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteComment(@PathVariable String uid){
-        commentRepository.deleteById(Long.parseLong(uid));
+    public ResponseEntity<?> deleteComment(@PathVariable Long uid){
+        commentRepository.deleteById(uid);
         return ResponseEntity.status(200).build();
     }
 
@@ -70,8 +72,23 @@ public class CommentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateComment(@RequestParam String uid, @RequestParam String content){
-        commentService.update(Long.parseLong(uid), content);
+    public ResponseEntity<?> updateComment(@RequestParam Long uid, @RequestParam String content){
+        commentService.update(uid, content);
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/api/comment/{postType}/{postUid}")
+    @ApiOperation(value = "댓글 리스트 조회", notes = "postType과 postUid를 입력받아 댓글을 리스트를 불러옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getCommentList(@PathVariable String postType, @PathVariable Long postUid) {
+        return ResponseEntity.status(200).body(
+                commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(postType, postUid).stream().map(
+                        comment -> GetCommentListPostRes.of(comment, userRepository.findById(comment.getUserUid()).get())
+                )
+        );
     }
 }
