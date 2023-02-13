@@ -58,15 +58,29 @@ export default function CommentInput({
             paddingLeft: '0.5rem',
           }}
         >
-          <Avatar
-            sx={{
-              width: '2rem',
-              height: '2rem',
-              bgcolor: deepOrange[500],
-              marginTop: '0.5rem',
-            }}
-            src={profileImage()}
-          ></Avatar>
+          {userInfo.profileImageUrl ? (
+            <Avatar
+              sx={{
+                width: '2rem',
+                height: '2rem',
+                bgcolor: deepOrange[500],
+                marginTop: '0.5rem',
+              }}
+              src={profileImage()}
+            ></Avatar>
+          ) : (
+            <Avatar
+              sx={{
+                backgroundColor: 'primary.main',
+                height: '2rem',
+                width: '2rem',
+                fontSize: '1rem',
+              }}
+            >
+              {userInfo.nickname[0]}
+            </Avatar>
+          )}
+
           <Box sx={{ width: '100%' }}>
             <Typography sx={{ fontWeight: 'bolder' }}>
               {userInfo?.nickname}
