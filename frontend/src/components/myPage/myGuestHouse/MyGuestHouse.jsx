@@ -111,12 +111,7 @@ export default function MyGuestHouse() {
           }}
         >
           <h1 style={{ fontSize: '1.8rem' }}>게스트하우스 관리</h1>
-          <Box sx={{ flexDirection: 'column' }}>
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <SettingsIcon color="warning" />
-              <p style={{ paddingLeft: '5px' }}>설정</p>
-            </Box>
-          </Box>
+          <Box sx={{ flexDirection: 'column' }}></Box>
         </Box>
         <Box>
           <Box
