@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 
@@ -27,25 +28,26 @@ public class RecommendRepositorySupport {
     QRecruitment qRecruitment = QRecruitment.recruitment;
     QResumeInfo qResumeInfo = QResumeInfo.resumeInfo;
 
-    public RecommendWorkDto getWorkInfo(Long workUid){
-         return factory.select(new QRecommendWorkDto(
-                                    qWork.workName,
-                                    qWork.gender,
-                                    qWork.minWorkPeriod,
-                                    qWork.workTime,
-                                    qWork.workDays,
-                                    qWork.daysOff,
-                                    qGuestHouse.uid,
-                                    qGuestHouse.area,
-                                    qWork.recruitment.addInfo,
-                                    qWork.recruitment.welfare,
-                                    qGuestHouse.tags,
-                                    qWork.recruitment
-                            ))
-                            .from(qWork)
-                            .join(qGuestHouse).on(qWork.recruitment.guestHouseUid.eq(qGuestHouse.uid))
-                            .where(qWork.uid.eq(workUid))
-                            .fetchOne();
+    public Optional<RecommendWorkDto> getWorkInfo(Long workUid){
+        RecommendWorkDto result = factory.select(new QRecommendWorkDto(
+                        qWork.workName,
+                        qWork.gender,
+                        qWork.minWorkPeriod,
+                        qWork.workTime,
+                        qWork.workDays,
+                        qWork.daysOff,
+                        qGuestHouse.uid,
+                        qGuestHouse.area,
+                        qWork.recruitment.addInfo,
+                        qWork.recruitment.welfare,
+                        qGuestHouse.tags,
+                        qWork.recruitment
+                ))
+                .from(qWork)
+                .join(qGuestHouse).on(qWork.recruitment.guestHouseUid.eq(qGuestHouse.uid))
+                .where(qWork.uid.eq(workUid))
+                .fetchOne();
+         return Optional.ofNullable(result);
     }
 
     public List<RecommendResumeDto> getResumeInfo(RecommendWorkDto request){

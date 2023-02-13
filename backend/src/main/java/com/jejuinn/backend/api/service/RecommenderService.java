@@ -7,6 +7,7 @@ import com.jejuinn.backend.db.entity.ResumeInfo;
 import com.jejuinn.backend.db.repository.RecommendRepositorySupport;
 import com.jejuinn.backend.db.repository.ResumeInfoRepository;
 import com.jejuinn.backend.db.repository.StaffRecordRepository;
+import com.jejuinn.backend.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,7 +30,8 @@ public class RecommenderService {
     private final StaffRecordRepository staffRecordRepository;
 
     public RecommendWorkDto getWorkInfo(Long workUid) {
-        return recommendRepositorySupport.getWorkInfo(workUid);
+        return recommendRepositorySupport.getWorkInfo(workUid)
+                .orElseThrow(() -> new NoContentException());
     }
 
     public List<RecommendResumeDto> getResumeInfo(RecommendWorkDto request){
