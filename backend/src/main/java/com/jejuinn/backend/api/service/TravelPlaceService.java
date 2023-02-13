@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +35,18 @@ public class TravelPlaceService {
         travelPlace.setReviewCount(count);
         travelPlace.setDateUpdated(LocalDateTime.now());
         travelPlace.setStarRatingAvg(avg);
+    }
+
+    @Transactional
+    public void deleteReview(Optional<TravelPlaceReview> review) {
+        TravelPlace travelPlace = travelPlaceRepository.findById(review.get().getTravelPlaceUid())
+                .orElseThrow(() -> new UsernameNotFoundException("데이터베이스에서 찾을 수 없습니다."));
+        int count = travelPlace.getReviewCount();
+        double avg = travelPlace.getStarRatingAvg();
+        count--;
+        avg = (avg*count - review.get().getStarRating())/(count-1);
+        travelPlace.setReviewCount(count);
+        travelPlace.setStarRatingAvg(avg);
+        travelPlaceReviewRepository.deleteById(review.get().getUid());
     }
 }
