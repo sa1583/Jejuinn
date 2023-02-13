@@ -58,7 +58,7 @@ public class ReviewController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getReviews(@PathVariable Long travelPlaceUid){
-        Optional<List<TravelPlaceReview>> reviews = travelPlaceReviewRepository.findAllByTravelPlaceUid(travelPlaceUid);
+        Optional<List<TravelPlaceReview>> reviews = travelPlaceReviewRepository.findAllByTravelPlaceUidOrderByDateCreatedDesc(travelPlaceUid);
 
         List<ImgUrlAndReviewUid> reviewWithImg = null;
         if(reviews.isPresent()){
