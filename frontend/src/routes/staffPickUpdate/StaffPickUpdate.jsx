@@ -27,8 +27,6 @@ export default function StaffPickUpdate() {
 
   const handlePinClick = async (marker) => {
     setNowPickId(marker.id);
-    // setNowPick(id에 해당하는 명소 정보 axios로 받아서 리스트로 갱)
-    // 그다음에 StaffPickCreateInfo 에서 nowPick에 대한 정보 출력 갱
     const data = (await getSpotInfo(marker.id)).data.travelPlace;
     setNowPick(data);
   };
@@ -53,7 +51,6 @@ export default function StaffPickUpdate() {
                 handlePinClick={handlePinClick}
                 spots={spots}
                 pickedId={nowPickId}
-                // setNewPin={setNewPin}
               />
             }
           />

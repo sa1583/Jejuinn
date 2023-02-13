@@ -28,8 +28,8 @@ export default function StaffPickCreateForm({ nowPickId }) {
       formData.append('uploadImages', file);
     });
 
-    await createSpotReview(acces_token, formData);
-    navigate(`/staffpicklist/${nowPickId}`);
+    const uid = (await createSpotReview(acces_token, formData)).data;
+    navigate(`/staffpicklist/detail/${uid}`);
   };
 
   const [starRating, setStarRating] = useState(1);
@@ -49,13 +49,19 @@ export default function StaffPickCreateForm({ nowPickId }) {
       encType="multipart/form-data"
       style={{ display: 'flex', flexDirection: 'column', padding: '5%' }}
     >
-      <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
+      <Typography
+        variant="h5"
+        sx={{ marginBottom: '1rem', fontWeight: 'bolder' }}
+      >
         사진 (최대 10개)
       </Typography>
 
       <ImageUploader handleFiles={handleFiles} files={files} maxNum={10} />
 
-      <Typography variant="h5" sx={{ marginBottom: '1rem', marginTop: '4rem' }}>
+      <Typography
+        variant="h5"
+        sx={{ marginBottom: '1rem', marginTop: '4rem', fontWeight: 'bolder' }}
+      >
         글 내용
       </Typography>
 
@@ -63,7 +69,6 @@ export default function StaffPickCreateForm({ nowPickId }) {
         name="content"
         id="content"
         type="text"
-        // value={content}
         getContent={getContent}
         content={content}
       />
@@ -77,7 +82,9 @@ export default function StaffPickCreateForm({ nowPickId }) {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h5">평점</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 'bolder' }}>
+          평점
+        </Typography>
         <Rating
           value={starRating}
           onChange={(event, newValue) => {
@@ -99,6 +106,9 @@ export default function StaffPickCreateForm({ nowPickId }) {
             fontSize: '1.5rem',
           }}
           variant="contained"
+          disabled={
+            files.length === 0 || content.length === 0 || nowPickId === ''
+          }
         >
           글 작성
         </Button>

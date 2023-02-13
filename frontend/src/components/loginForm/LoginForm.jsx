@@ -56,8 +56,12 @@ export default function LoginForm() {
     e.preventDefault();
     const body = { email: logInForm.email, password: logInForm.password };
     const data = await dispatch(getNormalAuthToken(body));
-    dispatch(getUserInfoByToken(data.payload.accesstoken));
-    navigate('../');
+    const res = await dispatch(getUserInfoByToken(data.payload.accesstoken));
+    if (res.error) {
+      return alert('이메일과 비밀번호를 확인해주세요.');
+    } else {
+      return navigate('../');
+    }
   };
 
   return (

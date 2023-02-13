@@ -76,7 +76,10 @@ export default function StaffPickUpdateForm() {
       encType="multipart/form-data"
       style={{ display: 'flex', flexDirection: 'column', padding: '5%' }}
     >
-      <Typography variant="h3" sx={{ marginBottom: '1rem' }}>
+      <Typography
+        variant="h3"
+        sx={{ marginBottom: '1rem', fontWeight: 'bolder' }}
+      >
         사진 (최대 10개)
       </Typography>
 
@@ -88,7 +91,10 @@ export default function StaffPickUpdateForm() {
         handlePreImages={handlePreImages}
       />
 
-      <Typography variant="h3" sx={{ marginBottom: '1rem', marginTop: '2rem' }}>
+      <Typography
+        variant="h3"
+        sx={{ marginBottom: '1rem', marginTop: '2rem', fontWeight: 'bolder' }}
+      >
         글 내용
       </Typography>
 
@@ -109,7 +115,9 @@ export default function StaffPickUpdateForm() {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3">평점</Typography>
+        <Typography variant="h3" sx={{ fontWeight: 'bolder' }}>
+          평점
+        </Typography>
         <Rating
           value={starRating}
           onChange={(event, newValue) => {

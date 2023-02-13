@@ -215,23 +215,23 @@ export default function StaffPickCreateNewSpot({
                 key={label}
                 sx={{
                   '& .MuiStepLabel-root .Mui-completed': {
-                    color: '#FF7600', // circle color (COMPLETED)
+                    color: '#FF7600',
                   },
                   '& .MuiStepLabel-label.Mui-completed.MuiStepLabel-alternativeLabel':
                     {
-                      color: 'black', // Just text label (COMPLETED)
+                      color: 'black',
                       fontWeight: 'bolder',
                     },
                   '& .MuiStepLabel-root .Mui-active': {
-                    color: 'primary', // circle color (ACTIVE)
+                    color: 'primary',
                   },
                   '& .MuiStepLabel-label.Mui-active.MuiStepLabel-alternativeLabel':
                     {
-                      color: '#FF7600', // Just text label (ACTIVE)
+                      color: '#FF7600',
                       fontWeight: 'bolder',
                     },
                   '& .MuiStepLabel-root .Mui-active .MuiStepIcon-text': {
-                    fill: 'white', // circle's number (ACTIVE)
+                    fill: 'white',
                   },
                 }}
               >
@@ -270,7 +270,6 @@ export default function StaffPickCreateNewSpot({
             color: 'secondary.main',
           }}
           size="large"
-          // disabled={activeStep === 0 && nowPick.length === 0}
           onClick={handlePrior}
           disabled={activeStep === 0 || activeStep === 4}
         >
