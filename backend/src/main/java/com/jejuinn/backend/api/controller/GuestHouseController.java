@@ -86,7 +86,7 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertGuestHouse(@RequestPart("images") List<MultipartFile> images,
+    public ResponseEntity<?> insertGuestHouse(@RequestPart("uploadImages") List<MultipartFile> uploadImages,
                                               @RequestPart("guestHouse") InsertGuestHousePostReq req){
 
         // 게스트 하우스 저장
@@ -94,7 +94,7 @@ public class GuestHouseController {
 
         // 사진 저장
         try {
-            s3Uploader.uploadImages(images, GUEST_TYPE, guestHouse.getUid());
+            s3Uploader.uploadImages(uploadImages, GUEST_TYPE, guestHouse.getUid());
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(400).build();
