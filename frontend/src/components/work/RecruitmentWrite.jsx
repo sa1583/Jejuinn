@@ -11,14 +11,14 @@ export default function RecruitmentWrite({
   onRecruitmentWrite,
   currentRecruitmentInfo,
 }) {
-  const [persontype, setPersontype] = useState([]);
+  const [wanted, setPersontype] = useState([]);
   function onPersontype(input) {
     setPersontype([...input]);
   }
   const [recruimentInfo, setRecruimentInfo] = useState({
     title: currentRecruitmentInfo.title,
     welfare: currentRecruitmentInfo.welfare,
-    persontype: currentRecruitmentInfo.persontype,
+    wanted: currentRecruitmentInfo.wanted,
     addInfo: currentRecruitmentInfo.addInfo,
   });
 
@@ -31,9 +31,9 @@ export default function RecruitmentWrite({
   useEffect(() => {
     setRecruimentInfo({
       ...recruimentInfo,
-      persontype: persontype,
+      wanted: wanted,
     });
-  }, [persontype]);
+  }, [wanted]);
 
   useEffect(() => {
     onRecruitmentWrite(recruimentInfo);
