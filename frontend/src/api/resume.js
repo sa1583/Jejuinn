@@ -1,8 +1,6 @@
-import instance, { apiInstance } from './index';
+import instance from './index';
 import { useSelector } from 'react-redux';
-import { selectAccessToken, selectUserInfo } from '../store/user';
-
-// const api = apiInstance();
+import { selectAccessToken } from '../store/user';
 
 const Access_token = () => {
   const token = useSelector(selectAccessToken);

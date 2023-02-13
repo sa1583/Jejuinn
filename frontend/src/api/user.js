@@ -1,7 +1,4 @@
-// import { apiInstance } from './index';
 import instance from '.';
-
-// const api = apiInstance();
 
 const getTokenHeader = (token) => {
   return {

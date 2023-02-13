@@ -1,13 +1,4 @@
-import instance, { apiInstance } from './index';
-import { useSelector } from 'react-redux';
-import { selectAccessToken, selectUserInfo } from '../store/user';
-
-const api = apiInstance();
-
-const Access_token = () => {
-  const token = useSelector(selectAccessToken);
-  return token;
-};
+import instance from './index';
 
 // 특정 게스트하우스에 대한 모집공고 리스트 확인
 const getMyRecruitments = (guestHouseUid) => {

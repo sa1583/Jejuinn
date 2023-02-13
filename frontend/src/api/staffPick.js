@@ -1,15 +1,4 @@
-import instance, { apiInstance } from './index';
-
-const api = apiInstance();
-
-// 로그인한 유저만 보낼 수 있는 api에 헤더 access_token 넣기
-const getAdminTokenHeader = (token) => {
-  return {
-    headers: {
-      accessToken: `Bearer ${token}`,
-    },
-  };
-};
+import instance from './index';
 
 // 명소 리뷰 작성
 function createSpotReview(token, body) {

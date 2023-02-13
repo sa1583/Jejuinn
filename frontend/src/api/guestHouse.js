@@ -1,8 +1,4 @@
-// import { apiInstance } from './index';
-
 import instance from '.';
-
-// const api = apiInstance();
 
 const allGuestHouseList = (pageNumber) => {
   return instance.get(`/api/guest-houses?pageNumber=${pageNumber}`);
