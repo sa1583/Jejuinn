@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class SMSSendReq {
 
-    private String to;
+    private Long userUid;
 
     private Long guestHouseUid;
 
