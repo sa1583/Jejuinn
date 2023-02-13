@@ -8,6 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import GroupsIcon from '@mui/icons-material/Groups';
+import { FilterArea, FilterGuestHouseStyle } from '../work/Filters';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -68,6 +69,9 @@ export default function GuestHouseFilter({ getFilter, filter }) {
   ];
 
   const [pickForm, setPickForm] = useState(filter);
+  const [guestHouseStyles, setGuestHouseStyles] = useState([]);
+  const [selectedAreas, setSelectedAreas] = useState([]);
+
   const handlePickForm = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -84,53 +88,12 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         height: '21rem',
       }}
     >
-      <CustomTextField
-        id="outlined-select-currency"
-        select
-        label="선호하는 스타일"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start" style={{ color: '#FF7600' }}>
-              <GroupsIcon />
-            </InputAdornment>
-          ),
-        }}
-        value={pickForm.type}
-        onChange={handlePickForm}
-        name="type"
-        defaultValue={'전체'}
-        // 여이가 라벨 사이즈 조정하는곳
-        // 근데 라벨 들어가는 칸은 조정이 안됨 ㅋ
-        // InputLabelProps={{ style: { fontSize: '18px' } }}
-      >
-        {selectedStyles.map((selectedtype) => (
-          <MenuItem key={uuidv4()} value={selectedtype}>
-            {selectedtype}
-          </MenuItem>
-        ))}
-      </CustomTextField>
+      <FilterGuestHouseStyle
+        value={guestHouseStyles}
+        setValue={setGuestHouseStyles}
+      />
 
-      <CustomTextField
-        id="outlined-select-currency"
-        select
-        label="선호하는 지역"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start" style={{ color: '#FF7600' }}>
-              <FmdGoodOutlinedIcon />
-            </InputAdornment>
-          ),
-        }}
-        value={pickForm.section}
-        onChange={handlePickForm}
-        name="section"
-      >
-        {selectedSections.map((selectedSection) => (
-          <MenuItem key={uuidv4()} value={selectedSection}>
-            {selectedSection}
-          </MenuItem>
-        ))}
-      </CustomTextField>
+      <FilterArea value={selectedAreas} setValue={setSelectedAreas} limit={3} />
 
       <CustomTextField
         label="검색어로 찾기"
