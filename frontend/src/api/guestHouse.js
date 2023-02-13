@@ -113,6 +113,5 @@ export {
   myStaffList,
   myJobOfferList,
   myApplicantList,
-  myRecommendList,
   getMyGuestHouses,
 };

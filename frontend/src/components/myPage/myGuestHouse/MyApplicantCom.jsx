@@ -1,55 +1,52 @@
 import * as React from 'react';
-import { Box, Modal } from '@mui/material';
+import { Box, Chip, Modal, Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { images } from '../../../assets/images';
 import MyApplicantDetail from './MyApplicantDetail';
 
-export default function MyStaff({ myApplicant }) {
+export default function MyApplicantCom({ myApplicant }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  React.useEffect(() => console.log(myApplicant), []);
+
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          paddingX: '2vh',
-          cursor: 'pointer',
-        }}
+      <Stack
+        direction="row"
+        alignItems="center"
+        p="20px"
         onClick={handleOpen}
+        sx={{ cursor: 'pointer' }}
       >
         <Avatar
           sx={{ width: '3rem', height: '3rem', marginRight: '10px' }}
           alt="image"
           src={images.sample_profile}
         />
-        <h3 style={{ margin: '1vh' }}>{myApplicant.name}</h3>
-        <p style={{ padding: '1vh' }}>
+        <Typography minWidth="70px" mx="10px" variant="h6">
+          {myApplicant.userName}
+        </Typography>
+        <Typography minWidth="100px" mx="10px" variant="h6">
           {myApplicant.gender} | {myApplicant.age}
-        </p>
-        <Box
-          sx={{
-            display: 'inline',
-            padding: '5px 10px',
-            margin: '1vh',
-            color: 'white',
-            backgroundColor: '#FF7600',
-            borderRadius: '39px',
-            boxShadow: '0px 2px 74px 2px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          {myApplicant.tags}
-        </Box>
-      </Box>
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          {myApplicant.personTypes.map((tag) => {
+            return <Chip label={'#' + tag.type} color="primary" />;
+          })}
+        </Stack>
+      </Stack>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <MyApplicantDetail id={myApplicant.uid} handleClose={handleClose} />
+        <MyApplicantDetail
+          myApplicant={myApplicant}
+          handleClose={handleClose}
+        />
       </Modal>
     </>
   );
