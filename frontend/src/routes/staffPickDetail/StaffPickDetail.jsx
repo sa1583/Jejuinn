@@ -65,7 +65,7 @@ export default function StaffPickDetail() {
   };
 
   const goUpdateReview = () => {
-    navigate(`/staffpicklist/detail/update/${pageId}`);
+    navigate(`/staffpicklist/update/${pageId}`);
   };
 
   const loginedUserUid = useSelector(selectUserInfo)?.uid;
@@ -102,7 +102,6 @@ export default function StaffPickDetail() {
         <Grid item xs={12} md={4}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
-              {/* <WhiteBox cpn={<SpotInfo spotInfo={spotInfo} />} /> */}
               <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={spotInfo} />} />
             </Grid>
             <Grid item xs={12}>
