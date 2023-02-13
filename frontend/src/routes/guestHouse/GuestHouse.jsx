@@ -5,8 +5,13 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { allGuestHouseList } from '../../api/guestHouse';
+import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
+import ModeEditOutlined from '@mui/icons-material/ModeEditOutlined';
+import { useNavigate } from 'react-router-dom';
 
 export default function GuestHouse() {
+  const navigate = useNavigate();
+
   const [guestHouses, setGuestHouses] = useState([]);
 
   async function getGuestHouseList() {
@@ -30,9 +35,20 @@ export default function GuestHouse() {
     getGuestHouseList();
   }, []);
 
+  const goCreate = () => {};
+
+  const actions = [
+    {
+      icon: <ModeEditOutlined />,
+      name: '글 작성',
+      handle: () => navigate(`/guesthouse/create`),
+    },
+  ];
+
   return (
     <div>
       <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+        <SpeedDialComponent actions={actions} />
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <WhiteBox
