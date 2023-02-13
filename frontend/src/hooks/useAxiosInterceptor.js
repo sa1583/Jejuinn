@@ -2,6 +2,7 @@ import instance from '../api';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  getUserInfoByToken,
   logout,
   renewAccessTokenByRefreshToken,
   selectRefreshToken,
@@ -13,7 +14,7 @@ export const useAxiosInterceptor = () => {
   const dispatch = useDispatch();
   const refreshToken = useSelector(selectRefreshToken);
 
-  const handleError = (err) => {
+  const handleError = async (err) => {
     console.log(err.response.status);
     if (err.response.status === 401) {
       const api = err.request.responseURL.split('jejuinn.com')[1];
@@ -24,9 +25,13 @@ export const useAxiosInterceptor = () => {
         navigate('/login');
       } else {
         try {
-          if (refreshToken === null)
+          if (refreshToken === null) {
             throw new Error('there is no refreshToken');
-          dispatch(renewAccessTokenByRefreshToken(refreshToken));
+          }
+          const accessToken = await dispatch(
+            renewAccessTokenByRefreshToken(refreshToken),
+          );
+          dispatch(getUserInfoByToken(accessToken));
         } catch (error) {
           navigate('/login');
         }
