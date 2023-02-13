@@ -1,4 +1,4 @@
-import { Grid, Button, styled, Box } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import {
@@ -12,46 +12,19 @@ import {
   GetWorkStartTime,
   GetWorkEndTime,
   GetWorkDescription,
-  SelectGusetHouse,
 } from './WorkWriteForms';
-import { writeRecruitment } from '../../api/work';
-import { createWork } from '../../api/work';
-import { selectAccessToken } from '../../store/user';
-import { useSelector } from 'react-redux';
 
-const CustomButton = styled(Button)({
-  variant: 'contained',
-  width: '100%',
-  height: '7vh',
-  color: '#FFFFFF',
-  borderRadius: '62px',
-  backgroundColor: '#FF7600',
-  fontFamily: 'border',
-  size: 'large',
-  '&:hover': {
-    backgroundColor: '#FF7600',
-    borderColor: '#FF7600',
-  },
-  '&:active': {
-    backgroundColor: '#FF7600',
-    borderColor: '#FF7600',
-  },
-});
-
-export default function WorkWrite({ OnClick }) {
-  const accessToken = useSelector(selectAccessToken);
-
+export default function WorkWrite({ onWorkWrite, currentWorkInfo }) {
   const [workInfo, setWorkInfo] = useState({
-    workName: '',
-    gender: '',
-    salary: '',
-    workTime: '',
-    workDescription: '',
-    intake: 0,
-    workDays: 2,
-    daysOff: 2,
-    minWorkPeriod: 0,
-    recruitmentUid: 2,
+    workName: currentWorkInfo.workName,
+    gender: currentWorkInfo.gender,
+    salary: currentWorkInfo.salary,
+    workTime: currentWorkInfo.workTime,
+    workDescription: currentWorkInfo.GetWorkDescription,
+    intake: currentWorkInfo.intake,
+    workDays: currentWorkInfo.workDays,
+    daysOff: currentWorkInfo.daysOff,
+    minWorkPeriod: currentWorkInfo.minWorkPeriod,
   });
 
   const handleWorkInfo = (e) => {
@@ -64,41 +37,30 @@ export default function WorkWrite({ OnClick }) {
 
   const [workStartTime, setWorkStartTime] = useState('09:00');
   const [workEndTime, setWorkEndTime] = useState('15:00');
-
   const onWorkStartTime = (imp) => {
     setWorkStartTime(imp);
   };
   const onWorkEndTime = (imp) => {
     setWorkEndTime(imp);
   };
-
   useEffect(() => {
     setWorkInfo({ ...workInfo, workTime: `${workStartTime}~${workEndTime}` });
   }, [workEndTime, workStartTime]);
 
-  const workCreate = async () => {
-    const data = await createWork(workInfo, accessToken);
-    console.log(data);
-  };
-
-  function TwoCalls() {
-    OnClick();
-    workCreate();
-  }
+  useEffect(() => {
+    onWorkWrite(workInfo);
+  }, [workInfo]);
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+    <Box sx={{ paddingTop: '1rem', height: '100%' }}>
       <form>
         <Grid container spacing={2}>
-          <Grid item md={12}>
-            000게스트하우스의 채용 추가
-          </Grid>
           <Grid item md={12}>
             <GetWorkName handleWorkInfo={handleWorkInfo} />
           </Grid>
 
           <Grid item md={6}>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               <Grid item md={12}>
                 <GetWorkWorkDays handleWorkInfo={handleWorkInfo} />일 근무
                 <GetWorkDaysOff handleWorkInfo={handleWorkInfo} />일 휴무
@@ -137,10 +99,6 @@ export default function WorkWrite({ OnClick }) {
                 <GetWorkDescription handleWorkInfo={handleWorkInfo} />
               </Grid>
             </Grid>
-          </Grid>
-
-          <Grid item md={12}>
-            <CustomButton onClick={TwoCalls}>추가</CustomButton>
           </Grid>
         </Grid>
       </form>

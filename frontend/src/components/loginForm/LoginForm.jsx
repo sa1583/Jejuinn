@@ -24,7 +24,7 @@ const CustomTextField = styled(TextField)({
       borderColor: '#FF7600',
     },
   },
-  marginTop: '2vh',
+  marginTop: '2rem',
   width: '80%',
 });
 
@@ -34,12 +34,7 @@ export default function LoginForm() {
   const bottomData = [
     {
       name: '회원가입',
-      url: '../signup1',
-    },
-    null,
-    {
-      name: '아이디 찾기',
-      url: '',
+      url: '../signup',
     },
     null,
     {
@@ -97,7 +92,6 @@ export default function LoginForm() {
         onClick={login}
         sx={{
           width: '80%',
-          height: '6vh',
           background: '#FF7600',
           borderRadius: '38px',
           color: 'white',
@@ -107,15 +101,15 @@ export default function LoginForm() {
           },
           border: 'none',
           fontSize: '1.5rem',
-          marginTop: '6vh',
+          marginTop: '3.2rem',
         }}
       >
         로그인
       </Button>
 
       {/* 소셜 로그인 부분 */}
-      <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
-      <Box sx={{ display: 'flex', gap: '1.5vw' }}>
+      <h3 style={{ marginTop: '3.5rem', color: '#FF7600' }}>소셜 로그인</h3>
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
         <NaverLoginBtn />
         <GoogleLoginBtn />
         <KakaoLoginBtn />
@@ -128,7 +122,7 @@ export default function LoginForm() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: '4vh',
+          marginTop: '3rem',
         }}
       >
         {bottomData.map((data) => {
@@ -137,7 +131,7 @@ export default function LoginForm() {
               <Link
                 to={data.url}
                 style={{
-                  fontSize: '1vw',
+                  fontSize: '1.2rem',
                   textDecoration: 'none',
                   color: 'black',
                 }}
@@ -148,7 +142,7 @@ export default function LoginForm() {
             );
           } else {
             return (
-              <p style={{ margin: '1vw', fontSize: '1vw' }} key={uuidv4()}>
+              <p style={{ margin: '1rem', fontSize: '1.2rem' }} key={uuidv4()}>
                 |
               </p>
             );

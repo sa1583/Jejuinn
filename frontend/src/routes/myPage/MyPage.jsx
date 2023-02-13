@@ -38,12 +38,15 @@ export default function MyPage({ content }) {
         <Grid item md={4}>
           <WhiteBox cpn={<Profile />} />
           <CustomButton
-            onClick={onApply}
             sx={{
               marginBottom: '8px',
               marginTop: '16px',
             }}
+            onClick={() => navigate('/mypage')}
           >
+            마이 페이지
+          </CustomButton>
+          <CustomButton onClick={onApply} sx={{ mb: '8px' }}>
             지원서 관리
           </CustomButton>
 

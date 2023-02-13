@@ -12,8 +12,9 @@ const getMyGuestHouses = (token, userUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  // return api.get(`/auth/my-guest-houses/${userUid}`, config);
-  return { data: [{ uid: 1 }, { uid: 2 }] };
+  return api.get(`/auth/my-guest-houses/${userUid}`, config);
+  // return { data: [{ uid: 1 , title:'간장남'}] };
+  // return { data: [{ uid: 1 , guestHouseName:'간장남'}, { uid: 2 , guestHouseName:'게토'}] };
 };
 
 const getApplicantByUid = async (uid, token) => {
@@ -43,8 +44,10 @@ const guestHouseUpdate = (token, guestHouseUid, body) => {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
+  console.log('body', body);
   return api.put(`/auth/guest-houses/${guestHouseUid}`, body, config);
 };
 

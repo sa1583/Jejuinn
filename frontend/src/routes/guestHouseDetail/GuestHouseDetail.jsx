@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import GuestHouseInfo from '../../components/guestHouseDetail/GuestHouseInfo';
@@ -12,6 +12,7 @@ import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import MapApi from '../../components/mapApi/MapApi';
 import { guestHouseDetail, guestHouseDelete } from '../../api/guestHouse';
 import { selectAccessToken, selectUserInfo } from '../../store/user';
+import CommentsList from '../../components/commentComponent/CommentsList';
 
 export default function GuestHouseDetail() {
   const location = useLocation();
@@ -39,7 +40,7 @@ export default function GuestHouseDetail() {
 
   const navigate = useNavigate();
   const goModifiy = () => {
-    navigate(`/guesthouse/detail/update/${guestHouseUid}`);
+    navigate(`/guesthouse/update/${guestHouseUid}`);
   };
 
   async function DeleteGuestHouse() {
@@ -61,9 +62,9 @@ export default function GuestHouseDetail() {
     <>
       <SpeedDialComponent actions={actions} />
       <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
-        <h1 style={{ color: '#FF7600' }}>
+        <Typography variant="h4" color="primary">
           | {guestHouse?.guestHouse?.guestHouseName}
-        </h1>
+        </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Grid item xs={12}>
@@ -83,6 +84,15 @@ export default function GuestHouseDetail() {
                     guestHouse={guestHouse.guestHouse}
                     images={guestHouse.images}
                   />
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <WhiteBox
+                cpn={
+                  <Box px="3%" mt="10px">
+                    <CommentsList />
+                  </Box>
                 }
               />
             </Grid>

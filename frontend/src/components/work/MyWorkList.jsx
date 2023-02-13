@@ -4,39 +4,41 @@ import { getMyGuestHouses } from '../../api/guestHouse';
 import { getMyWorks, getMyRecruitments } from '../../api/work';
 import { useState } from 'react';
 import { SelectGusetHousePopover } from '../work/WorkWriteForms';
-import { changeIsOnWrite, selectIsOnWrite } from '../../store/work';
 import { Grid, Button } from '@mui/material';
-import WorkWrite from './WorkWrite';
 import WhiteBox from '../whiteBox/WhiteBox';
 import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import MyWorkDetail from './MyWorkDetail';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyWorkList() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const userUid = useSelector(selectUserInfo).uid;
   const token = useSelector(selectAccessToken);
 
   const [myWorks, setMyworks] = useState([]);
   const [myGuestHouses, setMyGuestHouses] = useState([]);
-  const [selectedGH, setSelectedGH] = useState('');
 
   const onSelect = (input) => {
-    setSelectedGH(input);
-    getRecruitment(input);
+    writeRecruitment(input);
   };
 
-  const isOnWrite = useSelector(selectIsOnWrite);
   const OnClick = () => {
-    dispatch(changeIsOnWrite());
+    writeRecruitment(myGuestHouses[0].uid);
   };
+
+  async function writeRecruitment(ghuid) {
+    const selectedRecruitment = (await getMyRecruitments(ghuid)).data[0];
+    if (selectedRecruitment) {
+      navigate(`/work-recruitment-write/${selectedRecruitment.uid}/undefined`);
+    } else {
+      navigate(`/work-recruitment-write/undefined/undefined`);
+    }
+  }
 
   async function setHouseAndWork() {
-    // 내 게하리스트 받아와
-    const myGuestHousesFromServer = await getMyGuestHouses(token, userUid).data;
-    // 게하 정보가 있으면 게하 목록 저장하고, 직무 목록 받아
+    const myGuestHousesFromServer = (await getMyGuestHouses(token, userUid))
+      .data;
     if (myGuestHousesFromServer.length > 0) {
       setMyGuestHouses((prevArray) => [
         ...prevArray,
@@ -53,16 +55,6 @@ export default function MyWorkList() {
     setMyworks((prevArray) => [...prevArray, ...myworks]);
   }
 
-  async function getRecruitment(ghuid) {
-    const selectedRecruitment = (await getMyRecruitments(ghuid)).data;
-    console.log(typeof selectedRecruitment);
-    if (selectedRecruitment === []) {
-      console.log('왜않돼?');
-      navigate('/recruitment-write');
-    }
-  }
-
-  console.log(myWorks);
   useEffect(() => {
     setHouseAndWork();
   }, []);
@@ -72,7 +64,7 @@ export default function MyWorkList() {
       {myGuestHouses.length > 0 ? (
         <Grid container spacing={2}>
           <Grid item md={12}>
-            <span>나의 채용목록</span>
+            <h2>나의 채용공고</h2>
             {myGuestHouses.length > 1 ? (
               <SelectGusetHousePopover
                 myGuestHouses={myGuestHouses}
@@ -82,23 +74,12 @@ export default function MyWorkList() {
               <Button onClick={OnClick}>+</Button>
             )}
           </Grid>
-          {
-            // 직무 추가 (채용 공고가 존재하는지 확인해야 해요 -> 공고가 없으면 공고 작성 페이지로 이동)
-            // selectedGH로 공고 아이디 찾아서 프롭스로 넘겨줘야함
-            isOnWrite ? (
-              <Grid item md={12}>
-                <WhiteBox cpn={<WorkWrite OnClick={OnClick} />} />
-              </Grid>
-            ) : null
-          }
-          {
-            // 나의 진행중인 채용 직무 목록
-            myWorks.map((myWork) => (
-              <Grid item md={4} key={uuidv4()}>
-                <WhiteBox cpn={<MyWorkDetail work={myWork} />} />
-              </Grid>
-            ))
-          }
+
+          {myWorks.map((myWork) => (
+            <Grid item md={4} key={uuidv4()}>
+              <WhiteBox cpn={<MyWorkDetail work={myWork} />} />
+            </Grid>
+          ))}
         </Grid>
       ) : null}
     </>

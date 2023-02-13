@@ -1,19 +1,39 @@
 import { Box } from '@mui/system';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  Button,
-  ImageList,
-  ImageListItem,
-  ImageListItemBar,
-} from '@mui/material';
+import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 import { images } from '../../assets/images';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 
-export default function StaffPickSpotList({ spotImgs, getNextSpotImgs }) {
+export default function StaffPickSpotList({ spotImgs, plusPageNum }) {
   const navigate = useNavigate();
   const goReviews = (e) => {
     navigate(`/staffpicklist/${e.target.id}`);
   };
+
+  const observer = useRef(
+    new IntersectionObserver(
+      (entries) => {
+        const isIntersecting = entries[0].isIntersecting;
+        if (isIntersecting) {
+          plusPageNum();
+        }
+      },
+      { threshold: 1 },
+    ),
+  );
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    setTimeout(function () {
+      const currentBottomRef = bottomRef.current;
+      observer.current.observe(currentBottomRef);
+      return () => {
+        observer.current.unobserve(currentBottomRef);
+      };
+    }, 500);
+  }, []);
+
   return (
     <Box sx={{ padding: '3vh' }}>
       <h2>
@@ -32,21 +52,13 @@ export default function StaffPickSpotList({ spotImgs, getNextSpotImgs }) {
                 onClick={(e) => {
                   goReviews(e);
                 }}
-
-                // name={item.travelPlaceName}
               />
               <ImageListItemBar title={item.travelPlaceName} />
             </ImageListItem>
           ))}
         </ImageList>
-        <Button
-          variant="contained"
-          onClick={getNextSpotImgs}
-          sx={{ width: '100%', fontWeight: 'bolder', fontSize: '1rem' }}
-        >
-          명소 더 가져오기
-        </Button>
       </Box>
+      <div ref={bottomRef} />
     </Box>
   );
 }

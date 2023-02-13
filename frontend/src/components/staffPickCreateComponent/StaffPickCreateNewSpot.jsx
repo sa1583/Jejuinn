@@ -54,10 +54,6 @@ export default function StaffPickCreateNewSpot({
       formData.append('image', file[0]);
 
       await createNewSpot(formData);
-    } else if (activeStep == 4) {
-      handleClose();
-      getSpotsPins();
-      setActiveStep(0);
     }
   };
   // 이전 스텝
@@ -202,6 +198,7 @@ export default function StaffPickCreateNewSpot({
             setActiveStep(0);
             setNewType('');
             setSpotName('');
+            getSpotsPins();
           }}
           sx={{ position: 'absolute', right: 5, top: 5 }}
         >

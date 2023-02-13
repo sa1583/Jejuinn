@@ -1,5 +1,4 @@
 import { Box, Button, Typography } from '@mui/material';
-import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import { useState } from 'react';
 import StaffPickCreateNewSpot from './StaffPickCreateNewSpot';
 export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
@@ -8,7 +7,7 @@ export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
   const handleClose = () => setOpen(false);
 
   const inline = (title, content) => (
-    <Typography variant="h6" sx={{ fontWeight: 'bolder', margin: 0 }}>
+    <Typography variant="h6" sx={{ fontWeight: '800' }}>
       <Box component="span" sx={{ color: 'primary.main' }}>
         {title}
       </Box>{' '}
@@ -29,6 +28,7 @@ export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
     >
       <Box
         sx={{
+          marginTop: '1rem',
           padding: '1rem',
           width: '100%',
           display: 'flex',
@@ -37,43 +37,39 @@ export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
           height: '100%',
         }}
       >
-        <button
-          style={{
-            border: 'none',
-            background: 'none',
-            position: 'absolute',
-            right: 5,
-            top: 5,
-          }}
-          onClick={handleOpen}
-        >
-          <ControlPointOutlinedIcon
-            sx={{ fontSize: '3rem', color: 'primary.main' }}
-          />
-        </button>
         <StaffPickCreateNewSpot
           open={open}
           handleClose={handleClose}
           getSpotsPins={getSpotsPins}
         />
-        <h1 style={{ margin: 0 }}>기존 명소에 리뷰 등록</h1>
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: 'bold', marginBottom: '1rem' }}
+        >
+          기존 명소에 리뷰 등록
+        </Typography>
+        <Button onClick={handleOpen}>+ 새로운 명소 등록</Button>
         <Box
           sx={{
             width: '90%',
             display: 'flex',
             flexDirection: 'column',
             gap: '1rem',
-            margin: '2rem 0 0 0',
+            margin: '1rem 0 2rem 0',
           }}
         >
           {inline('이름', nowPick?.name)}
           {inline('유형', nowPick?.category)}
           {inline('주소', nowPick?.address)}
-          {inline('리뷰 수', nowPick.reviewCount && `${nowPick.reviewCount}개`)}
-          {inline(
-            '평점',
-            nowPick.starRatingAvg && `${nowPick?.starRatingAvg} 점`,
-          )}
+        </Box>
+        <Box
+          sx={{
+            width: '90%',
+          }}
+        >
+          <Typography sx={{ fontWeight: '100', textAlign: 'center' }}>
+            * 지도에서 명소를 선택한 후 리뷰를 등록해주세요.
+          </Typography>
         </Box>
       </Box>
     </Box>
