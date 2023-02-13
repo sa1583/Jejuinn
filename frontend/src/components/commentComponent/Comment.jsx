@@ -52,15 +52,29 @@ export default function CommentList({
           paddingLeft: '0.5rem',
         }}
       >
-        <Avatar
-          src={profileImage()}
-          sx={{
-            width: '2rem',
-            height: '2rem',
-            marginTop: '0.5rem',
-            bgcolor: deepOrange[500],
-          }}
-        ></Avatar>
+        {comment.profileImgUrl ? (
+          <Avatar
+            src={profileImage()}
+            sx={{
+              width: '2rem',
+              height: '2rem',
+              marginTop: '0.5rem',
+              bgcolor: deepOrange[500],
+            }}
+          ></Avatar>
+        ) : (
+          <Avatar
+            sx={{
+              backgroundColor: 'primary.main',
+              width: '2rem',
+              height: '2rem',
+              fontSize: '1rem',
+            }}
+          >
+            {comment.nickname[0]}
+          </Avatar>
+        )}
+
         <Box sx={{ width: '100%' }}>
           <Box
             sx={{
