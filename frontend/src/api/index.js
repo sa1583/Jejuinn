@@ -12,4 +12,12 @@ function apiInstance() {
   return instance;
 }
 
+const instance = axios.create({
+  baseURL: 'https://jejuinn.com',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 export { apiInstance };
+export default instance;

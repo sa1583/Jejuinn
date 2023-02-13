@@ -1,7 +1,9 @@
-import axios from 'axios';
-import { apiInstance } from './index';
+// import axios from 'axios';
+// import { apiInstance } from './index';
 
-const api = apiInstance();
+import instance from '.';
+
+// const api = apiInstance();
 
 function createComment(body, token) {
   const config = {
@@ -9,11 +11,11 @@ function createComment(body, token) {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.post('/auth/comment', body, config);
+  return instance.post('/auth/comment', body, config);
 }
 
 function getCommentList(postType, postUid) {
-  return api.get(`/api/comment/${postType}/${postUid}`);
+  return instance.get(`/api/comment/${postType}/${postUid}`);
 }
 
 function updateComment(content, uid, token) {
@@ -22,7 +24,11 @@ function updateComment(content, uid, token) {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.put(`/auth/comment?content=${content}&uid=${uid}`, {}, config);
+  return instance.put(
+    `/auth/comment?content=${content}&uid=${uid}`,
+    {},
+    config,
+  );
 }
 
 function deleteComment(uid, token) {
@@ -31,7 +37,7 @@ function deleteComment(uid, token) {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.delete(`/auth/comments/${uid}`, config);
+  return instance.delete(`/auth/comments/${uid}`, config);
 }
 
 export { createComment, getCommentList, updateComment, deleteComment };
