@@ -73,3 +73,10 @@ cloud:
     credentials:
       accessKey: AKIAZI4P42UQNX5AILCC
       secretKey: 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
+
+# naver sms
+naver-cloud-sms:
+  accessKey: "RMAqyFw12WhjEgSPoSJN"
+  secretKey: "Mm8IUKxk03Us9Q5oJD2K0nQmdI5pS6ElkrrbGYAP"
+  serviceId: "ncp:sms:kr:301772869559:jejuinn_sms"
+  senderPhone: "01066387338"

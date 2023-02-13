@@ -29,7 +29,7 @@ public class MyApplicantDetailRes {
         return MyApplicantDetailRes.builder()
                 .userUid(user.getUid())
                 .userName(user.getUsername())
-                .gender(user.getUsername())
+                .gender(user.getGender())
                 .age(user.getAge())
                 .content(resumeInfo.getContent())
                 .personTypes(resumeInfo.getPersonTypes())
