@@ -91,7 +91,7 @@ public class GuestHouseController {
 
         // 게스트 하우스 저장
         GuestHouse guestHouse = guestHouseRepository.save(req.toGuestHouse());
-
+        Long guestHouseUid = guestHouse.getUid();
         // 사진 저장
         try {
             s3Uploader.uploadImages(uploadImages, GUEST_TYPE, guestHouse.getUid());
@@ -99,7 +99,9 @@ public class GuestHouseController {
             e.printStackTrace();
             return ResponseEntity.status(400).build();
         }
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(
+                guestHouseUid
+        );
     }
 
     /**
