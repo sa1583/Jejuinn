@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByPostTypeAndPostUidOrderByDateCreatedDesc(String postType, Long postUid);
+
+    List<Comment> findAllByUserUidOrderByDateCreatedDesc(Long userUid);
 }
