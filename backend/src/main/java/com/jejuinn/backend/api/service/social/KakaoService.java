@@ -79,11 +79,18 @@ public class KakaoService {
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
                 .build();
-
+        String gender2 = null;
+        if(getFromOptional(gender).equals("male")) {
+            gender2 = "남자";
+        } else if(getFromOptional(gender).equals("female")) {
+            gender2 = "여자";
+        } else {
+            gender2 = "무관";
+        }
         User user = User.builder()
                         .email(getFromOptional(email))
                         .age(getFromOptional(age))
-                        .gender(getFromOptional(gender))
+                        .gender(gender2)
                         .nickname(name)
                         .profileImageUrl(profileImageUrl)
                         .sugarContent(8)
