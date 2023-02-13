@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @Api(tags = "댓글 관련 기능 API")
 @RequiredArgsConstructor
+@Slf4j
 public class CommentController {
 
     private final CommentRepository commentRepository;
@@ -42,6 +44,7 @@ public class CommentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> insertComment(HttpServletRequest request, @RequestBody InsertCommentPostReq req){
+        log.info("댓글 추가 요청");
         Long userUid = userService.getUserUidFromAccessToken(request);
 
         // 타입 체크
