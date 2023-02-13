@@ -49,7 +49,7 @@ function FilterName({ onName }) {
   );
 }
 
-function FilterArea({ value, setValue, limit }) {
+function FilterArea({ value, setValue }) {
   const areas = [
     '전체',
     '서귀포시',
@@ -69,9 +69,7 @@ function FilterArea({ value, setValue, limit }) {
   return (
     <Autocomplete
       sx={{ width: '100%' }}
-      multiple
       options={areas}
-      limitTags={limit}
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);

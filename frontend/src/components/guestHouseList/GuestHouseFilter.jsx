@@ -93,7 +93,7 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         setValue={setGuestHouseStyles}
       />
 
-      <FilterArea value={selectedAreas} setValue={setSelectedAreas} limit={3} />
+      <FilterArea value={selectedAreas} setValue={setSelectedAreas} />
 
       <CustomTextField
         label="검색어로 찾기"

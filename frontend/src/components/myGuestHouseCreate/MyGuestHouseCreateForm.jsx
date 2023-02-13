@@ -39,6 +39,7 @@ export default function MyGuestHouseCreateForm() {
     e.preventDefault();
     const formData = new FormData();
     const guestHouse = {
+      guestHouseName: name,
       address,
       addressDetail,
       areaName,
@@ -51,16 +52,15 @@ export default function MyGuestHouseCreateForm() {
       guestHouseTypes: selectedValues,
       representativeUid: userUid,
     };
-    console.log(guestHouse);
     const guestHouseBlob = new Blob([JSON.stringify(guestHouse)], {
       type: 'application/json',
     });
-    console.log('guestHouseBlob', guestHouseBlob);
     formData.append('guestHouse', guestHouseBlob);
 
     files.forEach((file) => {
       formData.append('uploadImages', file);
     });
+
     let id;
     if (!isCreate) {
       const deleteImagesBlob = new Blob([JSON.stringify(deleteImages)], {
@@ -68,11 +68,6 @@ export default function MyGuestHouseCreateForm() {
       });
       formData.append('deleteImages', deleteImagesBlob);
       id = location.pathname.split('/')[3];
-
-      for (let value of formData.values()) {
-        console.log(value);
-      }
-
       await guestHouseUpdate(accessToken, id, formData);
     } else {
       id = await guestHouseCreate(accessToken, formData);
@@ -117,16 +112,15 @@ export default function MyGuestHouseCreateForm() {
 
   const getGuestHouseInfo = async () => {
     const { data } = await guestHouseDetail(postUid);
-    console.log(data);
     setName(data.guestHouse.guestHouseName);
     setEmail(data.guestHouse.email);
     setPhoneNumber(data.guestHouse.phone);
+    setAreaName(data.guestHouse.areaName);
     setAddress(data.guestHouse.address);
     setAddressDetail(data.guestHouse.addressDetail);
     setSelectedValues(data.guestHouse.guestHouseTypes);
     setContent(data.guestHouse.introduction);
     setPos({ id: 1, lat: data.guestHouse.lat, lng: data.guestHouse.lng });
-    console.log(data.images);
     setPreImages(data.images);
     // data.images.map((image) => {
     //   imageUrltoFile(image.imgPath);
@@ -139,21 +133,15 @@ export default function MyGuestHouseCreateForm() {
     }
   }, [postUid]);
 
-  useEffect(() => {
-    console.log(files);
-  }, [files]);
-
-  useEffect(() => {
-    console.log(pos);
-  }, [pos]);
-
   return (
     <Box>
       <form
         encType="multipart/form-data"
         style={{ display: 'flex', flexDirection: 'column', padding: '5%' }}
       >
-        <h1 style={{ marginTop: 0 }}>게스트하우스 등록</h1>
+        <h1 style={{ marginTop: 0 }}>
+          {isCreate ? '게스트하우스 등록' : '게스트하우스 수정'}
+        </h1>
 
         <TextField
           required

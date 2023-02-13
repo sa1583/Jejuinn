@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import GuestHouseInfo from '../../components/guestHouseDetail/GuestHouseInfo';
@@ -62,9 +62,9 @@ export default function GuestHouseDetail() {
     <>
       <SpeedDialComponent actions={actions} />
       <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
-        <h1 style={{ color: 'primary.main' }}>
+        <Typography variant="h4" color="primary">
           | {guestHouse?.guestHouse?.guestHouseName}
-        </h1>
+        </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Grid item xs={12}>
