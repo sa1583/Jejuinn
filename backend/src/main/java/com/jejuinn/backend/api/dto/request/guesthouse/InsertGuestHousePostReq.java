@@ -4,6 +4,7 @@ import com.jejuinn.backend.db.entity.Area;
 import com.jejuinn.backend.db.entity.GuestHouse;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -13,8 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class InsertGuestHousePostReq {
 
+    @NotNull
     private String guestHouseName;
 
+    @NotNull
     private Long representativeUid;
 
     private String email;
@@ -27,12 +30,15 @@ public class InsertGuestHousePostReq {
 
     private String introduction;
 
+    @NotNull
     private double lat;
 
+    @NotNull
     private double lng;
 
     private List<String> guestHouseTypes;
 
+    @NotNull
     private String areaName;
 
     public String toGuestHouseType() {

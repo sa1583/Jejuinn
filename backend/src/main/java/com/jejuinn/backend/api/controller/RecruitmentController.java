@@ -5,11 +5,16 @@ import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkPostReq;
 import com.jejuinn.backend.api.dto.request.recruitment.ModifyWorkPutReq;
 import com.jejuinn.backend.api.dto.request.recruitment.WorkPostReq;
 import com.jejuinn.backend.api.dto.response.recruitment.*;
+import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetail;
+import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
+import com.jejuinn.backend.api.dto.response.resumeinfo.StaffRecordDetail;
+import com.jejuinn.backend.api.dto.response.resumeinfo.UserDetail;
 import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
+import com.jejuinn.backend.db.entity.WorkResumeInfo;
 import com.jejuinn.backend.db.repository.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +50,9 @@ public class RecruitmentController {
     private final S3Uploader s3Uploader;
     private static final String RECRUITMENT_TYPE = "RECRUITMENT";
     private final WorkResumeInfoRepository workResumeInfoRepository;
+    private final ResumeInfoRepository resumeInfoRepository;
+    private final UserRepository userRepository;
+    private final StaffRecordRepository staffRecordRepository;
     private final UserService userService;
 
     @GetMapping("/api/job-offer")
@@ -181,6 +190,31 @@ public class RecruitmentController {
         if(result.size() == 0) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(
                 result
+        );
+    }
+
+    @GetMapping("/auth/job-search/{userUid}/{workUid}")
+    @ApiOperation(value = "지원자의 지원서 상세 조회", notes = "userUi를 통해 지원서를 상세 조회한 뒤, workUid를 이용하여 열람 여부를 변경합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "작성된 이력서가 없습니다."),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyResumeInfo(@PathVariable Long userUid, @PathVariable Long workUid) {
+        ResumeInfoDetail resumeInfoDetail = ResumeInfoDetail.of(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid));
+        if(resumeInfoDetail == null) return ResponseEntity.status(204).build();
+        WorkResumeInfo workResumeInfo = workResumeInfoRepository.findByResumeInfoUidAndWorkUid(resumeInfoDetail.getUid(), workUid);
+        if(workResumeInfo != null) {
+            workResumeInfo.setIsRead(LocalDateTime.now());
+            workResumeInfoRepository.save(workResumeInfo);
+        }
+        ResumeInfoDetailRes resumeInfoDetailRes = ResumeInfoDetailRes.of(
+                resumeInfoDetail,
+                UserDetail.of(userRepository.findById(userUid)),
+                StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid)));
+        return ResponseEntity.status(200).body(
+                resumeInfoDetailRes
         );
     }
 
