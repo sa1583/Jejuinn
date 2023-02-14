@@ -103,25 +103,4 @@ public class User {
               .authorities(authorities)
               .build();
    }
-
-   public static User from(Optional<User> user, NaverProfileDto naverProfileDto, Set<Authority> authorities) {
-      if(naverProfileDto == null) return null;
-      if(!user.isPresent()) return null;
-
-      return User.builder()
-              .uid(user.get().getUid())
-              .password(user.get().getPassword())
-              .email(user.get().getEmail())
-              .age(naverProfileDto.getAge())
-              .gender(naverProfileDto.getGender())
-              .nickname(naverProfileDto.getNickname())
-              .username(naverProfileDto.getName())
-              .profileImageUrl(naverProfileDto.getProfileImage())
-              .phone(naverProfileDto.getMobile())
-              .sugarContent(8)
-              .isStaff(false)
-              .authorities(authorities)
-              .refreshToken(user.get().getRefreshToken())
-              .build();
-   }
 }
