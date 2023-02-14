@@ -82,7 +82,7 @@ public class NaverService {
 
         User user = userRepository.findOneByEmailAndSocialLogin_Type(result.get("email"), SocialType.NAVER.ordinal())
                         .orElse(User.from(naverProfileDto, authorities));
-
+        logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
 
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
                                     .orElse(SocialLogin.from(user, code, SocialType.NAVER.ordinal()));
