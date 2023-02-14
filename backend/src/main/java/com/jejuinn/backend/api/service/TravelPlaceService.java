@@ -43,10 +43,18 @@ public class TravelPlaceService {
                 .orElseThrow(() -> new UsernameNotFoundException("데이터베이스에서 찾을 수 없습니다."));
         int count = travelPlace.getReviewCount();
         double avg = travelPlace.getStarRatingAvg();
-        count--;
-        avg = (avg*count - review.get().getStarRating())/(count-1);
+        if(count > 1) {
+            avg = (avg*count - review.get().getStarRating())/(count-1);
+            count--;
+        } else if(count == 1) {
+            count = 0;
+            avg = 0;
+        } else {
+            throw new UsernameNotFoundException("데이터 베이스에서 찾을 수 없습니다.");
+        }
         travelPlace.setReviewCount(count);
         travelPlace.setStarRatingAvg(avg);
+        travelPlace.setDateUpdated(LocalDateTime.now());
         travelPlaceReviewRepository.deleteById(review.get().getUid());
     }
 }
