@@ -24,7 +24,6 @@ import java.util.Set;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-@ToString
 public class User {
 
    @Id
