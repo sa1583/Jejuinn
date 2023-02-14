@@ -130,11 +130,15 @@ function FilterStyle({ value, setValue }) {
     '활발한 성격',
   ];
 
+  const maxSelections = 5;
   return (
     <Autocomplete
       sx={{ width: '100%' }}
       multiple
       limitTags={3}
+      getOptionDisabled={(option) =>
+        value.length === maxSelections || value.includes(option) ? true : false
+      }
       options={wishStyles.map((option) => option)}
       value={value}
       onChange={(event, newValue) => {
