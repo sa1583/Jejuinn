@@ -393,7 +393,6 @@ function SelectGusetHousePopover({ myGuestHouses, onSelect }) {
   };
   function onClick(input) {
     dispatch(changeIsOnWrite());
-    console.log(input.target.value);
     onSelect(input.target.value);
   }
 

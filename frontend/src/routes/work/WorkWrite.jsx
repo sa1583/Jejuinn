@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { recruitmentDetail } from '../../api/work';
 import { useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
-import RecruitmentWrite from '../../components/work/RecruitmentWrite';
+import RecruitmentWrite from '../../components/work/RecruitmentWriteComponent';
 import WorkDetailComponent from '../../components/work/WorkDetail';
 import WorkListBox from '../../components/work/WorkListBox';
 import WorkInfo from '../../components/work/WorkInfo';
@@ -64,7 +64,8 @@ export default function WorkWrite() {
       />
       <RecruitmentInfo id={recruitmentUid} onClick={onClick} />
       <div>직무 작성/수정 컴포넌트 가져와~</div>
-      {/* <WorkWriteComponent /> */}
+      {/* 수정/ 작성 분리 해야하나..? 
+      <WorkWriteComponent /> */}
     </Box>
   );
 }

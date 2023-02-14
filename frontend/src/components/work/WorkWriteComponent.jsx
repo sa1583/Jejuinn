@@ -25,6 +25,7 @@ export default function WorkWriteComponent({ onWorkWrite, currentWorkInfo }) {
     workDays: currentWorkInfo.workDays,
     daysOff: currentWorkInfo.daysOff,
     minWorkPeriod: currentWorkInfo.minWorkPeriod,
+    entryDate: currentWorkInfo.entryDate,
   });
 
   const handleWorkInfo = (e) => {

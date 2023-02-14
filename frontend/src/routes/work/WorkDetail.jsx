@@ -3,7 +3,7 @@ import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useState, useEffect } from 'react';
 import { recruitmentDetail } from '../../api/work';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
 import { getMyGuestHouses } from '../../api/guestHouse';
 import WorkListBox from '../../components/work/WorkListBox';
@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 export default function WorkDetail() {
   const { recruitmentUid } = useParams();
   const { workUid } = useParams();
+  const navigate = useNavigate();
 
   const userUid = useSelector(selectUserInfo).uid;
   const accessToken = useSelector(selectAccessToken);
@@ -27,6 +28,7 @@ export default function WorkDetail() {
 
   async function getWork() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
+    console.log(data);
     setImages(data.images);
     setWorks(data.works);
     setRecruitmentInfo(data.recruitment);
@@ -48,6 +50,7 @@ export default function WorkDetail() {
   }
 
   const onClick = () => {
+    navigate(`/recruitment-write/${recruitmentInfo.uid}`);
     const prev = onRecruitmentWrite;
     setOnRecruitmentWrite(!prev);
   };
@@ -71,11 +74,10 @@ export default function WorkDetail() {
           />
         }
       />
+      <RecruitmentInfo id={recruitmentUid} onClick={onClick} />
       {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
-        // 공고 안에 있는 워크리스트라 작성자 정보가 없슴...
         <Button onClick={onClick}>수정</Button>
       ) : null}
-      <RecruitmentInfo id={recruitmentUid} onClick={onClick} />
       <WorkInfo work={work} />
       <h2 style={{ color: '#FF7600' }}>
         해당 게스트하우스에서 진행중인 다른 채용
