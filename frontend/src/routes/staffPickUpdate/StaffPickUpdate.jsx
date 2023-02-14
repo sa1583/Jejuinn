@@ -36,7 +36,7 @@ export default function StaffPickUpdate() {
   }, []);
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+    <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
       <Grid container spacing={4}>
         <Grid item xs={12} lg={4}>
           <Grid item xs={12}>

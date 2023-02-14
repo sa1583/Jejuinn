@@ -162,7 +162,7 @@ export default function MapApi({
     >
       <div
         ref={mapElement}
-        style={{ height: '100%', width: '100%', borderRadius: '39px' }}
+        style={{ height: '100%', width: '100%', borderRadius: '25px' }}
       />
     </Box>
   );

@@ -1,6 +1,7 @@
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { images } from '../../assets/images';
+
 export default function ImageSlider({ items }) {
   return (
     <Carousel

@@ -98,7 +98,7 @@ export default function ButtonAppBar() {
           borderWidth: 1,
         }}
       >
-        <Toolbar sx={{ width: '80%', margin: 'auto' }} ref={toolbarRef}>
+        <Toolbar sx={{ width: '60%', margin: 'auto' }} ref={toolbarRef}>
           <div
             style={{
               flexGrow: 25,
@@ -157,8 +157,8 @@ export default function ButtonAppBar() {
               ) : (
                 <Avatar
                   sx={{
+                    color: 'white',
                     backgroundColor: 'primary.main',
-                    fontFamily: 'SBAggroM',
                   }}
                 >
                   {userInfo.nickname[0].toUpperCase()}

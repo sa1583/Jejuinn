@@ -19,7 +19,7 @@ const CustomTextField = styled(TextField)({
     },
   },
   marginTop: '1rem',
-  width: '80%',
+  width: '300px',
 });
 
 export default function FindPasswordForm() {
@@ -89,7 +89,7 @@ export default function FindPasswordForm() {
         borderColor: !condition && '#ff0000',
       },
     },
-    width: '80%',
+    width: '300px',
   });
 
   const completedLabelStyle = (condition) => ({
@@ -126,7 +126,7 @@ export default function FindPasswordForm() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '3vh',
+        marginTop: '5vh',
       }}
     >
       <Backdrop
@@ -136,25 +136,39 @@ export default function FindPasswordForm() {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      <h1>비밀번호 재발급</h1>
+      <h2>비밀번호 재발급</h2>
       <CustomTextField
         label="이메일"
         name="email"
         value={email}
         type="email"
+        variant="standard"
+        placeholder="이메일을 입력하세요"
         onChange={(e) => {
           handleEmail(e);
           setChecked(false);
           setCheckCode('');
           setUserUid('');
         }}
-        size="small"
+        inputProps={{ style: { fontSize: 20 } }}
+        InputLabelProps={{ style: { fontSize: 20 } }}
       />
       <Button
         onClick={getCode}
-        variant="contained"
-        sx={{ marginTop: '1rem', marginBottom: '1rem' }}
-        size="small"
+        sx={{
+          width: '300px',
+          height: '50px',
+          background: '#FF7600',
+          borderRadius: '50px',
+          color: 'white',
+          '&:hover': {
+            color: 'white',
+            background: '#FF7600',
+          },
+          border: 'none',
+          fontSize: '1rem',
+          marginTop: '1.2rem',
+        }}
       >
         인증 번호 받기
       </Button>
@@ -163,16 +177,30 @@ export default function FindPasswordForm() {
           <CustomTextField
             label="인증번호 입력"
             name="인증번호 입력"
+            variant="standard"
+            placeholder="인증번호를 입력하세요"
             value={checkCode}
             onChange={(e) => setCheckCode(e.target.value)}
             disabled={code.length === 0}
-            size="small"
+            inputProps={{ style: { fontSize: 20 } }}
+            InputLabelProps={{ style: { fontSize: 20 } }}
           />
           <Button
             onClick={confirmCode}
-            size="small"
-            variant="contained"
-            sx={{ marginTop: '1rem', marginBottom: '5rem' }}
+            sx={{
+              width: '300px',
+              height: '50px',
+              background: '#FF7600',
+              borderRadius: '50px',
+              color: 'white',
+              '&:hover': {
+                color: 'white',
+                background: '#FF7600',
+              },
+              border: 'none',
+              fontSize: '1rem',
+              marginTop: '1.2rem',
+            }}
           >
             인증 번호 확인
           </Button>
@@ -185,11 +213,14 @@ export default function FindPasswordForm() {
             sx={completedBoxStyle(passwordTestResult())}
             InputLabelProps={{
               sx: completedLabelStyle(passwordTestResult()),
+              style: { fontSize: 20 },
             }}
             required
             label="새로운 비밀번호"
             type="password"
             name="password"
+            variant="standard"
+            inputProps={{ style: { fontSize: 20 } }}
             value={newPW}
             onChange={(e) => {
               setNewPW(e.target.value);
@@ -202,11 +233,14 @@ export default function FindPasswordForm() {
             sx={completedBoxStyle(passwordCheckResult())}
             InputLabelProps={{
               sx: completedLabelStyle(passwordCheckResult()),
+              style: { fontSize: 20 },
             }}
             required
             label="새로운 비밀번호 확인"
             type="password"
             name="checkPassword"
+            variant="standard"
+            inputProps={{ style: { fontSize: 20 } }}
             value={newPWCheck}
             onChange={(e) => {
               setNewPWCheck(e.target.value);
@@ -221,7 +255,20 @@ export default function FindPasswordForm() {
             variant="contained"
             disabled={!(passwordCheckResult() && passwordTestResult())}
             onClick={resetPasswordSubmit}
-            sx={{ marginTop: '2rem' }}
+            sx={{
+              width: '300px',
+              height: '50px',
+              background: '#FF7600',
+              borderRadius: '50px',
+              color: 'white',
+              '&:hover': {
+                color: 'white',
+                background: '#FF7600',
+              },
+              border: 'none',
+              fontSize: '1rem',
+              marginTop: '1.2rem',
+            }}
           >
             비밀번호 변경
           </Button>

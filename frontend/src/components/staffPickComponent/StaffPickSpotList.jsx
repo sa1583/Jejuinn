@@ -4,6 +4,11 @@ import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 import { images } from '../../assets/images';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 
 export default function StaffPickSpotList({ spotImgs, plusPageNum }) {
   const navigate = useNavigate();
@@ -35,25 +40,44 @@ export default function StaffPickSpotList({ spotImgs, plusPageNum }) {
   }, []);
 
   return (
-    <Box sx={{ padding: '3vh' }}>
-      <h2>
-        <span style={{ color: '#FF7600' }}>{spotImgs.length}개</span>의 명소
-      </h2>
+    <Box sx={{ padding: '2vh 0vh' }}>
+      <p style={{ fontSize: '1.3rem', paddingLeft: '10px' }}>
+        <strong style={{ color: '#FF7600' }}>{spotImgs.length}건</strong>의 검색
+        결과
+      </p>
       <Box sx={{ width: '100%' }}>
-        <ImageList variant="masonry" cols={4} gap={8}>
+        <ImageList cols={3} gap={25} style={{ padding: '1vh' }}>
           {spotImgs.map((item) => (
-            <ImageListItem key={uuidv4()} sx={{ cursor: 'pointer' }}>
-              <img
-                src={`${images.defalut_url}${item.mainImgPath}?w=248&fit=crop&auto=format`}
-                srcSet={`${item.mainImgPath}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                alt="관광지"
-                loading="lazy"
-                id={item.travelPlaceUid}
-                onClick={(e) => {
-                  goReviews(e);
+            <ImageListItem
+              key={uuidv4()}
+              sx={{ cursor: 'pointer' }}
+              onClick={(e) => {
+                goReviews(e);
+              }}
+            >
+              <Card
+                style={{
+                  boxShadow:
+                    'rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px',
                 }}
-              />
-              <ImageListItemBar title={item.travelPlaceName} />
+              >
+                <CardActionArea sx={{ padding: '1.5vh' }}>
+                  <CardMedia
+                    component="img"
+                    height="330"
+                    image={`${images.defalut_url}${item.mainImgPath}?w=248&fit=crop&auto=format`}
+                    alt={item.travelPlaceName}
+                    loading="lazy"
+                    id={item.travelPlaceUid}
+                    name={item.travelPlaceName}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="div">
+                      {item.travelPlaceName}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
             </ImageListItem>
           ))}
         </ImageList>

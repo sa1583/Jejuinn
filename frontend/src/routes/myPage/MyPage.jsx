@@ -33,10 +33,10 @@ export default function MyPage({ content }) {
   };
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+    <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
       <Grid container spacing={4}>
         <Grid item md={4}>
-          <WhiteBox cpn={<Profile />} />
+          <Profile />
           <CustomButton
             sx={{
               marginBottom: '8px',
@@ -49,7 +49,6 @@ export default function MyPage({ content }) {
           <CustomButton onClick={onApply} sx={{ mb: '8px' }}>
             지원서 관리
           </CustomButton>
-
           <CustomButton onClick={onGuestHouse}>게스트하우스 관리</CustomButton>
         </Grid>
         <Grid item md={8}>

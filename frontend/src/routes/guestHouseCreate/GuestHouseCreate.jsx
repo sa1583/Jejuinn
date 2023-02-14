@@ -5,7 +5,7 @@ import MyGuestHouseCreateForm from '../../components/myGuestHouseCreate/MyGuestH
 export default function GuestHouseCreate() {
   return (
     <div>
-      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
         <WhiteBox cpn={<MyGuestHouseCreateForm />} />
       </Box>
     </div>

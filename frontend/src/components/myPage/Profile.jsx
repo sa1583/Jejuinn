@@ -25,23 +25,21 @@ export default function Profile() {
     navigate('/mypage');
   };
   return (
-    <WhiteBox
-      cpn={
-        <Stack direction="column" alignItems="center" sx={{ p: '2%' }}>
-          <h1 onClick={onMypage}>장정민</h1>
-          <Avatar
-            src={images.sample_profile}
-            alt="프로필 사진 들어가용~"
-            style={{
-              width: '20rem',
-              height: '20rem',
-              marginBottom: '20px',
-              cursor: 'pointer',
-            }}
-          />
-          <CustomButton>개인정보 수정</CustomButton>
-        </Stack>
-      }
-    />
+    <Stack direction="column" alignItems="center">
+      <Avatar
+        src={images.sample_profile}
+        alt="프로필 사진 들어가용~"
+        style={{
+          width: '18vw',
+          height: '18vw',
+          marginBottom: '20px',
+          cursor: 'pointer',
+          boxShadow:
+            'rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;',
+        }}
+      />
+      <h1 onClick={onMypage}>장정민</h1>
+      {/* <CustomButton>개인정보 수정</CustomButton> */}
+    </Stack>
   );
 }

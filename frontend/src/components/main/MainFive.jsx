@@ -25,7 +25,7 @@ export default function MainFive() {
           <span style={{ fontFamily: 'SBAggroM', color: '#FF7600' }}>
             제주인 생활&nbsp;
           </span>
-          나랑 잘 맞을지 모르겠어요
+          나랑 잘 맞을지 모르겠다면?
         </div>
         <div
           style={{
