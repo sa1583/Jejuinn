@@ -78,7 +78,7 @@ export default function CommentsList() {
         )}
         {comments.map((comment, index) => {
           return (
-            <div>
+            <div key={uuidv4()}>
               {index ? (
                 <div
                   style={{
@@ -93,7 +93,6 @@ export default function CommentsList() {
                 ''
               )}
               <CommentBox
-                key={uuidv4()}
                 cpn={
                   <Comment
                     comment={comment}
