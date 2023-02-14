@@ -145,6 +145,7 @@ export const logout = createAsyncThunk(
   'user/logout',
   async ({ accessToken, uid }, thunkAPI) => {
     try {
+      if (!accessToken || !uid) return;
       await userLogout(accessToken, uid);
     } catch (error) {
       return thunkAPI.rejectWithValue({ errorMessage: '로그아웃 실패' });
