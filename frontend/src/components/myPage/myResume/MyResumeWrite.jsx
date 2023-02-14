@@ -83,7 +83,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
     if (resume) {
     } else {
       try {
-        console.log(startDate);
+        console.log();
         const body = {
           autoApply: false,
           content: intro,

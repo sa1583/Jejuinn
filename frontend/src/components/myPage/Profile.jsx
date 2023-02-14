@@ -21,16 +21,17 @@ export default function Profile() {
   const userInfo = useSelector(selectUserInfo);
 
   const navigate = useNavigate();
-  const onMypage = () => {
-    navigate('/mypage');
-  };
   return (
     <WhiteBox
       cpn={
         <Stack direction="column" alignItems="center" sx={{ p: '2%' }}>
-          <h1 onClick={onMypage}>장정민</h1>
+          <h1>{userInfo.username}</h1>
           <Avatar
-            src={images.sample_profile}
+            src={
+              userInfo.profileImgUrl
+                ? userInfo.profileImgUrl
+                : images.sample_profile
+            }
             alt="프로필 사진 들어가용~"
             style={{
               width: '20rem',
