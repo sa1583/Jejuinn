@@ -69,9 +69,9 @@ public class InsertGuestHousePostReq {
                 .build();
     }
 
-    public GuestHouse toGuestHouse(String guestHouseUid) {
+    public GuestHouse toGuestHouse(Long guestHouseUid) {
         return GuestHouse.builder()
-                .uid(Long.parseLong(guestHouseUid))
+                .uid(guestHouseUid)
                 .guestHouseName(this.getGuestHouseName())
                 .representativeUid(this.getRepresentativeUid())
                 .email(this.getEmail())
