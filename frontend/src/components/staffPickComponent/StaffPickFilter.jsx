@@ -153,7 +153,7 @@ export default function StaffPickFilter({
           onClick={(e) => {
             e.preventDefault();
             getFilterdSpots();
-            navigate('/staffpicklist');
+            // navigate('/staffpicklist');
           }}
         >
           조건 검색
