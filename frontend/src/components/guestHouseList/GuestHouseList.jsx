@@ -42,7 +42,7 @@ export default function GuestHouseList({ guestHouses, plusPageNum }) {
         검색결과
       </h3>
       <Box sx={{ width: '100%', maxHeight: '60rem', overflowY: 'hidden' }}>
-        <ImageList variant="masonry" cols={3} gap={8}>
+        <ImageList variant="masonry" cols={3} rowHeight={300}>
           {guestHouses.map((guestHouse) => (
             <ImageListItem
               key={uuidv4()}
@@ -50,11 +50,9 @@ export default function GuestHouseList({ guestHouses, plusPageNum }) {
             >
               <img
                 src={`${images.defalut_url}${guestHouse?.images[0]?.imgPath}?w=248&fit=crop&auto=format`}
-                srcSet={`${guestHouse?.images[0]?.imgPath}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                // srcSet={`${guestHouse?.images[0]?.imgPath}?w=248&fit=crop&auto=format&dpr=2 2x`}
                 alt={guestHouse.guestHouse.guestHouseName}
                 loading="lazy"
-                id={guestHouse.guestHouse.uid}
-                name={guestHouse.guestHouse.guestHouseName}
               />
               <ImageListItemBar title={guestHouse.guestHouse.guestHouseName} />
             </ImageListItem>
