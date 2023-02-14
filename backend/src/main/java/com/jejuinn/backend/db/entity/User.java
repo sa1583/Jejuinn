@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -103,11 +104,13 @@ public class User {
               .build();
    }
 
-   public static User from(Long userUid, NaverProfileDto naverProfileDto, Set<Authority> authorities) {
+   public static User from(Optional<User> user, NaverProfileDto naverProfileDto, Set<Authority> authorities) {
       if(naverProfileDto == null) return null;
+      if(!user.isPresent()) return null;
 
       return User.builder()
-              .uid(userUid)
+              .uid(user.get().getUid())
+              .password(user.get().getPassword())
               .email(naverProfileDto.getEmail())
               .age(naverProfileDto.getAge())
               .gender(naverProfileDto.getGender())
