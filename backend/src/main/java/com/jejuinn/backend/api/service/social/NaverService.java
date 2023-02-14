@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jejuinn.backend.api.controller.SocialController;
 import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
+import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.db.entity.Authority;
 import com.jejuinn.backend.db.entity.SocialLogin;
 import com.jejuinn.backend.db.entity.User;
@@ -33,6 +34,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -55,6 +57,7 @@ public class NaverService {
 
     private final UserRepository userRepository;
     private final SocialLoginRepository socialLoginRepository;
+    private final UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(NaverService.class);
 
@@ -116,15 +119,10 @@ public class NaverService {
         authorities.add(Authority.user());
         authorities.add(Authority.auth());
 
-        User user = User.from(userRepository.findById(userUid), naverProfileDto, authorities);
+        User user = userService.NaverAuthUser(userUid, naverProfileDto, authorities);
+
+        logger.info("유저의 uid : {}",user.getUid());
         logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
-
-        SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
-                .orElse(SocialLogin.from(user, code, SocialType.NAVER.ordinal()));
-
-
-        userRepository.save(user);
-        socialLoginRepository.save(socialLogin);
 
         log.info("저장 완료");
         return user;
