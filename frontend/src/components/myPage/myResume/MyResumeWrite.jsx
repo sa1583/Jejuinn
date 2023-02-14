@@ -7,12 +7,22 @@ import {
   Typography,
   InputAdornment,
 } from '@mui/material';
-import { FilterDate, FilterArea, FilterStyle } from '../../work/Filters';
+import {
+  FilterDate,
+  FilterArea,
+  FilterStyle,
+  FilterGuestHouseStyle,
+} from '../../work/Filters';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { registMyResume } from '../../../api/resume';
+import {
+  changeAutoApply,
+  modifyMyResume,
+  registMyResume,
+} from '../../../api/resume';
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
+import { useNavigate } from 'react-router-dom';
 
 const CustomButton = styled(Button)({
   border: '1px solid #FF7600',
@@ -56,7 +66,7 @@ const CustomTextField = styled(TextField)({
 
 const minWidth = '150px';
 
-export default function MyResumeWrite({ resume, changeApplyComp }) {
+export default function MyResumeWrite({ resume }) {
   const [area, setArea] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [instagramUrl, setInstagramUrl] = useState('');
@@ -79,27 +89,27 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
     setMinWorkPeriod(event.target.value);
   };
 
+  const navigate = useNavigate();
+
   const submitResume = async () => {
+    const body = {
+      autoApply: false,
+      content: intro,
+      instagramLink: instagramUrl,
+      guestHouseTypes: guestHouseStyleTag,
+      interestArea: area[0],
+      minWorkPeriod,
+      personTypes: myStyleTag,
+      possibleStartDate: startDate,
+      userUid: userInfo.uid,
+    };
+
     if (resume) {
+      await modifyMyResume(accessToken, body);
     } else {
-      try {
-        console.log();
-        const body = {
-          autoApply: false,
-          content: intro,
-          guestHouseTypes: guestHouseStyleTag,
-          interestAreas: area,
-          minWorkPeriod,
-          personTypes: myStyleTag,
-          possibleStartDate: startDate,
-          userUid: userInfo.uid,
-        };
-        await registMyResume(accessToken, body);
-        changeApplyComp();
-      } catch (error) {
-        console.log(error);
-      }
+      await registMyResume(accessToken, body);
     }
+    changeAutoApply();
   };
 
   useEffect(() => {
@@ -145,7 +155,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
         </Stack>
         <Stack direction="row" alignItems="center">
           <Typography minWidth={minWidth}>선호하는 스타일</Typography>
-          <FilterStyle
+          <FilterGuestHouseStyle
             value={guestHouseStyleTag}
             setValue={setGuestHouseStyleTags}
           />
