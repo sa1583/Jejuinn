@@ -33,11 +33,13 @@ export default function StaffPickSpotInfo({ selectedSpot }) {
         <p style={{ fontSize: '1.3rem', marginTop: 0, marginBottom: '10px' }}>
           기본정보
         </p>
-        <Rating
-          value={selectedSpot?.starRatingAvg}
-          readOnly
-          sx={{ marginBottom: '8px' }}
-        />
+        {selectedSpot.starRatingAvg && (
+          <Rating
+            value={selectedSpot?.starRatingAvg}
+            readOnly
+            sx={{ marginBottom: '8px' }}
+          />
+        )}
         {inline('유형', selectedSpot?.category)}
         {inline('주소', selectedSpot?.address)}
         {/* {inline('리뷰 수', `${selectedSpot?.reviewCount} 개`)} */}
