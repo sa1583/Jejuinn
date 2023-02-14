@@ -41,7 +41,7 @@ export default function GuestHouseList({ guestHouses, plusPageNum }) {
   }, []);
 
   return (
-    <Box sx={{ padding: '2vh 0vh' }}>
+    <Box sx={{ padding: '0' }}>
       <p style={{ fontSize: '1.3rem', paddingLeft: '10px' }}>
         <strong style={{ color: '#FF7600' }}>{guestHouses.length}건</strong>의
         검색결과

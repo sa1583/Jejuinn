@@ -65,16 +65,16 @@ export default function GuestHouse() {
       <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
         {isLogin && <SpeedDialComponent actions={actions} />}
         <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12}>
             <WhiteBox
               cpn={<GuestHouseFilter handleFilter={SearchByFilter} />}
             />
           </Grid>
-          <Grid item xs={12} md={8}>
-                <GuestHouseList
-                  guestHouses={guestHouses}
-                  plusPageNum={handleLoadPages}
-                />
+          <Grid item xs={12}>
+            <GuestHouseList
+              guestHouses={guestHouses}
+              plusPageNum={handleLoadPages}
+            />
           </Grid>
         </Grid>
       </Box>

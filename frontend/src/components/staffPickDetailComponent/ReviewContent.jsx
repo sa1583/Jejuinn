@@ -59,7 +59,7 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
 
   return (
     <Box sx={{ padding: '5%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ width: '100%', alignSelf: 'center' }}>
+      <Box sx={{ width: '100%', alignSelf: 'center', marginBottom: '2rem' }}>
         <ImageSlider items={reviewContent?.images} />
       </Box>
       <Box
@@ -67,6 +67,7 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
           display: 'flex',
           alignItems: 'center',
           gap: '1rem',
+          marginBottom: '1rem',
         }}
       >
         {reviewContent.profileImageUrl ? (
@@ -92,7 +93,7 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
       <Rating
         value={reviewContent?.starRating}
         readOnly
-        sx={{ marginBottom: '1rem' }}
+        // sx={{ marginBottom: '1rem' }}
       />
 
       <div

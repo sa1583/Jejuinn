@@ -9,8 +9,9 @@ export default function ImageSlider({ items }) {
       interval="3000"
       transitionTime="500"
       infiniteLoop="true"
-      thumbWidth={40}
+      showThumbs={false}
       showStatus={false}
+      style={{ p: '50px' }}
     >
       {items?.map((item) => {
         return (
@@ -20,7 +21,7 @@ export default function ImageSlider({ items }) {
             style={{
               width: '100%',
               aspectRatio: '1/1',
-              borderRadius: '39px',
+              borderRadius: '13px',
               overflow: 'hidden',
             }}
           >
