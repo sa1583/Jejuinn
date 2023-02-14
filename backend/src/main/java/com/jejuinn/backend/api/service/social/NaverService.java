@@ -95,6 +95,41 @@ public class NaverService {
         return user;
     }
 
+    public User myUserInfoFromNaver(String code, Long userUid){
+        JsonParser parser = new JsonParser();
+
+        logger.info("여기까지 잘 왔어요!!! {}", code);
+        log.info("access token : {}", code);
+
+        // 프로필 정보 요청
+        String tmp = profileSearch(code);
+
+        log.info("Get Profile Info !");
+
+        // 응답 결과를 NaverProfileDto로 형태로 변환
+        String[] fields = {"nickname", "name", "email", "gender", "age", "profile_image", "mobile"};
+        JsonElement responseElement = parser.parse(tmp).getAsJsonObject().get("response").getAsJsonObject();
+        Map<String, String> result = getMapFromNaverProfile(fields, responseElement);
+        NaverProfileDto naverProfileDto = NaverProfileDto.init(result);
+
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(Authority.user());
+        authorities.add(Authority.auth());
+
+        User user = User.from(userUid, naverProfileDto, authorities);
+        logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
+
+        SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
+                .orElse(SocialLogin.from(user, code, SocialType.NAVER.ordinal()));
+
+
+        userRepository.save(user);
+        socialLoginRepository.save(socialLogin);
+
+        log.info("저장 완료");
+        return user;
+    }
+
     private Map<String, String> getMapFromNaverProfile(String[] fields, JsonElement responseElement) {
         Map<String, String> result = new HashMap<>();
         for (String field : fields) {
