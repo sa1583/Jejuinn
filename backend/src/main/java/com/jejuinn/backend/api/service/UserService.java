@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.service;
 
+import com.jejuinn.backend.api.dto.NaverProfileDto;
 import com.jejuinn.backend.api.dto.request.user.SignupPostReq;
 import com.jejuinn.backend.api.dto.response.resumeinfo.MyApplicantRes;
 import com.jejuinn.backend.db.entity.Authority;
@@ -23,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -98,4 +101,19 @@ public class UserService {
         log.info("사용자 평점(감귤 당도) UPDATE : AFTER : {}", user.getSugarContent());
     }
 
+    @Transactional
+    public User NaverAuthUser(Long userUid, NaverProfileDto naverProfileDto, Set<Authority> authorities) {
+        Optional<User> user = userRepository.findById(userUid);
+        if(user.isPresent()) {
+            user.get().setAge(naverProfileDto.getAge());
+            user.get().setAuthorities(authorities);
+            user.get().setGender(naverProfileDto.getGender());
+            user.get().setNickname(naverProfileDto.getNickname());
+            user.get().setPhone(naverProfileDto.getMobile());
+            user.get().setStaff(false);
+            user.get().setUsername(naverProfileDto.getName());
+            user.get().setProfileImageUrl(naverProfileDto.getProfileImage());
+        }
+        return user.get();
+    }
 }
