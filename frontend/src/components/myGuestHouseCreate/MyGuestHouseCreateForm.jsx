@@ -74,7 +74,7 @@ export default function MyGuestHouseCreateForm() {
       id = location.pathname.split('/')[3];
       await guestHouseUpdate(accessToken, id, formData);
     } else {
-      id = await guestHouseCreate(accessToken, formData);
+      id = (await guestHouseCreate(accessToken, formData)).data;
     }
     navigate(`/guesthouse/detail/${id}`);
   };
@@ -256,6 +256,14 @@ export default function MyGuestHouseCreateForm() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             type="submit"
+            disabled={
+              !name ||
+              !email ||
+              !phoneNumber ||
+              !address ||
+              selectedValues.length === 0 ||
+              files.length === 0
+            }
             onClick={(e) => submit(e)}
             sx={{
               marginTop: '6rem',
