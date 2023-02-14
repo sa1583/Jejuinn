@@ -130,6 +130,7 @@ export const getNormalAuthTokenInSignUp = createAsyncThunk(
   },
 );
 
+// 네이버 인증
 export const naverAuth = createAsyncThunk(
   'user/naverAuth',
   async ({ accessToken, socialToken }, thunkAPI) => {
@@ -198,9 +199,6 @@ const userSlice = createSlice({
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
-      })
-      .addCase(renewAccessTokenByRefreshToken.fulfilled, (state, action) => {
-        state.accessToken = action.payload.accessToken;
       })
       .addCase(logout.pending, (state, action) => {
         state.isLogin = false;
