@@ -164,7 +164,7 @@ public class SocialController {
         logger.info("userUid : {}", user.get().getUid());
         if (user.isEmpty()) return ResponseEntity.status(400).build();
         logger.info("유저의 이름은 : {}", user.get().getNickname());
-        naverService.getUserInfoFromNaver(request.getHeader(TOKEN_HEADER).substring(7));
+        naverService.myUserInfoFromNaver(request.getHeader(TOKEN_HEADER).substring(7), userService.getUserUidFromAccessToken(request));
 
         return ResponseEntity.status(200).build();
     }
