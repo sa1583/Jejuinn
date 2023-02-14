@@ -26,14 +26,14 @@ export const getUserInfoByToken = createAsyncThunk(
 );
 
 /**
- * refreshToken으로 accessToken을 재발급받아 store내의 accessToken을 업데이트한다
+ * refreshToken으로 accessToken을 재발급받아 store내의 accessToken을 업데이트
  */
 export const renewAccessTokenByRefreshToken = createAsyncThunk(
   'user/renewAccessTokenByRefreshToken',
   async (refreshToken, thunkAPI) => {
     console.log('refreshToken', refreshToken);
     try {
-      return (await renewAccessToken(refreshToken)).data;
+      return (await renewAccessToken(refreshToken)).headers;
     } catch (error) {
       return thunkAPI.rejectWithValue({
         errorMessage: 'accessToken 갱신 실패',
@@ -143,6 +143,7 @@ export const naverAuth = createAsyncThunk(
   },
 );
 
+// 로그아웃
 export const logout = createAsyncThunk(
   'user/logout',
   async ({ accessToken, uid }, thunkAPI) => {
@@ -200,6 +201,9 @@ const userSlice = createSlice({
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
+      })
+      .addCase(renewAccessTokenByRefreshToken.fulfilled, (state, action) => {
+        state.accessToken = action.payload.accesstoken.split(' ')[1];
       })
       .addCase(logout.pending, (state, action) => {
         state.isLogin = false;

@@ -21,7 +21,7 @@ export const useAxiosInterceptor = () => {
   const handleError = async (err) => {
     if (err.response.status === 401) {
       const api = err.request.responseURL.split('jejuinn.com')[1];
-      if (api === '/api/users/refresh') {
+      if (api === '/api/users/refresh' || api === '/auth/users') {
         dispatch(logout(accessToken, userInfo.uid));
         navigate('/login');
       } else {
@@ -29,8 +29,10 @@ export const useAxiosInterceptor = () => {
           if (refreshToken === null) {
             throw new Error('there is no refreshToken');
           }
-          await dispatch(renewAccessTokenByRefreshToken(refreshToken));
-          dispatch(getUserInfoByToken(accessToken));
+          const { payload } = await dispatch(
+            renewAccessTokenByRefreshToken(refreshToken),
+          );
+          dispatch(getUserInfoByToken(payload.accesstoken.split(' ')[1]));
         } catch (error) {
           if (accessToken && userInfo) {
             dispatch(logout(accessToken, userInfo.uid));
