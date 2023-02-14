@@ -9,6 +9,7 @@ import {
   signUpApi,
   processNaverAuth,
   userLogout,
+  renewAccessToken,
 } from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
@@ -32,7 +33,7 @@ export const renewAccessTokenByRefreshToken = createAsyncThunk(
   async (refreshToken, thunkAPI) => {
     console.log('refreshToken', refreshToken);
     try {
-      return (await renewAccessTokenByRefreshToken(refreshToken)).data;
+      return (await renewAccessToken(refreshToken)).data;
     } catch (error) {
       return thunkAPI.rejectWithValue({
         errorMessage: 'accessToken 갱신 실패',
