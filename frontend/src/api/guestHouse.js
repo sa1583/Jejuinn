@@ -11,8 +11,6 @@ const getMyGuestHouses = (token, userUid) => {
     },
   };
   return instance.get(`/auth/my-guest-houses/${userUid}`, config);
-  // return { data: [{ uid: 1 , title:'간장남'}] };
-  // return { data: [{ uid: 1 , guestHouseName:'간장남'}, { uid: 2 , guestHouseName:'게토'}] };
 };
 
 const getApplicantByUid = async (uid, token) => {
@@ -92,14 +90,15 @@ const myApplicantList = (token, workUid) => {
   return instance.get(`/auth/recruitment/${workUid}`, config);
 };
 
-// 아직 api 구현 안됨
-const myRecommendList = (token, workUid) => {
-  const config = {
-    headers: {
-      accessToken: `Bearer ${token}`,
-    },
-  };
-  return instance.get(`/auth/recommend/${workUid}`, config);
+// guestHouse검색
+const getGuestHouses = (info) => {
+  let query = `/api/guest-house/search?areaName=${info.areaName}&pageNumber=${info.pageNumber}&`;
+  if (info.styles.length === 0) query += 'styles=&';
+  info.styles.map((style) => {
+    query += `styles=${style}&`;
+  });
+  query += `word=${info.word}`;
+  return instance.get(query);
 };
 
 export {
@@ -114,4 +113,5 @@ export {
   myJobOfferList,
   myApplicantList,
   getMyGuestHouses,
+  getGuestHouses,
 };

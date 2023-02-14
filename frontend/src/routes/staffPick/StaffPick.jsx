@@ -86,6 +86,7 @@ export default function StaffPick() {
 
   const [spotImgs, setSpotImgs] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+
   const getNextSpotImgs = async () => {
     const data = (await getSpotsImg(pageNum)).data.content;
     setSpotImgs((prev) => prev.concat(data));
