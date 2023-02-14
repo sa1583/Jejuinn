@@ -29,7 +29,7 @@ public class InsertRecruitmentPostReq {
 
     @ApiModelProperty(name = "채용 공고를 작성한 게스트하우스uid")
     @NotNull
-    private String guestHouseUid;
+    private Long guestHouseUid;
 
     @ApiModelProperty(name = "채용 공고에서 원하는 인재상")
     private List<String> wanted;
@@ -47,7 +47,7 @@ public class InsertRecruitmentPostReq {
                 .title(this.title)
                 .welfare(this.welfare)
                 .addInfo(this.addInfo)
-                .guestHouseUid(Long.parseLong(guestHouseUid))
+                .guestHouseUid(guestHouseUid)
                 .wanted(toPersonType())
                 .build();
     }
