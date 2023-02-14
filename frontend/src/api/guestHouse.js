@@ -101,6 +101,36 @@ const getGuestHouses = (info) => {
   return instance.get(query);
 };
 
+// 내가 좋아요 한 게스트 하우스 목록
+const getMyLikedGuestHouseList = (token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.get('/auth/guest-house-list/like', header);
+};
+
+// 게스트 하우스 좋아요
+const likeGuestHouse = (token, id) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.put(`/auth/guest-house/like/${id}`, {}, header);
+};
+
+// 게스트 하우스 좋아요 취소
+const dislikeGuestHouse = (token, id) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.put(`/auth/guest-house/dislike/${id}`, {}, header);
+};
+
 export {
   guestHouseDetail,
   allGuestHouseList,
@@ -114,4 +144,7 @@ export {
   myApplicantList,
   getMyGuestHouses,
   getGuestHouses,
+  getMyLikedGuestHouseList,
+  likeGuestHouse,
+  dislikeGuestHouse,
 };
