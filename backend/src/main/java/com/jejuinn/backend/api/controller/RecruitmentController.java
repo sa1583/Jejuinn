@@ -1,9 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.dto.request.recruitment.InsertRecruitmentPostReq;
-import com.jejuinn.backend.api.dto.request.recruitment.InsertWorkPostReq;
-import com.jejuinn.backend.api.dto.request.recruitment.ModifyWorkPutReq;
-import com.jejuinn.backend.api.dto.request.recruitment.WorkPostReq;
+import com.jejuinn.backend.api.dto.request.recruitment.*;
 import com.jejuinn.backend.api.dto.response.recruitment.*;
 import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetail;
 import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
@@ -100,14 +97,16 @@ public class RecruitmentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertRecruitment(@Valid @RequestPart InsertRecruitmentPostReq insertRecruitmentPostReq,
-                                               @RequestPart List<MultipartFile> images,
-                                               @Valid @RequestPart InsertWorkPostReq insertWorkPostReq) {
-        Recruitment recruitment = recruitmentRepository.save(insertRecruitmentPostReq.toRecruitment());
-        Work work = workRepository.save(insertWorkPostReq.toWork(recruitment));
+    public ResponseEntity<?> insertRecruitment(@Valid @RequestPart(value="recruitmentBody") RecruitmentBodyDto recruitmentBodyDto,
+                                               @RequestPart(value = "uploadImages") List<MultipartFile> uploadImages) {
+        Recruitment recruitment = recruitmentRepository.save(recruitmentBodyDto.getRecruitment().toRecruitment());
+        List<InsertWorkPostReq> works = recruitmentBodyDto.getWorks();
+        for(int i = 0 ; i < works.size() ; i++) {
+            workRepository.save(works.get(i).toWork(recruitment));
+        }
 
         try {
-            s3Uploader.uploadImages(images, RECRUITMENT_TYPE, recruitment.getUid());
+            s3Uploader.uploadImages(uploadImages, RECRUITMENT_TYPE, recruitment.getUid());
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(400).build();
