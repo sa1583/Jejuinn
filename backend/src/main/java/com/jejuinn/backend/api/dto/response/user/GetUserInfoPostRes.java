@@ -37,8 +37,6 @@ public class GetUserInfoPostRes {
 
     private Set<Authority> authorities;
 
-    private String[] authorites;
-
     public static GetUserInfoPostRes from(User user) {
         System.out.println(user.getUsername());
         return GetUserInfoPostRes.builder()

@@ -31,6 +31,7 @@ public class GuestHouseDto {
     private String areaName;
 
     public static List<String> toGuestHouseTypes(String guestHouseTypes) {
+        if(guestHouseTypes == null || guestHouseTypes.equals("")) return null;
         List<String> result = Arrays.asList(guestHouseTypes.split(","));
         return result;
     }
