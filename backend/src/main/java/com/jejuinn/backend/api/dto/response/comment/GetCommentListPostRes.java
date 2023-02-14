@@ -28,6 +28,8 @@ public class GetCommentListPostRes {
 
     private String profileImgUrl;
 
+    private boolean isStaff;
+
     public static GetCommentListPostRes of(Comment comment, User user) {
         return GetCommentListPostRes.builder()
                 .commentUid(comment.getUid())
@@ -38,6 +40,7 @@ public class GetCommentListPostRes {
                 .content(comment.getContent())
                 .dateCreated(comment.getDateCreated())
                 .profileImgUrl(user.getProfileImageUrl())
+                .isStaff(user.isStaff())
                 .build();
     }
 }

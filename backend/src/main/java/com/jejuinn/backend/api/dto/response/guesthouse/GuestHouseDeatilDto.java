@@ -40,7 +40,7 @@ public class GuestHouseDeatilDto {
     private LocalDate dateCreated;
 
     public static List<String> toGuestHouseTypes(String guestHouseTypes) {
-        if(guestHouseTypes.equals("") || guestHouseTypes == null) return null;
+        if(guestHouseTypes == null || guestHouseTypes.equals("")) return null;
         List<String> result = Arrays.asList(guestHouseTypes.split(","));
         return result;
     }
