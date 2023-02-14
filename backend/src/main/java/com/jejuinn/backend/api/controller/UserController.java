@@ -153,7 +153,7 @@ public class UserController {
             return ResponseEntity.status(401).build();
 
         logger.info("재발급 하러 갑시다 ");
-        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get(), refreshToken); // access 토큰만 재발급
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get(), refreshToken.substring(7)); // access 토큰만 재발급
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
