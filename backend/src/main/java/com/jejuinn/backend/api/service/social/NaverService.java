@@ -55,7 +55,6 @@ public class NaverService {
 
 
     public User getUserInfoFromNaver(String code){
-        System.out.println(code);
         JsonParser parser = new JsonParser();
 
         log.info("access token : {}", code);
