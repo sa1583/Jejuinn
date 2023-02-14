@@ -142,15 +142,14 @@ public class UserController {
 
         String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
         logger.info("리프레시 토큰 : {}", refreshToken);
-        System.out.println(request.getHeader("R"));
         Authentication authentication = tokenProvider.getAuthentication(refreshToken.substring(7));
         String uid = authentication.getName();
         Optional<User> user = userRepository.findById(Long.parseLong(uid));
         logger.info("현재 사용자 uid : {}", user.get().getUid());
 
         if(user.isEmpty() // 검색 결과가 없거나
-                || !tokenProvider.validateToken(refreshToken) // refresh 토큰이 유효하지 않거나
-                || !user.get().getRefreshToken().equals(refreshToken)) // refresh 토큰이 동일하지 않다면
+                || !tokenProvider.validateToken(refreshToken.substring(7)) // refresh 토큰이 유효하지 않거나
+                || !user.get().getRefreshToken().equals(refreshToken.substring(7))) // refresh 토큰이 동일하지 않다면
             return ResponseEntity.status(401).build();
 
         logger.info("재발급 하러 갑시다 ");
