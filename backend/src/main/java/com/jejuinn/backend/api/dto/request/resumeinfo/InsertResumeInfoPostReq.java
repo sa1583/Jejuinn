@@ -39,7 +39,7 @@ public class InsertResumeInfoPostReq {
 
     private List<String> personTypes;
 
-    private List<String> interestAreas;
+    private String interestArea;
 
     public String toGuestHouseType() {
         String type = "";
@@ -63,9 +63,7 @@ public class InsertResumeInfoPostReq {
 
     public List<Area> toArea() {
         List<Area> list = new ArrayList<>();
-        for(String s : this.getInterestAreas()) {
-            list.add(Area.builder().areaName(s).build());
-        }
+        list.add(Area.builder().areaName(this.getInterestArea()).build());
         return list;
     }
 
