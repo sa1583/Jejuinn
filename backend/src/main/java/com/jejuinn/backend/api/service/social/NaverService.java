@@ -116,7 +116,7 @@ public class NaverService {
         authorities.add(Authority.user());
         authorities.add(Authority.auth());
 
-        User user = User.from(userUid, naverProfileDto, authorities);
+        User user = User.from(userRepository.findById(userUid), naverProfileDto, authorities);
         logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
 
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
