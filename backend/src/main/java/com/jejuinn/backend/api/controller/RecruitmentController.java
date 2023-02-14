@@ -64,7 +64,7 @@ public class RecruitmentController {
         Pageable pageable = PageRequest.of(pageNumber-1, 15);
         return ResponseEntity.status(200)
                 .body(workRepository.findAll(pageable)
-                        .map(work -> WorkListRes.of(work,
+                        .map(work -> WorkRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid())
                                 )));
     }
@@ -82,7 +82,8 @@ public class RecruitmentController {
                 .body(recruitmentRepository.findById(recruitmentUid)
                         .map(recruitment ->
                                 RecruitmentDetailRes.of(recruitment,
-                                        WorkDetailRes.ofDetail(workRepository.findAllByRecruitmentUid(recruitmentUid)),
+                                        WorkRes.ofs(workRepository.findAllByRecruitmentUid(recruitmentUid),
+                                                recruitmentRepository.findUserUidByRecruitmentUid(recruitment.getUid())),
                                         imageRepository.findAllByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid),
                                         recruitmentRepository.findUserUidByRecruitmentUid(recruitment.getUid())
                                 )));
@@ -165,7 +166,7 @@ public class RecruitmentController {
         System.out.println(uid);
         return ResponseEntity.status(200).body(
                 works.stream().map(
-                        work -> WorkListRes.of(work,
+                        work -> WorkRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid())
                 )
         ));
@@ -292,7 +293,7 @@ public class RecruitmentController {
         if(guestHouseUidList.size() == 0 || guestHouseUidList == null) return ResponseEntity.status(400).build();
         return ResponseEntity.status(200).body(
                 workRepository.findByGuestHouseUidAndEntryDate(guestHouseUidList, entryDate, pageable).map(
-                        work -> WorkListRes.of(work,
+                        work -> WorkRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid()))
                 )
         );
