@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jejuinn.backend.api.controller.SocialController;
 import com.jejuinn.backend.api.dto.search.NaverLocalSearchRes;
 import com.jejuinn.backend.db.entity.Authority;
 import com.jejuinn.backend.db.entity.SocialLogin;
@@ -20,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -53,10 +56,13 @@ public class NaverService {
     private final UserRepository userRepository;
     private final SocialLoginRepository socialLoginRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(NaverService.class);
+
 
     public User getUserInfoFromNaver(String code){
         JsonParser parser = new JsonParser();
 
+        logger.info("여기까지 잘 왔어요!!! {}", code);
         log.info("access token : {}", code);
 
         // 프로필 정보 요청
