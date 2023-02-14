@@ -32,7 +32,9 @@ export const useAxiosInterceptor = () => {
           await dispatch(renewAccessTokenByRefreshToken(refreshToken));
           dispatch(getUserInfoByToken(accessToken));
         } catch (error) {
-          dispatch(logout(accessToken, userInfo.uid));
+          if (accessToken && userInfo) {
+            dispatch(logout(accessToken, userInfo.uid));
+          }
           navigate('/login');
         }
       }

@@ -4,7 +4,7 @@ import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
-import { allGuestHouseList } from '../../api/guestHouse';
+import { getGuestHouses } from '../../api/guestHouse';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import ModeEditOutlined from '@mui/icons-material/ModeEditOutlined';
 import { useNavigate } from 'react-router-dom';
@@ -15,27 +15,39 @@ export default function GuestHouse() {
   const [guestHouses, setGuestHouses] = useState([]);
 
   async function getGuestHouseList() {
-    const data = await allGuestHouseList(1);
-    console.log(data.data.content);
-    setGuestHouses(data.data.content);
+    const { data } = await getGuestHouses(filter);
+    if (filter.pageNumber === 1) setGuestHouses(data.content);
+    else setGuestHouses((prev) => prev.concat(data.content));
   }
 
   const [filter, setFilter] = useState({
-    style: '전체',
-    section: '전체',
+    areaName: '전체',
+    pageNumber: 1,
+    styles: [],
     word: '',
   });
 
-  const getFilter = (pickForm) => {
-    setFilter(pickForm);
-    // 여기엔 이제 api 통신
+  const handleLoadPages = () => {
+    setFilter((prev) => {
+      const newFilter = prev;
+      newFilter.pageNumber += 1;
+      return newFilter;
+    });
+  };
+
+  const SearchByFilter = (areaName, pageNumber, styles, word) => {
+    setFilter({
+      areaName,
+      pageNumber,
+      styles,
+      word,
+    });
   };
 
   useEffect(() => {
+    console.log(filter);
     getGuestHouseList();
-  }, []);
-
-  const goCreate = () => {};
+  }, [filter]);
 
   const actions = [
     {
@@ -52,11 +64,18 @@ export default function GuestHouse() {
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <WhiteBox
-              cpn={<GuestHouseFilter getFilter={getFilter} filter={filter} />}
+              cpn={<GuestHouseFilter handleFilter={SearchByFilter} />}
             />
           </Grid>
           <Grid item xs={12} md={8}>
-            <WhiteBox cpn={<GuestHouseList guestHouses={guestHouses} />} />
+            <WhiteBox
+              cpn={
+                <GuestHouseList
+                  guestHouses={guestHouses}
+                  plusPageNum={handleLoadPages}
+                />
+              }
+            />
           </Grid>
         </Grid>
       </Box>
