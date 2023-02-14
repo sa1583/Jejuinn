@@ -121,6 +121,7 @@ public class User {
               .sugarContent(8)
               .isStaff(false)
               .authorities(authorities)
+              .refreshToken(user.get().getRefreshToken())
               .build();
    }
 }
