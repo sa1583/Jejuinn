@@ -214,7 +214,7 @@ public class GuestHouseController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getGuestHouseByFilter(@RequestParam(value = "pageNumber") int pageNumber,
-                                                   @RequestParam(value = "styles") List<String> styles,
+                                                   @RequestParam(value = "styles", required = false) List<String> styles,
                                                    @RequestParam(value = "areaName") String areaName,
                                                    @RequestParam(value = "word") String word) {
         Pageable pageable = PageRequest.of(pageNumber-1, 15);

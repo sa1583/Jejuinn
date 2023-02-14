@@ -69,9 +69,11 @@ public class GuestHouseRepositorySupport {
     }
 
     private BooleanBuilder tagsContain(List<String> tags) {
+        System.out.println("여기로 옴");
         BooleanBuilder builder = new BooleanBuilder();
         for (String tag : tags) {
             if(tag.equals(("")) || tag == null) continue;
+            builder.and(qGuestHouse.tags.contains(tag));
         }
         return builder;
     }
