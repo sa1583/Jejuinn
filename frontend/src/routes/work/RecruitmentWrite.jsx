@@ -9,40 +9,15 @@ import { useState } from 'react';
 import ImageUploader from '../../components/articleCreateComponent/ImageUploader';
 import { useNavigate } from 'react-router-dom';
 
-const CustomButton = styled(Button)({
-  variant: 'contained',
-  width: '100%',
-  height: '7vh',
-  color: '#FFFFFF',
-  borderRadius: '62px',
-  backgroundColor: '#FF7600',
-  fontFamily: 'border',
-  size: 'large',
-  '&:hover': {
-    backgroundColor: '#FF7600',
-    borderColor: '#FF7600',
-  },
-  '&:active': {
-    backgroundColor: '#FF7600',
-    borderColor: '#FF7600',
-  },
-});
-
-export default function WorkRecruitmentWrite() {
-  const { guesthouseUid } = useParams();
+export default function () {
   const accessToken = useSelector(selectAccessToken);
   const [workInfo, setWorkInfo] = useState({});
   const [preImages, setPreImages] = useState([]);
   const [deleteImages, setDeleteImages] = useState([]);
   const [files, setFiles] = useState([]);
   const [recruitmentInfo, setRecruimentInfo] = useState({});
+
   const navigate = useNavigate();
-
-  const onWorkWrite = (input) => {
-    console.log(input);
-    setWorkInfo(input);
-  };
-
   const onRecruitmentWrite = (input) => {
     console.log(input);
     setRecruimentInfo(input);
@@ -91,15 +66,6 @@ export default function WorkRecruitmentWrite() {
           onRecruitmentWrite={onRecruitmentWrite}
           currentRecruitmentInfo={recruitmentInfo}
         />
-        <WorkWriteComponent
-          onWorkWrite={onWorkWrite}
-          currentWorkInfo={workInfo}
-        />
-        <Box sx={{ paddingTop: '2rem' }}>
-          <CustomButton type="submit" onClick={onClick}>
-            저장
-          </CustomButton>
-        </Box>
       </form>
     </Box>
   );
