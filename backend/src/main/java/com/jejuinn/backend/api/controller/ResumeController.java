@@ -109,7 +109,7 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateResumeInfo(@Valid @RequestPart UpdateResumeInfoPutReq updateResumeInfoPutReq) {
+    public ResponseEntity<?> updateResumeInfo(@Valid @RequestBody UpdateResumeInfoPutReq updateResumeInfoPutReq) {
         resumeInfoRepository.save(updateResumeInfoPutReq.toResumeInfo());
         return ResponseEntity.status(200).build();
     }
@@ -121,7 +121,7 @@ public class ResumeController {
             @ApiResponse(code = 400, message = "BAD REQUEST(지원서가 없음)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> applyWork(@Valid @RequestPart InsertWorkResumeInfoPostReq insertWorkResumeInfoPostReq) {
+    public ResponseEntity<?> applyWork(@Valid @RequestBody InsertWorkResumeInfoPostReq insertWorkResumeInfoPostReq) {
         WorkResumeInfo workResumeInfo = resumeInfoService.insertWorkResumeInfo(insertWorkResumeInfoPostReq);
         if(workResumeInfo != null) {
             workResumeInfoRepository.save(workResumeInfo);
