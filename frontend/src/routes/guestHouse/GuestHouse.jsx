@@ -8,9 +8,12 @@ import { getGuestHouses } from '../../api/guestHouse';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import ModeEditOutlined from '@mui/icons-material/ModeEditOutlined';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../../store/user';
 
 export default function GuestHouse() {
   const navigate = useNavigate();
+  const isLogin = useSelector(selectIsLogin);
 
   const [guestHouses, setGuestHouses] = useState([]);
 
@@ -60,7 +63,7 @@ export default function GuestHouse() {
   return (
     <div>
       <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-        <SpeedDialComponent actions={actions} />
+        {isLogin && <SpeedDialComponent actions={actions} />}
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <WhiteBox
