@@ -17,7 +17,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { images } from '../assets/images';
-import { userLogout } from '../api/user';
 
 const pages = [
   { name: '게스트하우스', url: 'guesthouse' },
@@ -166,7 +165,10 @@ export default function ButtonAppBar() {
             </Typography>
           )}
           {isLogin && (
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, flexGrow: 1 }}>
+            <Box
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0, flexGrow: 1, cursor: 'pointer' }}
+            >
               {userInfo.profileImageUrl ? (
                 <Avatar alt="Remy Sharp" src={profileImage()} />
               ) : (
@@ -179,7 +181,7 @@ export default function ButtonAppBar() {
                   {userInfo.nickname[0].toUpperCase()}
                 </Avatar>
               )}
-            </IconButton>
+            </Box>
           )}
 
           <Menu
