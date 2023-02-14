@@ -20,20 +20,19 @@ export default function MyWorkList() {
   const [myGuestHouses, setMyGuestHouses] = useState([]);
 
   const onSelect = (input) => {
-    writeRecruitment(input);
+    Recruitment(input);
   };
 
   const OnClick = () => {
-    writeRecruitment(myGuestHouses[0].uid);
+    Recruitment(myGuestHouses[0].uid);
   };
 
-  async function writeRecruitment(ghuid) {
-    const selectedRecruitment = (await getMyRecruitments(ghuid)).data[0];
-    if (selectedRecruitment) {
-      navigate(`/work-recruitment-write/${selectedRecruitment.uid}/undefined`);
-    } else {
-      navigate(`/work-recruitment-write/undefined/undefined`);
-    }
+  async function Recruitment(ghUid) {
+    const huoseRecruitment = (await getMyRecruitments(ghUid)).data;
+    console.log(huoseRecruitment);
+    huoseRecruitment.length === 0
+      ? navigate(`/work-recruitment-write/${ghUid}`)
+      : navigate(`/work-write/${huoseRecruitment[0].uid}`);
   }
 
   async function setHouseAndWork() {

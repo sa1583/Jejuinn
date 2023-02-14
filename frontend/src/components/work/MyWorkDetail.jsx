@@ -10,11 +10,11 @@ export default function MyWorkDetail({ work }) {
   console.log(work);
 
   const onRecruitmentDetail = () => {
-    navigate(`/worklist/detail/${work.workUid}`);
+    navigate(`/worklist/detail/${work.recruitmentUid}/${work.workUid}`);
   };
 
   function handleWorkUpdate() {
-    navigate(`/work-recruitment-write/${work.recruitmentUid}/${work.workUid}`);
+    navigate(`/work-write/${work.recruitmentUid}`);
   }
   function handleWorkDelete() {
     deleteWork(work.workUid, accessToken);

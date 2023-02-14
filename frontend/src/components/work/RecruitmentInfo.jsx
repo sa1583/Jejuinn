@@ -18,13 +18,10 @@ export default function RecruitmentInfo({ id, onClick }) {
   return (
     <Box sx={{ paddingY: '3vh', height: '100%' }}>
       <Grid container>
-        <Grid item md={10}>
+        <Grid item md={12}>
           <h2 style={{ color: '#FF7600' }}>
             {recruitment.title}(recruitment.title)
           </h2>
-        </Grid>
-        <Grid item md={2}>
-          <Button onClick={onClick}>수정</Button>
         </Grid>
       </Grid>
       <Box sx={{ paddingX: '2vh', height: '100%' }}>
