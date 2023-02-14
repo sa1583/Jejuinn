@@ -8,7 +8,8 @@ import {
   Popover,
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useState } from 'react';
@@ -48,8 +49,8 @@ const CustomTextField = styled(TextField)({
 const selectedGenders = ['여자', '남자', '무관'];
 const selectedDays = [1, 2, 3, 4, 5];
 
-function GetWorkName({ handleWorkInfo }) {
-  const [workName, setWorkName] = useState('');
+function GetWorkName({ handleWorkInfo, preValue }) {
+  const [workName, setWorkName] = useState(preValue);
   const onInput = (event) => {
     handleWorkInfo(event);
     setWorkName(event.target.value);
@@ -289,6 +290,32 @@ function GetWorkDescription({ handleWorkInfo }) {
   );
 }
 
+function GetWorkEntryDate({ onWorkEntryDate }) {
+  const [value, setValue] = useState('');
+  const handelOnChange = (event) => {
+    const entryDate = event.$d.toISOString().split('T')[0];
+    setValue(event.$d.toISOString().split('T')[0]);
+    onWorkEntryDate(entryDate);
+  };
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+        label="입도가능날짜"
+        value={value}
+        name="entryDate"
+        inputFormat="YYYY-MM-DD"
+        mask={'____-__-__'}
+        onChange={(newValue) => {
+          handelOnChange(newValue);
+        }}
+        renderInput={(params) => (
+          <CustomTextField {...params} sx={{ width: '100%' }} />
+        )}
+      />
+    </LocalizationProvider>
+  );
+}
+
 // 채용공고 입력
 
 function GetRecruitmentTitle({ handleRecruimentInfo }) {
@@ -440,6 +467,7 @@ export {
   GetWorkStartTime,
   GetWorkEndTime,
   GetWorkDescription,
+  GetWorkEntryDate,
   GetRecruitmentInfo,
   GetRecruitmentWelfare,
   GetRecruitmentTitle,

@@ -19,7 +19,7 @@ export default function RecruitmentWrite({
     welfare: currentRecruitmentInfo.welfare,
     wanted: currentRecruitmentInfo.wanted,
     addInfo: currentRecruitmentInfo.addInfo,
-    guestHouseUid: guestHouseUid,
+    guestHouseUid: parseInt(guestHouseUid['guesthouseUid']),
   });
   const handleRecruimentInfo = (e) => {
     const name = e.target.name;

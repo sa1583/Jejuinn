@@ -74,6 +74,7 @@ export default function WorkRecruitmentWrite() {
     });
 
     fetch(createRecruitment(formData, accessToken));
+
     navigate(`/worklist/`);
   };
 
@@ -95,12 +96,12 @@ export default function WorkRecruitmentWrite() {
           onWorkWrite={onWorkWrite}
           currentWorkInfo={workInfo}
         />
-        <Box sx={{ paddingTop: '2rem' }}>
-          <CustomButton type="submit" onClick={onClick}>
-            저장
-          </CustomButton>
-        </Box>
       </form>
+      <Box sx={{ paddingTop: '2rem' }}>
+        <CustomButton type="submit" onClick={onClick}>
+          저장
+        </CustomButton>
+      </Box>
     </Box>
   );
 }

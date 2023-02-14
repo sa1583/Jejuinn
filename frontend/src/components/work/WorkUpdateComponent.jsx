@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
-import { createWork } from '../../api/work';
+import { updateWork } from '../../api/work';
 import {
   GetWorkName,
   GetWorkGender,
@@ -37,12 +37,14 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkWriteComponent() {
-  const { recruitmentUid } = useParams();
+export default function WorkUpdateComponent() {
   const accessToken = useSelector(selectAccessToken);
   const navigate = useNavigate();
+  const { recruitmentUid } = useParams();
+  const { workUid } = useParams();
+
   const [workInfo, setWorkInfo] = useState({
-    workName: '',
+    workName: '네임을 지정해볼가요..? 이거만 폼에 띄우면 되는데..',
     gender: '',
     salary: '',
     workTime: '',
@@ -53,6 +55,16 @@ export default function WorkWriteComponent() {
     minWorkPeriod: '',
     entryDate: '',
     recruitmentUid: recruitmentUid,
+
+    // workName: currentWorkInfo.workName,
+    // gender: currentWorkInfo.gender,
+    // salary: currentWorkInfo.salary,
+    // workTime: currentWorkInfo.workTime,
+    // workDescription: currentWorkInfo.GetWorkDescription,
+    // intake: currentWorkInfo.intake,
+    // workDays: currentWorkInfo.workDays,
+    // daysOff: currentWorkInfo.daysOff,
+    // minWorkPeriod: currentWorkInfo.minWorkPeriod,
   });
 
   const handleWorkInfo = (e) => {
@@ -80,16 +92,26 @@ export default function WorkWriteComponent() {
   };
 
   const onClick = () => {
-    fetch(createWork(workInfo, accessToken));
+    console.log('!!!!!!!!!!!');
+    console.log(workInfo);
+    console.log('!!!!!!!!!!!');
+    fetch(updateWork(workInfo, accessToken));
     navigate(`/worklist/`);
   };
+
+  useEffect(() => {
+    console.log(workInfo);
+  }, [workInfo]);
 
   return (
     <Box sx={{ paddingTop: '1rem', height: '100%' }}>
       <form>
         <Grid container spacing={2}>
           <Grid item md={12}>
-            <GetWorkName handleWorkInfo={handleWorkInfo} />
+            <GetWorkName
+              handleWorkInfo={handleWorkInfo}
+              preValue={'미리 받은 이름'}
+            />
           </Grid>
 
           <Grid item md={6}>
@@ -138,7 +160,6 @@ export default function WorkWriteComponent() {
           </Grid>
         </Grid>
       </form>
-
       <br />
       <CustomButton type="submit" onClick={onClick}>
         저장
