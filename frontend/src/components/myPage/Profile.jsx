@@ -21,15 +21,17 @@ export default function Profile() {
   const userInfo = useSelector(selectUserInfo);
 
   const navigate = useNavigate();
-  const onMypage = () => {
-    navigate('/mypage');
-  };
   return (
-    <Stack direction="column" alignItems="center">
-      <Avatar
-        src={images.sample_profile}
-        alt="프로필 사진 들어가용~"
-        style={{
+        <Stack direction="column" alignItems="center" sx={{ p: '2%' }}>
+          <h1>{userInfo.username}</h1>
+          <Avatar
+            src={
+              userInfo.profileImgUrl
+                ? userInfo.profileImgUrl
+                : images.sample_profile
+            }
+            alt="프로필 사진 들어가용~"
+            style={{
           width: '18vw',
           height: '18vw',
           marginBottom: '20px',
@@ -37,9 +39,7 @@ export default function Profile() {
           boxShadow:
             'rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;',
         }}
-      />
-      <h1 onClick={onMypage}>장정민</h1>
-      {/* <CustomButton>개인정보 수정</CustomButton> */}
-    </Stack>
+          />
+        </Stack>
   );
 }

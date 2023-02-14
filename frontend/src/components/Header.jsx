@@ -8,7 +8,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
-import { logout, selectIsLogin, selectUserInfo } from '../store/user';
+import {
+  logout,
+  selectAccessToken,
+  selectIsLogin,
+  selectUserInfo,
+} from '../store/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { images } from '../assets/images';
@@ -33,8 +38,11 @@ export default function ButtonAppBar() {
 
   useEffect(() => {
     const name = location.pathname.split('/')[1];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 3; i++) {
       toolbarRef.current.childNodes[i].childNodes[0].style.color = 'black';
+    }
+    if (!isLogin) {
+      toolbarRef.current.childNodes[4].childNodes[0].style.color = 'black';
     }
     switch (name) {
       case 'guesthouse':
@@ -70,8 +78,14 @@ export default function ButtonAppBar() {
     return navigate('mypage');
   };
 
+  const accessToken = useSelector(selectAccessToken);
+
   const handleLogout = () => {
-    dispatch(logout());
+    const info = {
+      accessToken,
+      uid: userInfo.uid,
+    };
+    dispatch(logout(info));
     handleCloseUserMenu();
     return navigate('/');
   };
@@ -151,7 +165,10 @@ export default function ButtonAppBar() {
             </Typography>
           )}
           {isLogin && (
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, flexGrow: 1 }}>
+            <Box
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0, flexGrow: 1, cursor: 'pointer' }}
+            >
               {userInfo.profileImageUrl ? (
                 <Avatar alt="Remy Sharp" src={profileImage()} />
               ) : (
@@ -164,7 +181,7 @@ export default function ButtonAppBar() {
                   {userInfo.nickname[0].toUpperCase()}
                 </Avatar>
               )}
-            </IconButton>
+            </Box>
           )}
 
           <Menu

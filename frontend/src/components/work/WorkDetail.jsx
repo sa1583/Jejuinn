@@ -5,7 +5,7 @@ export default function WorkDetail({ work }) {
   const navigate = useNavigate();
 
   const onRecruitmentDetail = () => {
-    navigate(`/worklist/detail/${work.recruitmentUid}/${work.uid}`);
+    navigate(`/worklist/detail/${work.recruitmentUid}/${work.workUid}`);
   };
 
   return (

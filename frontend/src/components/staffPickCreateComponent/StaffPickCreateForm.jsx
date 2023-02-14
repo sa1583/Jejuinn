@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../store/user';
 import { createSpotReview } from '../../api/staffPick';
 import { useNavigate } from 'react-router';
+
 export default function StaffPickCreateForm({ nowPickId }) {
   const [content, setContent] = useState('');
   const acces_token = useSelector(selectAccessToken);

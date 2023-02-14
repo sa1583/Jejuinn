@@ -6,6 +6,7 @@ import {
   Typography,
   Stack,
   Chip,
+  Box,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
@@ -14,14 +15,19 @@ import WorkHistory from '../WorkHistory';
 import { changeAutoApply } from '../../../api/resume';
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
+import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 // resume.autoApply
 
 export default function MyResumeApply({ resume, changeApplyComp }) {
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [apply, setApply] = useState(false);
   const [historyList, setHistoryList] = useState([
     {
       uid: 1,
@@ -39,6 +45,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
+    setOpen((prev) => !prev);
   };
 
   const handlePopoverClose = () => {
@@ -52,19 +59,19 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
 
   useEffect(() => {
     setAnchorEl(resume.autoApply);
+    setApply(resume.autoApply);
+    console.log('resume', resume);
   }, []);
 
-  const open = Boolean(anchorEl);
   return (
     <Stack p="3%" spacing={3}>
       <Stack direction="row" alignItems="center">
         <HelpOutlineOutlinedIcon
           color="primary"
           onMouseEnter={handlePopoverOpen}
-          onMouseLeave={handlePopoverClose}
+          onMouseLeave={handlePopoverOpen}
         />
         <Popover
-          id="mouse-over-popover"
           sx={{
             pointerEvents: 'none',
           }}
@@ -100,20 +107,24 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         />
         <Button onClick={changeApplyComp}>수정</Button>
       </Stack>
-      <Stack direction="row" alignItems="center">
-        <Typography minWidth="100px">선호 스타일</Typography>
+      <Stack direction="column" spacing={3}>
+        <Stack direction="row">
+          <Typography minWidth="100px">인스타그램</Typography>
+          <Typography>{resume.instgramLink}</Typography>
+        </Stack>
         <Stack direction="row" spacing={1}>
+          <Typography minWidth="100px">선호 스타일</Typography>
           {resume.personTypes.map(({ type }) => {
-            return <Chip key={type} label={'#' + type} color="primary" />;
+            return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
           })}
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center">
         <Typography minWidth="100px">선호 지역</Typography>
-        <Stack direction="row" alignItems="center">
-          {resume.interestAreas.map((area) => {
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {resume.interestAreas.map(({ areaName }) => {
             return (
-              <Chip key={area} label={'#' + area.areaName} color="primary" />
+              <Chip key={areaName} label={'#' + areaName} color="primary" />
             );
           })}
         </Stack>
@@ -130,7 +141,11 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         <Typography minWidth="100px">근무이력</Typography>
         <Stack direction="row" spacing={2}>
           {historyList.map((history) => {
-            return <WorkHistory key={history.uid} history={history} />;
+            return (
+              <Box sx={{ cursor: 'pointer' }} onClick={() => navigate()}>
+                <WorkHistory key={history.uid} history={history} />;
+              </Box>
+            );
           })}
         </Stack>
       </Stack>

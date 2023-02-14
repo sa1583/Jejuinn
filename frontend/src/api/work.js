@@ -31,6 +31,7 @@ const createRecruitment = (body, token) => {
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
   return instance.post('/auth/job-offer', body, config);

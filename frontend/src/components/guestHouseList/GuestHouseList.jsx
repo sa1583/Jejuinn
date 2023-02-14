@@ -9,11 +9,35 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 
-export default function GuestHouseList({ guestHouses }) {
+export default function GuestHouseList({ guestHouses, plusPageNum }) {
   const navigate = useNavigate();
+
   const goDetail = (guestHouseUid) => {
     navigate(`detail/${guestHouseUid}`);
   };
+
+  const observer = useRef(
+    new IntersectionObserver(
+      (entries) => {
+        const isIntersecting = entries[0].isIntersecting;
+        if (isIntersecting) {
+          plusPageNum();
+        }
+      },
+      { threshold: 1 },
+    ),
+  );
+
+  const bottomRef = useRef(null);
+  useEffect(() => {
+    setTimeout(function () {
+      const currentBottomRef = bottomRef.current;
+      observer.current.observe(currentBottomRef);
+      return () => {
+        observer.current.unobserve(currentBottomRef);
+      };
+    }, 500);
+  }, []);
 
   return (
     <Box sx={{ padding: '2vh 0vh' }}>
@@ -58,8 +82,6 @@ export default function GuestHouseList({ guestHouses }) {
                 srcSet={`${guestHouse.images[0]?.imgPath}?w=248&fit=crop&auto=format&dpr=2 2x`}
                 alt={guestHouse.guestHouse.guestHouseName}
                 loading="lazy"
-                id={guestHouse.guestHouse.uid}
-                name={guestHouse.guestHouse.guestHouseName}
               />
               <ImageListItemBar
                 title={guestHouse.guestHouse.guestHouseName}
@@ -69,6 +91,7 @@ export default function GuestHouseList({ guestHouses }) {
           ))}
         </ImageList>
       </Box>
+      <div ref={bottomRef} />
     </Box>
   );
 }

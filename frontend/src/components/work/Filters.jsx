@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
 import { styled, TextField, InputAdornment, MenuItem } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import { v4 as uuidv4 } from 'uuid';
 import SearchIcon from '@mui/icons-material/Search';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
@@ -83,12 +81,9 @@ function FilterArea({ value, setValue }) {
           InputProps={{
             ...params.InputProps,
             startAdornment: (
-              <>
-                <InputAdornment position="start">
-                  <FmdGoodOutlinedIcon color="primary" />
-                </InputAdornment>
-                {params.InputProps.startAdornment}
-              </>
+              <InputAdornment position="start">
+                <FmdGoodOutlinedIcon color="primary" />
+              </InputAdornment>
             ),
           }}
         />
@@ -177,7 +172,7 @@ function FilterGuestHouseStyle({ value, setValue }) {
   return (
     <Autocomplete
       sx={{ width: '100%' }}
-      multiple={3}
+      multiple
       limitTags={3}
       options={wishStyles}
       getOptionDisabled={(option) =>

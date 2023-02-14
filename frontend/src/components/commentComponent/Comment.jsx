@@ -31,14 +31,10 @@ export default function CommentList({
 
   const profileImage = () => {
     const purl = comment.profileImgUrl;
-    if (purl) {
-      if (purl.slice(0, 4) == 'http') {
-        return purl;
-      } else {
-        return `${images.defalut_url}${purl}`;
-      }
+    if (purl.slice(0, 4) == 'http') {
+      return purl;
     } else {
-      return '';
+      return `${images.defalut_url}${purl}`;
     }
   };
 
@@ -51,15 +47,28 @@ export default function CommentList({
           paddingLeft: '0.5rem',
         }}
       >
-        <Avatar
-          src={profileImage()}
-          sx={{
-            width: '2rem',
-            height: '2rem',
-            marginTop: '0.5rem',
-            bgcolor: '#FF7600',
-          }}
-        ></Avatar>
+        {comment.profileImgUrl ? (
+          <Avatar
+            src={profileImage()}
+            sx={{
+              width: '2rem',
+              height: '2rem',
+              marginTop: '0.5rem',
+              bgcolor: '#FF7600',
+            }}
+          ></Avatar>
+        ) : (
+          <Avatar
+            sx={{
+              backgroundColor: 'primary.main',
+              width: '2rem',
+              height: '2rem',
+              fontSize: '1rem',
+            }}
+          >
+            {comment.nickname[0]}
+          </Avatar>
+        )}
         <Box sx={{ width: '100%' }}>
           <Box
             sx={{

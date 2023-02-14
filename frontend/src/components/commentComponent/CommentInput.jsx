@@ -48,23 +48,43 @@ export default function CommentInput({
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        borderRadius: '23px',
-        boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-      }}
-    >
-      <Box sx={{ padding: '1rem' }}>
-        {isLogined ? (
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '1rem',
-              paddingLeft: '0.5rem',
-            }}
-          >
+    <Box sx={{ padding: '1rem' }}>
+      {isLogined ? (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '1rem',
+            paddingLeft: '0.5rem',
+          }}
+        >
+          {userInfo.profileImageUrl ? (
             <Avatar
+              sx={{
+                width: '2rem',
+                height: '2rem',
+                bgcolor: deepOrange[500],
+                marginTop: '0.5rem',
+              }}
+              src={profileImage()}
+            ></Avatar>
+          ) : (
+            <Avatar
+              sx={{
+                backgroundColor: 'primary.main',
+                height: '2rem',
+                width: '2rem',
+                fontSize: '1rem',
+              }}
+            >
+              {userInfo.nickname[0]}
+            </Avatar>
+          )}
+
+          <Box sx={{ width: '100%' }}>
+            <Typography sx={{ fontWeight: 'bolder' }}>
+              {userInfo?.nickname}
+            </Typography>
+            <Box
               sx={{
                 width: '2rem',
                 height: '2rem',
