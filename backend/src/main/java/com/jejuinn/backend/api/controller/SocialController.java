@@ -155,8 +155,10 @@ public class SocialController {
     })
     public ResponseEntity<?> getNaverAuth(HttpServletRequest request){
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+        System.out.println(accessToken);
         Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
         String uid = authentication.getName();
+        System.out.println(uid);
 
         Optional<User> user = userRepository.findById(Long.parseLong(uid));
         if (user.isEmpty()) return ResponseEntity.status(400).build();
