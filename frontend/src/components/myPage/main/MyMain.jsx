@@ -7,15 +7,16 @@ import WhiteBox from '../../whiteBox/WhiteBox';
 import MyMainArticle from './MyMainArticle';
 import MyMainRecruitment from './MyMainRecruitment';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { images } from '../../../assets/images';
 import {
   getMyApplyList,
   getMyInterestGuestHouses,
   getMyInterestAttractions,
+  getMyReivewList,
 } from '../../../api/job';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../store/user';
@@ -55,6 +56,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function MyMain() {
   const accessToken = useSelector(selectAccessToken);
+  const navigate = useNavigate();
 
   const [isOpened, setIsOpened] = useState(true);
   const [tabNum, setTabNum] = useState('1');
@@ -84,25 +86,21 @@ export default function MyMain() {
 
   const loadMyLikePlaceList = async () => {
     const { data } = await getMyInterestAttractions(accessToken);
+    // console.log('mylikeplaces', data);
     setMyLikePlaceList(data);
+  };
+
+  const loadMyReveiwList = async () => {
+    const { data } = await getMyReivewList(accessToken);
+    console.log('myReviews', data);
+    setMyPosts(data);
   };
 
   useEffect(() => {
     loadMyApplyList();
     loadMyLikeRecruitment();
     loadMyLikePlaceList();
-    setMyPosts([
-      {
-        uid: 24,
-        name: '엉또 폭포',
-        imageUrl: images.sample_profile,
-      },
-      {
-        uid: 83,
-        name: '윾태 폭포',
-        imageUrl: null,
-      },
-    ]);
+    loadMyReveiwList();
   }, []);
 
   return (
@@ -116,10 +114,12 @@ export default function MyMain() {
             <Stack direction="column" spacing={1}>
               {myAppliedRecruitment.map((recruitment) => {
                 return (
-                  <WhiteBox
-                    key={recruitment.uid}
-                    cpn={<MyMainRecruitment recruitment={recruitment} />}
-                  />
+                  <Box>
+                    <WhiteBox
+                      key={recruitment.uid}
+                      cpn={<MyMainRecruitment recruitment={recruitment} />}
+                    />
+                  </Box>
                 );
               })}
             </Stack>
@@ -138,11 +138,11 @@ export default function MyMain() {
                 }}
               >
                 <TabList onChange={handleChangeTab}>
-                  <Tab label="모집공고" value="1" />
-                  <Tab label="관광지" value="2" />
+                  <Tab label="모집공고" value="0" />
+                  <Tab label="관광지" value="1" />
                 </TabList>
               </Box>
-              <TabPanel value="1">
+              <TabPanel value="0">
                 <Stack direction="column" spacing={1}>
                   {myInterestGuestHouses.map((recruitment) => {
                     return (
@@ -154,14 +154,19 @@ export default function MyMain() {
                   })}
                 </Stack>
               </TabPanel>
-              <TabPanel value="2">
+              <TabPanel value="1">
                 <Stack direction="column" spacing={1}>
                   {myLikePlaceList.map((post) => {
                     return (
-                      <WhiteBox
+                      <Box
                         key={post.uid}
-                        cpn={<MyMainArticle post={post} />}
-                      />
+                        onClick={() =>
+                          navigate(`/staffpicklist/detail/${post.uid}`)
+                        }
+                        sx={{ cursor: 'pointer' }}
+                      >
+                        <WhiteBox cpn={<MyMainArticle post={post} />} />
+                      </Box>
                     );
                   })}
                 </Stack>
@@ -175,10 +180,15 @@ export default function MyMain() {
             <Stack direction="column" spacing={1}>
               {myPosts.map((post) => {
                 return (
-                  <WhiteBox
-                    key={post.uid}
-                    cpn={<MyMainArticle post={post} />}
-                  />
+                  <Box
+                    key={post.reviewUid}
+                    onClick={() =>
+                      navigate(`/staffpicklist/detail/${post.reviewUid}`)
+                    }
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <WhiteBox cpn={<MyMainArticle post={post} />} />
+                  </Box>
                 );
               })}
             </Stack>

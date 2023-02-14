@@ -26,6 +26,7 @@ const getMyInterestGuestHouses = (accessToken) => {
   return instance.get('/auth/guest-house-list/like', header);
 };
 
+// 내가 좋아요 누른 관광지 리스트 가져오기
 const getMyInterestAttractions = (accessToken) => {
   const header = {
     headers: {
@@ -35,4 +36,19 @@ const getMyInterestAttractions = (accessToken) => {
   return instance.get('/auth/travel-place/reviews/like', header);
 };
 
-export { getMyApplyList, getMyInterestGuestHouses, getMyInterestAttractions };
+//내가 작성한 관광지 글 리스트 가져오기
+const getMyReivewList = (accessToken) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${accessToken}`,
+    },
+  };
+  return instance.get('/auth/my-travel-place/review', header);
+};
+
+export {
+  getMyApplyList,
+  getMyInterestGuestHouses,
+  getMyInterestAttractions,
+  getMyReivewList,
+};
