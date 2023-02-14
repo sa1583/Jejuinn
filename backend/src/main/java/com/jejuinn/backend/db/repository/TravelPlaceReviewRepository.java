@@ -1,5 +1,6 @@
 package com.jejuinn.backend.db.repository;
 
+import com.jejuinn.backend.api.dto.response.travelplace.MyTravelPlaceReviewRes;
 import com.jejuinn.backend.db.entity.TravelPlaceReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,4 +24,8 @@ public interface TravelPlaceReviewRepository extends JpaRepository<TravelPlaceRe
 
     @Query("select avg(r.starRating) from TravelPlaceReview r where r.travelPlaceUid = :travelPlaceUid")
     double getAvgStarRating(@Param("travelPlaceUid") Long travelPlaceUid);
+
+    @Query("select new com.jejuinn.backend.api.dto.response.travelplace.MyTravelPlaceReviewRes(r.uid, r.dateCreated, t.name) from TravelPlaceReview r " +
+            "left outer join TravelPlace t on r.travelPlaceUid = t.uid where r.userUid = :userUid")
+    List<MyTravelPlaceReviewRes> findAllByUserUid(Long userUid);
 }

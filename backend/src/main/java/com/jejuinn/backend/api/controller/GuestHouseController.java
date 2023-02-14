@@ -123,7 +123,7 @@ public class GuestHouseController {
     public ResponseEntity<?> updateGuestHouse(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> images,
                                               @RequestPart("guestHouse") InsertGuestHousePostReq req,
                                               @RequestPart(value = "deleteImages", required = false) List<Long> list,
-                                              @PathVariable String guestHouseUid){
+                                              @PathVariable Long guestHouseUid){
 
         // 게스트 하우스 저장
         GuestHouse guestHouse = guestHouseRepository.save(req.toGuestHouse(guestHouseUid));
