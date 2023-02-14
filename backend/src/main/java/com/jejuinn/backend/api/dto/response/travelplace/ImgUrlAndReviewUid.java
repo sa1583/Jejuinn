@@ -17,7 +17,7 @@ public class ImgUrlAndReviewUid {
 
     public static ImgUrlAndReviewUid of(Optional<List<String>> images, Long reviewUid){
         String imgPath = null;
-        if(images.isPresent()) imgPath = images.get().get(0);
+        if(images.isPresent() && images.get().size() > 0) imgPath = images.get().get(0);
         return ImgUrlAndReviewUid.builder()
                 .reviewUid(reviewUid)
                 .imgPath(imgPath)
