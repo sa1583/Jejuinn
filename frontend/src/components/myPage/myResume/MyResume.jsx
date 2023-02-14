@@ -16,10 +16,8 @@ export default function MyResume() {
   const userInfo = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
 
-  // const userInfo = { ...userInfoTest, authorities: ['naver'] };
-
   const changeApplyComp = () => {
-    setOnModify(!onModify);
+    setOnModify((prev) => !prev);
   };
 
   useEffect(() => {
@@ -30,6 +28,10 @@ export default function MyResume() {
     }
     getAndSetResume();
   }, []);
+
+  useEffect(() => {
+    console.log('modify', onModify);
+  }, [onModify]);
 
   useEffect(() => {
     userInfo?.authorities?.map((auth) => {

@@ -87,7 +87,7 @@ export default function MyPage({ content }) {
               지원서 관리
             </CustomButton>
           )}
-          {selectedButton === 'guesthouse' ? (
+          {selectedButton !== 'resume' && selectedButton !== 'mypage' ? (
             <CustomSelectButton>게스트하우스 관리</CustomSelectButton>
           ) : (
             <CustomButton onClick={onGuestHouse}>

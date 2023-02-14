@@ -42,8 +42,20 @@ export default function MyApplicantDetail({ myApplicant, handleClose }) {
     };
   };
 
+  function generateRandomString(length) {
+    let result = '';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   const moveToInterview = () => {
-    navigate(`/interview/${userInfo.nickname}`);
+    const sessionId = generateRandomString(10);
+    navigate(`/interview/${sessionId}`);
   };
 
   // useEffect(() => {
