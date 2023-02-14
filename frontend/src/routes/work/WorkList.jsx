@@ -30,7 +30,7 @@ export default function WorkList() {
   console.log(works);
   return (
     <>
-      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
         <WhiteBox cpn={<WorkFilterBox onSearch={onSearch} />} />
         {isLogin ? <MyWorkList /> : null}
         <h2>진행중인 채용공고</h2>

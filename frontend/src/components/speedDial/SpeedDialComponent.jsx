@@ -5,7 +5,7 @@ export default function SpeedDialComponent({ actions }) {
   return (
     <SpeedDial
       ariaLabel="SpeedDial basic example"
-      sx={{ position: 'fixed', bottom: '4%', right: '5%' }}
+      sx={{ position: 'fixed', bottom: '5%', right: '14%' }}
       icon={<SpeedDialIcon />}
       FabProps={{
         sx: {

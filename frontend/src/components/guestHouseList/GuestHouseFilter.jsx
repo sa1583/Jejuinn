@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import { FilterArea, FilterGuestHouseStyle } from '../work/Filters';
+import { Grid } from '@mui/material';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -19,7 +20,7 @@ const CustomTextField = styled(TextField)({
       borderColor: '#d1d1d1',
       opacity: '83%',
       height: '6vh',
-      borderRadius: '62px',
+      borderRadius: '20px',
       margin: 'auto',
     },
     '&:hover fieldset': {
@@ -53,17 +54,23 @@ export default function GuestHouseFilter({ handleFilter }) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        padding: '5vh 3vh 3vh 3vh',
-        gap: '3vh',
-        height: '21rem',
+        padding: '4vh 3vh 3vh 3vh',
+        gap: '2.3vh',
+        // height: '21rem',
+        marginBottom: '3vh',
       }}
     >
-      <FilterGuestHouseStyle
-        value={guestHouseStyles}
-        setValue={setGuestHouseStyles}
-      />
-
-      <FilterArea value={selectedArea} setValue={setSelectedArea} />
+      <Grid container spacing={2}>
+        <Grid item xs={8}>
+          <FilterGuestHouseStyle
+            value={guestHouseStyles}
+            setValue={setGuestHouseStyles}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <FilterArea value={selectedArea} setValue={setSelectedArea} />
+        </Grid>
+      </Grid>
 
       <CustomTextField
         label="검색어로 찾기"
@@ -81,16 +88,17 @@ export default function GuestHouseFilter({ handleFilter }) {
       <CustomButton
         variant="contained"
         sx={{
-          marginTop: '1.5vh',
-          borderRadius: '25px',
+          // marginTop: 'vh',
+          borderRadius: '20px',
           backgroundColor: '#FF7600',
           fontFamily: 'border',
+          marginBottom: '1vh',
         }}
         size="large"
         startIcon={<SearchIcon />}
         onClick={handleSetFilter}
       >
-        조건 검색
+        나와 찰떡인 게스트하우스 찾기
       </CustomButton>
     </form>
   );

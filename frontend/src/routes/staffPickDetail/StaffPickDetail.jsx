@@ -96,7 +96,7 @@ export default function StaffPickDetail() {
   };
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+    <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
       <SpeedDialComponent actions={actions()} />
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>

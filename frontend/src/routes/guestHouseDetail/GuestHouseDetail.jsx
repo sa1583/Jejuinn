@@ -104,8 +104,8 @@ export default function GuestHouseDetail() {
       {userInfo?.uid === guestHouse?.guestHouse?.representativeUid && (
         <SpeedDialComponent actions={actions} />
       )}
-      <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
-        <Typography variant="h4" color="primary">
+      <Box sx={{ paddingY: '2rem', paddingX: '19%' }}>
+        <Typography variant="h4" color="primary" sx={{ marginY: '15px' }}>
           | {guestHouse?.guestHouse?.guestHouseName}
         </Typography>
         <Grid container spacing={4}>

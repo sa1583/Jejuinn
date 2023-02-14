@@ -4,7 +4,6 @@ import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { deleteComment, updateComment } from '../../api/comment';
 import { images } from '../../assets/images';
-import { deepOrange } from '@mui/material/colors';
 
 export default function CommentList({
   comment,
@@ -55,7 +54,7 @@ export default function CommentList({
               width: '2rem',
               height: '2rem',
               marginTop: '0.5rem',
-              bgcolor: deepOrange[500],
+              bgcolor: '#FF7600',
             }}
           ></Avatar>
         ) : (
@@ -70,7 +69,6 @@ export default function CommentList({
             {comment.nickname[0]}
           </Avatar>
         )}
-
         <Box sx={{ width: '100%' }}>
           <Box
             sx={{

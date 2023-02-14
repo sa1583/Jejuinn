@@ -72,10 +72,7 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
         {reviewContent.profileImageUrl ? (
           <Avatar
             src={profileImage()}
-            sx={{
-              marginTop: '0.5rem',
-              bgcolor: deepOrange[500],
-            }}
+            sx={{ width: '2.8rem', height: '2.8rem', bgcolor: '#FF7600' }}
           ></Avatar>
         ) : (
           <Avatar
@@ -88,17 +85,20 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
           </Avatar>
         )}
 
-        <Typography sx={{ fontSize: '1.2rem', fontWeight: 'bolder' }}>
+        <Typography sx={{ fontSize: '1.1vw', fontWeight: 'bolder' }}>
           {reviewContent.writer_nickname}
         </Typography>
       </Box>
       <Rating
         value={reviewContent?.starRating}
         readOnly
-        sx={{ marginBottom: '2rem', marginTop: '1rem' }}
+        sx={{ marginBottom: '1rem' }}
       />
 
-      <div dangerouslySetInnerHTML={{ __html: reviewContent?.content }} />
+      <div
+        style={{ fontSize: '20px' }}
+        dangerouslySetInnerHTML={{ __html: reviewContent?.content }}
+      />
 
       <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }}>
         {liked && (
@@ -106,7 +106,7 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
             style={{ background: 'none', border: 'none', cursor: 'pointer' }}
             onClick={goDisLike}
           >
-            <FavoriteIcon sx={{ fontSize: '2rem', color: 'red' }} />
+            <FavoriteIcon sx={{ fontSize: '2rem', color: '#FF7600' }} />
           </button>
         )}
         {!liked && (
@@ -114,7 +114,7 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
             style={{ background: 'none', border: 'none', cursor: 'pointer' }}
             onClick={goLike}
           >
-            <FavoriteBorderIcon sx={{ color: 'red', fontSize: '2rem' }} />
+            <FavoriteBorderIcon sx={{ color: '#FF7600', fontSize: '2rem' }} />
           </button>
         )}
       </Box>
