@@ -13,6 +13,7 @@ import { selectAccessToken } from '../../store/user';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentsList from '../commentComponent/CommentsList';
+import { images } from '../../assets/images';
 export default function ReviewContent({ reviewContent, pageId, islogined }) {
   const access_token = useSelector(selectAccessToken);
 
@@ -41,12 +42,19 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
     }
   };
 
-  console.log(reviewContent);
-
   // 좋아요 취소 보내긔
   const goDisLike = async () => {
     await dislikeReview(access_token, pageId);
     setLiked((prev) => !prev);
+  };
+
+  const profileImage = () => {
+    const purl = reviewContent.profileImageUrl;
+    if (purl.slice(0, 4) == 'http') {
+      return purl;
+    } else {
+      return `${images.defalut_url}${purl}`;
+    }
   };
 
   return (
@@ -54,16 +62,40 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
       <Box sx={{ width: '100%', alignSelf: 'center' }}>
         <ImageSlider items={reviewContent?.images} />
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
-        <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+        }}
+      >
+        {reviewContent.profileImageUrl ? (
+          <Avatar
+            src={profileImage()}
+            sx={{
+              marginTop: '0.5rem',
+              bgcolor: deepOrange[500],
+            }}
+          ></Avatar>
+        ) : (
+          <Avatar
+            sx={{
+              backgroundColor: 'primary.main',
+              fontSize: '1rem',
+            }}
+          >
+            {reviewContent.writer_nickname[0]}
+          </Avatar>
+        )}
+
+        <Typography sx={{ fontSize: '1.2rem', fontWeight: 'bolder' }}>
           {reviewContent.writer_nickname}
-        </p>
+        </Typography>
       </Box>
       <Rating
         value={reviewContent?.starRating}
         readOnly
-        sx={{ marginBottom: '2rem' }}
+        sx={{ marginBottom: '2rem', marginTop: '1rem' }}
       />
 
       <div dangerouslySetInnerHTML={{ __html: reviewContent?.content }} />

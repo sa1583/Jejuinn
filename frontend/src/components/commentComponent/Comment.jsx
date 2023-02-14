@@ -32,14 +32,10 @@ export default function CommentList({
 
   const profileImage = () => {
     const purl = comment.profileImgUrl;
-    if (purl) {
-      if (purl.slice(0, 4) == 'http') {
-        return purl;
-      } else {
-        return `${images.defalut_url}${purl}`;
-      }
+    if (purl.slice(0, 4) == 'http') {
+      return purl;
     } else {
-      return '';
+      return `${images.defalut_url}${purl}`;
     }
   };
 
