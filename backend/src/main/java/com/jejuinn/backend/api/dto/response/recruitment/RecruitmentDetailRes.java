@@ -16,10 +16,10 @@ import java.util.List;
 public class RecruitmentDetailRes {
     private Long writerUid;
     private Recruitment recruitment;
-    private List<WorkDetailRes> works;
+    private List<WorkRes> works;
     private List<Image> images;
 
-    public static RecruitmentDetailRes of(Recruitment recruitment, List<WorkDetailRes> works, List<Image> images, Long writerUid) {
+    public static RecruitmentDetailRes of(Recruitment recruitment, List<WorkRes> works, List<Image> images, Long writerUid) {
         return RecruitmentDetailRes.builder()
                 .recruitment(recruitment)
                 .writerUid(writerUid)
