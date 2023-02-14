@@ -17,7 +17,9 @@ import CommentsList from '../../components/commentComponent/CommentsList';
 export default function GuestHouseDetail() {
   const location = useLocation();
   const guestHouseUid = location.pathname.split('detail/')[1];
-  const access_token = useSelector(selectAccessToken);
+  const accessToken = useSelector(selectAccessToken);
+  const usreInfo = useSelector(selectUserInfo);
+
   const [spots, setSpots] = useState([]);
   const [guestHouse, setGuestHouse] = useState([]);
 
@@ -38,13 +40,17 @@ export default function GuestHouseDetail() {
     getGuestHouseDetail();
   }, []);
 
+  useEffect(() => {
+    console.log(guestHouse);
+  }, [guestHouse]);
+
   const navigate = useNavigate();
   const goModifiy = () => {
     navigate(`/guesthouse/update/${guestHouseUid}`);
   };
 
   async function DeleteGuestHouse() {
-    guestHouseDelete(access_token, guestHouseUid);
+    guestHouseDelete(accessToken, guestHouseUid);
     alert('게스트하우스가 삭제되었습니다.');
     navigate('/guesthouse');
   }
@@ -60,7 +66,9 @@ export default function GuestHouseDetail() {
 
   return (
     <>
-      <SpeedDialComponent actions={actions} />
+      {usreInfo?.uid === guestHouse?.guestHouse?.representativeUid && (
+        <SpeedDialComponent actions={actions} />
+      )}
       <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
         <Typography variant="h4" color="primary">
           | {guestHouse?.guestHouse?.guestHouseName}

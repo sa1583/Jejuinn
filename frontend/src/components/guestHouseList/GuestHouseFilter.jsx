@@ -1,13 +1,9 @@
-import MenuItem from '@mui/material/MenuItem';
-import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
-import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
-import GroupsIcon from '@mui/icons-material/Groups';
 import { FilterArea, FilterGuestHouseStyle } from '../work/Filters';
 
 const CustomTextField = styled(TextField)({
@@ -43,39 +39,13 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function GuestHouseFilter({ getFilter, filter }) {
-  const selectedStyles = [
-    '전체',
-    '조용한 게하',
-    '파티가 있는 게하',
-    '수영장이 있는 게하',
-    '뷰가 좋은 게하',
-  ];
-  const selectedSections = [
-    '전체',
-    '서귀포시',
-    '제주시',
-    '한경면',
-    '한림읍',
-    '애월읍',
-    '조천읍',
-    '구좌읍',
-    '성산읍',
-    '표선면',
-    '남원읍',
-    '안덕면',
-    '대정읍',
-    '우도면',
-  ];
-
-  const [pickForm, setPickForm] = useState(filter);
+export default function GuestHouseFilter({ handleFilter }) {
   const [guestHouseStyles, setGuestHouseStyles] = useState([]);
-  const [selectedAreas, setSelectedAreas] = useState([]);
+  const [selectedArea, setSelectedArea] = useState('전체');
+  const [word, setWord] = useState('');
 
-  const handlePickForm = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setPickForm({ ...pickForm, [name]: value });
+  const handleSetFilter = () => {
+    handleFilter(selectedArea, 1, guestHouseStyles, word);
   };
 
   return (
@@ -93,13 +63,12 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         setValue={setGuestHouseStyles}
       />
 
-      <FilterArea value={selectedAreas} setValue={setSelectedAreas} />
+      <FilterArea value={selectedArea} setValue={setSelectedArea} />
 
       <CustomTextField
         label="검색어로 찾기"
-        name="inp"
-        value={pickForm.inp}
-        onChange={handlePickForm}
+        value={word}
+        onChange={(e) => setWord(e.target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start" style={{ color: '#FF7600' }}>
@@ -119,10 +88,7 @@ export default function GuestHouseFilter({ getFilter, filter }) {
         }}
         size="large"
         startIcon={<SearchIcon />}
-        onClick={(e) => {
-          e.preventDefault();
-          getFilter(pickForm);
-        }}
+        onClick={handleSetFilter}
       >
         조건 검색
       </CustomButton>
