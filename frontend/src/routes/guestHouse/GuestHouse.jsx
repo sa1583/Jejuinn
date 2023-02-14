@@ -1,7 +1,7 @@
 import GuestHouseList from '../../components/guestHouseList/GuestHouseList';
 import GuestHouseFilter from '../../components/guestHouseList/GuestHouseFilter';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
-import { Grid } from '@mui/material';
+import { Grid, Divider } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { getGuestHouses } from '../../api/guestHouse';
@@ -62,7 +62,7 @@ export default function GuestHouse() {
 
   return (
     <div>
-      <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+      <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
         {isLogin && <SpeedDialComponent actions={actions} />}
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
@@ -71,14 +71,10 @@ export default function GuestHouse() {
             />
           </Grid>
           <Grid item xs={12} md={8}>
-            <WhiteBox
-              cpn={
                 <GuestHouseList
                   guestHouses={guestHouses}
                   plusPageNum={handleLoadPages}
                 />
-              }
-            />
           </Grid>
         </Grid>
       </Box>

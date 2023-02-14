@@ -22,8 +22,6 @@ export default function Profile() {
 
   const navigate = useNavigate();
   return (
-    <WhiteBox
-      cpn={
         <Stack direction="column" alignItems="center" sx={{ p: '2%' }}>
           <h1>{userInfo.username}</h1>
           <Avatar
@@ -34,14 +32,14 @@ export default function Profile() {
             }
             alt="프로필 사진 들어가용~"
             style={{
-              width: '20rem',
-              height: '20rem',
-              marginBottom: '20px',
-              cursor: 'pointer',
-            }}
+          width: '18vw',
+          height: '18vw',
+          marginBottom: '20px',
+          cursor: 'pointer',
+          boxShadow:
+            'rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;',
+        }}
           />
         </Stack>
-      }
-    />
   );
 }

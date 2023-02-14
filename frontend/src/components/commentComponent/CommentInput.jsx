@@ -2,7 +2,6 @@ import { Box } from '@mui/system';
 import Avatar from '@mui/material/Avatar';
 import { Button, Typography } from '@mui/material';
 // import styles from './CommentInput.module.css';
-import { deepOrange } from '@mui/material/colors';
 
 import { useState } from 'react';
 import { createComment } from '../../api/comment';
@@ -87,68 +86,89 @@ export default function CommentInput({
             </Typography>
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '100%',
+                width: '2rem',
+                height: '2rem',
+                bgcolor: '#FF7600',
+                marginTop: '0.5rem',
               }}
-            >
-              {/* <input
+              src={profileImage()}
+            ></Avatar>
+            <Box sx={{ width: '100%' }}>
+              <Typography sx={{ fontWeight: 'bolder' }}>
+                {userInfo?.nickname}
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}
+              >
+                {/* <input
               type="text"
               placeholder="댓글을 입력하세요."
               className={styles.commentInp}
             /> */}
-              <textarea
-                name=""
-                id=""
-                style={{
-                  width: '85%',
-                  paddingTop: '0.5rem',
-                  marginTop: '0.5rem',
-                  resize: 'none',
-                }}
-                rows="4"
-                placeholder="댓글을 입력해주세요. (최대 255자)"
-                maxLength={255}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              ></textarea>
-              <Box sx={{ display: 'flex' }}>
-                <Button
-                  sx={{
-                    fontWeight: 'bolder',
-                    height: '3rem',
-                    alignSelf: 'center',
+                <textarea
+                  name=""
+                  id=""
+                  style={{
+                    width: '85%',
+                    height: '2rem',
+                    paddingTop: '0.5rem',
+                    paddingLeft: 0,
+                    marginTop: '0.5rem',
+                    resize: 'none',
+                    border: 'none',
+                    fontFamily: 'SUIT-Regular',
+                    fontSize: '17px',
+                    outline: 'none',
                   }}
-                  variant="contained"
-                  onClick={commentCreate}
-                >
-                  작성
-                </Button>
+                  rows="4"
+                  placeholder="댓글을 입력해주세요. (최대 255자)"
+                  maxLength={255}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                ></textarea>
+                <Box sx={{ display: 'flex' }}>
+                  <Button
+                    sx={{
+                      fontFamily: 'SUIT-Regular',
+                      fontWeight: 'bolder',
+                      // height: '3rem',
+                      alignSelf: 'center',
+                    }}
+                    variant="contained"
+                    onClick={commentCreate}
+                  >
+                    작성
+                  </Button>
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            height: '3rem',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h6">
-            댓글을 작성하려면{' '}
-            <span
-              onClick={() => navigate('/login')}
-              style={{ color: 'orange', cursor: 'pointer' }}
-            >
-              로그인
-            </span>
-            을 해주세요.
-          </Typography>
-        </Box>
-      )}
+        ) : (
+          <Box
+            sx={{
+              height: '3rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6">
+              댓글을 작성하려면{' '}
+              <span
+                onClick={() => navigate('/login')}
+                style={{ color: '#FF7600', cursor: 'pointer' }}
+              >
+                로그인
+              </span>
+              을 해주세요.
+            </Typography>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 }

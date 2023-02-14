@@ -45,29 +45,65 @@ export default function CommentsList() {
           />
         }
       />
-      <div
+      {/* <div
         style={{
           width: '100%',
           textAlign: 'center',
-          borderBottom: '3px solid #FF7600',
-          margin: '10px 0 10px',
+          borderBottom: '1px solid #DEDEDE',
+          margin: '20px 0 20px',
           borderRadius: '50px',
         }}
-      ></div>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        {comments.map((comment) => {
+      ></div> */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '1vh',
+          marginTop: '2vh',
+        }}
+      >
+        {comments.length ? (
+          ''
+        ) : (
+          <p
+            style={{
+              fontSize: '2.1vh',
+              color: 'grey',
+              margin: 'auto',
+              marginTop: '2vh',
+            }}
+          >
+            작성된 댓글이 없습니다
+          </p>
+        )}
+        {comments.map((comment, index) => {
           return (
-            <CommentBox
-              key={uuidv4()}
-              cpn={
-                <Comment
-                  comment={comment}
-                  accessToken={accessToken}
-                  getComments={getComments}
-                  userInfo={userInfo}
-                />
-              }
-            />
+            <div>
+              {index ? (
+                <div
+                  style={{
+                    width: '100%',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #DEDEDE',
+                    margin: '0px 0',
+                    borderRadius: '50px',
+                  }}
+                ></div>
+              ) : (
+                ''
+              )}
+              <CommentBox
+                key={uuidv4()}
+                cpn={
+                  <Comment
+                    comment={comment}
+                    accessToken={accessToken}
+                    getComments={getComments}
+                    userInfo={userInfo}
+                  />
+                }
+              />{' '}
+            </div>
           );
         })}
       </Box>

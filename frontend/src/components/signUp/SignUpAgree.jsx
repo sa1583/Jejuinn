@@ -30,7 +30,7 @@ export default function SignAgree({ handleNext }) {
       }}
     >
       <FormGroup>
-        <Box sx={{ display: 'flex', marginTop: '2rem' }}>
+        <Box sx={{ display: 'flex', marginTop: '1rem' }}>
           <FormControlLabel
             sx={{
               width: '100%',
@@ -117,17 +117,18 @@ export default function SignAgree({ handleNext }) {
           handleNext();
         }}
         sx={{
-          width: '70%',
+          width: '300px',
+          height: '50px',
           background: '#FF7600',
-          borderRadius: '38px',
+          borderRadius: '50px',
           color: 'white',
           '&:hover': {
             color: 'white',
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5rem',
-          marginTop: '3rem',
+          fontSize: '1rem',
+          marginTop: '2.8rem',
         }}
         disabled={agree.first === true && agree.second === true ? false : true}
       >

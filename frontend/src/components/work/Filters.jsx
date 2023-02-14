@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -18,7 +19,7 @@ const CustomTextField = styled(TextField)({
       borderColor: '#d1d1d1',
       opacity: '83%',
       height: '100%',
-      borderRadius: '62px',
+      borderRadius: '20px',
       margin: 'auto',
     },
     '&:hover fieldset': {
@@ -76,7 +77,7 @@ function FilterArea({ value, setValue }) {
         <CustomTextField
           {...params}
           label="선호하는 지역"
-          placeholder={value ? null : '원하는 지역을 입력하세요'}
+          placeholder="선호하는 지역을 선택하세요"
           InputProps={{
             ...params.InputProps,
             startAdornment: (
@@ -185,7 +186,18 @@ function FilterGuestHouseStyle({ value, setValue }) {
         <CustomTextField
           {...params}
           label="스타일"
-          placeholder="원하는 스타일을 입력하세요"
+          placeholder="원하는 스타일을 선택하세요"
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: (
+              <>
+                <InputAdornment position="start">
+                  <GroupsIcon color="primary" />
+                </InputAdornment>
+                {params.InputProps.startAdornment}
+              </>
+            ),
+          }}
         />
       )}
     />
