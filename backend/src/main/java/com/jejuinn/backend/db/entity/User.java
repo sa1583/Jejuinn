@@ -111,6 +111,7 @@ public class User {
       return User.builder()
               .uid(user.get().getUid())
               .password(user.get().getPassword())
+              .email(user.get().getEmail())
               .age(naverProfileDto.getAge())
               .gender(naverProfileDto.getGender())
               .nickname(naverProfileDto.getNickname())
