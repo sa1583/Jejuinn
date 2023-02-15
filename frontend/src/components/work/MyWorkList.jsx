@@ -32,7 +32,7 @@ export default function MyWorkList() {
     console.log(huoseRecruitment);
     huoseRecruitment.length === 0
       ? navigate(`/work-recruitment-write/${ghUid}`)
-      : navigate(`/work-write/${huoseRecruitment[0].uid}`);
+      : navigate(`/work-write/${huoseRecruitment[0].uid}/undefined`);
   }
 
   async function setHouseAndWork() {
@@ -43,7 +43,7 @@ export default function MyWorkList() {
         ...prevArray,
         ...myGuestHousesFromServer,
       ]);
-      myGuestHousesFromServer.map((myGuestHouse) => {
+      myGuestHousesFromServer?.map((myGuestHouse) => {
         getWorks(myGuestHouse.uid);
       });
     }

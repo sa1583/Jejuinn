@@ -94,7 +94,7 @@ const router = createBrowserRouter([
         element: <RecruitmentWrite />,
       },
       {
-        path: 'work-write/:recruitmentUid',
+        path: 'work-write/:recruitmentUid/:workUid',
         element: <WorkWrite />,
       },
       {

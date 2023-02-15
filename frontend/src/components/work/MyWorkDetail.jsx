@@ -14,7 +14,7 @@ export default function MyWorkDetail({ work }) {
   };
 
   function handleWorkUpdate() {
-    navigate(`/work-write/${work.recruitmentUid}`);
+    navigate(`/work-write/${work.recruitmentUid}/${work.workUid}`);
   }
   function handleWorkDelete() {
     deleteWork(work.workUid, accessToken);
