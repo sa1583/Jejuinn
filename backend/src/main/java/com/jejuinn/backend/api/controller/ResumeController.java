@@ -34,6 +34,7 @@ public class ResumeController {
     private final UserRepository userRepository;
     private final StaffRecordRepository staffRecordRepository;
     private final RecruitmentRepository recruitmentRepository;
+    private final AreaRepository areaRepository;
     private final UserService userService;
 
     @PostMapping("/auth/job-search")
@@ -45,11 +46,16 @@ public class ResumeController {
     })
     public ResponseEntity<?> insertResumeInfo(@Valid @RequestBody InsertResumeInfoPostReq insertResumeInfoPostReq, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
-        Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid);
-        if(resumeInfo.isPresent()) {
+        Optional<ResumeInfo> existResumeInfo = resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid);
+        if(existResumeInfo.isPresent()) {
             return ResponseEntity.status(400).build();
         }
-        resumeInfoRepository.save(insertResumeInfoPostReq.toResumeInfo());
+        ResumeInfo resumeInfo = insertResumeInfoPostReq.toResumeInfo();
+        if(resumeInfo.getInterestAreas().get(0).getAreaName().equals("전체")) {
+            resumeInfo.getInterestAreas().remove(0);
+            resumeInfo.setInterestAreas(areaRepository.findAll());
+        }
+        resumeInfoRepository.save(resumeInfo);
         return ResponseEntity.status(200).build();
     }
 
@@ -63,7 +69,7 @@ public class ResumeController {
     })
     public ResponseEntity<?> deleteResumeInfo(@PathVariable Long resumeInfoUid, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
-        Long writeUid = resumeInfoRepository.findById(resumeInfoUid).get().getUid();
+        Long writeUid = resumeInfoRepository.findById(resumeInfoUid).get().getUser().getUid();
         if(userUid != writeUid) return ResponseEntity.status(401).build();
         resumeInfoRepository.deleteById(resumeInfoUid);
         return ResponseEntity.status(200).build();
@@ -110,7 +116,12 @@ public class ResumeController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> updateResumeInfo(@Valid @RequestBody UpdateResumeInfoPutReq updateResumeInfoPutReq) {
-        resumeInfoRepository.save(updateResumeInfoPutReq.toResumeInfo());
+        ResumeInfo resumeInfo = updateResumeInfoPutReq.toResumeInfo();
+        if(resumeInfo.getInterestAreas().get(0).getAreaName().equals("전체")) {
+            resumeInfo.getInterestAreas().remove(0);
+            resumeInfo.setInterestAreas(areaRepository.findAll());
+        }
+        resumeInfoRepository.save(resumeInfo);
         return ResponseEntity.status(200).build();
     }
 
