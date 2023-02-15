@@ -19,28 +19,40 @@ export default function StaffPickCreateSpotType({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        gap: '5rem',
+        gap: '2rem',
       }}
     >
       <Box sx={{ width: '35%' }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">
-            유형을 선택해주세요.
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="유형을 선택해주세요."
-            value={newtype}
-            onChange={(e) => handleType(e.target.value)}
-          >
-            {types.map((type) => (
-              <MenuItem value={type} key={uuidv4()}>
-                {type}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1rem',
+          }}
+        >
+          <Typography sx={{ fontSize: 20 }}>
+            명소 유형을 선택해주세요.
+          </Typography>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+              유형을 선택해주세요.
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="유형을 선택해주세요."
+              value={newtype}
+              onChange={(e) => handleType(e.target.value)}
+            >
+              {types.map((type) => (
+                <MenuItem value={type} key={uuidv4()}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
       </Box>
       <Box
         sx={{
@@ -48,13 +60,23 @@ export default function StaffPickCreateSpotType({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '2rem',
+          gap: '1rem',
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: 'bolder' }}>
-          명소 사진을 등록해주세요.
-        </Typography>
-        <ImageUploader files={file} handleFiles={handleFile} maxNum={1} />
+        <Typography sx={{ fontSize: 20 }}>명소 사진을 등록해주세요.</Typography>
+        <Box
+          sx={{
+            width: '600px',
+            height: '300px',
+          }}
+        >
+          <ImageUploader
+            files={file}
+            handleFiles={handleFile}
+            maxNum={1}
+            style={{ padding: 0 }}
+          />
+        </Box>
       </Box>
     </Box>
   );

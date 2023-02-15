@@ -162,7 +162,7 @@ export default function ImageUploader({
               alignItems: 'center',
               cursor: 'pointer',
               justifySelf: 'center',
-              margin: '5rem',
+              margin: '3rem',
             }}
           >
             <button

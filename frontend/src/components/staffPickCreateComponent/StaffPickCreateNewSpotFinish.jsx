@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { images } from '../../assets/images';
 
 export default function StaffPickCreateNewSpotFinish() {
   return (
@@ -9,17 +10,28 @@ export default function StaffPickCreateNewSpotFinish() {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        marginTop: '4rem',
         flexDirection: 'column',
       }}
     >
       <Typography
-        variant="h3"
-        sx={{ color: 'primary.main', fontWeight: 'bold', marginBottom: '2rem' }}
+        sx={{
+          fontSize: '40px',
+          fontFamily: 'GmarketSansBold',
+          // color: 'primary.main',
+          // marginTop: '2rem',
+          marginBottom: '0.5rem',
+        }}
       >
-        명소 등록 완료
+        새로운 명소 등록에 성공하셨습니다!
       </Typography>
-      <Typography variant="h5">등록한 명소에 리뷰를 등록해주세요!</Typography>
+      <Typography
+        sx={{
+          fontSize: '20px',
+        }}
+      >
+        다음 스탭으로 넘어가 등록한 명소에 대한 리뷰를 작성해주세요!
+      </Typography>
+      <img src={images.typing} alt="img" style={{ height: '350px' }} />
     </Box>
   );
 }
