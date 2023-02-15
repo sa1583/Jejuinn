@@ -1,6 +1,5 @@
 import { Box } from '@mui/system';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 import { getRecommendName } from '../../api/staffPick';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
