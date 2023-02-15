@@ -11,23 +11,25 @@ import { selectIsLogin } from '../../store/user';
 
 const CustomButton = styled(Button)({
   color: 'grey',
-  fontSize: '20px',
+  fontSize: '22px',
   width: '100%',
   height: '18vw',
   height: '6vh',
+  justifyContent: 'flex-start',
   '&:hover': {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'transparent',
   },
 });
 
 const CustomSelectButton = styled(Button)({
   color: 'black',
-  fontSize: '20px',
+  fontSize: '22px',
   fontWeight: 'bold',
   width: '100%',
   height: '6vh',
+  justifyContent: 'flex-start',
   '&:hover': {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'transparent',
   },
 });
 
@@ -66,6 +68,7 @@ export default function MyPage({ content }) {
           <Profile />
           {selectedButton === 'mypage' ? (
             <CustomSelectButton
+              disableTouchRipple
               sx={{
                 marginTop: '16px',
               }}
@@ -75,6 +78,7 @@ export default function MyPage({ content }) {
             </CustomSelectButton>
           ) : (
             <CustomButton
+              disableTouchRipple
               sx={{
                 marginTop: '16px',
               }}
@@ -86,12 +90,14 @@ export default function MyPage({ content }) {
           )}
           {selectedButton === 'resume' ? (
             <CustomSelectButton
+              disableTouchRipple
               startIcon={<DescriptionIcon sx={{ color: '#FF7600' }} />}
             >
               지원서 관리
             </CustomSelectButton>
           ) : (
             <CustomButton
+              disableTouchRipple
               startIcon={<DescriptionIcon sx={{ color: '#FF7600' }} />}
               onClick={onApply}
             >
@@ -100,12 +106,14 @@ export default function MyPage({ content }) {
           )}
           {selectedButton !== 'resume' && selectedButton !== 'mypage' ? (
             <CustomSelectButton
+              disableTouchRipple
               startIcon={<HolidayVillageIcon sx={{ color: '#FF7600' }} />}
             >
               게스트하우스 관리
             </CustomSelectButton>
           ) : (
             <CustomButton
+              disableTouchRipple
               startIcon={<HolidayVillageIcon sx={{ color: '#FF7600' }} />}
               onClick={onGuestHouse}
             >
