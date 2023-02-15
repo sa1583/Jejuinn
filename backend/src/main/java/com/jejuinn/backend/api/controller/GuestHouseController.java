@@ -6,10 +6,12 @@ import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseDetailPostRe
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GuestHouseDeatilDto;
 import com.jejuinn.backend.api.dto.response.recruitment.WorkDetailRes;
+import com.jejuinn.backend.api.service.RecruitmentService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.db.entity.Favorite;
 import com.jejuinn.backend.db.entity.GuestHouse;
+import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.repository.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +36,7 @@ public class GuestHouseController {
     private final GuestHouseRepository guestHouseRepository;
     private final GuestHouseRepositorySupport guestHouseRepositorySupport;
     private final ImageRepository imageRepository;
+    private final RecruitmentService recruitmentService;
     private final UserService userService;
     private final CommentRepository commentRepository;
     private final S3Uploader s3Uploader;
@@ -159,7 +162,12 @@ public class GuestHouseController {
             @ApiResponse(code = 400, message = "BAD REQUEST(수정 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteGuestHouse(@PathVariable Long guestHouseUid){
+    public ResponseEntity<?> deleteGuestHouse(@PathVariable Long guestHouseUid, HttpServletRequest request){
+        List<Recruitment> recruitment = recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(guestHouseUid);
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        if(recruitment == null) return ResponseEntity.status(400).build();
+        System.out.println(recruitment.get(0).getGuestHouseUid());
+        recruitmentService.deleteRecruitment(recruitment.get(0).getUid(), userUid);
         guestHouseRepository.deleteById(guestHouseUid);
         return ResponseEntity.status(200).build();
     }
