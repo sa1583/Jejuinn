@@ -56,7 +56,6 @@ export default function GuestHouseFilter({ handleFilter }) {
         flexDirection: 'column',
         padding: '4vh 3vh 3vh 3vh',
         gap: '2.3vh',
-        // height: '21rem',
         marginBottom: '3vh',
       }}
     >

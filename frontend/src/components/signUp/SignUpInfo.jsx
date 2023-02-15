@@ -56,15 +56,12 @@ export default function SignUpInfo({ handleNext }) {
   const [emailReceiveAllow, setEmailReceiveAllow] = useState(false);
 
   const getEmailCheck = async () => {
-    const emailAllowed = (await checkEmail(signUpForm.email)).status;
-    switch (emailAllowed) {
-      case 200:
-        setEmailReceiveAllow(true);
-        alert('중복 확인 완료');
-        break;
-      default:
-        alert('이미 존재하는 이메일입니다.');
-        break;
+    try {
+      await checkEmail(signUpForm.email);
+      setEmailReceiveAllow(true);
+      alert('중복 확인 완료');
+    } catch (err) {
+      alert('이미 존재하는 이메일입니다.');
     }
   };
 
