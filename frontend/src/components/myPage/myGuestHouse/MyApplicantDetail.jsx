@@ -50,7 +50,7 @@ export default function MyApplicantDetail({
   function generateRandomString(length) {
     let result = '';
     const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -59,7 +59,7 @@ export default function MyApplicantDetail({
   }
 
   const moveToInterview = () => {
-    const sessionId = generateRandomString(10);
+    const sessionId = userInfo.uid + generateRandomString(30);
     navigate(`/interview/${sessionId}`);
   };
 

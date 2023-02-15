@@ -3,16 +3,21 @@ import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import UserVideoComponent from '../../components/videoInterview/UserVideoComponent';
 import VideoInterviewHeader from '../../components/videoInterview/VideoInterviewHeader';
+import { selectIsLogin, selectUserInfo } from '../../store/user';
 
 const APPLICATION_SERVER_URL = 'https://jejuinn.com:8443';
 const OPENVIDU_SERVER_SECRET = 'jejuinn';
 
 export default function VideoInterview() {
+  const userInfo = useSelector(selectUserInfo);
+  const { sessionId } = useParams();
+
   const [openVidu, setOpenVidu] = useState(new OpenVidu());
-  const [mySessionId, setMySessionId] = useState();
-  const [myUserName, setMyUserName] = useState();
+  const [mySessionId, setMySessionId] = useState(sessionId);
   const [session, setSession] = useState();
   const [publisher, setPublisher] = useState();
   const [participants, setParticipants] = useState([]);
@@ -20,9 +25,11 @@ export default function VideoInterview() {
   const [audioOff, setAudioOff] = useState(false);
   const [videoOff, setVideoOff] = useState(false);
 
-  const joinSession = (e) => {
+  const joinSession = () => {
     setSession(openVidu.initSession());
   };
+
+  const navigate = useNavigate();
 
   const leaveSession = () => {
     if (session) {
@@ -31,8 +38,8 @@ export default function VideoInterview() {
     setSession(undefined);
     setParticipants([]);
     setMySessionId('');
-    setMyUserName('');
     setPublisher(undefined);
+    return navigate('/');
   };
 
   const getToken = async () => {
@@ -86,14 +93,6 @@ export default function VideoInterview() {
     );
   };
 
-  const handleChangeSessionId = (e) => {
-    setMySessionId(e.target.value);
-  };
-
-  const handleChangeUserName = (e) => {
-    setMyUserName(e.target.value);
-  };
-
   const handleVideo = () => {
     publisher.publishVideo(videoOff);
     setVideoOff((prev) => !prev);
@@ -104,7 +103,11 @@ export default function VideoInterview() {
     setAudioOff((prev) => !prev);
   };
 
+  const isLogin = useSelector(selectIsLogin);
+
   useEffect(() => {
+    if (!isLogin) navigate('/login');
+    joinSession();
     return () => {
       return leaveSession();
     };
@@ -238,24 +241,29 @@ export default function VideoInterview() {
       });
 
       const sessionConnect = async () => {
-        const token = await getToken();
-        await session.connect(token, { clientData: myUserName });
-        const publisher = await openVidu.initPublisherAsync(undefined, {
-          audioSource: undefined, // The source of audio. If undefined default microphone
-          videoSource: undefined, // The source of video. If undefined default webcam
-          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-          publishVideo: true, // Whether you want to start publishing with your video enabled or not
-          resolution: '640x480', // The resolution of your video
-          frameRate: 30, // The frame rate of your video
-          insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-          mirror: false, // Whether to mirror your local video or not
-        });
-        session.publish(publisher);
-        publisher.speaking = false;
-        publisher.videoOff = false;
-        publisher.audioOff = false;
-        setParticipants((prev) => [...prev, publisher]);
-        setPublisher(publisher);
+        try {
+          const token = await getToken();
+          await session.connect(token, { clientData: userInfo.username });
+          const publisher = await openVidu.initPublisherAsync(undefined, {
+            audioSource: undefined, // The source of audio. If undefined default microphone
+            videoSource: undefined, // The source of video. If undefined default webcam
+            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+            publishVideo: true, // Whether you want to start publishing with your video enabled or not
+            resolution: '640x480', // The resolution of your video
+            frameRate: 30, // The frame rate of your video
+            insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
+            mirror: false, // Whether to mirror your local video or not
+          });
+          session.publish(publisher);
+          publisher.speaking = false;
+          publisher.videoOff = false;
+          publisher.audioOff = false;
+          setParticipants((prev) => [...prev, publisher]);
+          setPublisher(publisher);
+        } catch (error) {
+          alert('존재하지 않는 세션입니다.');
+          navigate('/');
+        }
       };
       sessionConnect();
     }
@@ -276,7 +284,7 @@ export default function VideoInterview() {
           alignItems: 'center',
         }}
       >
-        {session === undefined ? (
+        {/* {session === undefined ? (
           <div>
             <div>
               <h1> Join a video session </h1>
@@ -304,7 +312,7 @@ export default function VideoInterview() {
               </p>
             </div>
           </div>
-        ) : null}
+        ) : null} */}
         {session !== undefined ? (
           <div>
             <div
