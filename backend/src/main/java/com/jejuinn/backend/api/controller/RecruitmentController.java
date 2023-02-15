@@ -115,15 +115,38 @@ public class RecruitmentController {
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/auth/job-offer")
+    @PutMapping("/auth/job-offer/{recruitmentUid}")
     @ApiOperation(value = "모집공고 수정", notes = "모집공고(Recruitment), 직무(Work), 이미지(images)를 수정합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
+            @ApiResponse(code = 200, message = "OK(수정 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateRecruitment() {
-        return null;
+    public ResponseEntity<?> updateRecruitment(@RequestPart(value = "uploadImages", required = false) List<MultipartFile> images,
+                                               @RequestPart(value = "deleteImages", required = false) List<Long> list,
+                                               @RequestPart(value = "recruitmentBody") RecruitmentBodyDto recruitmentBodyDto,
+                                               @PathVariable Long recruitmentUid) {
+        Recruitment recruitment = recruitmentBodyDto.getRecruitment().toRecruitment();
+        recruitment.setUid(recruitmentUid);
+        recruitmentRepository.save(recruitment);
+
+        // 사진 삭제
+        try {
+            if(list != null && !list.isEmpty()) s3Uploader.deleteImages(list);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).build();
+        }
+
+        // 사진 저장
+        try {
+            if(images != null && !images.isEmpty()) s3Uploader.uploadImages(images, RECRUITMENT_TYPE, recruitment.getUid());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(400).build();
+        }
+
+        return ResponseEntity.status(200).build();
     }
 
     @DeleteMapping("/auth/job-offer/{recruitmentUid}")
