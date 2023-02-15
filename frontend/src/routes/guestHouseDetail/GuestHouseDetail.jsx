@@ -34,6 +34,7 @@ export default function GuestHouseDetail() {
     const data = (await guestHouseDetail(guestHouseUid)).data;
     setGuestHouse(data);
     const info = data.guestHouse;
+    console.log(info);
     setSpots([
       {
         id: info.uid,
@@ -56,9 +57,7 @@ export default function GuestHouseDetail() {
 
   useEffect(() => {
     if (userInfo) {
-      const exist = likedGuestHouses.find(
-        (elem) => elem.guestHouse.uid == guestHouseUid,
-      );
+      const exist = likedGuestHouses.find((elem) => elem.uid == guestHouseUid);
       if (exist) setLikeState(2);
       else setLikeState(1);
     }
