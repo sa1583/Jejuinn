@@ -37,8 +37,10 @@ public class InsertResumeInfoPostReq {
 
     private String instagramLink;
 
+    @NotNull
     private List<String> personTypes;
 
+    @NotNull
     private String interestArea;
 
     public String toGuestHouseType() {
