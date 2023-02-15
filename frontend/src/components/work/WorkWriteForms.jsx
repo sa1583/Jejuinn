@@ -291,18 +291,22 @@ function GetWorkDescription({ handleWorkInfo, preValue }) {
   );
 }
 
-function GetWorkEntryDate({ onWorkEntryDate, preValue }) {
-  const [value, setValue] = useState('');
+function GetWorkEntryDate({ value, setValue }) {
   const handelOnChange = (event) => {
-    const entryDate = event.$d.toISOString().split('T')[0];
     setValue(event.$d.toISOString().split('T')[0]);
-    onWorkEntryDate(entryDate);
   };
+  // const [value, setValue] = useState('');
+  // const handelOnChange = (event) => {
+  //   const entryDate = event.$d.toISOString().split('T')[0];
+  //   setValue(event.$d.toISOString().split('T')[0]);
+  //   onWorkEntryDate(entryDate);
+  // };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="입도가능날짜"
-        value={preValue}
+        value={value}
+        // value={value}
         name="entryDate"
         inputFormat="YYYY-MM-DD"
         mask={'____-__-__'}

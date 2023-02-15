@@ -59,7 +59,6 @@ export default function WorkRecruitmentWrite() {
   };
 
   const onClick = () => {
-    console.log(workInfo, recruitmentInfo);
     const formData = new FormData();
     const recruitmentBody = {
       works: [workInfo],
@@ -75,6 +74,7 @@ export default function WorkRecruitmentWrite() {
       formData.append('uploadImages', file);
     });
 
+    console.log(workInfo, recruitmentInfo, recruitmentBody);
     fetch(createRecruitment(formData, accessToken));
 
     navigate(`/worklist/`);
