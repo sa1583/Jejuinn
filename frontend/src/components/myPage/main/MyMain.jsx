@@ -60,7 +60,7 @@ export default function MyMain() {
   const navigate = useNavigate();
 
   const [isOpened, setIsOpened] = useState(true);
-  const [tabNum, setTabNum] = useState('1');
+  const [tabNum, setTabNum] = useState('0');
   const [myInterestGuestHouses, setMyInterestGuestHouses] = useState([]);
   const [myLikePlaceList, setMyLikePlaceList] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
@@ -149,7 +149,7 @@ export default function MyMain() {
                   {myInterestGuestHouses.map((guestHouse) => {
                     return (
                       <Box
-                        key={guestHouse?.uid}
+                        key={guestHouse.uid}
                         onClick={() =>
                           navigate(`/guesthouse/detail/${guestHouse.uid}`)
                         }
@@ -167,7 +167,7 @@ export default function MyMain() {
                   {myLikePlaceList.map((post) => {
                     return (
                       <Box
-                        key={post?.uid}
+                        key={post.uid}
                         onClick={() =>
                           navigate(`/staffpicklist/detail/${post?.uid}`)
                         }
@@ -189,9 +189,9 @@ export default function MyMain() {
               {myPosts.map((post) => {
                 return (
                   <Box
-                    key={post?.reviewUid}
+                    key={post.reviewUid}
                     onClick={() =>
-                      navigate(`/staffpicklist/detail/${post?.reviewUid}`)
+                      navigate(`/staffpicklist/detail/${post.reviewUid}`)
                     }
                     sx={{ cursor: 'pointer' }}
                   >

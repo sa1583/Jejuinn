@@ -87,8 +87,6 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
     setMinWorkPeriod(event.target.value);
   };
 
-  const navigate = useNavigate();
-
   const submitResume = async () => {
     const body = {
       autoApply: false,
@@ -112,6 +110,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
   };
 
   useEffect(() => {
+    console.log('resume', resume);
     if (resume) {
       const newMyStyleTags = [];
       resume.personTypes.map(({ type }) => {
@@ -123,14 +122,10 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
         newGuestHouseType.push(type);
       });
 
-      const newInteresAreas = [];
-      resume.interestAreas.map(({ areaName }) => {
-        newInteresAreas.push(areaName);
-      });
       setMyStyleTags(newMyStyleTags);
       setInstagramUrl(resume.instagramLink ? resume.instagramLink : '');
       setGuestHouseStyleTags(newGuestHouseType);
-      setArea(newInteresAreas);
+      setArea(resume.interestArea);
       setStartDate(resume.possibleStartDate);
       setMinWorkPeriod(resume.minWorkPeriod);
       setIntro(resume.content);
