@@ -60,9 +60,7 @@ export default function StaffPickSpotInfo({ selectedSpot }) {
         )}
         {inline('유형', selectedSpot?.category)}
         <Box sx={{ display: 'flex' }}>
-          <Box sx={{ fontSize: '1.2rem', width: '50px' }}>
-            주소&nbsp;&nbsp;&nbsp;
-          </Box>
+          <Box sx={{ fontSize: '1.2rem', width: '53px' }}>주소</Box>
           <Box component="span" sx={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
             {selectedSpot?.address}
           </Box>

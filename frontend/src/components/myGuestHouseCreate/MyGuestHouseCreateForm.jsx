@@ -231,7 +231,7 @@ export default function MyGuestHouseCreateForm() {
           onChange={({ target: { value } }) => setAddressDetail(value)}
         />
 
-        <MapApi spots={[pos]} startSpot={[pos]} />
+        <MapApi spots={[pos]} startSpot={[pos]} high={'23rem'} />
 
         <Box my="20px" />
 
