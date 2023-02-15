@@ -169,7 +169,7 @@ export default function MyMain() {
                   {myLikePlaceList.map((post) => {
                     return (
                       <Box
-                        key={uuidv4()}
+                        key={post.uid}
                         onClick={() =>
                           navigate(`/staffpicklist/detail/${post.uid}`)
                         }
@@ -191,7 +191,7 @@ export default function MyMain() {
               {myPosts.map((post) => {
                 return (
                   <Box
-                    key={uuidv4()}
+                    key={post.reviewUid}
                     onClick={() =>
                       navigate(`/staffpicklist/detail/${post.reviewUid}`)
                     }
