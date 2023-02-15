@@ -139,7 +139,7 @@ export default function ImageUploader({
       <div
         {...getRootProps({ className: 'dropzone' })}
         style={{
-          border: 'dotted #969696',
+          border: '2px dashed #dddddd',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -162,23 +162,26 @@ export default function ImageUploader({
               alignItems: 'center',
               cursor: 'pointer',
               justifySelf: 'center',
+              margin: '5rem',
             }}
           >
             <button
               style={{ background: 'white', border: 'none', cursor: 'pointer' }}
             >
               <AddPhotoAlternateOutlinedIcon
-                sx={{ fontSize: '6rem' }}
-                color="primary"
+                sx={{
+                  fontSize: '7rem',
+                  color: '#eaeaea',
+                  marginBottom: '20px',
+                }}
               />
             </button>
-            <Typography sx={{ fontSize: '1.5rem', textAlign: 'center' }}>
+            <Typography sx={{ fontSize: '1.1rem', textAlign: 'center' }}>
               이미지를 <span style={{ color: '#FF7600' }}>드래그</span>하거나
-              <br />
-              <span style={{ color: '#FF7600' }}>클릭</span>하여 직접
+              <span style={{ color: '#FF7600' }}> 클릭</span>하여 직접
               선택하세요.
             </Typography>
-            <Typography sx={{ fontSize: '0.8rem' }}>
+            <Typography sx={{ fontSize: '0.8rem', color: 'grey' }}>
               지원 확장자 : jpg, jpeg, png (최대 {maxNum}개)
             </Typography>
           </div>
