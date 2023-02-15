@@ -30,7 +30,6 @@ const CustomButton = styled(Button)({
   color: '#FF7600',
   width: '70%',
   borderRadius: '62px',
-  fontFamily: 'border',
   height: '5vh',
   '&:hover': {
     color: '#FFFFFF',
