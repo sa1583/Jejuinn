@@ -6,6 +6,7 @@ import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetail;
 import com.jejuinn.backend.api.dto.response.resumeinfo.ResumeInfoDetailRes;
 import com.jejuinn.backend.api.dto.response.resumeinfo.StaffRecordDetail;
 import com.jejuinn.backend.api.dto.response.resumeinfo.UserDetail;
+import com.jejuinn.backend.api.service.RecruitmentService;
 import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
@@ -50,6 +51,7 @@ public class RecruitmentController {
     private final ResumeInfoRepository resumeInfoRepository;
     private final UserRepository userRepository;
     private final StaffRecordRepository staffRecordRepository;
+    private final RecruitmentService recruitmentService;
     private final UserService userService;
 
     @GetMapping("/api/job-offer")
@@ -157,19 +159,8 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteRecruitment(@PathVariable Long recruitmentUid, HttpServletRequest request) {
-        Optional<List<Long>> list = imageRepository.findUidByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid);
         Long userUid = userService.getUserUidFromAccessToken(request);
-        Long writerUid = recruitmentRepository.findUserUidByRecruitmentUid(recruitmentUid);
-        if(userUid != writerUid) return ResponseEntity.status(401).build();
-        recruitmentRepository.deleteById(recruitmentUid);
-        for(Long uid : list.get()) {
-            try {
-                s3Uploader.delete(uid);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ResponseEntity.status(400).build();
-            }
-        }
+        recruitmentService.deleteRecruitment(recruitmentUid, userUid);
         return ResponseEntity.status(200).build();
     }
 
