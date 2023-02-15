@@ -74,7 +74,6 @@ export default function MyResumeWrite({ resume }) {
   const [guestHouseStyleTag, setGuestHouseStyleTags] = useState([]);
   const [minWorkPeriod, setMinWorkPeriod] = useState(0);
   const [intro, setIntro] = useState('');
-  // twoCalls 사용해서
 
   const userInfo = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
@@ -97,7 +96,7 @@ export default function MyResumeWrite({ resume }) {
       content: intro,
       instagramLink: instagramUrl,
       guestHouseTypes: guestHouseStyleTag,
-      interestArea: area[0],
+      interestArea: area,
       minWorkPeriod,
       personTypes: myStyleTag,
       possibleStartDate: startDate,
@@ -105,6 +104,7 @@ export default function MyResumeWrite({ resume }) {
     };
 
     if (resume) {
+      body.uid = resume.uid;
       await modifyMyResume(accessToken, body);
     } else {
       await registMyResume(accessToken, body);

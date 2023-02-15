@@ -10,7 +10,6 @@ const CustomButton = styled(Button)({
   backgroundColor: '#D4D4D4',
   width: '100%',
   borderRadius: '62px',
-  fontFamily: 'border',
   height: '5vh',
   '&:hover': {
     backgroundColor: '#FFFFFF',
@@ -22,24 +21,23 @@ export default function Profile() {
 
   const navigate = useNavigate();
   return (
-        <Stack direction="column" alignItems="center" sx={{ p: '2%' }}>
-          <h1>{userInfo.username}</h1>
-          <Avatar
-            src={
-              userInfo.profileImgUrl
-                ? userInfo.profileImgUrl
-                : images.sample_profile
-            }
-            alt="프로필 사진 들어가용~"
-            style={{
+    <Stack direction="column" alignItems="center">
+      <Avatar
+        src={
+          userInfo.profileImgUrl
+            ? userInfo.profileImgUrl
+            : images.sample_profile
+        }
+        alt="프로필 사진 들어가용~"
+        style={{
           width: '18vw',
           height: '18vw',
-          marginBottom: '20px',
-          cursor: 'pointer',
-          boxShadow:
-            'rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;',
+          marginBottom: '35px',
+          // cursor: 'pointer',
+          boxShadow: 'rgba(0, 0, 0, 0.15) 0px 15px 25px',
         }}
-          />
-        </Stack>
+      />
+      <h1 style={{ marginTop: 0 }}>{userInfo.username}</h1>
+    </Stack>
   );
 }

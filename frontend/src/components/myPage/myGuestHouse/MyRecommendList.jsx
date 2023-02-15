@@ -46,7 +46,12 @@ export default function MyRecommendList() {
               return (
                 <WhiteBox
                   key={myApplicant.uid}
-                  cpn={<MyApplicantCom myApplicant={myApplicant} />}
+                  cpn={
+                    <MyApplicantCom
+                      myApplicant={myApplicant}
+                      applicantList={myRecommends}
+                    />
+                  }
                 />
               );
             })}
