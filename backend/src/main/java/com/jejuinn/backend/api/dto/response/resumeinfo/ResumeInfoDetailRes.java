@@ -32,7 +32,7 @@ public class ResumeInfoDetailRes {
 
     private LocalDate dateCreated;
 
-    private List<Area> interestAreas;
+    private String interestArea;
 
     private String userName;
 
@@ -59,7 +59,8 @@ public class ResumeInfoDetailRes {
                 .autoApply(resumeInfoDetail.isAutoApply())
                 .guestHouseTypes(resumeInfoDetail.getGuestHouseTypes())
                 .dateCreated(resumeInfoDetail.getDateCreated())
-                .interestAreas(resumeInfoDetail.getInterestAreas())
+                .interestArea(resumeInfoDetail.getInterestAreas().size() != 1?
+                        "전체":resumeInfoDetail.getInterestAreas().get(0).getAreaName())
                 .personTypes(resumeInfoDetail.getPersonTypes())
                 .staffRecordDetail(staffRecordDetail)
                 .userName(userDetail.getUserName())
