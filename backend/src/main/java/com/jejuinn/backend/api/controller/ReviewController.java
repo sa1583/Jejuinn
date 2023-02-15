@@ -253,6 +253,7 @@ public class ReviewController {
         return ResponseEntity.status(200)
                 .body(reviews.stream().map(travelPlaceReview
                         -> ReviewSimpleRes.of(travelPlaceReview,
+                        travelPlaceRepository.findById(travelPlaceReview.getTravelPlaceUid()).get(),
                         imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()))));
     }
 
@@ -266,8 +267,10 @@ public class ReviewController {
     public ResponseEntity<?> getMyTravelPlaceReview(HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         return ResponseEntity.status(200).body(
-                travelPlaceReviewRepository.findAllByUserUid(userUid)
-        );
+                travelPlaceReviewRepository.findAllByUserUid(userUid).stream().map(
+                        travelPlaceReview -> ReviewSimpleRes.of(travelPlaceReview,
+                                travelPlaceRepository.findById(travelPlaceReview.getTravelPlaceUid()).get(),
+                                imageRepository.findImgPathByPostTypeAndPostUid(REVIEW_TYPE, travelPlaceReview.getUid()))));
     }
 
 }
