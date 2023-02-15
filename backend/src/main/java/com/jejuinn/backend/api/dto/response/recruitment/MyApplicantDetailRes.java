@@ -15,7 +15,7 @@ import java.util.List;
 public class MyApplicantDetailRes {
     private Long userUid;
 
-    private Long recruitmentUid;
+    private Long resumeInfoUid;
 
     private String userName;
 
@@ -30,7 +30,7 @@ public class MyApplicantDetailRes {
     public static MyApplicantDetailRes toMyApplicantDetailRes(ResumeInfo resumeInfo, User user) {
         return MyApplicantDetailRes.builder()
                 .userUid(user.getUid())
-                .recruitmentUid(resumeInfo.getUid())
+                .resumeInfoUid(resumeInfo.getUid())
                 .userName(user.getUsername())
                 .gender(user.getGender())
                 .age(user.getAge())

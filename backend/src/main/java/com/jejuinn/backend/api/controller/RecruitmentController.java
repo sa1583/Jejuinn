@@ -222,15 +222,15 @@ public class RecruitmentController {
         );
     }
 
-    @GetMapping("/auth/job-search/{recruitmentUid}/{workUid}")
+    @GetMapping("/auth/job-search/{resumeInfoUid}/{workUid}")
     @ApiOperation(value = "지원자의 지원서 상세 조회", notes = "recruitmentUid를 통해 지원서를 상세 조회한 뒤, workUid를 이용하여 열람 여부를 변경합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyResumeInfo(@PathVariable Long recruitmentUid, @PathVariable Long workUid) {
-        Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findById(recruitmentUid);
+    public ResponseEntity<?> getMyResumeInfo(@PathVariable Long resumeInfoUid, @PathVariable Long workUid) {
+        Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findById(resumeInfoUid);
         ResumeInfoDetail resumeInfoDetail = ResumeInfoDetail.of(resumeInfo);
         WorkResumeInfo workResumeInfo = workResumeInfoRepository.findByResumeInfoUidAndWorkUid(resumeInfoDetail.getUid(), workUid);
         if(workResumeInfo != null) {
