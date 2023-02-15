@@ -123,18 +123,6 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
       />
 
       <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }}>
-        {/* {liked && (
-          <FavoriteIcon
-            sx={{ fontSize: '2rem', color: '#FF7600', cursor: 'pointer' }}
-            onClick={goDisLike}
-          />
-        )}
-        {!liked && (
-          <FavoriteBorderIcon
-            sx={{ color: '#FF7600', fontSize: '2rem', cursor: 'pointer' }}
-            onClick={goLike}
-          />
-        )} */}
         {heart()}
       </Box>
       <CommentsList />
