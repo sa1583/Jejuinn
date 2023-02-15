@@ -37,7 +37,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkUpdateComponent({ prework }) {
+export default function WorkUpdateComponent({ prework, onWorkWrite }) {
   const accessToken = useSelector(selectAccessToken);
   const navigate = useNavigate();
   const { recruitmentUid } = useParams();
@@ -81,16 +81,13 @@ export default function WorkUpdateComponent({ prework }) {
     setWorkInfo({ ...workInfo, entryDate: `${input}` });
   };
 
-  const onClick = () => {
-    fetch(updateWork(workInfo, accessToken));
-    navigate(`/worklist/`);
-  };
-
   useEffect(() => {
     console.log('이전 직무 정보점....');
     setWorkInfo(prework);
   }, [prework]);
-  console.log(workInfo);
+  useEffect(() => {
+    onWorkWrite(workInfo);
+  }, [workInfo]);
 
   return (
     <Box sx={{ paddingTop: '1rem', height: '100%' }}>
@@ -175,10 +172,6 @@ export default function WorkUpdateComponent({ prework }) {
           </Grid>
         </Grid>
       </form>
-      <br />
-      <CustomButton type="submit" onClick={onClick}>
-        저장
-      </CustomButton>
     </Box>
   );
 }
