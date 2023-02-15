@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -15,9 +15,10 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
-import { getApplicantByUid } from '../../../api/guestHouse';
+import { getApplicantByUid, sendMessage } from '../../../api/guestHouse';
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
+import { getApplicantDetail } from '../../../api/recommand';
 
 const style = {
   position: 'absolute',
@@ -32,8 +33,9 @@ const style = {
 };
 
 export default function MyApplicantDetail({
-  myApplicant,
-  handleClose,
+  resumeUid,
+  workUid,
+  handleCloseModal,
   handlePrev,
   handleForward,
 }) {
@@ -41,10 +43,10 @@ export default function MyApplicantDetail({
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
 
-  const sendMessage = async () => {
-    const body = {
-      guestHouseUid: 1,
-    };
+  const [applicant, setApplicant] = useState();
+
+  const sendMessageToApplicant = async () => {
+    await sendMessage(accessToken, 1, applicant.userUid);
   };
 
   function generateRandomString(length) {
@@ -63,19 +65,19 @@ export default function MyApplicantDetail({
     navigate(`/interview/${sessionId}`);
   };
 
-  // useEffect(() => {
-  //   let user;
-  //   async function getData() {
-  //     user = await getApplicantByUid(accessToken);
-  //     setMyApplicant(user.data);
-  //   }
-  //   getData();
-  //   // setMyApplicant(applicant());
-  // }, []);
+  const getApplicantDetailInfo = async () => {
+    const { data } = await getApplicantDetail(resumeUid, workUid, accessToken);
+    console.log('data', data);
+    setApplicant(data);
+  };
+
+  useEffect(() => {
+    getApplicantDetailInfo();
+  }, [resumeUid]);
 
   return (
     <div>
-      {myApplicant ? (
+      {applicant ? (
         <Box sx={style}>
           <Stack direction="row">
             <Stack direction="column" justifyContent="space-between">
@@ -95,11 +97,11 @@ export default function MyApplicantDetail({
             </Stack>
             <Box margin="60px" width="fit-content">
               <Stack direction="column" spacing={3}>
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" alignItems="center" spacing={1}>
                   <Avatar
                     src={
-                      myApplicant.profileImageUrl
-                        ? myApplicant.profileImageUrl
+                      applicant.profileImageUrl
+                        ? applicant.profileImageUrl
                         : images.sample_profile
                     }
                     style={{
@@ -121,7 +123,7 @@ export default function MyApplicantDetail({
                           lineHeight: '58px',
                         }}
                       >
-                        {myApplicant.userName ? myApplicant.userName : '장정민'}
+                        {applicant.userName ? applicant.userName : '장정민'}
                       </Typography>
                       <Typography
                         style={{
@@ -133,20 +135,21 @@ export default function MyApplicantDetail({
                           fontSize: '32px',
                         }}
                       >
-                        {myApplicant.gender ? myApplicant.gender : '남자'} |{' '}
-                        {myApplicant.age ? myApplicant.age : 20}
+                        {applicant.gender ? applicant.gender : '남자'} |{' '}
+                        {applicant.age ? applicant.age : 20}
                       </Typography>
-                      <a href={myApplicant.instagramLink}>
+                      <a href={applicant.instagramLink}>
                         <img src={images.instagram_logo} width="39px" />
                       </a>
                     </Stack>
                     <Stack
                       direction="row"
+                      alignItems="center"
                       spacing={1}
                       marginLeft="20px"
                       marginTop="10px"
                     >
-                      {myApplicant.personTypes?.map((tag) => {
+                      {applicant.personTypes?.map((tag) => {
                         return (
                           <Chip
                             label={'#' + tag.type}
@@ -165,26 +168,24 @@ export default function MyApplicantDetail({
                         marginTop: '10px',
                       }}
                     >
-                      <Typography
-                        style={{
-                          display: 'inline',
-                          marginLeft: '20px',
-                          marginRight: '30px',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '100',
-                          fontSize: '20px',
-                          lineHeight: '29px',
-                        }}
-                      >
-                        선호 스타일
-                      </Typography>
-                      <Stack direction="row" spacing={1} display="inline">
-                        {myApplicant.guestHouseType ? (
-                          myApplicant.guestHouseType?.map((type) => {
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography
+                          style={{
+                            marginLeft: '20px',
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+                            fontWeight: '100',
+                            fontSize: '20px',
+                            lineHeight: '29px',
+                          }}
+                        >
+                          선호 스타일
+                        </Typography>
+                        {applicant.guestHouseTypes ? (
+                          applicant.guestHouseTypes?.map((type) => {
                             return (
                               <Chip
-                                label={type}
+                                label={'#' + type}
                                 sx={{
                                   background: '#FF9B44',
                                   color: 'secondary.main',
@@ -225,17 +226,13 @@ export default function MyApplicantDetail({
                         선호 지역
                       </Typography>
                       <Stack direction="row" spacing={1} display="inline">
-                        {myApplicant.interestAreas?.map((area) => {
-                          return (
-                            <Chip
-                              label={area.areaName}
-                              sx={{
-                                background: '#FF9B44',
-                                color: 'secondary.main',
-                              }}
-                            />
-                          );
-                        })}
+                        <Chip
+                          label={'#' + applicant.interestArea}
+                          sx={{
+                            background: '#FF9B44',
+                            color: 'secondary.main',
+                          }}
+                        />
                       </Stack>
                     </Box>
                     <Box
@@ -262,7 +259,7 @@ export default function MyApplicantDetail({
                       <Chip
                         icon={<CalendarMonthIcon color="white" />}
                         sx={{ background: '#FF9B44', color: 'white' }}
-                        label={myApplicant.possibleStartDate}
+                        label={applicant.possibleStartDate}
                       />
                     </Box>
                   </Box>
@@ -272,16 +269,16 @@ export default function MyApplicantDetail({
                     marginTop: '33px',
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: '30px',
-                      display: 'inline',
-                    }}
-                  >
-                    근무 이력
-                  </Typography>
-                  <Stack direction="row" spacing={1} marginLeft="170px">
-                    {myApplicant?.staffRecordDetail?.map((history) => {
+                  <Stack direction="row" spacing={1} minHeight="150px">
+                    <Typography
+                      minWidth="150px"
+                      sx={{
+                        fontSize: '30px',
+                      }}
+                    >
+                      근무 이력
+                    </Typography>
+                    {applicant?.staffRecordDetail?.map((history) => {
                       if (history.onDuty === 'true') return null;
                       return (
                         <WorkHistory key={history.uid} history={history} />
@@ -315,7 +312,7 @@ export default function MyApplicantDetail({
                         inputProps={{
                           readOnly: true,
                         }}
-                        value={myApplicant.content}
+                        value={applicant.content}
                       />
                     </Box>
                   </Stack>
@@ -331,7 +328,7 @@ export default function MyApplicantDetail({
                     <Button
                       variant="contained"
                       sx={{ borderRadius: '25px', width: '205px' }}
-                      onClick={sendMessage}
+                      onClick={sendMessageToApplicant}
                     >
                       문자 보내기
                     </Button>
@@ -360,7 +357,7 @@ export default function MyApplicantDetail({
                       cursor: 'pointer',
                     },
                   }}
-                  onClick={handleClose}
+                  onClick={handleCloseModal}
                 />
               </Box>
               <ArrowForwardIosIcon
