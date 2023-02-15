@@ -20,7 +20,7 @@ import {
 } from '../../../api/job';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../store/user';
-import { v4 as uuidv4 } from 'uuid';
+import MyInterestGuestHouse from './MyInterestGuestHouse';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -77,17 +77,19 @@ export default function MyMain() {
 
   const loadMyApplyList = async () => {
     const { data } = await getMyApplyList(accessToken);
+    console.log('지원목록', data);
     setMyAppliedRecruitment(data);
   };
 
   const loadMyLikeRecruitment = async () => {
     const { data } = await getMyInterestGuestHouses(accessToken);
+    console.log('관심게하', data);
     setMyInterestGuestHouses(data);
   };
 
   const loadMyLikePlaceList = async () => {
     const { data } = await getMyInterestAttractions(accessToken);
-    // console.log('mylikeplaces', data);
+    console.log('mylikeplaces', data);
     setMyLikePlaceList(data);
   };
 
@@ -115,9 +117,8 @@ export default function MyMain() {
             <Stack direction="column" spacing={1}>
               {myAppliedRecruitment.map((recruitment) => {
                 return (
-                  <Box>
+                  <Box key={recruitment.uid}>
                     <WhiteBox
-                      key={uuidv4()}
                       cpn={<MyMainRecruitment recruitment={recruitment} />}
                     />
                   </Box>
@@ -145,12 +146,20 @@ export default function MyMain() {
               </Box>
               <TabPanel value="0">
                 <Stack direction="column" spacing={1}>
-                  {myInterestGuestHouses.map((recruitment) => {
+                  {myInterestGuestHouses.map((guestHouse) => {
                     return (
-                      <WhiteBox
-                        key={uuidv4()}
-                        cpn={<MyMainRecruitment recruitment={recruitment} />}
-                      />
+                      <Box
+                        key={guestHouse.guestHouse.uid}
+                        onClick={() =>
+                          navigate(
+                            `/guesthouse/detail/${guestHouse.guestHouse.uid}`,
+                          )
+                        }
+                      >
+                        <WhiteBox
+                          cpn={<MyInterestGuestHouse guestHouse={guestHouse} />}
+                        />
+                      </Box>
                     );
                   })}
                 </Stack>
