@@ -74,7 +74,7 @@ export default function CommentList({
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              width: '95%',
+              width: '100%%',
             }}
           >
             <Typography sx={{ fontWeight: 'bolder' }}>
@@ -88,7 +88,8 @@ export default function CommentList({
                 }}
               >
                 <Button
-                  sx={{ margin: 0, padding: 0 }}
+                  variant="outlined"
+                  sx={{ margin: 0, padding: 0, marginRight: '5px' }}
                   onClick={() => {
                     setChangeStatus((prev) => !prev);
                     changeStatus && setPutComment(comment.content);
@@ -96,7 +97,11 @@ export default function CommentList({
                 >
                   수정
                 </Button>
-                <Button sx={{ margin: 0, padding: 0 }} onClick={commentDelete}>
+                <Button
+                  variant="outlined"
+                  sx={{ margin: 0, padding: 0 }}
+                  onClick={commentDelete}
+                >
                   삭제
                 </Button>
               </Box>
@@ -137,9 +142,15 @@ export default function CommentList({
                     id=""
                     style={{
                       width: '85%',
+                      height: '2rem',
                       paddingTop: '0.5rem',
+                      paddingLeft: 0,
                       marginTop: '0.5rem',
                       resize: 'none',
+                      border: 'none',
+                      fontFamily: 'SUIT-Regular',
+                      fontSize: '17px',
+                      outline: 'none',
                     }}
                     rows="4"
                     placeholder="댓글을 입력해주세요. (최대 255자)"
@@ -150,14 +161,14 @@ export default function CommentList({
                   <Box sx={{ display: 'flex' }}>
                     <Button
                       sx={{
-                        fontWeight: 'bolder',
-                        height: '3rem',
+                        // fontWeight: 'bolder',
+                        // height: '3rem',
                         alignSelf: 'center',
                       }}
                       variant="contained"
                       onClick={changeComment}
                     >
-                      수정
+                      완료
                     </Button>
                   </Box>
                 </Box>

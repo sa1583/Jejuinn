@@ -123,8 +123,8 @@ export default function CommentInput({
                 <Box sx={{ display: 'flex' }}>
                   <Button
                     sx={{
-                      fontFamily: 'SUIT-Regular',
-                      fontWeight: 'bolder',
+                      // fontFamily: 'SUIT-Regular',
+                      // fontWeight: 'bolder',
                       // height: '3rem',
                       alignSelf: 'center',
                     }}
