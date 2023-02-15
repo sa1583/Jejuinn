@@ -26,31 +26,12 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const navigate = useNavigate();
   const anchorRef = useRef(null);
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [apply, setApply] = useState(false);
-  const [historyList, setHistoryList] = useState([
-    {
-      uid: 1,
-      guestHouseName: '가토 게스트하우스',
-      startDate: '22-01-22',
-      endDate: '23-4-14',
-    },
-    {
-      uid: 15,
-      guestHouseName: '정민 게스트하우스',
-      startDate: '22-01-22',
-      endDate: '23-4-14',
-    },
-  ]);
+  const [historyList, setHistoryList] = useState([]);
 
   const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
     setOpen((prev) => !prev);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
   };
 
   const handleChangeAutoApply = async () => {
@@ -59,9 +40,8 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   };
 
   useEffect(() => {
-    setAnchorEl(resume.autoApply);
     setApply(resume.autoApply);
-    // setHistoryList(resume.staffRecordDetial)
+    setHistoryList(resume.staffRecordDetial);
   }, []);
 
   return (
@@ -87,7 +67,6 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
             vertical: 'top',
             horizontal: 'left',
           }}
-          onClose={handlePopoverClose}
           disableRestoreFocus
         >
           <Typography sx={{ p: 1, width: '300px' }}>
@@ -109,35 +88,43 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         <Button onClick={changeApplyComp}>수정</Button>
       </Stack>
       <Stack direction="column" spacing={3}>
-        <Stack direction="row">
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Typography minWidth="100px">내 스타일</Typography>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            {resume?.personTypes?.map(({ type }) => {
+              return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
+            })}
+          </Stack>
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={1}>
           <Typography minWidth="100px">인스타그램</Typography>
           <Typography>{resume.instagramLink}</Typography>
         </Stack>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" alignItems="center" spacing={1}>
           <Typography minWidth="100px">선호 스타일</Typography>
-          {resume?.personTypes?.map(({ type }) => {
+          {resume?.guestHouseTypes?.map((type) => {
             return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
           })}
         </Stack>
       </Stack>
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" alignItems="center" spacing={1}>
         <Typography minWidth="100px">선호 지역</Typography>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Chip label={'#' + resume.interestArea} color="primary" />
         </Stack>
       </Stack>
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" alignItems="center" spacing={1}>
         <Typography minWidth="100px">입도 가능일</Typography>
         <Typography>{resume.possibleStartDate}</Typography>
       </Stack>
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" alignItems="center" spacing={1}>
         <Typography minWidth="100px">자기소개</Typography>
         <Typography>{resume.content}</Typography>
       </Stack>
-      <Stack direction="row">
+      <Stack direction="row" spacing={1}>
         <Typography minWidth="100px">근무이력</Typography>
         <Stack direction="row" spacing={2}>
-          {historyList.map((history) => {
+          {historyList?.map((history) => {
             return (
               <Box
                 key={uuidv4()}
