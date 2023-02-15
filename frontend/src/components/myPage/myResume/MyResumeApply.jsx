@@ -8,7 +8,7 @@ import {
   Chip,
   Box,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import React from 'react';
 import WorkHistory from '../WorkHistory';
@@ -24,6 +24,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
   const navigate = useNavigate();
+  const anchorRef = useRef(null);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -67,6 +68,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
     <Stack p="3%" spacing={3}>
       <Stack direction="row" alignItems="center">
         <HelpOutlineOutlinedIcon
+          ref={anchorRef}
           color="primary"
           onMouseEnter={handlePopoverOpen}
           onMouseLeave={handlePopoverOpen}
@@ -76,7 +78,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
             pointerEvents: 'none',
           }}
           open={open}
-          anchorEl={anchorEl}
+          anchorEl={anchorRef.current}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',

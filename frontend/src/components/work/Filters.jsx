@@ -69,7 +69,6 @@ function FilterArea({ value, setValue }) {
     <Autocomplete
       sx={{ width: '100%' }}
       options={areas}
-      value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
       }}
@@ -77,8 +76,9 @@ function FilterArea({ value, setValue }) {
         <CustomTextField
           {...params}
           label="선호하는 지역"
-          placeholder="선호하는 지역을 선택하세요"
+          // placeholder="선호하는 지역을 선택하세요"
           InputProps={{
+            ...params.InputProps,
             startAdornment: (
               <InputAdornment position="start">
                 <FmdGoodOutlinedIcon color="primary" />
