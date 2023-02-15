@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
-import { Box, TextField, Button, Autocomplete } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Autocomplete,
+  Typography,
+} from '@mui/material';
 import ImageUploader from '../articleCreateComponent/ImageUploader';
 import PopupDom from '../popupPostCode/PopupDom';
 import PopupPostCode from '../popupPostCode/PopupPostCode';
@@ -145,7 +151,16 @@ export default function MyGuestHouseCreateForm() {
         encType="multipart/form-data"
         style={{ display: 'flex', flexDirection: 'column', padding: '5%' }}
       >
-        <h1 style={{ marginTop: 0 }}>
+        <h1
+          style={{
+            fontSize: '2.5rem',
+            fontFamily: 'GmarketSansBold',
+            marginTop: 0,
+            marginBottom: '60px',
+            textAlign: 'center',
+            color: '#FF7600',
+          }}
+        >
           {isCreate ? '게스트하우스 등록' : '게스트하우스 수정'}
         </h1>
 
@@ -216,7 +231,7 @@ export default function MyGuestHouseCreateForm() {
           label="상세주소"
           value={addressDetail}
           variant="standard"
-          sx={{ marginY: '2vh' }}
+          sx={{ marginY: '2vh', marginBottom: '50px' }}
           inputProps={{ style: { fontSize: 20 } }} // font size of input text
           InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
           onChange={({ target: { value } }) => setAddressDetail(value)}
@@ -226,11 +241,18 @@ export default function MyGuestHouseCreateForm() {
 
         <Box my="20px" />
 
+        <Typography sx={{ fontSize: 20, color: 'grey' }}>
+          게스트하우스에 해당하는 스타일을 선택하세요.
+        </Typography>
         <FilterStyle value={selectedValues} setValue={setSelectedValues} />
         <br />
+        <br />
 
-        <label htmlFor="image" style={{ fontSize: 20 }}>
-          사진 (최대 10개)
+        <label
+          htmlFor="image"
+          style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
+        >
+          게스트하우스 관련 이미지를 업로드 해주세요.(최대 10개)
         </label>
         <ImageUploader
           preImages={preImages}
@@ -242,8 +264,11 @@ export default function MyGuestHouseCreateForm() {
 
         <br />
         <br />
-        <label htmlFor="content" style={{ fontSize: 20 }}>
-          글 내용
+        <label
+          htmlFor="content"
+          style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
+        >
+          게스트하우스 소개 내용을 입력해주세요.
         </label>
         <MarkDownInput
           name="introduction"
@@ -266,14 +291,19 @@ export default function MyGuestHouseCreateForm() {
             }
             onClick={(e) => submit(e)}
             sx={{
-              marginTop: '6rem',
-              height: '3rem',
-              width: '35%',
+              marginTop: '8rem',
+              height: '3.5rem',
+              width: '40%',
+              fontSize: '1.8vh',
               fontColor: 'white',
+              borderRadius: '50px',
+              '&:hover': {
+                background: '#FF7600',
+              },
             }}
             variant="contained"
           >
-            {isCreate ? '글 작성' : '글 수정'}
+            {isCreate ? '작성 완료' : '수정 완료'}
           </Button>
         </Box>
       </form>
