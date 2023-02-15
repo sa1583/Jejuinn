@@ -20,4 +20,5 @@ export const images = {
   together: '/images/together.svg',
   stress: '/images/stress.svg',
   free: '/images/free.svg',
+  typing: '/images/typing.svg',
 };
