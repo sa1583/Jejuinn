@@ -1,5 +1,6 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.response.guesthouse.GetFavoriteGuestHouseRes;
 import com.jejuinn.backend.api.dto.response.guesthouse.GetGuestHouseListPostRes;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.db.entity.Favorite;
@@ -27,6 +28,7 @@ public class FavoriteController {
     private final FavoriteRepository favoriteRepository;
     private final GuestHouseRepository guestHouseRepository;
     private final ImageRepository imageRepository;
+    private final RecruitmentRepository recruitmentRepository;
     private static final String GUEST_TYPE = "GUEST_HOUSE";
 
     @PutMapping("/auth/guest-house/like/{guestHouseUid}")
@@ -75,10 +77,12 @@ public class FavoriteController {
     public ResponseEntity<?> getMyLikeGuestHouse(HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         List<Long> guestHouseUids = favoriteRepository.findByUserUidAndTypeName(userUid, GUEST_TYPE);
+        System.out.println(guestHouseUids.size());
         return ResponseEntity.status(200).body(
             guestHouseRepository.findAllByGuestHouseUid(guestHouseUids).stream().map(
-                    guestHouse -> GetGuestHouseListPostRes.of(
+                    guestHouse -> GetFavoriteGuestHouseRes.of(
                             guestHouse,
+                            recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(guestHouse.getUid()),
                             imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid())
                     )
             )
