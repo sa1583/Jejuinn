@@ -11,6 +11,7 @@ import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.db.entity.Recruitment;
+import com.jejuinn.backend.db.entity.ResumeInfo;
 import com.jejuinn.backend.db.entity.Work;
 import com.jejuinn.backend.db.entity.WorkResumeInfo;
 import com.jejuinn.backend.db.repository.*;
@@ -221,17 +222,16 @@ public class RecruitmentController {
         );
     }
 
-    @GetMapping("/auth/job-search/{userUid}/{workUid}")
-    @ApiOperation(value = "지원자의 지원서 상세 조회", notes = "userUi를 통해 지원서를 상세 조회한 뒤, workUid를 이용하여 열람 여부를 변경합니다.")
+    @GetMapping("/auth/job-search/{recruitmentUid}/{workUid}")
+    @ApiOperation(value = "지원자의 지원서 상세 조회", notes = "recruitmentUid를 통해 지원서를 상세 조회한 뒤, workUid를 이용하여 열람 여부를 변경합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
-            @ApiResponse(code = 204, message = "작성된 이력서가 없습니다."),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getMyResumeInfo(@PathVariable Long userUid, @PathVariable Long workUid) {
-        ResumeInfoDetail resumeInfoDetail = ResumeInfoDetail.of(resumeInfoRepository.findByUserUidAndIsDeletedFalse(userUid));
-        if(resumeInfoDetail == null) return ResponseEntity.status(204).build();
+    public ResponseEntity<?> getMyResumeInfo(@PathVariable Long recruitmentUid, @PathVariable Long workUid) {
+        Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findById(recruitmentUid);
+        ResumeInfoDetail resumeInfoDetail = ResumeInfoDetail.of(resumeInfo);
         WorkResumeInfo workResumeInfo = workResumeInfoRepository.findByResumeInfoUidAndWorkUid(resumeInfoDetail.getUid(), workUid);
         if(workResumeInfo != null) {
             workResumeInfo.setIsRead(LocalDateTime.now());
@@ -239,8 +239,8 @@ public class RecruitmentController {
         }
         ResumeInfoDetailRes resumeInfoDetailRes = ResumeInfoDetailRes.of(
                 resumeInfoDetail,
-                UserDetail.of(userRepository.findById(userUid)),
-                StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(userUid)));
+                UserDetail.of(userRepository.findById(resumeInfo.get().getUser().getUid())),
+                StaffRecordDetail.of(staffRecordRepository.findAllByUserUidAndIsActiveTrueOrderByStartDateDesc(resumeInfo.get().getUser().getUid())));
         return ResponseEntity.status(200).body(
                 resumeInfoDetailRes
         );
@@ -260,6 +260,7 @@ public class RecruitmentController {
             return ResponseEntity.status(401).build();
         }
         workRepository.deleteById(workUid);
+        workResumeInfoRepository.deleteByWorkUid(workUid);
         return ResponseEntity.status(200).build();
     }
     
