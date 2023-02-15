@@ -1,7 +1,7 @@
 import GuestHouseList from '../../components/guestHouseList/GuestHouseList';
 import GuestHouseFilter from '../../components/guestHouseList/GuestHouseFilter';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
-import { Grid, Divider } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { getGuestHouses } from '../../api/guestHouse';
@@ -48,7 +48,6 @@ export default function GuestHouse() {
   };
 
   useEffect(() => {
-    console.log(filter);
     getGuestHouseList();
   }, [filter]);
 

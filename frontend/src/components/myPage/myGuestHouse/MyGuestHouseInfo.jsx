@@ -61,7 +61,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
         >
           {myStaffs.map((myStaff) => {
             return (
-              <WhiteBox key={myStaff.uid} cpn={<MyStaff myStaff={myStaff} />} />
+              <WhiteBox key={uuidv4()} cpn={<MyStaff myStaff={myStaff} />} />
             );
           })}
         </Box>

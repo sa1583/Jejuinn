@@ -122,13 +122,6 @@ export default function CommentList({
                 width: '100%',
               }}
             >
-              {/* <Typography
-                variant="p"
-                sx={{ marginTop: '0.3rem', width: '95%' }}
-              >
-                {comment.content}
-              </Typography> */}
-
               {changeStatus ? (
                 <Box
                   sx={{
@@ -155,6 +148,7 @@ export default function CommentList({
                     rows="4"
                     placeholder="댓글을 입력해주세요. (최대 255자)"
                     maxLength={255}
+                    autoFocus
                     value={putComment}
                     onChange={(e) => setPutComment(e.target.value)}
                   ></textarea>
