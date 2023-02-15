@@ -31,7 +31,6 @@ export const getUserInfoByToken = createAsyncThunk(
 export const renewAccessTokenByRefreshToken = createAsyncThunk(
   'user/renewAccessTokenByRefreshToken',
   async (refreshToken, thunkAPI) => {
-    console.log('refreshToken', refreshToken);
     try {
       return (await renewAccessToken(refreshToken)).headers;
     } catch (error) {
