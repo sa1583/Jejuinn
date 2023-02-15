@@ -66,10 +66,8 @@ export default function StaffPickFilter({
     '우도면',
   ];
 
-  const navigate = useNavigate();
-
   return (
-    <form>
+    <form style={{ height: '23rem' }}>
       <Box
         sx={{
           display: 'flex',

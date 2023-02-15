@@ -2,7 +2,6 @@ import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getCommentList } from '../../api/comment';
-import CommentBox from './CommentBox';
 import { v4 as uuidv4 } from 'uuid';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
@@ -33,27 +32,14 @@ export default function CommentsList() {
   return (
     <>
       <h2 style={{ color: '#FF7600' }}>댓글</h2>
-      <CommentBox
-        cpn={
-          <CommentInput
-            postType={postType}
-            postUid={postUid}
-            getComments={getComments}
-            accessToken={accessToken}
-            userInfo={userInfo}
-            isLogined={isLogined}
-          />
-        }
+      <CommentInput
+        postType={postType}
+        postUid={postUid}
+        getComments={getComments}
+        accessToken={accessToken}
+        userInfo={userInfo}
+        isLogined={isLogined}
       />
-      {/* <div
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          borderBottom: '1px solid #DEDEDE',
-          margin: '20px 0 20px',
-          borderRadius: '50px',
-        }}
-      ></div> */}
       <Box
         sx={{
           display: 'flex',
@@ -92,16 +78,12 @@ export default function CommentsList() {
               ) : (
                 ''
               )}
-              <CommentBox
-                cpn={
-                  <Comment
-                    comment={comment}
-                    accessToken={accessToken}
-                    getComments={getComments}
-                    userInfo={userInfo}
-                  />
-                }
-              />{' '}
+              <Comment
+                comment={comment}
+                accessToken={accessToken}
+                getComments={getComments}
+                userInfo={userInfo}
+              />
             </div>
           );
         })}

@@ -128,6 +128,7 @@ export default function StaffPick() {
                 spots={spots}
                 handlePinClick={handlePinClick}
                 pickedId={pageId}
+                high={'23rem'}
               />
             }
           />

@@ -2,7 +2,6 @@ import { TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { checkEmail } from '../../api/user';
 import {
   getNormalAuthTokenInSignUp,
@@ -26,7 +25,6 @@ const CustomTextField = styled(TextField)({
 
 export default function SignUpInfo({ handleNext }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [signUpForm, setSignUpForm] = useState({
     email: '',
