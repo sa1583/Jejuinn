@@ -58,7 +58,6 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   };
 
   useEffect(() => {
-    console.log(resume);
     setAnchorEl(resume.autoApply);
     setApply(resume.autoApply);
     // setHistoryList(resume.staffRecordDetial)
