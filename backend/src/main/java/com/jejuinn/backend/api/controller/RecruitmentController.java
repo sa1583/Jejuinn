@@ -105,10 +105,6 @@ public class RecruitmentController {
     })
     public ResponseEntity<?> insertRecruitment(@Valid @RequestPart(value="recruitmentBody") RecruitmentBodyDto recruitmentBodyDto,
                                                @RequestPart(value = "uploadImages") List<MultipartFile> uploadImages) {
-        logger.info("들어온 wanted의 크기는 {}", recruitmentBodyDto.getRecruitment().getWanted().size());
-        if(recruitmentBodyDto.getRecruitment().getWanted().size() != 0) {
-            logger.info("첫번째 {}", recruitmentBodyDto.getRecruitment().getWanted().get(0));
-        }
         Recruitment recruitment = recruitmentRepository.save(recruitmentBodyDto.getRecruitment().toRecruitment());
         List<InsertWorkPostReq> works = recruitmentBodyDto.getWorks();
         for(int i = 0 ; i < works.size() ; i++) {

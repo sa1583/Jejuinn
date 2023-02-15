@@ -32,6 +32,7 @@ public class InsertRecruitmentPostReq {
     private Long guestHouseUid;
 
     @ApiModelProperty(name = "채용 공고에서 원하는 인재상")
+    @NotNull
     private List<String> wanted;
 
     public List<PersonType> toPersonType() {
