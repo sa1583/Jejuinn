@@ -1,5 +1,5 @@
-import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getReviewDetail, getSpotInfo, getSpotsPin } from '../../api/staffPick';
@@ -36,30 +36,43 @@ export default function StaffPickUpdate() {
   }, []);
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
-      <Grid container spacing={4}>
-        <Grid item xs={12} lg={4}>
-          <Grid item xs={12}>
-            <WhiteBox cpn={<StaffPickCreateInfo nowPick={nowPick} />} />
-          </Grid>
-        </Grid>
+    <Box sx={{ paddingY: '3rem', paddingX: '28%' }}>
+      <h1
+        style={{
+          fontSize: '2.5rem',
+          fontFamily: 'GmarketSansBold',
+          padding: '5%',
+          marginTop: 0,
+          marginBottom: '60px',
+          textAlign: 'center',
+          color: '#FF7600',
+        }}
+      >
+        놀고먹기 수정
+      </h1>
+      <Box sx={{ paddingX: '5%', paddingBottom: '30px' }}>
+        <Typography
+          variant="h5"
+          style={{
+            fontSize: 22,
+            color: 'black',
+            fontWeight: 'bold',
+            marginBottom: '20px',
+          }}
+        >
+          ① &nbsp;리뷰를 남기고자 하는 장소의 핀을 아래 지도에서 선택해주세요!
+        </Typography>
+        <MapApi
+          handlePinClick={handlePinClick}
+          spots={spots}
+          pickedId={nowPickId}
+          high={'23rem'}
+        />
+        <br />
+        <WhiteBox cpn={<StaffPickCreateInfo nowPick={nowPick} />} />
+      </Box>
 
-        <Grid item xs={12} lg={8}>
-          <WhiteBox
-            cpn={
-              <MapApi
-                handlePinClick={handlePinClick}
-                spots={spots}
-                pickedId={nowPickId}
-                high={'23rem'}
-              />
-            }
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <WhiteBox cpn={<StaffPickUpdateForm nowPickId={nowPickId} />} />
-        </Grid>
-      </Grid>
+      <StaffPickUpdateForm nowPickId={nowPickId} />
     </Box>
   );
 }

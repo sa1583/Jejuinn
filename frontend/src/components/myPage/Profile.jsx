@@ -23,7 +23,7 @@ export default function Profile() {
   useEffect(() => {});
 
   return (
-    <Stack direction="column" alignItems="center">
+    <Stack direction="column">
       <Avatar
         src={userInfo?.profileImageUrl ? profileImage() : images.sample_profile}
         alt="프로필 사진 들어가용~"
