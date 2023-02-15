@@ -31,7 +31,12 @@ const style = {
   borderRadius: '39px',
 };
 
-export default function MyApplicantDetail({ myApplicant, handleClose }) {
+export default function MyApplicantDetail({
+  myApplicant,
+  handleClose,
+  handlePrev,
+  handleForward,
+}) {
   const navigate = useNavigate();
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
@@ -78,6 +83,7 @@ export default function MyApplicantDetail({ myApplicant, handleClose }) {
               <ArrowBackIosNewIcon
                 fontSize="large"
                 color="primary"
+                onClick={handlePrev}
                 sx={{
                   transform: 'scaleY(1.5)',
                   ':hover': {
@@ -360,6 +366,7 @@ export default function MyApplicantDetail({ myApplicant, handleClose }) {
               <ArrowForwardIosIcon
                 color="primary"
                 fontSize="large"
+                onClick={handleForward}
                 sx={{
                   transform: 'scaleY(1.5)',
                   ':hover': {

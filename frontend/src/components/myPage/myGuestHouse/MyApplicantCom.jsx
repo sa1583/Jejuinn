@@ -1,15 +1,53 @@
-import * as React from 'react';
 import { Box, Chip, Modal, Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { images } from '../../../assets/images';
 import MyApplicantDetail from './MyApplicantDetail';
+import { useEffect, useState } from 'react';
 
-export default function MyApplicantCom({ myApplicant }) {
-  const [open, setOpen] = React.useState(false);
+export default function MyApplicantCom({ myApplicant, applicantList }) {
+  const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [modalApplicant, setModalApplicant] = useState(myApplicant);
+
+  const size = applicantList.length;
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  React.useEffect(() => console.log(myApplicant), []);
+  const handlePrev = () => {
+    console.log('prev');
+    setIndex((prev) => {
+      if (prev === 0) {
+        return size - 1;
+      } else {
+        return prev - 1;
+      }
+    });
+  };
+
+  const handleForward = () => {
+    console.log('forward');
+    setIndex((prev) => {
+      if (prev === size - 1) {
+        return 0;
+      } else {
+        return prev + 1;
+      }
+    });
+  };
+
+  useEffect(() => {
+    applicantList.find((elem, idx) => {
+      if (elem.userUid === myApplicant.uid) {
+        setIndex(idx);
+        return;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    setModalApplicant(applicantList[index]);
+  }, [index]);
 
   return (
     <>
@@ -44,8 +82,10 @@ export default function MyApplicantCom({ myApplicant }) {
         aria-describedby="modal-modal-description"
       >
         <MyApplicantDetail
-          myApplicant={myApplicant}
+          myApplicant={modalApplicant}
           handleClose={handleClose}
+          handlePrev={handlePrev}
+          handleForward={handleForward}
         />
       </Modal>
     </>
