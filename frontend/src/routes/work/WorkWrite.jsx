@@ -7,24 +7,38 @@ import { recruitmentDetail } from '../../api/work';
 import { useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
 import WorkUpdateComponent from '../../components/work/WorkUpdateComponent';
+import { async } from 'q';
 
 export default function WorkWrite() {
   const { recruitmentUid } = useParams();
   const { workUid } = useParams();
 
   const [images, setImages] = useState([]);
-  const [recruitmentInfo, setRecruitmentInfo] = useState({});
   const [guesthouseUid, setGuesthouseUid] = useState('');
+  const [works, setWorks] = useState([]);
+  const [updateWork, setUpdateWork] = useState([]);
 
-  async function getWork() {
+  async function getGuesthouseUid() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
     setImages(data.images);
-    setRecruitmentInfo(data.recruitment);
     setGuesthouseUid(data.recruitment.guestHouseUid);
+    setWorks(data.works);
+  }
+
+  async function selectWork() {
+    works.map((work) => {
+      if (work.workUid == workUid) {
+        setUpdateWork(work);
+      }
+    });
   }
 
   useEffect(() => {
-    getWork();
+    selectWork();
+  }, [works]);
+
+  useEffect(() => {
+    getGuesthouseUid();
   }, []);
 
   return (
@@ -34,7 +48,7 @@ export default function WorkWrite() {
       />
       <RecruitmentInfo recruitmentUid={recruitmentUid} />
       {workUid != 'undefined' ? (
-        <WorkUpdateComponent />
+        <WorkUpdateComponent prework={updateWork} />
       ) : (
         <WorkWriteComponent />
       )}

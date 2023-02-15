@@ -8,24 +8,23 @@ import {
 } from './WorkWriteForms';
 import { useParams } from 'react-router-dom';
 
-export default function RecruitmentWrite({
-  onRecruitmentWrite,
-  currentRecruitmentInfo,
-}) {
+export default function RecruitmentWriteComponent({ onRecruitmentWrite }) {
   const guestHouseUid = useParams();
   const [wanted, setWanted] = useState([]);
   const [recruimentInfo, setRecruimentInfo] = useState({
-    title: currentRecruitmentInfo.title,
-    welfare: currentRecruitmentInfo.welfare,
-    wanted: currentRecruitmentInfo.wanted,
-    addInfo: currentRecruitmentInfo.addInfo,
+    title: '',
+    welfare: '',
+    wanted: [],
+    addInfo: '',
     guestHouseUid: parseInt(guestHouseUid['guesthouseUid']),
   });
+
   const handleRecruimentInfo = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setRecruimentInfo({ ...recruimentInfo, [name]: value });
   };
+
   function onWanted(input) {
     setWanted([...input]);
   }
@@ -39,7 +38,6 @@ export default function RecruitmentWrite({
 
   useEffect(() => {
     onRecruitmentWrite(recruimentInfo);
-    console.log(recruimentInfo);
   }, [recruimentInfo]);
 
   return (

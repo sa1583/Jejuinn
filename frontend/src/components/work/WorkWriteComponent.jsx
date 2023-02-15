@@ -37,7 +37,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkWriteComponent() {
+export default function WorkWriteComponent({ onWorkWrite }) {
   const { recruitmentUid } = useParams();
   const accessToken = useSelector(selectAccessToken);
   const navigate = useNavigate();
@@ -83,6 +83,10 @@ export default function WorkWriteComponent() {
     fetch(createWork(workInfo, accessToken));
     navigate(`/worklist/`);
   };
+
+  useEffect(() => {
+    onWorkWrite(workInfo);
+  }, [workInfo]);
 
   return (
     <Box sx={{ paddingTop: '1rem', height: '100%' }}>
@@ -139,10 +143,11 @@ export default function WorkWriteComponent() {
         </Grid>
       </form>
 
-      <br />
+      {/* <br />
+      버튼은 각 라우터에 만들자!
       <CustomButton type="submit" onClick={onClick}>
         저장
-      </CustomButton>
+      </CustomButton> */}
     </Box>
   );
 }

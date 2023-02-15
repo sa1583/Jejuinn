@@ -27,7 +27,6 @@ export default function WorkList() {
     getWorks();
   }, []);
 
-  console.log(works);
   return (
     <>
       <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>

@@ -1,8 +1,8 @@
-import RecruitmentWrite from '../../components/work/RecruitmentWriteComponent';
+import RecruitmentWriteComponent from '../../components/work/RecruitmentWriteComponent';
 import WorkWriteComponent from '../../components/work/WorkWriteComponent';
 import { useParams } from 'react-router-dom';
 import { Button, styled, Box } from '@mui/material';
-import { createRecruitment, getMyRecruitments } from '../../api/work';
+import { updateRecruitment, getMyRecruitments } from '../../api/work';
 import { recruitmentDetail } from '../../api/work';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
@@ -30,11 +30,11 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function () {
-  const navigate = useNavigate();
+export default function RecruitmentWrite() {
   const { recruitmentUid } = useParams();
+  const navigate = useNavigate();
+
   const accessToken = useSelector(selectAccessToken);
-  const [workInfo, setWorkInfo] = useState({});
   const [preImages, setPreImages] = useState([]);
   const [deleteImages, setDeleteImages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -44,12 +44,13 @@ export default function () {
     const data = (await recruitmentDetail(recruitmentUid)).data;
     console.log(data);
     setPreImages(data.images);
-    setWorkInfo(data.works);
     setRecruimentInfo(data.recruitment);
   };
 
   const onRecruitmentWrite = (input) => {
     console.log(input);
+
+    // 여길 바꿔야해... 그냥 input 말고 변경된 부분만 가져오게...
     setRecruimentInfo(input);
   };
 
@@ -65,7 +66,7 @@ export default function () {
   const onClick = () => {
     const formData = new FormData();
     const recruitmentBody = {
-      works: [workInfo],
+      // works: [workInfo],
       recruitment: recruitmentInfo,
     };
 
@@ -78,7 +79,8 @@ export default function () {
       formData.append('uploadImages', file);
     });
 
-    fetch(createRecruitment(formData, accessToken));
+    fetch(updateRecruitment(formData, accessToken, recruitmentUid));
+
     navigate(`/worklist/`);
   };
 
@@ -98,7 +100,7 @@ export default function () {
           maxNum={10}
           handlePreImages={handlePreImages}
         />
-        <RecruitmentWrite
+        <RecruitmentWriteComponent
           onRecruitmentWrite={onRecruitmentWrite}
           currentRecruitmentInfo={recruitmentInfo}
         />

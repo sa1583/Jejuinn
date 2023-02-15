@@ -37,14 +37,14 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkUpdateComponent() {
+export default function WorkUpdateComponent({ prework }) {
   const accessToken = useSelector(selectAccessToken);
   const navigate = useNavigate();
   const { recruitmentUid } = useParams();
   const { workUid } = useParams();
 
   const [workInfo, setWorkInfo] = useState({
-    workName: '네임을 지정해볼가요..? 이거만 폼에 띄우면 되는데..',
+    workName: '',
     gender: '',
     salary: '',
     workTime: '',
@@ -55,16 +55,6 @@ export default function WorkUpdateComponent() {
     minWorkPeriod: '',
     entryDate: '',
     recruitmentUid: recruitmentUid,
-
-    // workName: currentWorkInfo.workName,
-    // gender: currentWorkInfo.gender,
-    // salary: currentWorkInfo.salary,
-    // workTime: currentWorkInfo.workTime,
-    // workDescription: currentWorkInfo.GetWorkDescription,
-    // intake: currentWorkInfo.intake,
-    // workDays: currentWorkInfo.workDays,
-    // daysOff: currentWorkInfo.daysOff,
-    // minWorkPeriod: currentWorkInfo.minWorkPeriod,
   });
 
   const handleWorkInfo = (e) => {
@@ -92,16 +82,15 @@ export default function WorkUpdateComponent() {
   };
 
   const onClick = () => {
-    console.log('!!!!!!!!!!!');
-    console.log(workInfo);
-    console.log('!!!!!!!!!!!');
     fetch(updateWork(workInfo, accessToken));
     navigate(`/worklist/`);
   };
 
   useEffect(() => {
-    console.log(workInfo);
-  }, [workInfo]);
+    console.log('이전 직무 정보점....');
+    setWorkInfo(prework);
+  }, [prework]);
+  console.log(workInfo);
 
   return (
     <Box sx={{ paddingTop: '1rem', height: '100%' }}>
@@ -110,23 +99,40 @@ export default function WorkUpdateComponent() {
           <Grid item md={12}>
             <GetWorkName
               handleWorkInfo={handleWorkInfo}
-              preValue={'미리 받은 이름'}
+              preValue={workInfo.workName}
             />
           </Grid>
 
           <Grid item md={6}>
             <Grid container spacing={3}>
               <Grid item md={12}>
-                <GetWorkWorkDays handleWorkInfo={handleWorkInfo} />일 근무
-                <GetWorkDaysOff handleWorkInfo={handleWorkInfo} />일 휴무
+                <GetWorkWorkDays
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.workDays}
+                />
+                일 근무
+                <GetWorkDaysOff
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.daysOff}
+                />
+                일 휴무
               </Grid>
               <Grid item md={12}>
-                <GetWorkGender handleWorkInfo={handleWorkInfo} />
+                <GetWorkGender
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.gender}
+                />
               </Grid>
               <Grid item md={12}>
                 <Grid container>
-                  <GetWorkIntake handleWorkInfo={handleWorkInfo} />
-                  <GetWorkPeriod handleWorkInfo={handleWorkInfo} />
+                  <GetWorkIntake
+                    handleWorkInfo={handleWorkInfo}
+                    preValue={workInfo.intake}
+                  />
+                  <GetWorkPeriod
+                    handleWorkInfo={handleWorkInfo}
+                    preValue={workInfo.minWorkPeriod}
+                  />
                 </Grid>
               </Grid>
               <Grid item md={12}>
@@ -148,13 +154,22 @@ export default function WorkUpdateComponent() {
           <Grid item md={6}>
             <Grid container spacing={2}>
               <Grid item md={12}>
-                <GetWorkEntryDate onWorkEntryDate={onWorkEntryDate} />
+                <GetWorkEntryDate
+                  onWorkEntryDate={onWorkEntryDate}
+                  preValue={workInfo.entryDate}
+                />
               </Grid>
               <Grid item md={12}>
-                <GetWorkSalary handleWorkInfo={handleWorkInfo} />
+                <GetWorkSalary
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.salary}
+                />
               </Grid>
               <Grid item md={12}>
-                <GetWorkDescription handleWorkInfo={handleWorkInfo} />
+                <GetWorkDescription
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.workDescription}
+                />
               </Grid>
             </Grid>
           </Grid>

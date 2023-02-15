@@ -60,7 +60,7 @@ function GetWorkName({ handleWorkInfo, preValue }) {
     <CustomTextField
       label="직무명"
       name="workName"
-      value={workName}
+      value={preValue}
       onInput={onInput}
       variant="standard"
       sx={{
@@ -70,7 +70,7 @@ function GetWorkName({ handleWorkInfo, preValue }) {
   );
 }
 
-function GetWorkSalary({ handleWorkInfo }) {
+function GetWorkSalary({ handleWorkInfo, preValue }) {
   const [workSalary, setWorkSalary] = useState('');
   const onInput = (event) => {
     handleWorkInfo(event);
@@ -91,7 +91,7 @@ function GetWorkSalary({ handleWorkInfo }) {
   );
 }
 
-function GetWorkGender({ handleWorkInfo }) {
+function GetWorkGender({ handleWorkInfo, preValue }) {
   const [gender, setGender] = useState('');
   const handelOnChange = (event) => {
     setGender(event.target.value);
@@ -103,7 +103,7 @@ function GetWorkGender({ handleWorkInfo }) {
       label="성별"
       select
       name="gender"
-      value={gender}
+      value={preValue}
       onChange={handelOnChange}
     >
       {selectedGenders.map((selectedGender) => (
@@ -115,7 +115,7 @@ function GetWorkGender({ handleWorkInfo }) {
   );
 }
 
-function GetWorkPeriod({ handleWorkInfo }) {
+function GetWorkPeriod({ handleWorkInfo, preValue }) {
   const [minWorkPeriod, setMinWorkPeriod] = useState(0);
   const handelOnInput = (event) => {
     setMinWorkPeriod(event.target.value);
@@ -127,14 +127,14 @@ function GetWorkPeriod({ handleWorkInfo }) {
         label="최소근무기간(개월)"
         type="number"
         name="minWorkPeriod"
-        value={minWorkPeriod}
+        value={preValue}
         onInput={handelOnInput}
       />
     </Box>
   );
 }
 
-function GetWorkIntake({ handleWorkInfo }) {
+function GetWorkIntake({ handleWorkInfo, preValue }) {
   const [intake, setIntake] = useState(0);
   const handelOnInput = (event) => {
     setIntake(event.target.value);
@@ -146,13 +146,14 @@ function GetWorkIntake({ handleWorkInfo }) {
         label="채용인원"
         type="number"
         name="intake"
+        value={preValue}
         onInput={handelOnInput}
       />
     </Box>
   );
 }
 
-function GetWorkWorkDays({ handleWorkInfo }) {
+function GetWorkWorkDays({ handleWorkInfo, preValue }) {
   const [workDays, setWorkDays] = useState(2);
   const handelOnChange = (event) => {
     setWorkDays(event.target.value);
@@ -164,7 +165,7 @@ function GetWorkWorkDays({ handleWorkInfo }) {
       label=""
       type="number"
       select
-      value={workDays}
+      value={preValue}
       name="workDays"
       onChange={handelOnChange}
       sx={{
@@ -180,7 +181,7 @@ function GetWorkWorkDays({ handleWorkInfo }) {
   );
 }
 
-function GetWorkDaysOff({ handleWorkInfo }) {
+function GetWorkDaysOff({ handleWorkInfo, preValue }) {
   const [daysOff, setDaysOff] = useState(2);
   const handelOnChange = (event) => {
     setDaysOff(event.target.value);
@@ -191,7 +192,7 @@ function GetWorkDaysOff({ handleWorkInfo }) {
       label=""
       type="number"
       select
-      value={daysOff}
+      value={preValue}
       name="daysOff"
       onChange={handelOnChange}
       sx={{
@@ -263,7 +264,7 @@ function GetWorkEndTime({ onWorkEndTime }) {
   );
 }
 
-function GetWorkDescription({ handleWorkInfo }) {
+function GetWorkDescription({ handleWorkInfo, preValue }) {
   const [workDescription, setWorkDescription] = useState('');
   const onInput = (event) => {
     handleWorkInfo(event);
@@ -274,7 +275,7 @@ function GetWorkDescription({ handleWorkInfo }) {
     <CustomTextField
       label="직무 상세 설명"
       name="workDescription"
-      value={workDescription}
+      value={preValue}
       onInput={onInput}
       multiline
       sx={{
@@ -290,7 +291,7 @@ function GetWorkDescription({ handleWorkInfo }) {
   );
 }
 
-function GetWorkEntryDate({ onWorkEntryDate }) {
+function GetWorkEntryDate({ onWorkEntryDate, preValue }) {
   const [value, setValue] = useState('');
   const handelOnChange = (event) => {
     const entryDate = event.$d.toISOString().split('T')[0];
@@ -301,7 +302,7 @@ function GetWorkEntryDate({ onWorkEntryDate }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="입도가능날짜"
-        value={value}
+        value={preValue}
         name="entryDate"
         inputFormat="YYYY-MM-DD"
         mask={'____-__-__'}
@@ -318,13 +319,19 @@ function GetWorkEntryDate({ onWorkEntryDate }) {
 
 // 채용공고 입력
 
-function GetRecruitmentTitle({ handleRecruimentInfo }) {
+function GetRecruitmentTitle({ handleRecruimentInfo, preValue }) {
+  const [recruitmentTitle, setRecruitmentTitle] = useState(preValue);
+  const onInput = (event) => {
+    handleRecruimentInfo(event);
+    setRecruitmentTitle(event.target.value);
+  };
   return (
     <CustomTextField
       label="채용 공고 제목"
       name="title"
+      onInput={onInput}
+      value={preValue}
       variant="standard"
-      onInput={handleRecruimentInfo}
       sx={{
         width: '100%',
       }}
@@ -332,12 +339,18 @@ function GetRecruitmentTitle({ handleRecruimentInfo }) {
   );
 }
 
-function GetRecruitmentWelfare({ handleRecruimentInfo }) {
+function GetRecruitmentWelfare({ handleRecruimentInfo, preValue }) {
+  const [recruitmentWelfare, setRecruitmentWelfare] = useState(preValue);
+  const onInput = (event) => {
+    handleRecruimentInfo(event);
+    setRecruitmentWelfare(event.target.value);
+  };
   return (
     <CustomTextField
       label="복지"
       name="welfare"
-      onInput={handleRecruimentInfo}
+      onInput={onInput}
+      value={preValue}
       sx={{
         width: '100%',
       }}
@@ -345,13 +358,19 @@ function GetRecruitmentWelfare({ handleRecruimentInfo }) {
   );
 }
 
-function GetRecruitmentInfo({ handleRecruimentInfo }) {
+function GetRecruitmentInfo({ handleRecruimentInfo, preValue }) {
+  const [recruitmentInfo, setRecruitmentInfo] = useState(preValue);
+  const onInput = (event) => {
+    handleRecruimentInfo(event);
+    setRecruitmentInfo(event.target.value);
+  };
   return (
     <CustomTextField
       label="추가정보"
       name="addInfo"
       multiline
-      onInput={handleRecruimentInfo}
+      onInput={onInput}
+      value={preValue}
       sx={{
         width: '100%',
         '& .MuiOutlinedInput-root': {
@@ -365,22 +384,58 @@ function GetRecruitmentInfo({ handleRecruimentInfo }) {
   );
 }
 
-const selectedPersontypes = [
-  '스탭 경험자',
-  '활발한 성격',
-  '책임감',
-  '꼼꼼',
-  '의사소통 기술',
-  '친절함',
-  '아침형 인간',
-  '저녁형 인간',
-  '빠른 습득',
-  '열정',
-  '대처능력',
-  '빠른 일처리 ',
-];
+function FilterStyle({ value, setValue }) {
+  const wishStyles = [
+    '꼼꼼',
+    '대처 능력',
+    '빠른 습득',
+    '빠른 일처리',
+    '스탭 경험자',
+    '아침형 인간',
+    '열정',
+    '의사소통 기술',
+    '저녁형 인간',
+    '책임감',
+    '친절함',
+    '활발한 성격',
+  ];
+
+  return (
+    <Autocomplete
+      sx={{ width: '100%' }}
+      multiple
+      limitTags={3}
+      options={wishStyles.map((option) => option)}
+      value={value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}
+      renderInput={(params) => (
+        <CustomTextField
+          {...params}
+          label="스타일"
+          placeholder="원하는 스타일을 입력하세요"
+        />
+      )}
+    />
+  );
+}
 
 function GetRecruitmentWanted({ onWanted }) {
+  const selectedPersontypes = [
+    '스탭 경험자',
+    '활발한 성격',
+    '책임감',
+    '꼼꼼',
+    '의사소통 기술',
+    '친절함',
+    '아침형 인간',
+    '저녁형 인간',
+    '빠른 습득',
+    '열정',
+    '대처능력',
+    '빠른 일처리 ',
+  ];
   const [value, setValue] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
@@ -393,7 +448,7 @@ function GetRecruitmentWanted({ onWanted }) {
       name="persontype"
       onChange={(event, newValue) => {
         setValue(newValue);
-        onWanted(value);
+        onWanted(newValue);
       }}
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {

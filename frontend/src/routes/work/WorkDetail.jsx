@@ -16,7 +16,7 @@ export default function WorkDetail() {
   const { workUid } = useParams();
   const navigate = useNavigate();
 
-  const userUid = useSelector(selectUserInfo).uid;
+  const userUid = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
   const [myGuestHousesUid, setMyGuestHousesUid] = useState([]);
   const [images, setImages] = useState([]);
@@ -36,7 +36,7 @@ export default function WorkDetail() {
   // 현재 보고 있는 직무의 게하가 나의 게하 목록에 있는지 확인하기 위해 필요함
   // 만약에 워크에서 게하 아이디 주면 더이상 필요 없는 코드 ()
   async function getGuesthousesUidList() {
-    const data = (await getMyGuestHouses(accessToken, userUid)).data;
+    const data = (await getMyGuestHouses(accessToken, userUid.uid)).data;
     data?.map((guesthouse) => {
       setMyGuestHousesUid((prevArray) => [...prevArray, guesthouse.uid]);
     });
@@ -44,7 +44,7 @@ export default function WorkDetail() {
 
   function OtherWork() {
     works?.map((work) => {
-      work.uid != workUid
+      work.workUid != workUid
         ? setOtherWorks((prevArray) => [...prevArray, work])
         : setWork(work);
     });
@@ -59,9 +59,10 @@ export default function WorkDetail() {
     getGuesthousesUidList();
   }, []);
   useEffect(() => {
+    setOtherWorks([]);
     OtherWork();
     console.log(recruitmentUid);
-  }, [works]);
+  }, [works, workUid]);
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
