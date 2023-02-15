@@ -19,6 +19,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -53,6 +55,7 @@ public class RecruitmentController {
     private final StaffRecordRepository staffRecordRepository;
     private final RecruitmentService recruitmentService;
     private final UserService userService;
+    private final Logger logger = LoggerFactory.getLogger(RecruitmentController.class);
 
     @GetMapping("/api/job-offer")
     @ApiOperation(value = "모집중인 직무 모두 보기(시간 순서대로)", notes = "구인 공고의 모든 직무 정보들을 리턴합니다.")
@@ -102,6 +105,10 @@ public class RecruitmentController {
     })
     public ResponseEntity<?> insertRecruitment(@Valid @RequestPart(value="recruitmentBody") RecruitmentBodyDto recruitmentBodyDto,
                                                @RequestPart(value = "uploadImages") List<MultipartFile> uploadImages) {
+        logger.info("들어온 wanted의 크기는 {}", recruitmentBodyDto.getRecruitment().getWanted().size());
+        if(recruitmentBodyDto.getRecruitment().getWanted().size() != 0) {
+            logger.info("첫번째 {}", recruitmentBodyDto.getRecruitment().getWanted().get(0));
+        }
         Recruitment recruitment = recruitmentRepository.save(recruitmentBodyDto.getRecruitment().toRecruitment());
         List<InsertWorkPostReq> works = recruitmentBodyDto.getWorks();
         for(int i = 0 ; i < works.size() ; i++) {
