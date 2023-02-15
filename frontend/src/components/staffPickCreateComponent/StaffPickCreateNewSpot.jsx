@@ -132,7 +132,11 @@ export default function StaffPickCreateNewSpot({
           >
             <h3>명소의 위치를 선택해주세요.</h3>
             <div style={{ width: '100%' }}>
-              <MapApi setNewPin={setNewPin} startSpot={nowPick} />{' '}
+              <MapApi
+                setNewPin={setNewPin}
+                startSpot={nowPick}
+                high={'23rem'}
+              />{' '}
             </div>
           </Box>
         );
