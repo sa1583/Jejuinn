@@ -21,8 +21,8 @@ export default function MyResume() {
   };
 
   async function getAndSetResume() {
-    const res = await getResume(accessToken, userInfo.uid);
-    setResume(res.data);
+    const { data } = await getResume(accessToken, userInfo.uid);
+    setResume(data);
   }
 
   useEffect(() => {
