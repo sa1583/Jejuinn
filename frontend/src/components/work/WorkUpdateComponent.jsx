@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
-import { createWork } from '../../api/work';
+import { updateWork } from '../../api/work';
 import {
   GetWorkName,
   GetWorkGender,
@@ -37,10 +37,12 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkWriteComponent({ onWorkWrite }) {
-  const { recruitmentUid } = useParams();
+export default function WorkUpdateComponent({ prework }) {
   const accessToken = useSelector(selectAccessToken);
   const navigate = useNavigate();
+  const { recruitmentUid } = useParams();
+  const { workUid } = useParams();
+
   const [workInfo, setWorkInfo] = useState({
     workName: '',
     gender: '',
@@ -80,35 +82,57 @@ export default function WorkWriteComponent({ onWorkWrite }) {
   };
 
   const onClick = () => {
-    fetch(createWork(workInfo, accessToken));
+    fetch(updateWork(workInfo, accessToken));
     navigate(`/worklist/`);
   };
 
   useEffect(() => {
-    onWorkWrite(workInfo);
-  }, [workInfo]);
+    console.log('이전 직무 정보점....');
+    setWorkInfo(prework);
+  }, [prework]);
+  console.log(workInfo);
 
   return (
     <Box sx={{ paddingTop: '1rem', height: '100%' }}>
       <form>
         <Grid container spacing={2}>
           <Grid item md={12}>
-            <GetWorkName handleWorkInfo={handleWorkInfo} />
+            <GetWorkName
+              handleWorkInfo={handleWorkInfo}
+              preValue={workInfo.workName}
+            />
           </Grid>
 
           <Grid item md={6}>
             <Grid container spacing={3}>
               <Grid item md={12}>
-                <GetWorkWorkDays handleWorkInfo={handleWorkInfo} />일 근무
-                <GetWorkDaysOff handleWorkInfo={handleWorkInfo} />일 휴무
+                <GetWorkWorkDays
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.workDays}
+                />
+                일 근무
+                <GetWorkDaysOff
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.daysOff}
+                />
+                일 휴무
               </Grid>
               <Grid item md={12}>
-                <GetWorkGender handleWorkInfo={handleWorkInfo} />
+                <GetWorkGender
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.gender}
+                />
               </Grid>
               <Grid item md={12}>
                 <Grid container>
-                  <GetWorkIntake handleWorkInfo={handleWorkInfo} />
-                  <GetWorkPeriod handleWorkInfo={handleWorkInfo} />
+                  <GetWorkIntake
+                    handleWorkInfo={handleWorkInfo}
+                    preValue={workInfo.intake}
+                  />
+                  <GetWorkPeriod
+                    handleWorkInfo={handleWorkInfo}
+                    preValue={workInfo.minWorkPeriod}
+                  />
                 </Grid>
               </Grid>
               <Grid item md={12}>
@@ -130,24 +154,31 @@ export default function WorkWriteComponent({ onWorkWrite }) {
           <Grid item md={6}>
             <Grid container spacing={2}>
               <Grid item md={12}>
-                <GetWorkEntryDate onWorkEntryDate={onWorkEntryDate} />
+                <GetWorkEntryDate
+                  onWorkEntryDate={onWorkEntryDate}
+                  preValue={workInfo.entryDate}
+                />
               </Grid>
               <Grid item md={12}>
-                <GetWorkSalary handleWorkInfo={handleWorkInfo} />
+                <GetWorkSalary
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.salary}
+                />
               </Grid>
               <Grid item md={12}>
-                <GetWorkDescription handleWorkInfo={handleWorkInfo} />
+                <GetWorkDescription
+                  handleWorkInfo={handleWorkInfo}
+                  preValue={workInfo.workDescription}
+                />
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </form>
-
-      {/* <br />
-      버튼은 각 라우터에 만들자!
+      <br />
       <CustomButton type="submit" onClick={onClick}>
         저장
-      </CustomButton> */}
+      </CustomButton>
     </Box>
   );
 }

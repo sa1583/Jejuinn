@@ -16,17 +16,16 @@ export default function WorkDetail() {
   const { workUid } = useParams();
   const navigate = useNavigate();
 
-  const userUid = useSelector(selectUserInfo).uid;
+  const userUid = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
   const [myGuestHousesUid, setMyGuestHousesUid] = useState([]);
   const [images, setImages] = useState([]);
   const [works, setWorks] = useState([]);
   const [work, setWork] = useState([]);
   const [otherWorks, setOtherWorks] = useState([]);
-  const [onRecruitmentWrite, setOnRecruitmentWrite] = useState(false);
   const [recruitmentInfo, setRecruitmentInfo] = useState({});
 
-  async function getWork() {
+  async function getRecruitmentDetail() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
     console.log(data);
     setImages(data.images);
@@ -34,16 +33,18 @@ export default function WorkDetail() {
     setRecruitmentInfo(data.recruitment);
   }
 
+  // 현재 보고 있는 직무의 게하가 나의 게하 목록에 있는지 확인하기 위해 필요함
+  // 만약에 워크에서 게하 아이디 주면 더이상 필요 없는 코드 ()
   async function getGuesthousesUidList() {
-    const data = (await getMyGuestHouses(accessToken, userUid)).data;
-    data.map((guesthouse) => {
+    const data = (await getMyGuestHouses(accessToken, userUid.uid)).data;
+    data?.map((guesthouse) => {
       setMyGuestHousesUid((prevArray) => [...prevArray, guesthouse.uid]);
     });
   }
 
   function OtherWork() {
-    works.map((work) => {
-      work.uid != workUid
+    works?.map((work) => {
+      work.workUid != workUid
         ? setOtherWorks((prevArray) => [...prevArray, work])
         : setWork(work);
     });
@@ -51,17 +52,17 @@ export default function WorkDetail() {
 
   const onClick = () => {
     navigate(`/recruitment-write/${recruitmentInfo.uid}`);
-    const prev = onRecruitmentWrite;
-    setOnRecruitmentWrite(!prev);
   };
 
   useEffect(() => {
-    getWork();
+    getRecruitmentDetail();
     getGuesthousesUidList();
   }, []);
   useEffect(() => {
+    setOtherWorks([]);
     OtherWork();
-  }, [works]);
+    console.log(recruitmentUid);
+  }, [works, workUid]);
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
@@ -74,7 +75,7 @@ export default function WorkDetail() {
           />
         }
       />
-      <RecruitmentInfo id={recruitmentUid} onClick={onClick} />
+      <RecruitmentInfo recruitmentUid={recruitmentUid} />
       {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
         <Button onClick={onClick}>수정</Button>
       ) : null}
