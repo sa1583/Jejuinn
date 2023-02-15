@@ -3,33 +3,29 @@ import WhiteBox from '../../components/whiteBox/WhiteBox';
 import Profile from '../../components/myPage/Profile';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import PersonIcon from '@mui/icons-material/Person';
+import DescriptionIcon from '@mui/icons-material/Description';
+import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 
 const CustomButton = styled(Button)({
-  border: '1px solid #FF7600',
-  variant: 'outlined',
-  color: '#FF7600',
+  color: 'grey',
+  fontSize: '20px',
   width: '100%',
-  borderRadius: '62px',
-  fontFamily: 'border',
-  height: '5vh',
+  height: '18vw',
+  height: '6vh',
   '&:hover': {
-    border: '1px solid #FF7600',
     backgroundColor: '#FFFFFF',
   },
 });
 
 const CustomSelectButton = styled(Button)({
-  border: '1px solid #FF7600',
-  variant: 'outlined',
-  color: 'white',
-  backgroundColor: '#FF7600',
+  color: 'black',
+  fontSize: '20px',
+  fontWeight: 'bold',
   width: '100%',
-  borderRadius: '62px',
-  fontFamily: 'border',
-  height: '5vh',
+  height: '6vh',
   '&:hover': {
-    border: '1px solid #FF7600',
-    backgroundColor: 'orange',
+    backgroundColor: '#FFFFFF',
   },
 });
 
@@ -55,42 +51,54 @@ export default function MyPage({ content }) {
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} sx={{ paddingLeft: '0%' }}>
         <Grid item md={4}>
-          <WhiteBox cpn={<Profile />} />
+          <Profile />
           {selectedButton === 'mypage' ? (
             <CustomSelectButton
               sx={{
-                marginBottom: '8px',
                 marginTop: '16px',
               }}
+              startIcon={<PersonIcon sx={{ color: '#FF7600' }} />}
             >
               마이 페이지
             </CustomSelectButton>
           ) : (
             <CustomButton
               sx={{
-                marginBottom: '8px',
                 marginTop: '16px',
               }}
+              startIcon={<PersonIcon sx={{ color: '#FF7600' }} />}
               onClick={onMypage}
             >
               마이 페이지
             </CustomButton>
           )}
           {selectedButton === 'resume' ? (
-            <CustomSelectButton sx={{ mb: '8px' }}>
+            <CustomSelectButton
+              startIcon={<DescriptionIcon sx={{ color: '#FF7600' }} />}
+            >
               지원서 관리
             </CustomSelectButton>
           ) : (
-            <CustomButton onClick={onApply} sx={{ mb: '8px' }}>
+            <CustomButton
+              startIcon={<DescriptionIcon sx={{ color: '#FF7600' }} />}
+              onClick={onApply}
+            >
               지원서 관리
             </CustomButton>
           )}
           {selectedButton !== 'resume' && selectedButton !== 'mypage' ? (
-            <CustomSelectButton>게스트하우스 관리</CustomSelectButton>
+            <CustomSelectButton
+              startIcon={<HolidayVillageIcon sx={{ color: '#FF7600' }} />}
+            >
+              게스트하우스 관리
+            </CustomSelectButton>
           ) : (
-            <CustomButton onClick={onGuestHouse}>
+            <CustomButton
+              startIcon={<HolidayVillageIcon sx={{ color: '#FF7600' }} />}
+              onClick={onGuestHouse}
+            >
               게스트하우스 관리
             </CustomButton>
           )}
