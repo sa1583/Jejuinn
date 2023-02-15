@@ -20,17 +20,15 @@ export default function MyResume() {
     setOnModify((prev) => !prev);
   };
 
-  useEffect(() => {
-    // resume 요청해서 있으면 가져오고 없으면 null
-    async function getAndSetResume() {
-      const res = await getResume(accessToken, userInfo.uid);
-      setResume(res.data);
-    }
-    getAndSetResume();
-  }, []);
+  async function getAndSetResume() {
+    const res = await getResume(accessToken, userInfo.uid);
+    setResume(res.data);
+  }
 
   useEffect(() => {
-    console.log('modify', onModify);
+    if (!onModify) {
+      getAndSetResume();
+    }
   }, [onModify]);
 
   useEffect(() => {

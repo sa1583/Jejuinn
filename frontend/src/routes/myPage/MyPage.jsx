@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import DescriptionIcon from '@mui/icons-material/Description';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../../store/user';
 
 const CustomButton = styled(Button)({
   color: 'grey',
@@ -33,6 +35,7 @@ export default function MyPage({ content }) {
   const comp = content;
   const [selectedButton, setSelectedButton] = useState('mypage');
   const location = useLocation();
+  const isLogin = useSelector(selectIsLogin);
 
   const navigate = useNavigate();
   const onMypage = () => {
@@ -44,6 +47,13 @@ export default function MyPage({ content }) {
   const onGuestHouse = () => {
     navigate('/mypage/guesthouse');
   };
+
+  useEffect(() => {
+    console.log(isLogin);
+    if (!isLogin) {
+      navigate('/login');
+    }
+  }, []);
 
   useEffect(() => {
     setSelectedButton(location.pathname.split('/').at(-1));

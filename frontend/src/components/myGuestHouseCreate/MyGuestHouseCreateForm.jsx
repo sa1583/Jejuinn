@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
 import MarkDownInput from '../articleCreateComponent/MarkDownInput';
-import {
-  Box,
-  TextField,
-  Button,
-  Autocomplete,
-  Typography,
-} from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import ImageUploader from '../articleCreateComponent/ImageUploader';
 import PopupDom from '../popupPostCode/PopupDom';
 import PopupPostCode from '../popupPostCode/PopupPostCode';
