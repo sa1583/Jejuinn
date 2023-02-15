@@ -174,7 +174,6 @@ function FilterGuestHouseStyle({ value, setValue }) {
     '힐링',
     '늦은 체크아웃',
     '빠른 체크인',
-    '교통 편리',
   ];
 
   const maxSelections = 5;

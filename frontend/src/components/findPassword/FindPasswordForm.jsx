@@ -109,7 +109,6 @@ export default function FindPasswordForm() {
       password: newPW,
     };
     const data = await resetPassword(body);
-    console.log(data);
     if (data.status == 200) {
       alert('비밀번호가 변경되었습니다. 로그인해주세요.');
       navigate('/login');
