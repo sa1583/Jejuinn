@@ -117,7 +117,7 @@ export default function MyMain() {
             <Stack direction="column" spacing={1}>
               {myAppliedRecruitment.map((recruitment) => {
                 return (
-                  <Box key={recruitment.uid}>
+                  <Box key={recruitment?.uid}>
                     <WhiteBox
                       cpn={<MyMainRecruitment recruitment={recruitment} />}
                     />
@@ -149,11 +149,9 @@ export default function MyMain() {
                   {myInterestGuestHouses.map((guestHouse) => {
                     return (
                       <Box
-                        key={guestHouse.guestHouse.uid}
+                        key={guestHouse?.uid}
                         onClick={() =>
-                          navigate(
-                            `/guesthouse/detail/${guestHouse.guestHouse.uid}`,
-                          )
+                          navigate(`/guesthouse/detail/${guestHouse.uid}`)
                         }
                       >
                         <WhiteBox
@@ -169,9 +167,9 @@ export default function MyMain() {
                   {myLikePlaceList.map((post) => {
                     return (
                       <Box
-                        key={post.uid}
+                        key={post?.uid}
                         onClick={() =>
-                          navigate(`/staffpicklist/detail/${post.uid}`)
+                          navigate(`/staffpicklist/detail/${post?.uid}`)
                         }
                         sx={{ cursor: 'pointer' }}
                       >
@@ -191,9 +189,9 @@ export default function MyMain() {
               {myPosts.map((post) => {
                 return (
                   <Box
-                    key={post.reviewUid}
+                    key={post?.reviewUid}
                     onClick={() =>
-                      navigate(`/staffpicklist/detail/${post.reviewUid}`)
+                      navigate(`/staffpicklist/detail/${post?.reviewUid}`)
                     }
                     sx={{ cursor: 'pointer' }}
                   >
