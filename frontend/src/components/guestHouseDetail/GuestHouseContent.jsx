@@ -16,9 +16,7 @@ export default function GuestHouseContent({
       <h2 style={{ color: '#FF7600' }}>소개글</h2>
       <div dangerouslySetInnerHTML={{ __html: guestHouse?.introduction }} />
       {likeState === 0 ? (
-        <FavoriteIcon
-          sx={{ color: 'grey', fontSize: '2rem', cursor: 'pointer' }}
-        />
+        <FavoriteIcon sx={{ color: 'grey', fontSize: '2rem' }} />
       ) : likeState === 1 ? (
         <FavoriteBorderIcon
           sx={{ color: 'red', fontSize: '2rem', cursor: 'pointer' }}

@@ -45,7 +45,13 @@ export default function StaffPickCreate() {
 
         <Grid item xs={12} lg={8}>
           <WhiteBox
-            cpn={<MapApi handlePinClick={handlePinClick} spots={spots} />}
+            cpn={
+              <MapApi
+                handlePinClick={handlePinClick}
+                spots={spots}
+                pickedId={nowPickId}
+              />
+            }
           />
         </Grid>
         <Grid item xs={12}>

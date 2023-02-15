@@ -1,5 +1,6 @@
 import { Typography, Rating } from '@mui/material';
 import { Box } from '@mui/system';
+import { useLocation } from 'react-router-dom';
 
 export default function StaffPickSpotInfo({ selectedSpot }) {
   const inline = (title, content) => (
@@ -10,6 +11,8 @@ export default function StaffPickSpotInfo({ selectedSpot }) {
       </Box>
     </Typography>
   );
+  const location = useLocation();
+  const isDetail = location.pathname.split('staffpicklist/')[1][0] === 'd';
   return (
     <Box
       sx={{
@@ -33,13 +36,16 @@ export default function StaffPickSpotInfo({ selectedSpot }) {
         <p style={{ fontSize: '1.3rem', marginTop: 0, marginBottom: '10px' }}>
           기본정보
         </p>
-        {selectedSpot.starRatingAvg && (
-          <Rating
-            value={selectedSpot?.starRatingAvg}
-            readOnly
-            sx={{ marginBottom: '8px' }}
-          />
-        )}
+        {/* 여기 스타일 해줘 누나 */}
+        {isDetail && <Typography>{selectedSpot.name}</Typography>}
+
+        {/* {selectedSpot.starRatingAvg && ( */}
+        <Rating
+          value={selectedSpot?.starRatingAvg}
+          readOnly
+          sx={{ marginBottom: '8px' }}
+        />
+        {/* )} */}
         {inline('유형', selectedSpot?.category)}
         {inline('주소', selectedSpot?.address)}
         {/* {inline('리뷰 수', `${selectedSpot?.reviewCount} 개`)} */}

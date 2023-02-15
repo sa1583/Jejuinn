@@ -1,6 +1,5 @@
 import { Avatar, Rating, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { deepOrange } from '@mui/material/colors';
 import ImageSlider from '../imageSlider/ImageSlider';
 import { useState } from 'react';
 import {
@@ -20,7 +19,7 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
   const getLikedReviews = async () => {
     const data = (await likedReviewLikst(access_token)).data;
     data.forEach((review) => {
-      review.uid == pageId && setLiked(true);
+      review.uid === pageId && setLiked(true);
     });
   };
 
@@ -50,10 +49,32 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
 
   const profileImage = () => {
     const purl = reviewContent.profileImageUrl;
-    if (purl.slice(0, 4) == 'http') {
+    if (purl.slice(0, 4) === 'http') {
       return purl;
     } else {
       return `${images.defalut_url}${purl}`;
+    }
+  };
+
+  const heart = () => {
+    if (islogined) {
+      if (liked) {
+        return (
+          <FavoriteIcon
+            sx={{ fontSize: '2rem', color: '#FF7600', cursor: 'pointer' }}
+            onClick={goDisLike}
+          />
+        );
+      } else {
+        return (
+          <FavoriteBorderIcon
+            sx={{ color: '#FF7600', fontSize: '2rem', cursor: 'pointer' }}
+            onClick={goLike}
+          />
+        );
+      }
+    } else {
+      return <FavoriteIcon sx={{ color: 'grey', fontSize: '2rem' }} />;
     }
   };
 
@@ -102,22 +123,19 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
       />
 
       <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }}>
-        {liked && (
-          <button
-            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+        {/* {liked && (
+          <FavoriteIcon
+            sx={{ fontSize: '2rem', color: '#FF7600', cursor: 'pointer' }}
             onClick={goDisLike}
-          >
-            <FavoriteIcon sx={{ fontSize: '2rem', color: '#FF7600' }} />
-          </button>
+          />
         )}
         {!liked && (
-          <button
-            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+          <FavoriteBorderIcon
+            sx={{ color: '#FF7600', fontSize: '2rem', cursor: 'pointer' }}
             onClick={goLike}
-          >
-            <FavoriteBorderIcon sx={{ color: '#FF7600', fontSize: '2rem' }} />
-          </button>
-        )}
+          />
+        )} */}
+        {heart()}
       </Box>
       <CommentsList />
     </Box>
