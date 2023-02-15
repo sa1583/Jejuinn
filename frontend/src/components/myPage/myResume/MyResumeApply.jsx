@@ -115,7 +115,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         </Stack>
         <Stack direction="row" spacing={1}>
           <Typography minWidth="100px">선호 스타일</Typography>
-          {resume.personTypes.map(({ type }) => {
+          {resume?.personTypes?.map(({ type }) => {
             return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
           })}
         </Stack>
@@ -123,18 +123,14 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
       <Stack direction="row" alignItems="center">
         <Typography minWidth="100px">선호 지역</Typography>
         <Stack direction="row" alignItems="center" spacing={1}>
-          {resume.interestAreas.map(({ areaName }) => {
-            return (
-              <Chip key={uuidv4()} label={'#' + areaName} color="primary" />
-            );
-          })}
+          <Chip label={'#' + resume.interestArea} color="primary" />
         </Stack>
       </Stack>
-      <Stack direction="row">
+      <Stack direction="row" alignItems="center">
         <Typography minWidth="100px">입도 가능일</Typography>
         <Typography>{resume.possibleStartDate}</Typography>
       </Stack>
-      <Stack direction="row">
+      <Stack direction="row" alignItems="center">
         <Typography minWidth="100px">자기소개</Typography>
         <Typography>{resume.content}</Typography>
       </Stack>

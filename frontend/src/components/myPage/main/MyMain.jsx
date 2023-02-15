@@ -153,6 +153,7 @@ export default function MyMain() {
                         onClick={() =>
                           navigate(`/guesthouse/detail/${guestHouse.uid}`)
                         }
+                        sx={{ cursor: 'pointer' }}
                       >
                         <WhiteBox
                           cpn={<MyInterestGuestHouse guestHouse={guestHouse} />}
