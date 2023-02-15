@@ -39,7 +39,6 @@ const createRecruitment = (body, token) => {
 
 // 공고 수정
 const updateRecruitment = (body, token, recruitmentUid) => {
-  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
@@ -71,14 +70,16 @@ function createWork(body, token) {
 }
 
 // 직무 수정
-function updateWork(body, token) {
+const updateWork = (body, token) => {
+  console.log('바디 간다!!!!!!!!!!!!');
+  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
   return instance.put('/auth/work', body, config);
-}
+};
 
 // 직무 삭제
 function deleteWork(workUid, token) {

@@ -29,10 +29,11 @@ export default function MyWorkList() {
 
   async function Recruitment(ghUid) {
     const huoseRecruitment = (await getMyRecruitments(ghUid)).data;
+    console.log('게하 아이디!');
     console.log(huoseRecruitment);
     huoseRecruitment.length === 0
       ? navigate(`/work-recruitment-write/${ghUid}`)
-      : navigate(`/work-write/${huoseRecruitment[0].uid}/undefined`);
+      : navigate(`/work-write/${huoseRecruitment[0].uid}`);
   }
 
   async function setHouseAndWork() {
