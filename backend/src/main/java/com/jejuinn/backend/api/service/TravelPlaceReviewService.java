@@ -11,12 +11,13 @@ import com.jejuinn.backend.db.repository.WorkResumeInfoRepository;
 import com.jejuinn.backend.exception.DuplicateDataException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -57,9 +58,8 @@ public class TravelPlaceReviewService {
     public void deleteLike(final Long userUid, Long reviewUid) {
         User user = userRepository.findById(userUid).get();
         List<TravelPlaceReview> review = user.getLikes();
-
         for (int i = 0; i < review.size(); i++) {
-            if(review.get(i).getUid() == reviewUid){
+            if(Objects.equals(review.get(i).getUid(), reviewUid)){
                 travelPlaceReviewRepository.decreaseLikeCount(reviewUid);
                 Long writerUid = getUserUidFromReviewUid(reviewUid);
                 userService.updateSugarContent(-0.2, writerUid);
