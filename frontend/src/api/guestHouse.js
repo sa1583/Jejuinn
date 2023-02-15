@@ -131,6 +131,20 @@ const dislikeGuestHouse = (token, id) => {
   return instance.put(`/auth/guest-house/dislike/${id}`, {}, header);
 };
 
+// 문자 보내기
+const sendMessage = (token, guestHouseUid, userUid) => {
+  const header = {
+    headerrs: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  const body = {
+    guestHouseUid,
+    userUid,
+  };
+  return instance.post('/auth/interview/phone', body, header);
+};
+
 export {
   guestHouseDetail,
   allGuestHouseList,
@@ -147,4 +161,5 @@ export {
   getMyLikedGuestHouseList,
   likeGuestHouse,
   dislikeGuestHouse,
+  sendMessage,
 };
