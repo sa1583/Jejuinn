@@ -38,7 +38,7 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-export default function WorkCreateForm() {
+export default function WorkCreateForm({ handleInput }) {
   // const accessToken = useSelector(selectAccessToken);
   // const userInfo = useSelector(selectUserInfo);
   // const navigate = useNavigate();
@@ -56,6 +56,36 @@ export default function WorkCreateForm() {
   const [daysOff, setDaysOff] = useState(2);
   const [minWorkPeriod, setMinWorkPeriod] = useState(1);
   const [entryDate, setEntryDate] = useState('');
+
+  const handleSetInput = () => {
+    handleInput(
+      workName,
+      gender,
+      salary,
+      workTime,
+      workDescription,
+      intake,
+      workDays,
+      daysOff,
+      minWorkPeriod,
+      entryDate,
+    );
+  };
+
+  useEffect(() => {
+    handleSetInput();
+  }, [
+    workName,
+    gender,
+    salary,
+    workTime,
+    workDescription,
+    intake,
+    workDays,
+    daysOff,
+    minWorkPeriod,
+    entryDate,
+  ]);
 
   const [workStartTime, setWorkStartTime] = useState(
     dayjs('2018-01-01T00:00:00.000Z'),

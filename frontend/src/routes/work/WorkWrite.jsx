@@ -1,15 +1,12 @@
-import WorkWriteComponent from '../../components/work/WorkWriteComponent';
 import { Box, styled, Button } from '@mui/material';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
-import { createWork } from '../../api/work';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
-import { useState, useEffect } from 'react';
-import { recruitmentDetail } from '../../api/work';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { recruitmentDetail, createWork } from '../../api/work';
+import { useNavigate, useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
-import PropTypes from 'prop-types';
 import WorkCreateForm from '../../components/work/WorkCreateForm';
 
 const CustomButton = styled(Button)({
@@ -32,7 +29,7 @@ const CustomButton = styled(Button)({
 
 export default function WorkWrite() {
   const { recruitmentUid } = useParams();
-  const { workUid } = useParams();
+  const { guesthouseUid } = useParams();
 
   // 서버로 전송할 데이터 기본 값 설정
   const [workInfo, setWorkInfo] = useState({
@@ -46,7 +43,7 @@ export default function WorkWrite() {
     daysOff: 2,
     minWorkPeriod: '',
     entryDate: '', // 오늘 날짜로 지정하고 싶어!
-    recruitmentUid,
+    recruitmentUid: parseInt(recruitmentUid),
   });
   // workInfo.recruitmentUid = parseInt(recruitmentUid);
 
@@ -62,9 +59,9 @@ export default function WorkWrite() {
     daysOff,
     minWorkPeriod,
     entryDate,
-    recruitmentUid,
   ) => {
     setWorkInfo({
+      ...workInfo,
       workName,
       gender,
       salary,
@@ -75,7 +72,6 @@ export default function WorkWrite() {
       daysOff,
       minWorkPeriod,
       entryDate,
-      recruitmentUid,
     });
   };
 
@@ -83,21 +79,20 @@ export default function WorkWrite() {
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
-  const [guesthouseUid, setGuesthouseUid] = useState('');
+  // const [guesthouseUid, setGuesthouseUid] = useState('');
   // const [works, setWorks] = useState([]);
   // const [updateWork, setUpdateWork] = useState([]);
 
   async function getGuesthouseUid() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
     setImages(data.images);
-    setGuesthouseUid(data.recruitment.guestHouseUid);
-    // setWorks(data.works);
+    //   setGuesthouseUid(data.recruitment.guestHouseUid);
+    //   // setWorks(data.works);
   }
 
-  const onClick = (e) => {
-    console.log(e);
-    // e에서 값 뽑아서 fetch
-    // fetch(createWork(workInfo, accessToken));
+  const onClick = () => {
+    console.log(workInfo);
+    fetch(createWork(workInfo, accessToken));
     navigate(`/worklist/`);
   };
 
@@ -139,6 +134,7 @@ export default function WorkWrite() {
         //           '&:hover': {
         //             background: '#FF7600',
         //           },
+
         type="submit"
         onClick={onClick}
       >
