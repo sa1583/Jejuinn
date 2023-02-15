@@ -1,9 +1,8 @@
-import WorkWriteComponent from '../../components/work/WorkWriteComponent';
+import WorkUpdateComponent from '../../components/work/WorkUpdateComponent';
 import { Box, styled, Button } from '@mui/material';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
-
-import { createWork } from '../../api/work';
+import { updateWork } from '../../api/work';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useState, useEffect } from 'react';
@@ -29,7 +28,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function WorkWrite() {
+export default function WorkUpdate() {
   const { recruitmentUid } = useParams();
   const { workUid } = useParams();
   const [workInfo, setWorkInfo] = useState({});
@@ -40,7 +39,7 @@ export default function WorkWrite() {
   const [images, setImages] = useState([]);
   const [guesthouseUid, setGuesthouseUid] = useState('');
   const [works, setWorks] = useState([]);
-  const [updateWork, setUpdateWork] = useState([]);
+  const [updatedWork, setUpdatedWork] = useState([]);
 
   async function getGuesthouseUid() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
@@ -52,14 +51,15 @@ export default function WorkWrite() {
   async function selectWork() {
     works.map((work) => {
       if (work.workUid == workUid) {
-        setUpdateWork(work);
+        setUpdatedWork(work);
       }
     });
   }
 
   const onClick = () => {
-    fetch(createWork(workInfo, accessToken));
-    navigate(`/worklist/`);
+    console.log(workInfo);
+    fetch(updateWork(workInfo, accessToken));
+    navigate(`/worklist/detail/${recruitmentUid}/${workUid}`);
   };
 
   useEffect(() => {
@@ -70,6 +70,8 @@ export default function WorkWrite() {
     console.log(input);
     setWorkInfo(input);
   };
+
+  console.log(workInfo);
 
   useEffect(() => {
     getGuesthouseUid();
@@ -82,7 +84,7 @@ export default function WorkWrite() {
       />
       <RecruitmentInfo recruitmentUid={recruitmentUid} />
       <form>
-        <WorkWriteComponent onWorkWrite={onWorkWrite} />
+        <WorkUpdateComponent onWorkWrite={onWorkWrite} prework={updatedWork} />
       </form>
       <br />
       <CustomButton type="submit" onClick={onClick}>

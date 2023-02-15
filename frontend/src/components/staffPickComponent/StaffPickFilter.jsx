@@ -66,10 +66,8 @@ export default function StaffPickFilter({
     '우도면',
   ];
 
-  const navigate = useNavigate();
-
   return (
-    <form>
+    <form style={{ height: '23rem' }}>
       <Box
         sx={{
           display: 'flex',
@@ -142,7 +140,6 @@ export default function StaffPickFilter({
           sx={{
             borderRadius: '20px',
             backgroundColor: '#FF7600',
-            fontFamily: 'border',
             marginBottom: '1vh',
           }}
           size="large"

@@ -64,7 +64,15 @@ const PopupPostCode = ({
         onComplete={handlePostCode}
       />
       <Button
-        style={{ display: 'absolute' }}
+        variant="contained"
+        sx={{
+          display: 'absolute',
+          width: '100%',
+          height: '50px',
+          '&:hover': {
+            background: '#FF7600',
+          },
+        }}
         onClick={() => {
           onClose();
         }}

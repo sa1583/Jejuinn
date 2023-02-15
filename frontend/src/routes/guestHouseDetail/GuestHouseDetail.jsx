@@ -18,7 +18,6 @@ import {
   dislikeGuestHouse,
 } from '../../api/guestHouse';
 import { selectAccessToken, selectUserInfo } from '../../store/user';
-import CommentsList from '../../components/commentComponent/CommentsList';
 
 export default function GuestHouseDetail() {
   const location = useLocation();
@@ -54,10 +53,6 @@ export default function GuestHouseDetail() {
     getGuestHouseDetail();
     getLikedGuestHouses();
   }, []);
-
-  useEffect(() => {
-    console.log(likeState);
-  }, [likeState]);
 
   useEffect(() => {
     if (userInfo) {
@@ -105,7 +100,17 @@ export default function GuestHouseDetail() {
         <SpeedDialComponent actions={actions} />
       )}
       <Box sx={{ paddingY: '2rem', paddingX: '19%' }}>
-        <Typography variant="h4" color="primary" sx={{ marginY: '15px' }}>
+        <Typography
+          variant="h4"
+          color="primary"
+          sx={{
+            paddingLeft: '10px',
+            marginTop: '20px',
+            marginBottom: '24px',
+            fontWeight: 'bold',
+            fontSize: '1.8rem',
+          }}
+        >
           | {guestHouse?.guestHouse?.guestHouseName}
         </Typography>
         <Grid container spacing={4}>
@@ -116,7 +121,9 @@ export default function GuestHouseDetail() {
               />
             </Grid>
             <Grid item xs={12}>
-              <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
+              <WhiteBox
+                cpn={<MapApi spots={spots} startSpot={spots} high={'23rem'} />}
+              />
             </Grid>
           </Grid>
           <Grid item xs={12} md={8}>
@@ -130,15 +137,6 @@ export default function GuestHouseDetail() {
                     handleLikeGuestHouse={handleLikeGuestHouse}
                     handleCancleLikeGuestHouse={handleCancleLikeGuestHouse}
                   />
-                }
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <WhiteBox
-                cpn={
-                  <Box px="3%" mt="10px">
-                    <CommentsList />
-                  </Box>
                 }
               />
             </Grid>

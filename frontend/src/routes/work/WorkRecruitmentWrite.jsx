@@ -1,11 +1,11 @@
-import RecruitmentWrite from '../../components/work/RecruitmentWriteComponent';
+import RecruitmentWriteComponent from '../../components/work/RecruitmentWriteComponent';
 import WorkWriteComponent from '../../components/work/WorkWriteComponent';
 import { useParams } from 'react-router-dom';
 import { Button, styled, Box } from '@mui/material';
 import { createRecruitment, getMyRecruitments } from '../../api/work';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImageUploader from '../../components/articleCreateComponent/ImageUploader';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +16,6 @@ const CustomButton = styled(Button)({
   color: '#FFFFFF',
   borderRadius: '62px',
   backgroundColor: '#FF7600',
-  fontFamily: 'border',
   size: 'large',
   '&:hover': {
     backgroundColor: '#FF7600',
@@ -31,11 +30,14 @@ const CustomButton = styled(Button)({
 export default function WorkRecruitmentWrite() {
   const { guesthouseUid } = useParams();
   const accessToken = useSelector(selectAccessToken);
-  const [workInfo, setWorkInfo] = useState({});
+
   const [preImages, setPreImages] = useState([]);
   const [deleteImages, setDeleteImages] = useState([]);
   const [files, setFiles] = useState([]);
+
   const [recruitmentInfo, setRecruimentInfo] = useState({});
+  const [workInfo, setWorkInfo] = useState({});
+
   const navigate = useNavigate();
 
   const onWorkWrite = (input) => {
@@ -52,12 +54,12 @@ export default function WorkRecruitmentWrite() {
     setDeleteImages((prev) => [...prev, id]);
     setPreImages(preImages.filter((image) => image.uid !== id));
   };
-
   const handleFiles = (datas) => {
     setFiles(datas);
   };
 
   const onClick = () => {
+    console.log(workInfo, recruitmentInfo);
     const formData = new FormData();
     const recruitmentBody = {
       works: [workInfo],
@@ -74,8 +76,13 @@ export default function WorkRecruitmentWrite() {
     });
 
     fetch(createRecruitment(formData, accessToken));
+
     navigate(`/worklist/`);
   };
+
+  useEffect(() => {
+    setRecruimentInfo({ ...recruitmentInfo, guestHouseUid: guesthouseUid });
+  }, []);
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
@@ -87,7 +94,7 @@ export default function WorkRecruitmentWrite() {
           maxNum={10}
           handlePreImages={handlePreImages}
         />
-        <RecruitmentWrite
+        <RecruitmentWriteComponent
           onRecruitmentWrite={onRecruitmentWrite}
           currentRecruitmentInfo={recruitmentInfo}
         />
@@ -95,12 +102,12 @@ export default function WorkRecruitmentWrite() {
           onWorkWrite={onWorkWrite}
           currentWorkInfo={workInfo}
         />
-        <Box sx={{ paddingTop: '2rem' }}>
-          <CustomButton type="submit" onClick={onClick}>
-            저장
-          </CustomButton>
-        </Box>
       </form>
+      <Box sx={{ paddingTop: '2rem' }}>
+        <CustomButton type="submit" onClick={onClick}>
+          저장
+        </CustomButton>
+      </Box>
     </Box>
   );
 }

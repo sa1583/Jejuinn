@@ -99,7 +99,7 @@ export default function FindPasswordForm() {
     },
     '&.Mui-error': {
       color: !condition && '#ff0000',
-      fontWeight: 'bolder',
+      fontWeight: 500,
     },
   });
 

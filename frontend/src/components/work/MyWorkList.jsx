@@ -29,6 +29,7 @@ export default function MyWorkList() {
 
   async function Recruitment(ghUid) {
     const huoseRecruitment = (await getMyRecruitments(ghUid)).data;
+    console.log('게하 아이디!');
     console.log(huoseRecruitment);
     huoseRecruitment.length === 0
       ? navigate(`/work-recruitment-write/${ghUid}`)
@@ -43,7 +44,7 @@ export default function MyWorkList() {
         ...prevArray,
         ...myGuestHousesFromServer,
       ]);
-      myGuestHousesFromServer.map((myGuestHouse) => {
+      myGuestHousesFromServer?.map((myGuestHouse) => {
         getWorks(myGuestHouse.uid);
       });
     }

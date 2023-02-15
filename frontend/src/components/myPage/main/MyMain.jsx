@@ -1,4 +1,4 @@
-import { Box, styled, Button, IconButton, Stack } from '@mui/material';
+import { Box, styled, Stack } from '@mui/material';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
@@ -169,7 +169,7 @@ export default function MyMain() {
                   {myLikePlaceList.map((post) => {
                     return (
                       <Box
-                        key={post.uid}
+                        key={uuidv4()}
                         onClick={() =>
                           navigate(`/staffpicklist/detail/${post.uid}`)
                         }
@@ -191,7 +191,7 @@ export default function MyMain() {
               {myPosts.map((post) => {
                 return (
                   <Box
-                    key={post.reviewUid}
+                    key={uuidv4()}
                     onClick={() =>
                       navigate(`/staffpicklist/detail/${post.reviewUid}`)
                     }

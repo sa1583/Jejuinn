@@ -26,7 +26,7 @@ const filteredWorkList = (filterValues) => {
   return instance.post('/api/job-offer/search', config, {});
 };
 
-// 모집공고 작성
+// 공고 작성
 const createRecruitment = (body, token) => {
   const config = {
     headers: {
@@ -35,6 +35,17 @@ const createRecruitment = (body, token) => {
     },
   };
   return instance.post('/auth/job-offer', body, config);
+};
+
+// 공고 수정
+const updateRecruitment = (body, token, recruitmentUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return instance.put(`/auth/job-offer/${recruitmentUid}`, body, config);
 };
 
 // 특정 게스트하우스에 대한 직무 리스트 확인
@@ -59,14 +70,16 @@ function createWork(body, token) {
 }
 
 // 직무 수정
-function updateWork(body, token) {
+const updateWork = (body, token) => {
+  console.log('바디 간다!!!!!!!!!!!!');
+  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
   return instance.put('/auth/work', body, config);
-}
+};
 
 // 직무 삭제
 function deleteWork(workUid, token) {
@@ -77,17 +90,6 @@ function deleteWork(workUid, token) {
   };
   return instance.delete(`/auth/work/${workUid}`, config);
 }
-
-// 공고 수정 정민이가 만들어줄 예정
-const updateRecruitment = (body, token) => {
-  console.log(body);
-  const config = {
-    headers: {
-      accessToken: `Bearer ${token}`,
-    },
-  };
-  return instance.put('/auth/job-offer', body, config);
-};
 
 export {
   recruitmentDetail,

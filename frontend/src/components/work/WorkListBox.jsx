@@ -7,7 +7,7 @@ export default function WorkListBox({ works }) {
   return (
     <>
       <Grid container spacing={4}>
-        {works.map((work) => (
+        {works?.map((work) => (
           <Grid item md={4} key={uuidv4()}>
             <WhiteBox cpn={<WorkDetail work={work} />} />
           </Grid>

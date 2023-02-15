@@ -1,15 +1,18 @@
 import { Typography, Rating } from '@mui/material';
 import { Box } from '@mui/system';
+import { useLocation } from 'react-router-dom';
 
 export default function StaffPickSpotInfo({ selectedSpot }) {
   const inline = (title, content) => (
-    <Typography variant="p" sx={{ fontSize: '17px' }}>
+    <Typography variant="p" sx={{ fontSize: '1.2rem' }}>
       {title}&nbsp;&nbsp;&nbsp;
       <Box component="span" sx={{ fontWeight: 'bold' }}>
         {content}
       </Box>
     </Typography>
   );
+  const location = useLocation();
+  const isDetail = location.pathname.split('staffpicklist/')[1][0] === 'd';
   return (
     <Box
       sx={{
@@ -30,19 +33,40 @@ export default function StaffPickSpotInfo({ selectedSpot }) {
           justifyContent: 'center',
         }}
       >
-        <p style={{ fontSize: '1.3rem', marginTop: 0, marginBottom: '10px' }}>
+        {isDetail && (
+          <Typography
+            sx={{
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              color: '#FF7600',
+              marginBottom: '10px',
+            }}
+          >
+            | {selectedSpot.name}
+          </Typography>
+        )}
+        <p style={{ fontSize: '1.2rem', marginTop: 0, marginBottom: '5px' }}>
           기본정보
         </p>
-        {selectedSpot.starRatingAvg && (
+
+        {/* {selectedSpot.starRatingAvg && ( */}
+        {inline(
+          '평점',
           <Rating
             value={selectedSpot?.starRatingAvg}
             readOnly
             sx={{ marginBottom: '8px' }}
-          />
+          />,
         )}
         {inline('유형', selectedSpot?.category)}
-        {inline('주소', selectedSpot?.address)}
-        {/* {inline('리뷰 수', `${selectedSpot?.reviewCount} 개`)} */}
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ fontSize: '1.2rem', width: '50px' }}>
+            주소&nbsp;&nbsp;&nbsp;
+          </Box>
+          <Box component="span" sx={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+            {selectedSpot?.address}
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
