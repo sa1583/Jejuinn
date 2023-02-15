@@ -51,6 +51,7 @@ export default function StaffPickUpdate() {
                 handlePinClick={handlePinClick}
                 spots={spots}
                 pickedId={nowPickId}
+                high={'23rem'}
               />
             }
           />

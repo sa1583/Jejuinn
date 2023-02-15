@@ -1,4 +1,4 @@
-import { Box, styled, Button, IconButton, Stack } from '@mui/material';
+import { Box, styled, Stack } from '@mui/material';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
@@ -20,6 +20,7 @@ import {
 } from '../../../api/job';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../store/user';
+import { v4 as uuidv4 } from 'uuid';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -116,7 +117,7 @@ export default function MyMain() {
                 return (
                   <Box>
                     <WhiteBox
-                      key={recruitment.uid}
+                      key={uuidv4()}
                       cpn={<MyMainRecruitment recruitment={recruitment} />}
                     />
                   </Box>
@@ -147,7 +148,7 @@ export default function MyMain() {
                   {myInterestGuestHouses.map((recruitment) => {
                     return (
                       <WhiteBox
-                        key={recruitment.uid}
+                        key={uuidv4()}
                         cpn={<MyMainRecruitment recruitment={recruitment} />}
                       />
                     );
@@ -159,7 +160,7 @@ export default function MyMain() {
                   {myLikePlaceList.map((post) => {
                     return (
                       <Box
-                        key={post.uid}
+                        key={uuidv4()}
                         onClick={() =>
                           navigate(`/staffpicklist/detail/${post.uid}`)
                         }
@@ -181,7 +182,7 @@ export default function MyMain() {
               {myPosts.map((post) => {
                 return (
                   <Box
-                    key={post.reviewUid}
+                    key={uuidv4()}
                     onClick={() =>
                       navigate(`/staffpicklist/detail/${post.reviewUid}`)
                     }

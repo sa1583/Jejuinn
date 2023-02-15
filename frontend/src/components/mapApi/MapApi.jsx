@@ -18,6 +18,7 @@ export default function MapApi({
   setNewPin,
   startSpot,
   pickedId,
+  high,
 }) {
   const mapElement = useRef(null);
   /// 여기 spots를 axois로 전체 리스트 받아오면 됨
@@ -138,16 +139,17 @@ export default function MapApi({
       });
     }
   }, [spots, pickedId]);
+
+  const style = {
+    height: high,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  };
+
   return (
-    <Box
-      sx={{
-        height: '23rem',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-      }}
-    >
+    <Box sx={style}>
       <div
         ref={mapElement}
         style={{ height: '100%', width: '100%', borderRadius: '15px' }}

@@ -5,7 +5,6 @@ import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { styled } from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
@@ -84,17 +83,6 @@ export default function MyGuestHouse() {
     console.log('my-guest-house:', data.data);
     setMyGuestHouses(data.data);
   }
-
-  // const myGuestHouses = [
-  //   {
-  //     uid: '1',
-  //     gusetHouseName: '게토게스트하우스',
-  //   },
-  //   {
-  //     uid: '2',
-  //     gusetHouseName: '간장남게스트하우스',
-  //   },
-  // ];
 
   useEffect(() => {
     getMyGuestHouse();

@@ -110,7 +110,9 @@ export default function StaffPickDetail() {
               <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={spotInfo} />} />
             </Grid>
             <Grid item xs={12}>
-              <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
+              <WhiteBox
+                cpn={<MapApi spots={spots} startSpot={spots} high={'23rem'} />}
+              />
             </Grid>
           </Grid>
         </Grid>

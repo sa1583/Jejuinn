@@ -55,10 +55,6 @@ export default function GuestHouseDetail() {
   }, []);
 
   useEffect(() => {
-    console.log(likeState);
-  }, [likeState]);
-
-  useEffect(() => {
     if (userInfo) {
       const exist = likedGuestHouses.find(
         (elem) => elem.guestHouse.uid == guestHouseUid,
@@ -125,7 +121,9 @@ export default function GuestHouseDetail() {
               />
             </Grid>
             <Grid item xs={12}>
-              <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
+              <WhiteBox
+                cpn={<MapApi spots={spots} startSpot={spots} high={'23rem'} />}
+              />
             </Grid>
           </Grid>
           <Grid item xs={12} md={8}>
