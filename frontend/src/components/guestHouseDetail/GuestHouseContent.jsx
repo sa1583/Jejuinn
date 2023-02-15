@@ -21,7 +21,6 @@ export default function GuestHouseContent({
           sx={{
             color: 'grey',
             fontSize: '2rem',
-            cursor: 'pointer',
             marginTop: '30px',
           }}
         />

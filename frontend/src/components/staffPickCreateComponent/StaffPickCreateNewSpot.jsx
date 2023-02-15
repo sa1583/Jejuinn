@@ -199,6 +199,7 @@ export default function StaffPickCreateNewSpot({
             setNewType('');
             setSpotName('');
             getSpotsPins();
+            setFile([]);
           }}
           sx={{ position: 'absolute', right: 5, top: 5 }}
         >

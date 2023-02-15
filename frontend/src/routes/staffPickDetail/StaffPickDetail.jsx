@@ -55,7 +55,12 @@ export default function StaffPickDetail() {
   }, []);
 
   // 명소 디테일 정보
-  const [spotInfo, setSpotInfo] = useState([]);
+  const [spotInfo, setSpotInfo] = useState({
+    uid: '',
+    name: '',
+    address: '',
+    starRatingAvg: 0,
+  });
   const accessToken = useSelector(selectAccessToken);
 
   const deleteReview = async () => {
@@ -97,7 +102,7 @@ export default function StaffPickDetail() {
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
-      <SpeedDialComponent actions={actions()} />
+      {islogined && <SpeedDialComponent actions={actions()} />}
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <Grid container spacing={4}>
