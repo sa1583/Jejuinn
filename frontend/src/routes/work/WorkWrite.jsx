@@ -1,15 +1,13 @@
-import WorkWriteComponent from '../../components/work/WorkWriteComponent';
 import { Box, styled, Button } from '@mui/material';
 import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
-
-import { createWork } from '../../api/work';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
-import { useState, useEffect } from 'react';
-import { recruitmentDetail } from '../../api/work';
+import { useState } from 'react';
+import { recruitmentDetail, createWork } from '../../api/work';
 import { useNavigate, useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
+import WorkCreateForm from '../../components/work/WorkCreateForm';
 
 const CustomButton = styled(Button)({
   variant: 'contained',
@@ -31,49 +29,81 @@ const CustomButton = styled(Button)({
 
 export default function WorkWrite() {
   const { recruitmentUid } = useParams();
-  const { workUid } = useParams();
-  const [workInfo, setWorkInfo] = useState({});
+  const { guesthouseUid } = useParams();
+
+  // 서버로 전송할 데이터 기본 값 설정
+  const [workInfo, setWorkInfo] = useState({
+    workName: '',
+    gender: '',
+    salary: '',
+    workTime: '',
+    workDescription: '',
+    intake: '',
+    workDays: 2,
+    daysOff: 2,
+    minWorkPeriod: '',
+    entryDate: '', // 오늘 날짜로 지정하고 싶어!
+    recruitmentUid: parseInt(recruitmentUid),
+  });
+  // workInfo.recruitmentUid = parseInt(recruitmentUid);
+
+  // 변경되어 들어오는 값들 받는 함수? 변수? 뭐 그런거! 이걸로 받아서 보낼 정보 설정하는 함수 호출
+  const WorkInfoInput = (
+    workName,
+    gender,
+    salary,
+    workTime,
+    workDescription,
+    intake,
+    workDays,
+    daysOff,
+    minWorkPeriod,
+    entryDate,
+  ) => {
+    setWorkInfo({
+      ...workInfo,
+      workName,
+      gender,
+      salary,
+      workTime,
+      workDescription,
+      intake,
+      workDays,
+      daysOff,
+      minWorkPeriod,
+      entryDate,
+    });
+  };
 
   const accessToken = useSelector(selectAccessToken);
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
-  const [guesthouseUid, setGuesthouseUid] = useState('');
-  const [works, setWorks] = useState([]);
-  const [updateWork, setUpdateWork] = useState([]);
+  // const [guesthouseUid, setGuesthouseUid] = useState('');
+  // const [works, setWorks] = useState([]);
+  // const [updateWork, setUpdateWork] = useState([]);
 
   async function getGuesthouseUid() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
     setImages(data.images);
-    setGuesthouseUid(data.recruitment.guestHouseUid);
-    setWorks(data.works);
-  }
-
-  async function selectWork() {
-    works.map((work) => {
-      if (work.workUid == workUid) {
-        setUpdateWork(work);
-      }
-    });
+    //   setGuesthouseUid(data.recruitment.guestHouseUid);
+    //   // setWorks(data.works);
   }
 
   const onClick = () => {
+    console.log(workInfo);
     fetch(createWork(workInfo, accessToken));
     navigate(`/worklist/`);
   };
 
-  useEffect(() => {
-    selectWork();
-  }, [works]);
+  // console.log(workInfo);
+  // function WorkCreate() {
+  //   console.log(workInfo);
+  // }
 
-  const onWorkWrite = (input) => {
-    console.log(input);
-    setWorkInfo(input);
-  };
-
-  useEffect(() => {
-    getGuesthouseUid();
-  }, []);
+  // useEffect(() => {
+  //   getGuesthouseUid();
+  // }, []);
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
@@ -82,10 +112,32 @@ export default function WorkWrite() {
       />
       <RecruitmentInfo recruitmentUid={recruitmentUid} />
       <form>
-        <WorkWriteComponent onWorkWrite={onWorkWrite} />
+        {/* <WorkWriteComponent handleInput={WorkInfoInput} /> */}
+        <WorkCreateForm handleInput={WorkInfoInput} />
       </form>
       <br />
-      <CustomButton type="submit" onClick={onClick}>
+      <CustomButton
+        //         // disabled={
+        //         //   !name ||
+        //         //   !email ||
+        //         //   !phoneNumber ||
+        //         //   !address ||
+        //         // }
+        //         onClick={(e) => submit(e)}
+        //         sx={{
+        //           marginTop: '8rem',
+        //           height: '3.5rem',
+        //           width: '40%',
+        //           fontSize: '1.8vh',
+        //           fontColor: 'white',
+        //           borderRadius: '50px',
+        //           '&:hover': {
+        //             background: '#FF7600',
+        //           },
+
+        type="submit"
+        onClick={onClick}
+      >
         저장
       </CustomButton>
     </Box>
