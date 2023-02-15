@@ -5,6 +5,7 @@ import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import GroupsIcon from '@mui/icons-material/Groups';
+import dayjs from 'dayjs';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -93,7 +94,8 @@ function FilterArea({ value, setValue }) {
 
 function FilterDate({ value, setValue }) {
   const handelOnChange = (event) => {
-    setValue(event.$d.toISOString().split('T')[0]);
+    const dateFormat = dayjs(event.$d.toString()).format('YYYY-MM-DD');
+    setValue(dateFormat);
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
