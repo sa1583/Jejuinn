@@ -142,12 +142,6 @@ export default function WorkWriteComponent({ onWorkWrite }) {
           </Grid>
         </Grid>
       </form>
-
-      {/* <br />
-      버튼은 각 라우터에 만들자!
-      <CustomButton type="submit" onClick={onClick}>
-        저장
-      </CustomButton> */}
     </Box>
   );
 }
