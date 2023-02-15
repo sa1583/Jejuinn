@@ -9,12 +9,25 @@ export default function GuestHouseInfo({ guestHouse }) {
 
   return (
     <div style={{ display: 'block', padding: '3vh 3vh', marginBottom: '3vh' }}>
+      <p
+        style={{
+          color: '#FF7600',
+          fontSize: '1.2rem',
+          fontWeight: 'bold',
+          marginTop: 0,
+          marginLeft: '5px',
+          marginBottom: '10px',
+        }}
+      >
+        기본정보
+      </p>
       <Box
         sx={{
-          justifyContent: 'center',
+          width: '100%',
           display: 'inline-flex',
           flexWrap: 'wrap',
-          paddingBottom: '20px',
+          justifyContent: 'center',
+          paddingBottom: '5px',
         }}
       >
         {hashTags?.map((hashTag) => {
@@ -39,16 +52,24 @@ export default function GuestHouseInfo({ guestHouse }) {
       <br />
 
       <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
-        <PhoneAndroidIcon sx={{ color: '#FF7600', padding: '5px' }} />
-        <p>{guestHouse?.phone}</p>
+        <PhoneAndroidIcon sx={{ color: '#FF7600', paddingRight: '15px' }} />
+        <p style={{ fontSize: '1.2rem' }}>{guestHouse?.phone}</p>
       </Box>
       <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
-        <EmailIcon sx={{ color: '#FF7600', padding: '5px' }} />
-        <p>{guestHouse?.email}</p>
+        <EmailIcon sx={{ color: '#FF7600', paddingRight: '15px' }} />
+        <p style={{ fontSize: '1.2rem', margin: 0 }}>{guestHouse?.email}</p>
       </Box>
-      <Box sx={{ display: 'flex', direction: 'row', alignItems: 'center' }}>
-        <HomeIcon sx={{ color: '#FF7600', padding: '5px' }} />
-        <p>{guestHouse?.address}</p>
+      <Box sx={{ display: 'flex', direction: 'row', alignItems: 'flex-start' }}>
+        <HomeIcon
+          sx={{
+            color: '#FF7600',
+            paddingTop: '19.200px',
+            paddingRight: '15px',
+          }}
+        />
+        <p style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+          {guestHouse?.address}
+        </p>
       </Box>
     </div>
   );
