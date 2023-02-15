@@ -28,6 +28,8 @@ const filteredWorkList = (filterValues) => {
 
 // 공고 작성
 const createRecruitment = (body, token) => {
+  console.log('공고 작성 바디 간다!!!!!!!!!!!!');
+  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
@@ -39,6 +41,8 @@ const createRecruitment = (body, token) => {
 
 // 공고 수정
 const updateRecruitment = (body, token, recruitmentUid) => {
+  console.log(recruitmentUid);
+
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
