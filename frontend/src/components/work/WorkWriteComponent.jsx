@@ -41,6 +41,7 @@ export default function WorkWriteComponent({ onWorkWrite }) {
   const { recruitmentUid } = useParams();
   const accessToken = useSelector(selectAccessToken);
   const navigate = useNavigate();
+  const [entryDate, setEntryDate] = useState();
   const [workInfo, setWorkInfo] = useState({
     workName: '',
     gender: '',
@@ -51,7 +52,7 @@ export default function WorkWriteComponent({ onWorkWrite }) {
     workDays: 2,
     daysOff: 2,
     minWorkPeriod: '',
-    entryDate: '',
+    entryDate: entryDate,
     recruitmentUid: recruitmentUid,
   });
 
@@ -130,7 +131,7 @@ export default function WorkWriteComponent({ onWorkWrite }) {
           <Grid item md={6}>
             <Grid container spacing={2}>
               <Grid item md={12}>
-                <GetWorkEntryDate onWorkEntryDate={onWorkEntryDate} />
+                <GetWorkEntryDate value={entryDate} setValue={setEntryDate} />
               </Grid>
               <Grid item md={12}>
                 <GetWorkSalary handleWorkInfo={handleWorkInfo} />

@@ -1,5 +1,4 @@
-import RecruitmentWriteComponent from '../../components/work/RecruitmentWriteComponent';
-import WorkWriteComponent from '../../components/work/WorkWriteComponent';
+import RecruitmentUpdateComponent from '../../components/work/RecruitmentUpdateComponent';
 import { useParams } from 'react-router-dom';
 import { Button, styled, Box } from '@mui/material';
 import { updateRecruitment, getMyRecruitments } from '../../api/work';
@@ -30,7 +29,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function RecruitmentWrite() {
+export default function RecruitmentUpdate() {
   const { recruitmentUid } = useParams();
   const navigate = useNavigate();
 
@@ -40,17 +39,17 @@ export default function RecruitmentWrite() {
   const [files, setFiles] = useState([]);
   const [recruitmentInfo, setRecruimentInfo] = useState({});
 
+  const [preRecruitmentInfo, setPreRecruimentInfo] = useState({});
+
   const getRecruitmentDetail = async () => {
     const data = (await recruitmentDetail(recruitmentUid)).data;
-    console.log(data);
+    // console.log(data);
     setPreImages(data.images);
-    setRecruimentInfo(data.recruitment);
+    setPreRecruimentInfo(data.recruitment);
   };
 
   const onRecruitmentWrite = (input) => {
     console.log(input);
-
-    // 여길 바꿔야해... 그냥 input 말고 변경된 부분만 가져오게...
     setRecruimentInfo(input);
   };
 
@@ -64,6 +63,10 @@ export default function RecruitmentWrite() {
   };
 
   const onClick = () => {
+    setRecruimentInfo({
+      ...recruitmentInfo,
+      guestHouseUid: preRecruitmentInfo.guestHouseUid,
+    });
     const formData = new FormData();
     const recruitmentBody = {
       // works: [workInfo],
@@ -79,6 +82,7 @@ export default function RecruitmentWrite() {
       formData.append('uploadImages', file);
     });
 
+    console.log(recruitmentBody);
     fetch(updateRecruitment(formData, accessToken, recruitmentUid));
 
     navigate(`/worklist/`);
@@ -100,9 +104,9 @@ export default function RecruitmentWrite() {
           maxNum={10}
           handlePreImages={handlePreImages}
         />
-        <RecruitmentWriteComponent
+        <RecruitmentUpdateComponent
           onRecruitmentWrite={onRecruitmentWrite}
-          currentRecruitmentInfo={recruitmentInfo}
+          currentRecruitmentInfo={preRecruitmentInfo}
         />
       </form>
       <br />

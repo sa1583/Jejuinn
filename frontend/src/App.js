@@ -9,7 +9,7 @@ import WorkList from './routes/work/WorkList';
 import WorkRecruitmentWrite from './routes/work/WorkRecruitmentWrite';
 import WorkWrite from './routes/work/WorkWrite';
 import WorkUpdate from './routes/work/WorkUpdate';
-import RecruitmentWrite from './routes/work/RecruitmentWrite';
+import RecruitmentUpdate from './routes/work/RecruitmentUpdate';
 import WorkDetail from './routes/work/WorkDetail';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
@@ -92,7 +92,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'recruitment-write/:recruitmentUid',
-        element: <RecruitmentWrite />,
+        element: <RecruitmentUpdate />,
       },
       {
         path: 'work-write/:recruitmentUid/',
