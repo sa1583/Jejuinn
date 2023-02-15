@@ -3,8 +3,7 @@ import { images } from '../../../assets/images';
 
 export default function MyInterestGuestHouse({ guestHouse }) {
   const getImageUrl = () => {
-    console.log(guestHouse);
-    return `${images.defalut_url}${guestHouse.images[0].imgPath}`;
+    return `${images.defalut_url}${guestHouse?.imgUrl}`;
   };
 
   return (
@@ -17,9 +16,7 @@ export default function MyInterestGuestHouse({ guestHouse }) {
           objectFit: 'cover',
         }}
       />
-      <Typography variant="h6">
-        {guestHouse.guestHouse.guestHouseName}
-      </Typography>
+      <Typography variant="h6">{guestHouse?.guestHouseName}</Typography>
     </Stack>
   );
 }
