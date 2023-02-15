@@ -111,7 +111,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
       <Stack direction="column" spacing={3}>
         <Stack direction="row">
           <Typography minWidth="100px">인스타그램</Typography>
-          <Typography>{resume.instgramLink}</Typography>
+          <Typography>{resume.instagramLink}</Typography>
         </Stack>
         <Stack direction="row" spacing={1}>
           <Typography minWidth="100px">선호 스타일</Typography>
