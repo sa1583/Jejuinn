@@ -142,7 +142,6 @@ export default function StaffPickFilter({
           sx={{
             borderRadius: '20px',
             backgroundColor: '#FF7600',
-            fontFamily: 'border',
             marginBottom: '1vh',
           }}
           size="large"

@@ -91,7 +91,6 @@ export default function GuestHouseFilter({ handleFilter }) {
           // marginTop: 'vh',
           borderRadius: '20px',
           backgroundColor: '#FF7600',
-          fontFamily: 'border',
           marginBottom: '1vh',
         }}
         size="large"
