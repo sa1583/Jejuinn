@@ -1,12 +1,17 @@
 import { Grid, Box, styled, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+
+import { useLocation, useNavigate, useParams } from 'react-router';
+import { selectAccessToken, selectUserInfo } from '../../store/user';
 import {
   GetWorkEntryDate,
   GetWorkTime,
   GetWorkOptions,
 } from './WorkWriteForms';
+
+// api 들..
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -33,8 +38,13 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-export default function WorkWriteComponent({ handleInput }) {
-  const { recruitmentUid } = useParams();
+export default function WorkCreateForm() {
+  // const accessToken = useSelector(selectAccessToken);
+  // const userInfo = useSelector(selectUserInfo);
+  // const navigate = useNavigate();
+
+  const [isCreate, setIsCreate] = useState();
+  const [postUid, setPostUid] = useState();
 
   const [workName, setWorkName] = useState('');
   const [gender, setGender] = useState('');
@@ -47,38 +57,6 @@ export default function WorkWriteComponent({ handleInput }) {
   const [minWorkPeriod, setMinWorkPeriod] = useState(1);
   const [entryDate, setEntryDate] = useState('');
 
-  const handleSetInput = () => {
-    handleInput(
-      workName,
-      gender,
-      salary,
-      workTime,
-      workDescription,
-      intake,
-      workDays,
-      daysOff,
-      minWorkPeriod,
-      entryDate,
-      recruitmentUid,
-    );
-  };
-
-  useEffect(() => {
-    handleSetInput();
-  }, [
-    workName,
-    gender,
-    salary,
-    workTime,
-    workDescription,
-    intake,
-    workDays,
-    daysOff,
-    minWorkPeriod,
-    entryDate,
-    recruitmentUid,
-  ]);
-
   const [workStartTime, setWorkStartTime] = useState(
     dayjs('2018-01-01T00:00:00.000Z'),
   );
@@ -88,6 +66,37 @@ export default function WorkWriteComponent({ handleInput }) {
   useEffect(() => {
     setWorkTime(`${workStartTime}~${workEndTime}`);
   }, [workEndTime, workStartTime]);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.split('/')[2] === 'create') {
+      setIsCreate(true);
+    } else {
+      setIsCreate(false);
+      setPostUid(location.pathname.split('/')[3]);
+    }
+  }, []);
+
+  // 이전직무 조회하는 api 만들어 달라해야함..
+  // const getWorkInfo = async () => {
+  //    const { data } = await workDetail(postUid);
+  //    setWorkName(data.work.workName)
+  //    setGender(data.work.gender)
+  //    setSalary(data.work.salary)
+  //    setWorkTime(data.work.workTime)
+  //    setWorkDescription(data.work.workDescription)
+  //    setIntake(data.work.intake)
+  //    setWorkDays(data.work.workDays)
+  //    setDaysOff(data.work.daysOff)
+  //    setMinWorkPeriod(data.work.)
+  //    setEntryDate(data.work.minWorkPeriod)};
+
+  useEffect(() => {
+    if (postUid) {
+      // getWorkInfo();
+    }
+  }, [postUid]);
 
   return (
     <Box sx={{ paddingTop: '1rem', height: '100%' }}>
