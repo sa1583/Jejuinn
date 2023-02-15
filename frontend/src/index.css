@@ -10,7 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-y: auto;
+  overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
