@@ -71,12 +71,14 @@ public class ResumeController {
         Long userUid = userService.getUserUidFromAccessToken(request);
         Long writeUid = resumeInfoRepository.findById(resumeInfoUid).get().getUser().getUid();
         if(userUid != writeUid) return ResponseEntity.status(401).build();
-        resumeInfoRepository.deleteById(resumeInfoUid);
+        ResumeInfo resumeInfo = resumeInfoRepository.findById(resumeInfoUid).get();
+        resumeInfo.setDeleted(true);
+        resumeInfoRepository.save(resumeInfo);
         return ResponseEntity.status(200).build();
     }
 
     @GetMapping("/auth/job-search/{userUid}")
-    @ApiOperation(value = "지원서 상세 조회", notes = "userUid를 통해 지원서를 상세 조회합니다.")
+    @ApiOperation(value = "내 지원서 상세 조회", notes = "userUid를 통해 지원서를 상세 조회합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(조회 성공)"),
             @ApiResponse(code = 204, message = "작성된 이력서가 없습니다."),
@@ -130,11 +132,14 @@ public class ResumeController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(제출 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(지원서가 없음)"),
+            @ApiResponse(code = 409, message = "이미 지원한 공고"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> applyWork(@Valid @RequestBody InsertWorkResumeInfoPostReq insertWorkResumeInfoPostReq) {
         WorkResumeInfo workResumeInfo = resumeInfoService.insertWorkResumeInfo(insertWorkResumeInfoPostReq);
         if(workResumeInfo != null) {
+            if(workResumeInfoRepository.findByResumeInfoUidAndWorkUid(workResumeInfo.getResumeInfo().getUid(),
+                    workResumeInfo.getWork().getUid()) != null) return ResponseEntity.status(409).build();
             workResumeInfoRepository.save(workResumeInfo);
             return ResponseEntity.status(200).build();
         } else {
