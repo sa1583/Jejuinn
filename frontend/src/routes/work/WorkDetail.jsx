@@ -51,7 +51,7 @@ export default function WorkDetail() {
   }
 
   const onClick = () => {
-    navigate(`/recruitment-write/${recruitmentInfo.uid}`);
+    navigate(`/recruitment/update/${recruitmentInfo.uid}`);
   };
 
   useEffect(() => {

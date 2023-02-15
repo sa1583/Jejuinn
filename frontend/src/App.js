@@ -91,16 +91,16 @@ const router = createBrowserRouter([
         element: <WorkRecruitmentWrite />,
       },
       {
-        path: 'recruitment-write/:recruitmentUid',
+        path: 'recruitment/update/:recruitmentUid',
         element: <RecruitmentUpdate />,
       },
       {
-        path: 'work-write/:recruitmentUid/',
+        path: 'work/create/:recruitmentUid/:guesthouseUid',
         element: <WorkWrite />,
       },
       {
-        path: 'work-write/:recruitmentUid/:workUid',
-        element: <WorkUpdate />,
+        path: 'work/update/:workUid',
+        element: <WorkWrite />,
       },
       {
         path: 'worklist/detail/:recruitmentUid/:workUid',
