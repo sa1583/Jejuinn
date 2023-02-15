@@ -1,19 +1,19 @@
 import { Box } from '@mui/material';
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
-
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import UserVideoComponent from '../../components/videoInterview/UserVideoComponent';
 import VideoInterviewHeader from '../../components/videoInterview/VideoInterviewHeader';
-import { selectIsLogin, selectUserInfo } from '../../store/user';
+import { selectUserInfo } from '../../store/user';
 
 const APPLICATION_SERVER_URL = 'https://jejuinn.com:8443';
 const OPENVIDU_SERVER_SECRET = 'jejuinn';
 
 export default function VideoInterview() {
   const userInfo = useSelector(selectUserInfo);
+  const navigate = useNavigate();
   const { sessionId } = useParams();
 
   const [openVidu, setOpenVidu] = useState(new OpenVidu());
@@ -29,17 +29,16 @@ export default function VideoInterview() {
     setSession(openVidu.initSession());
   };
 
-  const navigate = useNavigate();
-
   const leaveSession = () => {
     if (session) {
       session.disconnect();
     }
     setSession(undefined);
+    setOpenVidu(undefined);
     setParticipants([]);
     setMySessionId('');
     setPublisher(undefined);
-    return navigate('/');
+    navigate('/');
   };
 
   const getToken = async () => {
@@ -103,10 +102,8 @@ export default function VideoInterview() {
     setAudioOff((prev) => !prev);
   };
 
-  const isLogin = useSelector(selectIsLogin);
-
   useEffect(() => {
-    if (!isLogin) navigate('/login');
+    openVidu.enableProdMode();
     joinSession();
     return () => {
       return leaveSession();
@@ -133,36 +130,34 @@ export default function VideoInterview() {
 
       session.on('publisherStartSpeaking', (event) => {
         setParticipants((prev) => {
-          const changedSub = prev.filter(
-            (sub) =>
+          const newState = [];
+          prev.forEach((sub) => {
+            const tmp = sub;
+            if (
               sub.stream.connection.connectionId ===
-              event.connection.connectionId,
-          );
-          const newState = prev.filter(
-            (sub) =>
-              sub.stream.connection.connectionId !==
-              event.connection.connectionId,
-          );
-          changedSub[0].speaking = true;
-          newState.push(changedSub[0]);
+              event.connection.connectionId
+            ) {
+              tmp.speaking = true;
+            }
+            newState.push(tmp);
+          });
           return newState;
         });
       });
 
       session.on('publisherStopSpeaking', (event) => {
         setParticipants((prev) => {
-          const changedSub = prev.filter(
-            (sub) =>
+          const newState = [];
+          prev.forEach((sub) => {
+            const tmp = sub;
+            if (
               sub.stream.connection.connectionId ===
-              event.connection.connectionId,
-          );
-          const newState = prev.filter(
-            (sub) =>
-              sub.stream.connection.connectionId !==
-              event.connection.connectionId,
-          );
-          changedSub[0].speaking = false;
-          newState.push(changedSub[0]);
+              event.connection.connectionId
+            ) {
+              tmp.speaking = false;
+            }
+            newState.push(tmp);
+          });
           return newState;
         });
       });
@@ -171,69 +166,65 @@ export default function VideoInterview() {
         if (event.changedProperty === 'videoActive') {
           if (event.newValue === false) {
             setParticipants((prev) => {
-              const changedSub = prev.filter(
-                (sub) =>
+              const newState = [];
+              prev.forEach((sub) => {
+                const tmp = sub;
+                if (
                   sub.stream.connection.connectionId ===
-                  event.stream.connection.connectionId,
-              );
-              const newState = prev.filter(
-                (sub) =>
-                  sub.stream.connection.connectionId !==
-                  event.stream.connection.connectionId,
-              );
-              changedSub[0].videoOff = true;
-              newState.push(changedSub[0]);
+                  event.stream.connection.connectionId
+                ) {
+                  tmp.videoOff = true;
+                }
+                newState.push(tmp);
+              });
               return newState;
             });
           } else {
             setParticipants((prev) => {
-              const changedSub = prev.filter(
-                (sub) =>
+              const newState = [];
+              prev.forEach((sub) => {
+                const tmp = sub;
+                if (
                   sub.stream.connection.connectionId ===
-                  event.stream.connection.connectionId,
-              );
-              const newState = prev.filter(
-                (sub) =>
-                  sub.stream.connection.connectionId !==
-                  event.stream.connection.connectionId,
-              );
-              changedSub[0].videoOff = false;
-              newState.push(changedSub[0]);
+                  event.stream.connection.connectionId
+                ) {
+                  tmp.videoOff = false;
+                }
+                newState.push(tmp);
+              });
               return newState;
             });
           }
         } else if (event.changedProperty === 'audioActive') {
           if (event.oldValue === true && event.newValue === false) {
             setParticipants((prev) => {
-              const changedSub = prev.filter(
-                (sub) =>
+              const newState = [];
+              prev.forEach((sub) => {
+                const tmp = sub;
+                if (
                   sub.stream.connection.connectionId ===
-                  event.stream.connection.connectionId,
-              );
-              const newState = prev.filter(
-                (sub) =>
-                  sub.stream.connection.connectionId !==
-                  event.stream.connection.connectionId,
-              );
-              changedSub[0].audioOff = true;
-              newState.push(changedSub[0]);
+                  event.stream.connection.connectionId
+                ) {
+                  tmp.audioOff = true;
+                }
+                newState.push(tmp);
+              });
               return newState;
             });
           } else if (event.oldValue === false && event.newValue === true) {
             setParticipants((prev) => {
-              const changedSub = prev.filter(
-                (sub) =>
+              const newState = [];
+              prev.forEach((sub) => {
+                const tmp = sub;
+                if (
                   sub.stream.connection.connectionId ===
-                  event.stream.connection.connectionId,
-              );
-              const newState = prev.filter(
-                (sub) =>
-                  sub.stream.connection.connectionId !==
-                  event.stream.connection.connectionId,
-              );
-              changedSub[0].audioOff = false;
-              changedSub[0].speaking = false;
-              newState.push(changedSub[0]);
+                  event.stream.connection.connectionId
+                ) {
+                  tmp.audioOff = false;
+                  tmp.speaking = false;
+                }
+                newState.push(tmp);
+              });
               return newState;
             });
           }
@@ -241,37 +232,28 @@ export default function VideoInterview() {
       });
 
       const sessionConnect = async () => {
-        try {
-          const token = await getToken();
-          await session.connect(token, { clientData: userInfo.username });
-          const publisher = await openVidu.initPublisherAsync(undefined, {
-            audioSource: undefined, // The source of audio. If undefined default microphone
-            videoSource: undefined, // The source of video. If undefined default webcam
-            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-            publishVideo: true, // Whether you want to start publishing with your video enabled or not
-            resolution: '640x480', // The resolution of your video
-            frameRate: 30, // The frame rate of your video
-            insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-            mirror: false, // Whether to mirror your local video or not
-          });
-          session.publish(publisher);
-          publisher.speaking = false;
-          publisher.videoOff = false;
-          publisher.audioOff = false;
-          setParticipants((prev) => [...prev, publisher]);
-          setPublisher(publisher);
-        } catch (error) {
-          alert('존재하지 않는 세션입니다.');
-          navigate('/');
-        }
+        const token = await getToken();
+        await session.connect(token, { clientData: userInfo.username });
+        const publisher = await openVidu.initPublisherAsync(undefined, {
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: undefined, // The source of video. If undefined default webcam
+          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true, // Whether you want to start publishing with your video enabled or not
+          resolution: '640x480', // The resolution of your video
+          frameRate: 30, // The frame rate of your video
+          insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
+          mirror: false, // Whether to mirror your local video or not
+        });
+        session.publish(publisher);
+        publisher.speaking = false;
+        publisher.videoOff = false;
+        publisher.audioOff = false;
+        setParticipants((prev) => [...prev, publisher]);
+        setPublisher(publisher);
       };
       sessionConnect();
     }
   }, [session]);
-
-  useEffect(() => {
-    console.log(participants);
-  }, [participants]);
 
   return (
     <div>
@@ -284,35 +266,6 @@ export default function VideoInterview() {
           alignItems: 'center',
         }}
       >
-        {/* {session === undefined ? (
-          <div>
-            <div>
-              <h1> Join a video session </h1>
-              <p>
-                <label>Participant: </label>
-                <input
-                  type="text"
-                  id="userName"
-                  value={myUserName}
-                  onChange={handleChangeUserName}
-                  required
-                />
-              </p>
-              <p>
-                <label> Session: </label>
-                <input
-                  type="text"
-                  value={mySessionId}
-                  onChange={handleChangeSessionId}
-                  required
-                />
-              </p>
-              <p>
-                <button onClick={joinSession}>JOIN</button>
-              </p>
-            </div>
-          </div>
-        ) : null} */}
         {session !== undefined ? (
           <div>
             <div
@@ -324,7 +277,6 @@ export default function VideoInterview() {
               }}
             >
               {participants.map((sub) => {
-                console.log('sub', sub);
                 return (
                   <div key={sub.stream.connection.connectionId}>
                     <UserVideoComponent
