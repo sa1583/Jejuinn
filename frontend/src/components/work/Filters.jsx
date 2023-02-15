@@ -79,7 +79,6 @@ function FilterArea({ value, setValue }) {
           label="선호하는 지역"
           placeholder="선호하는 지역을 선택하세요"
           InputProps={{
-            ...params.InputProps,
             startAdornment: (
               <InputAdornment position="start">
                 <FmdGoodOutlinedIcon color="primary" />
@@ -139,7 +138,7 @@ function FilterStyle({ value, setValue }) {
       getOptionDisabled={(option) =>
         value.length === maxSelections || value.includes(option) ? true : false
       }
-      options={wishStyles.map((option) => option)}
+      options={wishStyles}
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);

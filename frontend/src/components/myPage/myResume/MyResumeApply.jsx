@@ -25,7 +25,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   const userInfo = useSelector(selectUserInfo);
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [apply, setApply] = useState(false);
   const [historyList, setHistoryList] = useState([
@@ -124,7 +124,7 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         <Stack direction="row" alignItems="center" spacing={1}>
           {resume.interestAreas.map(({ areaName }) => {
             return (
-              <Chip key={areaName} label={'#' + areaName} color="primary" />
+              <Chip key={uuidv4()} label={'#' + areaName} color="primary" />
             );
           })}
         </Stack>
@@ -142,8 +142,12 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
         <Stack direction="row" spacing={2}>
           {historyList.map((history) => {
             return (
-              <Box sx={{ cursor: 'pointer' }} onClick={() => navigate()}>
-                <WorkHistory key={history.uid} history={history} />;
+              <Box
+                key={uuidv4()}
+                sx={{ cursor: 'pointer' }}
+                onClick={() => navigate()}
+              >
+                <WorkHistory key={history.uid} history={history} />
               </Box>
             );
           })}
