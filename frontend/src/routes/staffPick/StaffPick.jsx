@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
 import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
@@ -61,7 +61,12 @@ export default function StaffPick() {
   };
 
   // 명소 정보 받아오기
-  const [selectedSpot, setSelectedSpot] = useState(false);
+  const [selectedSpot, setSelectedSpot] = useState({
+    uid: '',
+    name: '',
+    address: '',
+    starRatingAvg: 0,
+  });
 
   const selectSpot = async () => {
     const data = (await getSpotInfo(pageId)).data.travelPlace;
@@ -102,7 +107,7 @@ export default function StaffPick() {
   };
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
-      <SpeedDialComponent actions={actions} />
+      {islogined && <SpeedDialComponent actions={actions} />}
 
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
