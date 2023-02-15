@@ -54,13 +54,14 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
 
   const handleChangeAutoApply = async () => {
     await changeAutoApply(accessToken, userInfo.uid);
-    setAnchorEl((prev) => !prev);
+    setApply((prev) => !prev);
   };
 
   useEffect(() => {
+    console.log(resume);
     setAnchorEl(resume.autoApply);
     setApply(resume.autoApply);
-    console.log('resume', resume);
+    // setHistoryList(resume.staffRecordDetial)
   }, []);
 
   return (
@@ -94,12 +95,11 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
           </Typography>
         </Popover>
         <FormControlLabel
-          value="start"
           control={
             <Switch
               color="primary"
               onChange={handleChangeAutoApply}
-              checked={anchorEl}
+              checked={apply}
             />
           }
           label="자동추천"

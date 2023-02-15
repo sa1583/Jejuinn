@@ -138,7 +138,7 @@ export default function MyMain() {
                 }}
               >
                 <TabList onChange={handleChangeTab}>
-                  <Tab label="모집공고" value="0" />
+                  <Tab label="게스트하우스" value="0" />
                   <Tab label="관광지" value="1" />
                 </TabList>
               </Box>
