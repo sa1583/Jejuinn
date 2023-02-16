@@ -165,7 +165,6 @@ public class GuestHouseController {
     public ResponseEntity<?> deleteGuestHouse(@PathVariable Long guestHouseUid, HttpServletRequest request){
         List<Recruitment> recruitment = recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(guestHouseUid);
         Long userUid = userService.getUserUidFromAccessToken(request);
-        if(recruitment == null) return ResponseEntity.status(400).build();
         if(recruitment != null && recruitment.size() > 0) {
             recruitmentService.deleteRecruitment(recruitment.get(0).getUid(), userUid);
         }
