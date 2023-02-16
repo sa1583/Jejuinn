@@ -1,7 +1,46 @@
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { applyToWork, getMyApplyList } from '../../api/job';
+import { getResume } from '../../api/resume';
+import {
+  selectAccessToken,
+  selectIsLogin,
+  selectUserInfo,
+} from '../../store/user';
 
 export default function WorkInfo({ work }) {
-  console.log(work);
+  const userInfo = useSelector(selectUserInfo);
+  const accessToken = useSelector(selectAccessToken);
+  const isLogin = useSelector(selectIsLogin);
+
+  const [canApply, setCanApply] = useState(false);
+
+  const applyWork = async () => {
+    const body = {
+      userUid: userInfo.uid,
+      workUid: work.workUid,
+    };
+    try {
+      await applyToWork(body, accessToken);
+    } catch (error) {
+      if (error.response.status === 409) {
+        alert('이미 지원한 공고입니다');
+      }
+    }
+  };
+
+  const getExistanceOfResume = async () => {
+    const { status } = await getResume(accessToken, userInfo.uid);
+    if (status === 200) setCanApply(true);
+  };
+
+  useEffect(() => {
+    if (isLogin) {
+      getExistanceOfResume();
+    }
+  }, []);
+
   return (
     <Stack p="2rem" direction="column" spacing={2}>
       <Typography variant="h5" color="primary">
@@ -41,6 +80,17 @@ export default function WorkInfo({ work }) {
         <Typography minWidth="100px">직무 소개</Typography>
         <Typography>{work.workDescription}</Typography>
       </Stack>
+      {canApply && (
+        <Button
+          sx={{
+            alignSelf: 'center',
+          }}
+          variant="contained"
+          onClick={applyWork}
+        >
+          지원하기
+        </Button>
+      )}
     </Stack>
   );
 }
