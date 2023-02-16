@@ -23,6 +23,7 @@ import {
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { getApplicantDetail } from '../../../api/recommand';
+import { getWorkDetail } from '../../../api/work';
 
 const style = {
   position: 'absolute',
@@ -87,8 +88,13 @@ export default function MyApplicantDetail({
   const handleHireStaff = async () => {
     console.log(location.pathname);
     const guestHouseUid = await getGuestHouseUid();
-    // const { data } = await getWorkInfo(workUid);
-    // await hireStaff(guestHouseUid, applicant.writerUid, data.workName);
+    const { data } = await getWorkDetail(workUid);
+    await hireStaff(
+      guestHouseUid,
+      applicant.writerUid,
+      data.workName,
+      accessToken,
+    );
   };
 
   useEffect(() => {

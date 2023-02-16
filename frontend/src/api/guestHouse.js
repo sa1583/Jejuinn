@@ -177,7 +177,8 @@ const hireStaff = (guestHouseUid, staffUid, workName, token) => {
     },
   };
   return instance.post(
-    `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}&staffUid=${staffUid}&workName=${workName}`,
+    `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}&userUid=${staffUid}&workName=${workName}`,
+    {},
     header,
   );
 };

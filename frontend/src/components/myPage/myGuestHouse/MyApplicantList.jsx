@@ -8,7 +8,7 @@ import { myApplicantList } from '../../../api/guestHouse';
 import MyApplicantDetail from './MyApplicantDetail';
 import WhiteBox from '../../whiteBox/WhiteBox';
 
-export default function MyApplicantList({ guestHouseUid }) {
+export default function MyApplicantList() {
   const access_token = useSelector(selectAccessToken);
   const location = useLocation();
   const workUid = location.pathname.split('applicantlist/')[1];
@@ -37,14 +37,14 @@ export default function MyApplicantList({ guestHouseUid }) {
 
   const handlePrev = () => {
     let index = findUserIndex();
-    if (index === 0) index = myApplicants.length - 1;
+    if (index === 0) index = myApplicants?.length - 1;
     else index = index - 1;
     setUserUid(myApplicants[index].userUid);
   };
 
   const handleForward = () => {
     let index = findUserIndex();
-    if (index === myApplicants.length - 1) index = 0;
+    if (index === myApplicants?.length - 1) index = 0;
     else index = index + 1;
     setUserUid(myApplicants[index].userUid);
   };
@@ -66,18 +66,21 @@ export default function MyApplicantList({ guestHouseUid }) {
           지원자 목록
         </h1>
         <Stack direction="row">
-          {myApplicants?.map((myApplicant) => {
-            return (
-              <Box
-                key={myApplicant.uid}
-                onClick={() => handleOpenModal(myApplicant.uid)}
-                sx={{ cursor: 'pointer' }}
-                width="100%"
-              >
-                <WhiteBox cpn={<MyApplicantCom myApplicant={myApplicant} />} />
-              </Box>
-            );
-          })}
+          {myApplicants &&
+            myApplicants?.map((myApplicant) => {
+              return (
+                <Box
+                  key={myApplicant.uid}
+                  onClick={() => handleOpenModal(myApplicant.uid)}
+                  sx={{ cursor: 'pointer' }}
+                  width="100%"
+                >
+                  <WhiteBox
+                    cpn={<MyApplicantCom myApplicant={myApplicant} />}
+                  />
+                </Box>
+              );
+            })}
         </Stack>
       </Box>
       <Modal
