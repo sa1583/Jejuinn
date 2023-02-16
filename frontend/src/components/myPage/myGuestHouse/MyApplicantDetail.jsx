@@ -34,7 +34,7 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
-  borderRadius: '39px',
+  borderRadius: '20px',
 };
 
 export default function MyApplicantDetail({
@@ -123,7 +123,7 @@ export default function MyApplicantDetail({
             </Stack>
             <Box margin="60px" width="fit-content">
               <Stack direction="column" spacing={3}>
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack direction="row" alignItems="center" spacing={4}>
                   <Avatar
                     src={
                       applicant.profileImageUrl
@@ -133,19 +133,17 @@ export default function MyApplicantDetail({
                     style={{
                       width: '15rem',
                       height: '15rem',
+                      marginTop: '20px',
                       marginBottom: '20px',
-                      cursor: 'pointer',
                     }}
                   />
                   <Box>
                     <Stack direction="row" spacing={3} alignItems="center">
                       <Typography
                         component="h2"
-                        style={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 600,
-                          fontSize: '48px',
+                        sx={{
+                          fontWeight: 'bold',
+                          fontSize: '30px',
                           lineHeight: '58px',
                         }}
                       >
@@ -155,32 +153,23 @@ export default function MyApplicantDetail({
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '300',
-                          fontSize: '32px',
+                          fontSize: '20px',
                         }}
                       >
                         {applicant.gender ? applicant.gender : '남자'} |{' '}
-                        {applicant.age ? applicant.age : 20}
+                        {applicant.age ? applicant.age : 20}세
                       </Typography>
                       <a href={applicant.instagramLink}>
                         <img src={images.instagram_logo} width="39px" />
                       </a>
                     </Stack>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={1}
-                      marginLeft="20px"
-                      marginTop="10px"
-                    >
+                    <Stack direction="row" alignItems="center" spacing={1}>
                       {applicant.personTypes?.map((tag) => {
                         return (
                           <Chip
                             label={'#' + tag.type}
                             sx={{
-                              background: '#FF9B44',
+                              background: '#FF7600',
                               color: 'secondary.main',
                             }}
                           />
@@ -194,15 +183,16 @@ export default function MyApplicantDetail({
                         marginTop: '10px',
                       }}
                     >
-                      <Stack direction="row" spacing={1} alignItems="center">
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        alignItems="center"
+                        marginTop="15px"
+                      >
                         <Typography
                           style={{
-                            marginLeft: '20px',
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: '100',
-                            fontSize: '20px',
-                            lineHeight: '29px',
+                            marginRight: '7px',
+                            fontSize: '18px',
                           }}
                         >
                           선호 스타일
@@ -239,14 +229,8 @@ export default function MyApplicantDetail({
                     >
                       <Typography
                         style={{
-                          display: 'inline',
-                          marginLeft: '20px',
-                          marginRight: '51px',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '100',
-                          fontSize: '20px',
-                          lineHeight: '29px',
+                          marginRight: '30px',
+                          fontSize: '18px',
                         }}
                       >
                         선호 지역
@@ -270,19 +254,14 @@ export default function MyApplicantDetail({
                     >
                       <Typography
                         style={{
-                          display: 'inline',
-                          marginLeft: '20px',
-                          marginRight: '31px',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '100',
-                          fontSize: '20px',
-                          lineHeight: '29px',
+                          marginRight: '15px',
+                          fontSize: '18px',
                         }}
                       >
                         입도 가능일
                       </Typography>
                       <Chip
+                        width="90%"
                         icon={<CalendarMonthIcon color="white" />}
                         sx={{ background: '#FF9B44', color: 'white' }}
                         label={applicant.possibleStartDate}
@@ -290,44 +269,17 @@ export default function MyApplicantDetail({
                     </Box>
                   </Box>
                 </Stack>
-                <Box
-                  sx={{
-                    marginTop: '33px',
-                  }}
-                >
-                  <Stack direction="row" spacing={1} minHeight="150px">
-                    <Typography
-                      minWidth="150px"
-                      sx={{
-                        fontSize: '30px',
-                      }}
-                    >
-                      근무 이력
-                    </Typography>
-                    {applicant?.staffRecordDetail?.map((history) => {
-                      if (history.onDuty === 'true') return null;
-                      return (
-                        <WorkHistory key={history.uid} history={history} />
-                      );
-                    })}
-                  </Stack>
-                </Box>
                 <Box marginTop="30px">
-                  <Stack direction="row" spacing={8}>
+                  <Stack direction="row" justifyContent="center" spacing={8}>
                     <Typography
                       sx={{
-                        fontSize: '30px',
+                        fontSize: '20px',
                         display: 'inline',
                       }}
                     >
                       자기 소개
                     </Typography>
-                    <Box
-                      width="400px"
-                      minHeight="150px"
-                      display="flex"
-                      alignItems="center"
-                    >
+                    <Box width="400px" display="flex" alignItems="center">
                       <TextField
                         fullWidth
                         multiline
@@ -345,6 +297,31 @@ export default function MyApplicantDetail({
                 </Box>
                 <Box
                   sx={{
+                    marginTop: '30px',
+                    marginX: '20px',
+                  }}
+                >
+                  <Stack direction="row" spacing={8} minHeight="150px">
+                    <Typography
+                      sx={{
+                        fontSize: '20px',
+                        display: 'inline',
+                        marginLeft: '12px',
+                      }}
+                    >
+                      근무 이력
+                    </Typography>
+                    {applicant?.staffRecordDetail?.map((history) => {
+                      if (history.onDuty === 'true') return null;
+                      return (
+                        <WorkHistory key={history.uid} history={history} />
+                      );
+                    })}
+                  </Stack>
+                </Box>
+
+                <Box
+                  sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignContent: 'center',
@@ -353,7 +330,16 @@ export default function MyApplicantDetail({
                   <Stack direction="row" spacing={5}>
                     <Button
                       variant="contained"
-                      sx={{ borderRadius: '25px', width: '205px' }}
+                      sx={{
+                        height: '3rem',
+                        fontSize: '1.6vh',
+                        fontColor: 'white',
+                        borderRadius: '50px',
+                        width: '205px',
+                        '&:hover': {
+                          background: '#FF7600',
+                        },
+                      }}
                       onClick={sendMessageToApplicant}
                     >
                       문자 보내기
@@ -361,9 +347,14 @@ export default function MyApplicantDetail({
                     <Button
                       variant="contained"
                       sx={{
-                        background: 'primary.main',
-                        borderRadius: '25px',
+                        height: '3rem',
+                        fontSize: '1.6vh',
+                        fontColor: 'white',
+                        borderRadius: '50px',
                         width: '205px',
+                        '&:hover': {
+                          background: '#FF7600',
+                        },
                       }}
                       onClick={moveToInterview}
                     >

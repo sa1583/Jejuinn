@@ -64,7 +64,7 @@ const CustomTextField = styled(TextField)({
 const minWidth = '150px';
 
 export default function MyResumeWrite({ resume, changeApplyComp }) {
-  const [area, setArea] = useState();
+  const [area, setArea] = useState('전체');
   const [startDate, setStartDate] = useState('');
   const [instagramUrl, setInstagramUrl] = useState('');
   const [myStyleTag, setMyStyleTags] = useState([]);
