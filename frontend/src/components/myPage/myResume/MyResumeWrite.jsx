@@ -89,7 +89,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
 
   const submitResume = async () => {
     const body = {
-      autoApply: false,
+      autoApply: resume.autoApply,
       content: intro,
       instagramLink: instagramUrl,
       guestHouseTypes: guestHouseStyleTag,
@@ -110,7 +110,6 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
   };
 
   useEffect(() => {
-    console.log('resume', resume);
     if (resume) {
       const newMyStyleTags = [];
       resume.personTypes.map(({ type }) => {
@@ -188,7 +187,19 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
           />
         </Stack>
         <Box display="flex" justifyContent="center">
-          <CustomButton onClick={submitResume}>지원서 저장</CustomButton>
+          <CustomButton
+            onClick={submitResume}
+            disabled={
+              !area ||
+              !startDate ||
+              !minWorkPeriod ||
+              !intro ||
+              myStyleTag.length === 0 ||
+              guestHouseStyleTag.length === 0
+            }
+          >
+            지원서 저장
+          </CustomButton>
         </Box>
       </Stack>
     </Box>
