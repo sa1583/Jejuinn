@@ -9,14 +9,14 @@ import {
   guestHouseDetail,
   guestHouseUpdate,
 } from '../../api/guestHouse';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
   selectAccessToken,
   selectIsLogin,
   selectUserInfo,
 } from '../../store/user';
-import { FilterStyle } from '../work/Filters';
+import { FilterGuestHouseStyle } from '../work/Filters';
 import MapApi from '../mapApi/MapApi';
 
 export default function MyGuestHouseCreateForm() {
@@ -238,7 +238,10 @@ export default function MyGuestHouseCreateForm() {
         <Typography sx={{ fontSize: 20, color: 'grey' }}>
           게스트하우스에 해당하는 스타일을 선택하세요.
         </Typography>
-        <FilterStyle value={selectedValues} setValue={setSelectedValues} />
+        <FilterGuestHouseStyle
+          value={selectedValues}
+          setValue={setSelectedValues}
+        />
         <br />
         <br />
 

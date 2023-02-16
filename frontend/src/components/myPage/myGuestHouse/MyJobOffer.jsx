@@ -12,6 +12,13 @@ export default function MyJobOffer({ myJobOffer, checked }) {
   };
 
   const getGenderInfo = ` ${myJobOffer.gender} ${myJobOffer.intake}`;
+  const getWorkName = () => {
+    if (myJobOffer.workName.length > 7) {
+      return myJobOffer.workName.substr(0, 7) + '...';
+    } else {
+      return myJobOffer.workName;
+    }
+  };
 
   return (
     <Box
@@ -31,10 +38,11 @@ export default function MyJobOffer({ myJobOffer, checked }) {
         sx={{ paddingX: '1vh', py: '10px' }}
       >
         <Typography
-          minWidth="130px"
+          minWidth="120px"
+          maxWidth="120px"
           sx={{ fontSize: '18px', fontWeight: 'bold', color: '#FF7600' }}
         >
-          {myJobOffer.workName}
+          {getWorkName()}
         </Typography>
         <Box>
           <Typography sx={{ fontSize: '17px' }}>
