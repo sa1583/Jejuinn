@@ -80,7 +80,7 @@ export default function WorkDetail() {
       />
       <RecruitmentInfo recruitmentUid={recruitmentUid} />
       {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
-        <Button onClick={onClick}>수정</Button>
+        <Button onClick={onClick}> 공고수정</Button>
       ) : null}
       <WorkInfo work={work} />
       <h2 style={{ color: '#FF7600' }}>
@@ -90,9 +90,3 @@ export default function WorkDetail() {
     </Box>
   );
 }
-
-// 공고
-// 직무 작성은 지금 만들어 놓은거에 그냥 공고 아이디 추가해서 요청 보내면 됨
-// 없을 때 - 이게 문제
-// 공고작성이랑 직무 작성을 컴포넌트 구성을 어떻게 할지...
-//
