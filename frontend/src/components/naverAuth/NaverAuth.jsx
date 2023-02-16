@@ -30,28 +30,15 @@ export default function NaverAuth() {
   // };
 
   return (
-    <WhiteBox
-      cpn={
-        <Stack
-          direction="column"
-          height="480px"
-          alignItems="center"
-          justifyContent="space-around"
-        >
-          <Typography variant="h4">
-            네이버 인증을 진행해야 지원서를 작성할 수 있습니다.
-          </Typography>
-          <Stack
-            direction="row"
-            justifyContent="space-around"
-            alignItems="center"
-          >
-            <Typography variant="h4">네이버 인증하기</Typography>
-            <Box id="naverIdLogin" ref={naverRef} />
-          </Stack>
-        </Stack>
-      }
-      sx={{ height: '100px' }}
-    />
+    <Stack direction="column" height="480px" alignItems="center">
+      <Typography variant="h6" sx={{ marginTop: '9rem' }}>
+        네이버 인증 후 지원서 작성이 가능합니다
+      </Typography>
+      <Typography variant="h6">
+        아래 버튼을 클릭하여 네이버 인증을 완료해주세요 :)
+      </Typography>
+      <br />
+      <Box id="naverIdLogin" ref={naverRef} />
+    </Stack>
   );
 }

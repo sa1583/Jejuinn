@@ -7,18 +7,26 @@ export default function MyMainArticle({ post }) {
   };
 
   return (
-    <Stack direction="row" sx={{ p: '4%' }} alignItems="center" spacing={7}>
+    <Stack direction="row" sx={{ p: '3%', px: '4%' }} alignItems="center">
       <img
         src={getUrl()}
         style={{
-          width: '50px',
-          height: '50px',
+          width: '60px',
+          height: '60px',
           objectFit: 'cover',
+          borderRadius: '50px',
+          marginRight: '30px',
         }}
       />
-      <Typography variant="h6">{post.title}</Typography>
+      <Typography
+        variant="h6"
+        sx={{
+          marginRight: '30px',
+        }}
+      >
+        {post.title}
+      </Typography>
       <Rating value={post.starRatingAvg} readOnly />
-      <Typography>{post.dateCreated}</Typography>
     </Stack>
   );
 }

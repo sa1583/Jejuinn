@@ -74,7 +74,7 @@ export default function MyPage({ content }) {
               }}
               startIcon={<PersonIcon sx={{ color: '#FF7600' }} />}
             >
-              마이 페이지
+              마이페이지
             </CustomSelectButton>
           ) : (
             <CustomButton
@@ -85,7 +85,7 @@ export default function MyPage({ content }) {
               startIcon={<PersonIcon sx={{ color: '#FF7600' }} />}
               onClick={onMypage}
             >
-              마이 페이지
+              마이페이지
             </CustomButton>
           )}
           {selectedButton === 'resume' ? (

@@ -45,8 +45,8 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
   }, []);
 
   return (
-    <Stack p="3%" spacing={3}>
-      <Stack direction="row" alignItems="center">
+    <Stack p="3%" spacing={4}>
+      <Stack direction="row" alignItems="center" sx={{ marginLeft: 'auto' }}>
         <HelpOutlineOutlinedIcon
           ref={anchorRef}
           color="primary"
@@ -85,44 +85,76 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
           label="자동추천"
           labelPlacement="start"
         />
-        <Button onClick={changeApplyComp}>수정</Button>
       </Stack>
-      <Stack direction="column" spacing={3}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography minWidth="100px">내 스타일</Typography>
+      <Stack direction="column" spacing={3} sx={{ marginTop: 0 }}>
+        <Box display="flex" justifyContent="space-between">
+          <Typography sx={{ fontSize: 23, fontWeight: 'bold' }}>
+            내 지원서
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={changeApplyComp}
+            sx={{ marginLeft: '15px' }}
+          >
+            수정
+          </Button>
+        </Box>
+        <br />
+        <Stack direction="row" alignItems="center" spacing={15}>
+          <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+            내 스타일
+          </Typography>
           <Stack direction="row" alignItems="center" spacing={1}>
             {resume?.personTypes?.map(({ type }) => {
               return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
             })}
           </Stack>
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography minWidth="100px">인스타그램</Typography>
-          <Typography>{resume.instagramLink}</Typography>
+        <Stack direction="row" alignItems="center" spacing={15}>
+          <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+            인스타그램
+          </Typography>
+          <Typography sx={{ fontSize: 20, color: '#FF7600' }}>
+            {resume.instagramLink}
+          </Typography>
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography minWidth="100px">선호 스타일</Typography>
+        <Stack direction="row" alignItems="center" spacing={15}>
+          <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+            선호 스타일
+          </Typography>
           {resume?.guestHouseTypes?.map((type) => {
             return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
           })}
         </Stack>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography minWidth="100px">선호 지역</Typography>
+      <Stack direction="row" alignItems="center" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          선호 지역
+        </Typography>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Chip label={'#' + resume.interestArea} color="primary" />
         </Stack>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography minWidth="100px">입도 가능일</Typography>
-        <Typography>{resume.possibleStartDate}</Typography>
+      <Stack direction="row" alignItems="center" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          입도 가능일
+        </Typography>
+        <Typography sx={{ fontSize: 20, color: '#FF7600' }}>
+          {resume.possibleStartDate}
+        </Typography>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography minWidth="100px">자기소개</Typography>
-        <Typography>{resume.content}</Typography>
+      <Stack direction="row" alignItems="center" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          자기소개
+        </Typography>
+        <Typography sx={{ fontSize: 20, color: '#FF7600' }}>
+          {resume.content}
+        </Typography>
       </Stack>
-      <Stack direction="row" spacing={1}>
-        <Typography minWidth="100px">근무이력</Typography>
+      <Stack direction="row" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          근무이력
+        </Typography>
         <Stack direction="row" spacing={2}>
           {historyList?.map((history) => {
             return (
