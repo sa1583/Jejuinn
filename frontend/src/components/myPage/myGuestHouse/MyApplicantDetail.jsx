@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { getApplicantDetail } from '../../../api/recommand';
 import { getWorkDetail } from '../../../api/work';
+import { snedVideoInterviewUrl } from '../../../api/sms';
 
 const style = {
   position: 'absolute',
@@ -73,9 +74,11 @@ export default function MyApplicantDetail({
     return result;
   }
 
-  const moveToInterview = () => {
+  const moveToInterview = async () => {
+    const guestHouseUid = await getGuestHouseUid();
     const sessionId = userInfo.uid + '-' + generateRandomString(30);
-
+    const link = `jejuinn.com/interveiw/${sessionId}`;
+    await snedVideoInterviewUrl(guestHouseUid, userInfo.uid, link);
     navigate(`/interview/${sessionId}`);
   };
 

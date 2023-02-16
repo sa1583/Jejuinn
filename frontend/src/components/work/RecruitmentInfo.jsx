@@ -12,7 +12,6 @@ export default function RecruitmentInfo({ recruitmentUid }) {
 
   useEffect(() => {
     getWork();
-    console.log(recruitmentUid);
   }, []);
 
   // console.log(recruitmentInfo);
