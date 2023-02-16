@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { images } from '../../../assets/images';
 import WorkHistory from '../WorkHistory';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -18,6 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   getApplicantByUid,
   getGuestHouseUidByWorkUid,
+  hireStaff,
   sendMessage,
 } from '../../../api/guestHouse';
 import { useSelector } from 'react-redux';
@@ -44,6 +45,7 @@ export default function MyApplicantDetail({
   handleForward,
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
 
@@ -81,6 +83,13 @@ export default function MyApplicantDetail({
     const { data } = await getApplicantDetail(resumeUid, workUid, accessToken);
     console.log('data', data);
     setApplicant(data);
+  };
+
+  const handleHireStaff = async () => {
+    console.log(location.pathname);
+    const guestHouseUid = await getGuestHouseUid();
+    const { data } = await getWorkInfo(workUid);
+    await hireStaff(guestHouseUid, applicant.writerUid, data.workName);
   };
 
   useEffect(() => {
@@ -354,6 +363,17 @@ export default function MyApplicantDetail({
                       onClick={moveToInterview}
                     >
                       화상 면접
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        background: 'primary.main',
+                        borderRadius: '25px',
+                        width: '205px',
+                      }}
+                      onClick={handleHireStaff}
+                    >
+                      채용
                     </Button>
                   </Stack>
                 </Box>
