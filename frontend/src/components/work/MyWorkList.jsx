@@ -56,6 +56,7 @@ export default function MyWorkList() {
   useEffect(() => {
     setHouseAndWork();
   }, []);
+  console.log(myWorks);
 
   return (
     <>
@@ -73,7 +74,7 @@ export default function MyWorkList() {
             )}
           </Grid>
 
-          {myWorks.map((myWork) => (
+          {myWorks?.map((myWork) => (
             <Grid item md={4} key={uuidv4()}>
               <WhiteBox cpn={<MyWorkDetail work={myWork} />} />
             </Grid>

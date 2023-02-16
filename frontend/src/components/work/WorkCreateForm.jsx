@@ -50,18 +50,6 @@ export default function WorkCreateForm({ handleInput }) {
   const [daysOff, setDaysOff] = useState('2');
   const [minWorkPeriod, setMinWorkPeriod] = useState(1);
   const [entryDate, setEntryDate] = useState('');
-  const [workInfo, setWorkInnfo] = useState({
-    workName,
-    gender,
-    salary,
-    workTime,
-    workDescription,
-    intake,
-    workDays,
-    daysOff,
-    minWorkPeriod,
-    entryDate,
-  });
 
   const handleSetInput = () => {
     handleInput(
@@ -96,9 +84,11 @@ export default function WorkCreateForm({ handleInput }) {
   const [workStartTime, setWorkStartTime] = useState(
     dayjs('2018-01-01T00:00:00.000Z'),
   );
+
   const [workEndTime, setWorkEndTime] = useState(
     dayjs('2018-01-01T06:00:00.000Z'),
   );
+
   useEffect(() => {
     setWorkTime(`${workStartTime}~${workEndTime}`);
   }, [workEndTime, workStartTime]);

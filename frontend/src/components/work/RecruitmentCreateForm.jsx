@@ -132,6 +132,7 @@ export default function RecruitmentCreateForm({ handleInput }) {
               label="상세설명"
               multiline
               title={addInfo}
+              rows={7}
               onChange={(e) => setAddInfo(e.target.value)}
               sx={{
                 width: '100%',
