@@ -56,7 +56,6 @@ export default function MyWorkList() {
   useEffect(() => {
     setHouseAndWork();
   }, []);
-  console.log(myWorks);
 
   return (
     <>

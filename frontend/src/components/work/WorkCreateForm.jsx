@@ -8,7 +8,7 @@ import {
   GetWorkOptions,
   GetWorkWorkDays,
 } from './WorkWriteForms';
-
+import { FilterDate } from './Filters';
 import { getWorkDetail } from '../../api/work';
 
 const CustomTextField = styled(TextField)({
@@ -207,7 +207,7 @@ export default function WorkCreateForm({ handleInput }) {
         <Grid item md={6}>
           <Grid container spacing={2}>
             <Grid item md={12}>
-              <GetWorkEntryDate value={entryDate} setValue={setEntryDate} />
+              <FilterDate value={entryDate} setValue={setEntryDate} />
             </Grid>
             <Grid item md={12}>
               <CustomTextField

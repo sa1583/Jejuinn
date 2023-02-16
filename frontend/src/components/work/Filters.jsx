@@ -33,12 +33,15 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-function FilterName({ onName }) {
+function FilterName({ value, setValue }) {
   return (
     <CustomTextField
       label="게스트하우스 이름"
       placeholder="입력"
-      onInput={onName}
+      onInput={value}
+      onChange={(e) => {
+        setValue(e.target.value);
+      }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start" style={{ color: '#FF7600' }}>

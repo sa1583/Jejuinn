@@ -124,7 +124,7 @@ export default function RecruitmentCreateForm({ handleInput }) {
           </Grid>
 
           <Grid item md={6}>
-            <FilterStyle value={selectedValues} setValue={setSelectedValues} />
+            <FilterStyle value={wanted} setValue={setWanted} />
           </Grid>
 
           <Grid item md={12}>

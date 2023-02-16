@@ -20,17 +20,6 @@ const getWorkDetail = (workUid) => {
   return instance.get(`/api/work/${workUid}`);
 };
 
-// 직무 필터 조회
-const filteredWorkList = (filterValues) => {
-  console.log(filterValues);
-  const config = {
-    body: {
-      filterValues,
-    },
-  };
-  return instance.post('/api/job-offer/search', config, {});
-};
-
 // 공고 작성
 const createRecruitment = (body, token) => {
   console.log('공고 작성 바디 간다!!!!!!!!!!!!');
@@ -100,10 +89,21 @@ function deleteWork(workUid, token) {
   return instance.delete(`/auth/work/${workUid}`, config);
 }
 
+// 직무 검색
+const filterWorks = (info) => {
+  let query = `/api/job-offer/search?areaName=${info.selectedArea}&pageNumber=${info.pageNumber}&`;
+  if (info.styleTags.length === 0) query += 'styles=&';
+  info.styleTags.map((style) => {
+    query += `styles=${style}`;
+  });
+  query += `word=${info.word}&entryDate=${info.startDate}`;
+  return instance.get(query);
+};
+
 export {
   recruitmentDetail,
   allWorkList,
-  filteredWorkList,
+  filterWorks,
   createWork,
   updateWork,
   deleteWork,
