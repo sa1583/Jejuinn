@@ -192,7 +192,7 @@ export default function MyMain() {
                   <Box
                     key={post.reviewUid}
                     onClick={() =>
-                      navigate(`/staffpicklist/detail/${post.reviewUid}`)
+                      navigate(`/staffpicklist/detail/${post.uid}`)
                     }
                     sx={{ cursor: 'pointer' }}
                   >

@@ -69,7 +69,7 @@ export default function GuestHouseDetail() {
   };
 
   async function DeleteGuestHouse() {
-    guestHouseDelete(accessToken, guestHouseUid);
+    await guestHouseDelete(accessToken, guestHouseUid);
     alert('게스트하우스가 삭제되었습니다.');
     navigate('/guesthouse');
   }
