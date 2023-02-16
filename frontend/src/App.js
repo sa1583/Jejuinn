@@ -162,7 +162,7 @@ const router = createBrowserRouter([
         element: <VideoInterview />,
       },
       {
-        path: 'auth/naver',
+        path: 'authto/naver',
         element: <NaverAuthRedirect />,
       },
     ],

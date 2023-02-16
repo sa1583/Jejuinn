@@ -5,24 +5,16 @@ import { useState } from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 
 const CustomButton = styled(Button)({
-  variant: 'contained',
   width: '100%',
-  height: '7vh',
-  color: '#FFFFFF',
-  borderRadius: '62px',
-  backgroundColor: '#FF7600',
-  size: 'large',
+  height: '6vh',
   '&:hover': {
-    backgroundColor: '#FF7600',
-    borderColor: '#FF7600',
-  },
-  '&:active': {
-    backgroundColor: '#FF7600',
-    borderColor: '#FF7600',
+    color: 'white',
+    background: '#FF7600',
   },
 });
 
 const CustomTextField = styled(TextField)({
+  width: '100%',
   '& label': {
     color: '#000000',
     marginTop: '2px',
@@ -60,8 +52,16 @@ export default function WorkFilterBox({ handleFilter }) {
   return (
     <Box sx={{ padding: '3vh', height: '100%' }}>
       <form>
-        <Grid container spacing={1} justifyContent="space-between">
-          <Grid item md={4}>
+        <Grid container spacing={3} justifyContent="space-between">
+          <Grid item xs={8}>
+            <FilterGuestHouseStyle value={styleTags} setValue={setStyleTags} />
+          </Grid>
+
+          <Grid item xs={4}>
+            <FilterArea value={selectedArea} setValue={setSelectedArea} />
+          </Grid>
+
+          <Grid item xs={8}>
             <CustomTextField
               label="검색어로 찾기"
               value={word}
@@ -76,23 +76,28 @@ export default function WorkFilterBox({ handleFilter }) {
               placeholder="검색어를 입력하세요"
             />
           </Grid>
-
-          <Grid item md={4}>
-            <FilterArea value={selectedArea} setValue={setSelectedArea} />
-          </Grid>
-
-          <Grid item md={4}>
+          <Grid item xs={4}>
             <FilterDate value={startDate} setValue={setStartDate} />
           </Grid>
 
-          <Grid item md={7}>
-            <FilterGuestHouseStyle value={styleTags} setValue={setStyleTags} />
-          </Grid>
-
-          <Grid item md={4}>
-            <CustomButton startIcon={<SearchIcon />} onClick={handleSetFilter}>
+          <Grid item md={12}>
+            <CustomButton
+              variant="contained"
+              sx={{
+                // marginTop: 'vh',
+                borderRadius: '20px',
+                backgroundColor: '#FF7600',
+                marginBottom: '1vh',
+              }}
+              size="large"
+              startIcon={<SearchIcon />}
+              onClick={handleSetFilter}
+            >
               조건 검색
             </CustomButton>
+            {/* <CustomButton startIcon={<SearchIcon />} onClick={handleSetFilter}>
+              조건 검색
+            </CustomButton> */}
           </Grid>
         </Grid>
       </form>
