@@ -59,7 +59,6 @@ export default function MyApplicantDetail({
 
   const sendMessageToApplicant = async () => {
     const guestHouseUid = await getGuestHouseUid();
-    // console.log(applicant);
     await sendMessage(accessToken, guestHouseUid, applicant.writerUid);
   };
 
@@ -76,6 +75,7 @@ export default function MyApplicantDetail({
 
   const moveToInterview = () => {
     const sessionId = userInfo.uid + '-' + generateRandomString(30);
+
     navigate(`/interview/${sessionId}`);
   };
 
