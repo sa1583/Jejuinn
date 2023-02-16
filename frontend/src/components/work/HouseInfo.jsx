@@ -8,39 +8,50 @@ import ImageSlider from '../imageSlider/ImageSlider';
 
 export default function HouseInfo({ images, geustHouseId }) {
   const [guestHouse, setGuestHouse] = useState({});
-  // if images null : images= guesthouse.image
+
+  const [spots, setSpots] = useState([]);
 
   async function getGuestHouse() {
     const data = (await guestHouseDetail(geustHouseId)).data.guestHouse;
     setGuestHouse(data);
+    setSpots([
+      {
+        id: data.uid,
+        lat: data.lat,
+        lng: data.lng,
+      },
+    ]);
   }
 
   useEffect(() => {
     getGuestHouse();
   }, [geustHouseId]);
-  // console.log(guestHouse);
   return (
     <Box sx={{ paddingY: '3%', paddingX: '3%' }}>
       <Grid container spacing={2}>
         <Grid item md={12}>
           <h2>{guestHouse.guestHouseName}</h2>
         </Grid>
+        <Grid item md={8}>
+          <ImageSlider items={images} />
+        </Grid>
+
         <Grid item md={4}>
           <Grid container spacing={2}>
             <Grid item md={12}>
               <Box>{guestHouse.address}</Box>
             </Grid>
             <Grid item md={12}>
-              <WhiteBox cpn={<MapApi />} />
+              <WhiteBox
+                cpn={<MapApi spots={spots} startSpot={spots} high={'23rem'} />}
+              />
             </Grid>
             <Grid item md={12}>
               <Box>{guestHouse.guestHouseTypes?.map((tag) => `#${tag} `)}</Box>
+
+              <Box>{guestHouse.introduction}</Box>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item md={8}>
-          <ImageSlider items={images} />
-          <Box>{guestHouse.introduction}</Box>
         </Grid>
       </Grid>
     </Box>

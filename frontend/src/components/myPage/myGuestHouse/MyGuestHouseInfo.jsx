@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Box, Typography, Popover, Switch } from '@mui/material';
 import { myActiveStaffList, myJobOfferList } from '../../../api/guestHouse';
 import { guestHouseDetail } from '../../../api/guestHouse';
-import WhiteBox from '../../whiteBox/WhiteBox';
 import MyStaff from './MyStaff';
 import MyJobOffer from './MyJobOffer';
 
@@ -68,7 +67,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
               >
                 <MyStaff
                   myStaff={myStaff}
-                  guestHouseUid={guestHouse.guestHouse.uid}
+                  guestHouseUid={guestHouse?.guestHouse?.uid}
                   loadMyStaff={getMyStaff}
                 />
               </Box>

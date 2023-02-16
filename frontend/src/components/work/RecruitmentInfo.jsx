@@ -12,7 +12,6 @@ export default function RecruitmentInfo({ recruitmentUid }) {
 
   useEffect(() => {
     getWork();
-    console.log(recruitmentUid);
   }, []);
 
   // console.log(recruitmentInfo);
@@ -37,7 +36,7 @@ export default function RecruitmentInfo({ recruitmentUid }) {
             인재상
           </Grid>
           <Grid item md={10}>
-            {/* {recruitmentInfo.wanted.map((person) => `#${person.type} `)} */}
+            {recruitmentInfo.wanted?.map((person) => `#${person.type} `)}
           </Grid>
 
           <Grid item md={12}>

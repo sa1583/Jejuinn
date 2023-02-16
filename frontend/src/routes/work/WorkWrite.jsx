@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useState, useEffect } from 'react';
-import { recruitmentDetail, createWork } from '../../api/work';
+import { recruitmentDetail, createWork, updateWork } from '../../api/work';
 import { useNavigate, useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
 import WorkCreateForm from '../../components/work/WorkCreateForm';
+import { useLocation } from 'react-router';
 
 const CustomButton = styled(Button)({
   variant: 'contained',
@@ -29,7 +30,8 @@ const CustomButton = styled(Button)({
 
 export default function WorkWrite() {
   const { recruitmentUid } = useParams();
-  const { guesthouseUid } = useParams();
+  const { workUid } = useParams();
+  const [guesthouseUid, setGuesthouseUid] = useState();
 
   const [workInfo, setWorkInfo] = useState({
     workName: '',
@@ -80,11 +82,17 @@ export default function WorkWrite() {
   async function getGuesthouseUid() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
     setImages(data.images);
+    setGuesthouseUid(data.recruitment.geustHouseUid);
   }
 
+  const location = useLocation();
+
   const onClick = () => {
-    console.log(workInfo);
-    fetch(createWork(workInfo, accessToken));
+    if (location.pathname.split('/')[2] === 'create') {
+      fetch(createWork(workInfo, accessToken));
+    } else {
+      fetch(updateWork(workInfo, accessToken));
+    }
     navigate(`/worklist/`);
   };
 
