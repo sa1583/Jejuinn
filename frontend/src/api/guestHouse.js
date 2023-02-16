@@ -133,8 +133,9 @@ const dislikeGuestHouse = (token, id) => {
 
 // 문자 보내기
 const sendMessage = (token, guestHouseUid, userUid) => {
+  console.log(guestHouseUid, userUid);
   const header = {
-    headerrs: {
+    headers: {
       accessToken: `Bearer ${token}`,
     },
   };
@@ -143,6 +144,16 @@ const sendMessage = (token, guestHouseUid, userUid) => {
     userUid,
   };
   return instance.post('/auth/interview/phone', body, header);
+};
+
+// 직무 id로 게스트하우스 id조회
+const getGuestHouseUidByWorkUid = (workUid, token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.get(`/auth/get-guest-house/${workUid}`, header);
 };
 
 export {
@@ -162,4 +173,5 @@ export {
   likeGuestHouse,
   dislikeGuestHouse,
   sendMessage,
+  getGuestHouseUidByWorkUid,
 };

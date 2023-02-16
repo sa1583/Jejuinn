@@ -15,7 +15,11 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
-import { getApplicantByUid, sendMessage } from '../../../api/guestHouse';
+import {
+  getApplicantByUid,
+  getGuestHouseUidByWorkUid,
+  sendMessage,
+} from '../../../api/guestHouse';
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { getApplicantDetail } from '../../../api/recommand';
@@ -45,8 +49,16 @@ export default function MyApplicantDetail({
 
   const [applicant, setApplicant] = useState();
 
+  const getGuestHouseUid = async () => {
+    const { data } = await getGuestHouseUidByWorkUid(workUid, accessToken);
+    console.log('uid', data);
+    return data;
+  };
+
   const sendMessageToApplicant = async () => {
-    await sendMessage(accessToken, 1, applicant.userUid);
+    const guestHouseUid = await getGuestHouseUid();
+    // console.log(applicant);
+    await sendMessage(accessToken, guestHouseUid, applicant.writerUid);
   };
 
   function generateRandomString(length) {
