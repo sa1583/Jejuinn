@@ -166,8 +166,9 @@ public class GuestHouseController {
         List<Recruitment> recruitment = recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(guestHouseUid);
         Long userUid = userService.getUserUidFromAccessToken(request);
         if(recruitment == null) return ResponseEntity.status(400).build();
-        System.out.println(recruitment.get(0).getGuestHouseUid());
-        recruitmentService.deleteRecruitment(recruitment.get(0).getUid(), userUid);
+        if(recruitment != null && recruitment.size() > 0) {
+            recruitmentService.deleteRecruitment(recruitment.get(0).getUid(), userUid);
+        }
         guestHouseRepository.deleteById(guestHouseUid);
         return ResponseEntity.status(200).build();
     }
