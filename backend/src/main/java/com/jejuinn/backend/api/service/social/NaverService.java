@@ -59,13 +59,10 @@ public class NaverService {
     private final SocialLoginRepository socialLoginRepository;
     private final UserService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(NaverService.class);
-
 
     public User getUserInfoFromNaver(String code){
         JsonParser parser = new JsonParser();
 
-        logger.info("여기까지 잘 왔어요!!! {}", code);
         log.info("access token : {}", code);
 
         // 프로필 정보 요청
@@ -85,7 +82,7 @@ public class NaverService {
 
         User user = userRepository.findOneByEmailAndSocialLogin_Type(result.get("email"), SocialType.NAVER.ordinal())
                         .orElse(User.from(naverProfileDto, authorities));
-        logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
+//        logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
 
         SocialLogin socialLogin = socialLoginRepository.findOneByUser_Uid(user.getUid())
                                     .orElse(SocialLogin.from(user, code, SocialType.NAVER.ordinal()));
@@ -101,7 +98,7 @@ public class NaverService {
     public User myUserInfoFromNaver(String code, Long userUid){
         JsonParser parser = new JsonParser();
 
-        logger.info("여기까지 잘 왔어요!!! {}", code);
+//        logger.info("여기까지 잘 왔어요!!! {}", code);
         log.info("access token : {}", code);
 
         // 프로필 정보 요청
@@ -121,8 +118,8 @@ public class NaverService {
 
         User user = userService.NaverAuthUser(userUid, naverProfileDto, authorities);
 
-        logger.info("유저의 uid : {}",user.getUid());
-        logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
+//        logger.info("유저의 uid : {}",user.getUid());
+//        logger.info("유저의 핸드폰 번호는 {}", user.getPhone());
 
         log.info("저장 완료");
         return user;
