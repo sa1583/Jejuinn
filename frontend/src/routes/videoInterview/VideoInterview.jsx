@@ -105,9 +105,10 @@ export default function VideoInterview() {
   useEffect(() => {
     openVidu.enableProdMode();
     joinSession();
-    return () => {
-      return leaveSession();
-    };
+    window.addEventListener('beforeunload', () => leaveSession());
+
+    return () =>
+      window.removeEventListener('beforeunload', () => leaveSession());
   }, []);
 
   useEffect(() => {
