@@ -3,7 +3,7 @@ import { selectAccessToken } from '../../store/user';
 import { useSelector } from 'react-redux';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { recruitmentDetail, createWork } from '../../api/work';
 import { useNavigate, useParams } from 'react-router-dom';
 import RecruitmentInfo from '../../components/work/RecruitmentInfo';
@@ -31,10 +31,9 @@ export default function WorkWrite() {
   const { recruitmentUid } = useParams();
   const { guesthouseUid } = useParams();
 
-  // 서버로 전송할 데이터 기본 값 설정
   const [workInfo, setWorkInfo] = useState({
     workName: '',
-    gender: '',
+    gender: '무관',
     salary: '',
     workTime: '',
     workDescription: '',
@@ -42,12 +41,10 @@ export default function WorkWrite() {
     workDays: 2,
     daysOff: 2,
     minWorkPeriod: '',
-    entryDate: '', // 오늘 날짜로 지정하고 싶어!
+    entryDate: '',
     recruitmentUid: parseInt(recruitmentUid),
   });
-  // workInfo.recruitmentUid = parseInt(recruitmentUid);
 
-  // 변경되어 들어오는 값들 받는 함수? 변수? 뭐 그런거! 이걸로 받아서 보낼 정보 설정하는 함수 호출
   const WorkInfoInput = (
     workName,
     gender,
@@ -79,15 +76,10 @@ export default function WorkWrite() {
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
-  // const [guesthouseUid, setGuesthouseUid] = useState('');
-  // const [works, setWorks] = useState([]);
-  // const [updateWork, setUpdateWork] = useState([]);
 
   async function getGuesthouseUid() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
     setImages(data.images);
-    //   setGuesthouseUid(data.recruitment.guestHouseUid);
-    //   // setWorks(data.works);
   }
 
   const onClick = () => {
@@ -96,14 +88,10 @@ export default function WorkWrite() {
     navigate(`/worklist/`);
   };
 
-  // console.log(workInfo);
-  // function WorkCreate() {
-  //   console.log(workInfo);
-  // }
-
-  // useEffect(() => {
-  //   getGuesthouseUid();
-  // }, []);
+  useEffect(() => {
+    getGuesthouseUid();
+  }, []);
+  console.log(workInfo);
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
@@ -112,30 +100,17 @@ export default function WorkWrite() {
       />
       <RecruitmentInfo recruitmentUid={recruitmentUid} />
       <form>
-        {/* <WorkWriteComponent handleInput={WorkInfoInput} /> */}
         <WorkCreateForm handleInput={WorkInfoInput} />
       </form>
       <br />
       <CustomButton
-        //         // disabled={
-        //         //   !name ||
-        //         //   !email ||
-        //         //   !phoneNumber ||
-        //         //   !address ||
-        //         // }
-        //         onClick={(e) => submit(e)}
-        //         sx={{
-        //           marginTop: '8rem',
-        //           height: '3.5rem',
-        //           width: '40%',
-        //           fontSize: '1.8vh',
-        //           fontColor: 'white',
-        //           borderRadius: '50px',
-        //           '&:hover': {
-        //             background: '#FF7600',
-        //           },
-
         type="submit"
+        disabled={
+          !workInfo.workName ||
+          !workInfo.entryDate ||
+          !workInfo.salary ||
+          !workInfo.workDescription
+        }
         onClick={onClick}
       >
         저장

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import ImageUploader from '../../components/articleCreateComponent/ImageUploader';
 import { useNavigate } from 'react-router-dom';
+import WorkCreateForm from '../../components/work/WorkCreateForm';
 
 const CustomButton = styled(Button)({
   variant: 'contained',
@@ -36,18 +37,52 @@ export default function WorkRecruitmentWrite() {
   const [files, setFiles] = useState([]);
 
   const [recruitmentInfo, setRecruimentInfo] = useState({});
-  const [workInfo, setWorkInfo] = useState({});
 
   const navigate = useNavigate();
-
-  const onWorkWrite = (input) => {
-    console.log(input);
-    setWorkInfo(input);
-  };
 
   const onRecruitmentWrite = (input) => {
     console.log(input);
     setRecruimentInfo(input);
+  };
+
+  const [workInfo, setWorkInfo] = useState({
+    workName: '',
+    gender: '',
+    salary: '',
+    workTime: '',
+    workDescription: '',
+    intake: '',
+    workDays: '2',
+    daysOff: '2',
+    minWorkPeriod: '',
+    entryDate: '',
+  });
+
+  const WorkInfoInput = (
+    workName,
+    gender,
+    salary,
+    workTime,
+    workDescription,
+    intake,
+    workDays,
+    daysOff,
+    minWorkPeriod,
+    entryDate,
+  ) => {
+    setWorkInfo({
+      ...workInfo,
+      workName,
+      gender,
+      salary,
+      workTime,
+      workDescription,
+      intake,
+      workDays,
+      daysOff,
+      minWorkPeriod,
+      entryDate,
+    });
   };
 
   const handlePreImages = (id) => {
@@ -98,10 +133,7 @@ export default function WorkRecruitmentWrite() {
           onRecruitmentWrite={onRecruitmentWrite}
           currentRecruitmentInfo={recruitmentInfo}
         />
-        <WorkWriteComponent
-          onWorkWrite={onWorkWrite}
-          currentWorkInfo={workInfo}
-        />
+        <WorkCreateForm handleInput={WorkInfoInput} />
       </form>
       <Box sx={{ paddingTop: '2rem' }}>
         <CustomButton type="submit" onClick={onClick}>

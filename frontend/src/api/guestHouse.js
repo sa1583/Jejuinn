@@ -77,6 +77,19 @@ const myStaffList = (token, guestHouseUid) => {
   );
 };
 
+// 현재 게스트 하우스에서 일하는 직원목록
+const myActiveStaffList = (token, guestHouseUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.get(
+    `/auth/guest-house/staff/active?guestHouseUid=${guestHouseUid}`,
+    config,
+  );
+};
+
 const myJobOfferList = (guestHouseUid) => {
   return instance.get(`/api/on-recruitment/${guestHouseUid}`);
 };
@@ -156,6 +169,32 @@ const getGuestHouseUidByWorkUid = (workUid, token) => {
   return instance.get(`/auth/get-guest-house/${workUid}`, header);
 };
 
+// 스태프 채용
+const hireStaff = (guestHouseUid, staffUid, workName, token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.post(
+    `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}&staffUid=${staffUid}&workName=${workName}`,
+    header,
+  );
+};
+
+// 스태프 업무 종료
+const fireStaff = (guestHouseUid, staffUid, token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.delete(
+    `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}&staffUid=${staffUid}`,
+    header,
+  );
+};
+
 export {
   guestHouseDetail,
   allGuestHouseList,
@@ -165,6 +204,7 @@ export {
   guestHouseDelete,
   myGuestHouseList,
   myStaffList,
+  myActiveStaffList,
   myJobOfferList,
   myApplicantList,
   getMyGuestHouses,
@@ -174,4 +214,6 @@ export {
   dislikeGuestHouse,
   sendMessage,
   getGuestHouseUidByWorkUid,
+  hireStaff,
+  fireStaff,
 };

@@ -15,6 +15,11 @@ const recruitmentDetail = (recruitmentUid) => {
   return instance.get(`/api/job-offer/${recruitmentUid}`, {}, {});
 };
 
+// 직무 디테일 조회
+const getWorkDetail = (workUid) => {
+  return instance.get(`/api/work/${workUid}`);
+};
+
 // 직무 필터 조회
 const filteredWorkList = (filterValues) => {
   console.log(filterValues);
@@ -103,6 +108,7 @@ export {
   updateWork,
   deleteWork,
   getMyWorks,
+  getWorkDetail,
   getMyRecruitments,
   createRecruitment,
   updateRecruitment,
