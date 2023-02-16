@@ -71,7 +71,7 @@ public class ResumeController {
     public ResponseEntity<?> deleteResumeInfo(@PathVariable Long resumeInfoUid, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         Long writeUid = resumeInfoRepository.findById(resumeInfoUid).get().getUser().getUid();
-        if(Objects.equals(userUid, writeUid)) return ResponseEntity.status(401).build();
+        if(!Objects.equals(userUid, writeUid)) return ResponseEntity.status(401).build();
         ResumeInfo resumeInfo = resumeInfoRepository.findById(resumeInfoUid).get();
         resumeInfo.setDeleted(true);
         resumeInfoRepository.save(resumeInfo);
