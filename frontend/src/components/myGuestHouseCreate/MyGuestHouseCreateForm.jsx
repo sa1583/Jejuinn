@@ -284,7 +284,9 @@ export default function MyGuestHouseCreateForm() {
               !phoneNumber ||
               !address ||
               selectedValues.length === 0 ||
-              files.length === 0
+              (isCreate && files.length === 0) ||
+              (!isCreate &&
+                preImages.length + files.length - deleteImages.length === 0)
             }
             onClick={(e) => submit(e)}
             sx={{
