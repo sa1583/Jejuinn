@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useState, useEffect } from 'react';
@@ -61,30 +61,30 @@ export default function WorkDetail() {
     getRecruitmentDetail();
     getGuesthousesUidList();
   }, []);
+
   useEffect(() => {
     setOtherWorks([]);
     OtherWork();
-    console.log(recruitmentUid);
   }, [works, workUid]);
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-      {/* <h1 style={{ color: '#FF7600' }}>{recruitment.recruitment.title}</h1> */}
-      <WhiteBox
-        cpn={
-          <HouseInfo
-            geustHouseId={recruitmentInfo.guestHouseUid}
-            images={images}
-          />
-        }
-      />
-      <RecruitmentInfo recruitmentUid={recruitmentUid} />
-      {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
-        <Button onClick={onClick}> 공고수정</Button>
-      ) : null}
-      <WorkInfo work={work} />
+    <Box sx={{ paddingY: '2rem', paddingX: '19%' }}>
+      <HouseInfo geustHouseId={recruitmentInfo.guestHouseUid} images={images} />
+      <Stack direction="row">
+        <Box sx={{ pt: '5%', pr: '5%' }} width="400px">
+          <WhiteBox cpn={<RecruitmentInfo recruitmentUid={recruitmentUid} />} />
+          {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
+            <Button onClick={onClick}> 공고수정</Button>
+          ) : null}
+        </Box>
+        <Box sx={{ pt: '5%', pr: '5%' }} width="400px">
+          <WhiteBox cpn={<WorkInfo work={work} />} />
+        </Box>
+      </Stack>
       <h2 style={{ color: '#FF7600' }}>
-        해당 게스트하우스에서 진행중인 다른 채용
+        {works && works.length > 1
+          ? '해당 게스트하우스에서 진행중인 다른 채용'
+          : '해당 게스트하우스에서 진행중인 다른 채용이 없습니다.'}
       </h2>
       <WorkListBox works={otherWorks} />
     </Box>
