@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../store/user';
 import { v4 as uuidv4 } from 'uuid';
 import { Box, Typography, Popover, Switch } from '@mui/material';
-import { myStaffList, myJobOfferList } from '../../../api/guestHouse';
+import { myActiveStaffList, myJobOfferList } from '../../../api/guestHouse';
 import { guestHouseDetail } from '../../../api/guestHouse';
 import WhiteBox from '../../whiteBox/WhiteBox';
 import MyStaff from './MyStaff';
@@ -18,7 +18,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   const [myStaffs, setMyStaffs] = useState([]);
 
   async function getMyStaff() {
-    const { data } = await myStaffList(access_token, guestHouseUid);
+    const { data } = await myActiveStaffList(access_token, guestHouseUid);
     console.log('my-staffs:', data);
     setMyStaffs(data);
   }
@@ -30,6 +30,7 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   };
 
   const [myJobOffers, setMyJobOffers] = useState([]);
+
   async function getMyJobOffer() {
     const { data } = await myJobOfferList(guestHouseUid);
     console.log('my-job-offers:', data);

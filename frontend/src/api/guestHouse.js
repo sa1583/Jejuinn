@@ -77,6 +77,19 @@ const myStaffList = (token, guestHouseUid) => {
   );
 };
 
+// 현재 게스트 하우스에서 일하는 직원목록
+const myActiveStaffList = (token, guestHouseUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.get(
+    `/auth/guest-house/staff/active?guestHouseUid=${guestHouseUid}`,
+    config,
+  );
+};
+
 const myJobOfferList = (guestHouseUid) => {
   return instance.get(`/api/on-recruitment/${guestHouseUid}`);
 };
@@ -191,6 +204,7 @@ export {
   guestHouseDelete,
   myGuestHouseList,
   myStaffList,
+  myActiveStaffList,
   myJobOfferList,
   myApplicantList,
   getMyGuestHouses,
