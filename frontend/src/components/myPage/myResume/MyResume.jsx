@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import MyResumeInfo from './MyResumeInfo';
 import MyResumeApply from './MyResumeApply';
 import MyResumeWrite from './MyResumeWrite';
@@ -16,20 +16,20 @@ export default function MyResume() {
   const userInfo = useSelector(selectUserInfo);
   const accessToken = useSelector(selectAccessToken);
 
-  // const userInfo = { ...userInfoTest, authorities: ['naver'] };
-
   const changeApplyComp = () => {
-    setOnModify(!onModify);
+    setOnModify((prev) => !prev);
   };
 
+  async function getAndSetResume() {
+    const { data } = await getResume(accessToken, userInfo.uid);
+    setResume(data);
+  }
+
   useEffect(() => {
-    // resume 요청해서 있으면 가져오고 없으면 null
-    async function getAndSetResume() {
-      const res = await getResume(accessToken, userInfo.uid);
-      setResume(res.data);
+    if (!onModify) {
+      getAndSetResume();
     }
-    getAndSetResume();
-  }, []);
+  }, [onModify]);
 
   useEffect(() => {
     userInfo?.authorities?.map((auth) => {
@@ -39,29 +39,42 @@ export default function MyResume() {
 
   return (
     <>
-      {isAuth ? (
-        <Box sx={{ p: '3%' }}>
-          <MyResumeInfo />
-          <hr />
-          {resume ? (
-            onModify ? (
+      <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
+        <h1 style={{ fontSize: '1.7rem', marginBottom: '2rem' }}>
+          지원서 관리
+        </h1>
+        <Divider sx={{ marginBottom: '7px' }} />
+        <br />
+        {isAuth ? (
+          <Box sx={{ p: '3%' }}>
+            <MyResumeInfo />
+            <br />
+            <br />
+            <Divider />
+            <br />
+            {resume ? (
+              onModify ? (
+                <MyResumeWrite
+                  resume={resume}
+                  changeApplyComp={changeApplyComp}
+                />
+              ) : (
+                <MyResumeApply
+                  resume={resume}
+                  changeApplyComp={changeApplyComp}
+                />
+              )
+            ) : (
               <MyResumeWrite
                 resume={resume}
                 changeApplyComp={changeApplyComp}
               />
-            ) : (
-              <MyResumeApply
-                resume={resume}
-                changeApplyComp={changeApplyComp}
-              />
-            )
-          ) : (
-            <MyResumeWrite resume={resume} changeApplyComp={changeApplyComp} />
-          )}
-        </Box>
-      ) : (
-        <NaverAuth />
-      )}
+            )}
+          </Box>
+        ) : (
+          <NaverAuth />
+        )}
+      </Box>
     </>
   );
 }

@@ -10,21 +10,31 @@ import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import MapApi from '../../components/mapApi/MapApi';
-import { guestHouseDetail, guestHouseDelete } from '../../api/guestHouse';
+import {
+  guestHouseDetail,
+  guestHouseDelete,
+  getMyLikedGuestHouseList,
+  likeGuestHouse,
+  dislikeGuestHouse,
+} from '../../api/guestHouse';
 import { selectAccessToken, selectUserInfo } from '../../store/user';
-import CommentsList from '../../components/commentComponent/CommentsList';
 
 export default function GuestHouseDetail() {
   const location = useLocation();
   const guestHouseUid = location.pathname.split('detail/')[1];
-  const access_token = useSelector(selectAccessToken);
+  const accessToken = useSelector(selectAccessToken);
+  const userInfo = useSelector(selectUserInfo);
+
   const [spots, setSpots] = useState([]);
   const [guestHouse, setGuestHouse] = useState([]);
+  const [likedGuestHouses, setLikedGuestHouses] = useState([]);
+  const [likeState, setLikeState] = useState(0);
 
   async function getGuestHouseDetail() {
     const data = (await guestHouseDetail(guestHouseUid)).data;
     setGuestHouse(data);
     const info = data.guestHouse;
+    console.log(info);
     setSpots([
       {
         id: info.uid,
@@ -34,9 +44,24 @@ export default function GuestHouseDetail() {
     ]);
   }
 
+  const getLikedGuestHouses = async () => {
+    if (!accessToken) return;
+    const { data } = await getMyLikedGuestHouseList(accessToken);
+    setLikedGuestHouses(data);
+  };
+
   useEffect(() => {
     getGuestHouseDetail();
+    getLikedGuestHouses();
   }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      const exist = likedGuestHouses.find((elem) => elem.uid == guestHouseUid);
+      if (exist) setLikeState(2);
+      else setLikeState(1);
+    }
+  }, [likedGuestHouses]);
 
   const navigate = useNavigate();
   const goModifiy = () => {
@@ -44,10 +69,20 @@ export default function GuestHouseDetail() {
   };
 
   async function DeleteGuestHouse() {
-    guestHouseDelete(access_token, guestHouseUid);
+    await guestHouseDelete(accessToken, guestHouseUid);
     alert('게스트하우스가 삭제되었습니다.');
     navigate('/guesthouse');
   }
+
+  const handleLikeGuestHouse = async () => {
+    await likeGuestHouse(accessToken, guestHouseUid);
+    getLikedGuestHouses();
+  };
+
+  const handleCancleLikeGuestHouse = async () => {
+    await dislikeGuestHouse(accessToken, guestHouseUid);
+    getLikedGuestHouses();
+  };
 
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 수정', handle: goModifiy },
@@ -60,9 +95,21 @@ export default function GuestHouseDetail() {
 
   return (
     <>
-      <SpeedDialComponent actions={actions} />
-      <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
-        <Typography variant="h4" color="primary">
+      {userInfo?.uid === guestHouse?.guestHouse?.representativeUid && (
+        <SpeedDialComponent actions={actions} />
+      )}
+      <Box sx={{ paddingY: '2rem', paddingX: '19%' }}>
+        <Typography
+          variant="h4"
+          color="primary"
+          sx={{
+            paddingLeft: '10px',
+            marginTop: '20px',
+            marginBottom: '24px',
+            fontWeight: 'bold',
+            fontSize: '1.8rem',
+          }}
+        >
           | {guestHouse?.guestHouse?.guestHouseName}
         </Typography>
         <Grid container spacing={4}>
@@ -73,7 +120,9 @@ export default function GuestHouseDetail() {
               />
             </Grid>
             <Grid item xs={12}>
-              <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
+              <WhiteBox
+                cpn={<MapApi spots={spots} startSpot={spots} high={'23rem'} />}
+              />
             </Grid>
           </Grid>
           <Grid item xs={12} md={8}>
@@ -83,16 +132,10 @@ export default function GuestHouseDetail() {
                   <GuestHouseContent
                     guestHouse={guestHouse.guestHouse}
                     images={guestHouse.images}
+                    likeState={likeState}
+                    handleLikeGuestHouse={handleLikeGuestHouse}
+                    handleCancleLikeGuestHouse={handleCancleLikeGuestHouse}
                   />
-                }
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <WhiteBox
-                cpn={
-                  <Box px="3%" mt="10px">
-                    <CommentsList />
-                  </Box>
                 }
               />
             </Grid>

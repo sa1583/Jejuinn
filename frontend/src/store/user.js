@@ -8,6 +8,8 @@ import {
   loginFacebook,
   signUpApi,
   processNaverAuth,
+  userLogout,
+  renewAccessToken,
 } from '../api/user';
 
 export const getUserInfoByToken = createAsyncThunk(
@@ -18,6 +20,22 @@ export const getUserInfoByToken = createAsyncThunk(
     } catch (e) {
       return thunkAPI.rejectWithValue({
         errorMessage: '유저 정보 가져오기 실패',
+      });
+    }
+  },
+);
+
+/**
+ * refreshToken으로 accessToken을 재발급받아 store내의 accessToken을 업데이트
+ */
+export const renewAccessTokenByRefreshToken = createAsyncThunk(
+  'user/renewAccessTokenByRefreshToken',
+  async (refreshToken, thunkAPI) => {
+    try {
+      return (await renewAccessToken(refreshToken)).headers;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({
+        errorMessage: 'accessToken 갱신 실패',
       });
     }
   },
@@ -112,14 +130,27 @@ export const getNormalAuthTokenInSignUp = createAsyncThunk(
   },
 );
 
+// 네이버 인증
 export const naverAuth = createAsyncThunk(
   'user/naverAuth',
   async ({ accessToken, socialToken }, thunkAPI) => {
     try {
       await processNaverAuth(accessToken, socialToken);
-      return true;
     } catch (error) {
       return thunkAPI.rejectWithValue({ errorMessage: '네이버 인증 실패' });
+    }
+  },
+);
+
+// 로그아웃
+export const logout = createAsyncThunk(
+  'user/logout',
+  async ({ accessToken, uid }, thunkAPI) => {
+    try {
+      if (!accessToken || !uid) return;
+      await userLogout(accessToken, uid);
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ errorMessage: '로그아웃 실패' });
     }
   },
 );
@@ -134,15 +165,7 @@ const userSlice = createSlice({
     myGuestHouses: [],
     myRecruitments: [],
   },
-  reducers: {
-    logout: (state) => {
-      state.isLogin = false;
-      state.userInfo = null;
-      state.accessToken = null;
-      state.refreshToken = null;
-      state.authorities = [];
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getUserInfoByToken.fulfilled, (state, { payload }) => {
@@ -177,6 +200,15 @@ const userSlice = createSlice({
       .addCase(getNormalAuthToken.fulfilled, (state, action) => {
         state.accessToken = action.payload.accesstoken;
         state.refreshToken = action.payload.refreshtoken;
+      })
+      .addCase(renewAccessTokenByRefreshToken.fulfilled, (state, action) => {
+        state.accessToken = action.payload.accesstoken.split(' ')[1];
+      })
+      .addCase(logout.pending, (state, action) => {
+        state.isLogin = false;
+        state.userInfo = null;
+        state.accessToken = null;
+        state.refreshToken = null;
       });
   },
 });
@@ -185,4 +217,4 @@ export default userSlice;
 export const selectIsLogin = (state) => state.user.isLogin;
 export const selectUserInfo = (state) => state.user.userInfo;
 export const selectAccessToken = (state) => state.user.accessToken;
-export const { logout } = userSlice.actions;
+export const selectRefreshToken = (state) => state.user.refreshToken;

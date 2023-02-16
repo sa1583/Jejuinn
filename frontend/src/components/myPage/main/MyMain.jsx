@@ -1,4 +1,4 @@
-import { Box, styled, Button, IconButton, Stack } from '@mui/material';
+import { Box, styled, Stack, Divider } from '@mui/material';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
@@ -7,11 +7,20 @@ import WhiteBox from '../../whiteBox/WhiteBox';
 import MyMainArticle from './MyMainArticle';
 import MyMainRecruitment from './MyMainRecruitment';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { images } from '../../../assets/images';
+import {
+  getMyApplyList,
+  getMyInterestGuestHouses,
+  getMyInterestAttractions,
+  getMyReivewList,
+} from '../../../api/job';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../../store/user';
+import MyInterestGuestHouse from './MyInterestGuestHouse';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -27,7 +36,7 @@ const Accordion = styled((props) => (
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '1.1rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -47,9 +56,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function MyMain() {
+  const accessToken = useSelector(selectAccessToken);
+  const navigate = useNavigate();
+
   const [isOpened, setIsOpened] = useState(true);
-  const [tabNum, setTabNum] = useState('1');
-  const [myLikeRecruitment, setMyLikeRecruitment] = useState([]);
+  const [tabNum, setTabNum] = useState('0');
+  const [myInterestGuestHouses, setMyInterestGuestHouses] = useState([]);
   const [myLikePlaceList, setMyLikePlaceList] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
   const [myAppliedRecruitment, setMyAppliedRecruitment] = useState([]);
@@ -63,86 +75,73 @@ export default function MyMain() {
     setIsOpened(!prev);
   };
 
+  const loadMyApplyList = async () => {
+    const { data } = await getMyApplyList(accessToken);
+    console.log('지원목록', data);
+    setMyAppliedRecruitment(data);
+  };
+
+  const loadMyLikeRecruitment = async () => {
+    const { data } = await getMyInterestGuestHouses(accessToken);
+    console.log('관심게하', data);
+    setMyInterestGuestHouses(data);
+  };
+
+  const loadMyLikePlaceList = async () => {
+    const { data } = await getMyInterestAttractions(accessToken);
+    console.log('mylikeplaces', data);
+    setMyLikePlaceList(data);
+  };
+
+  const loadMyReveiwList = async () => {
+    const { data } = await getMyReivewList(accessToken);
+    console.log('myReviews', data);
+    setMyPosts(data);
+  };
+
   useEffect(() => {
-    setMyLikeRecruitment([
-      {
-        uid: 0,
-        name: '가토게토하우스',
-        title: '성별 무관 스탭2명 모집중',
-        imageUrl: null,
-      },
-      {
-        uid: 1,
-        name: '가토게토하우스',
-        title: '성별 무관 스탭2명 모집중',
-        imageUrl: null,
-      },
-    ]);
-    setMyLikePlaceList([
-      {
-        uid: 45,
-        name: '낙지와 새우',
-        imageUrl: null,
-      },
-      {
-        uid: 46,
-        name: '우도 콧구멍',
-        imageUrl: null,
-      },
-    ]);
-    setMyPosts([
-      {
-        uid: 24,
-        name: '엉또 폭포',
-        imageUrl: images.sample_profile,
-      },
-      {
-        uid: 83,
-        name: '윾태 폭포',
-        imageUrl: null,
-      },
-    ]);
-    setMyAppliedRecruitment([
-      {
-        uid: 9,
-        name: '게토 게스트하우스',
-        title: '성별 무관 스탭2명 모집중',
-        imageUrl: images.sample_profile,
-        isRead: true,
-      },
-      {
-        uid: 103,
-        name: '정민 게스트하우스',
-        title: '장정민이 있는 하남자 게스트하우스',
-        imageUrl: null,
-        isRead: false,
-      },
-    ]);
+    loadMyApplyList();
+    loadMyLikeRecruitment();
+    loadMyLikePlaceList();
+    loadMyReveiwList();
   }, []);
 
   return (
     <>
-      <Box sx={{ paddingY: '3%', paddingX: '3%' }}>
+      <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
+        <h1 style={{ fontSize: '1.7rem', marginBottom: '2rem' }}>마이페이지</h1>
+        <Divider sx={{ marginBottom: '7px' }} />
+        <br />
         <Accordion expanded={isOpened}>
-          <AccordionSummary onClick={openClose}>
+          <AccordionSummary onClick={openClose} sx={{ fontSize: '1.2rem' }}>
             내가 지원한 모집 공고
           </AccordionSummary>
           <AccordionDetails>
             <Stack direction="column" spacing={1}>
               {myAppliedRecruitment.map((recruitment) => {
                 return (
-                  <WhiteBox
-                    key={recruitment.uid}
-                    cpn={<MyMainRecruitment recruitment={recruitment} />}
-                  />
+                  <Box key={recruitment?.uid}>
+                    <Box
+                      sx={{
+                        borderRadius: '50px',
+                        boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                        background: '#FFFFFF',
+                      }}
+                    >
+                      <MyMainRecruitment recruitment={recruitment} />
+                    </Box>
+                  </Box>
                 );
               })}
             </Stack>
           </AccordionDetails>
         </Accordion>
+        <br />
 
         <Accordion>
-          <AccordionSummary>내가 관심있는 글</AccordionSummary>
+          <AccordionSummary sx={{ fontSize: '1.2rem' }}>
+            내가 관심있는 글
+          </AccordionSummary>
           <AccordionDetails sx={{ borderTop: 'none', m: 0, p: 0 }}>
             <TabContext value={tabNum}>
               <Box
@@ -152,31 +151,65 @@ export default function MyMain() {
                   marginX: '16px',
                 }}
               >
-                <TabList onChange={handleChangeTab}>
-                  <Tab label="모집공고" value="1" />
-                  <Tab label="관광지" value="2" />
+                <TabList onChange={handleChangeTab} sx={{ paddingTop: '10px' }}>
+                  <Tab
+                    label="게스트하우스"
+                    value="0"
+                    sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}
+                  />
+                  <Tab
+                    label="관광지"
+                    value="1"
+                    sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}
+                  />
                 </TabList>
               </Box>
-              <TabPanel value="1">
+              <TabPanel value="0">
                 <Stack direction="column" spacing={1}>
-                  {myLikeRecruitment.map((recruitment) => {
+                  {myInterestGuestHouses.map((guestHouse) => {
                     return (
-                      <WhiteBox
-                        key={recruitment.uid}
-                        cpn={<MyMainRecruitment recruitment={recruitment} />}
-                      />
+                      <Box
+                        key={guestHouse.uid}
+                        onClick={() =>
+                          navigate(`/guesthouse/detail/${guestHouse.uid}`)
+                        }
+                        sx={{ cursor: 'pointer' }}
+                      >
+                        <Box
+                          sx={{
+                            borderRadius: '50px',
+                            boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                            background: '#FFFFFF',
+                          }}
+                        >
+                          <MyInterestGuestHouse guestHouse={guestHouse} />
+                        </Box>
+                      </Box>
                     );
                   })}
                 </Stack>
               </TabPanel>
-              <TabPanel value="2">
+              <TabPanel value="1">
                 <Stack direction="column" spacing={1}>
                   {myLikePlaceList.map((post) => {
                     return (
-                      <WhiteBox
+                      <Box
                         key={post.uid}
-                        cpn={<MyMainArticle post={post} />}
-                      />
+                        onClick={() =>
+                          navigate(`/staffpicklist/detail/${post?.uid}`)
+                        }
+                        sx={{ cursor: 'pointer' }}
+                      >
+                        <Box
+                          sx={{
+                            borderRadius: '50px',
+                            boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                            background: '#FFFFFF',
+                          }}
+                        >
+                          <MyMainArticle post={post} />
+                        </Box>
+                      </Box>
                     );
                   })}
                 </Stack>
@@ -184,16 +217,33 @@ export default function MyMain() {
             </TabContext>
           </AccordionDetails>
         </Accordion>
+        <br />
+
         <Accordion>
-          <AccordionSummary>내가 작성한 글</AccordionSummary>
+          <AccordionSummary sx={{ fontSize: '1.2rem' }}>
+            내가 작성한 글
+          </AccordionSummary>
           <AccordionDetails>
-            <Stack direction="column" spacing={1}>
+            <Stack direction="column" spacing={1} sx={{ marginTop: '10px' }}>
               {myPosts.map((post) => {
                 return (
-                  <WhiteBox
-                    key={post.uid}
-                    cpn={<MyMainArticle post={post} />}
-                  />
+                  <Box
+                    key={post.reviewUid}
+                    onClick={() =>
+                      navigate(`/staffpicklist/detail/${post.uid}`)
+                    }
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <Box
+                      sx={{
+                        borderRadius: '50px',
+                        boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                        background: '#FFFFFF',
+                      }}
+                    >
+                      <MyMainArticle post={post} />
+                    </Box>
+                  </Box>
                 );
               })}
             </Stack>

@@ -3,7 +3,7 @@ export const images = {
   kakao_login: '/images/kakao_login.png',
   naver_login: '/images/naver_login.png',
   google_login: '/images/google_login.png',
-  facebook_login: '/images/facebook_login2.png',
+  facebook_login: '/images/facebook_login.png',
   sample_profile: '/images/sample_profile.png',
   main_one: '/images/mainOne.svg',
   main_one2: '/images/mainOne2.svg',
@@ -20,4 +20,5 @@ export const images = {
   together: '/images/together.svg',
   stress: '/images/stress.svg',
   free: '/images/free.svg',
+  typing: '/images/typing.svg',
 };

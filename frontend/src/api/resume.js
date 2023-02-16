@@ -1,8 +1,6 @@
-import { apiInstance } from './index';
+import instance from './index';
 import { useSelector } from 'react-redux';
-import { selectAccessToken, selectUserInfo } from '../store/user';
-
-const api = apiInstance();
+import { selectAccessToken } from '../store/user';
 
 const Access_token = () => {
   const token = useSelector(selectAccessToken);
@@ -30,25 +28,43 @@ function getResume(accessToken, userUid) {
       accessToken: `Bearer ${accessToken}`,
     },
   };
-  return api.get(`/auth/job-search/${userUid}`, header);
+  return instance.get(`/auth/job-search/${userUid}`, header);
 }
 
+// 지원서 작성
 const registMyResume = (token, body) => {
   const header = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.post('/auth/job-search', body, header);
+  return instance.post('/auth/job-search', body, header);
 };
 
+// 지원서 수정
+const modifyMyResume = (token, body) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.put('/auth/job-search', body, header);
+};
+
+// 자동추천 온/오프
 const changeAutoApply = (token, uid) => {
   const header = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.put(`/auth/auto-apply/${uid}`, {}, header);
+  return instance.put(`/auth/auto-apply/${uid}`, {}, header);
 };
 
-export { myCareerList, getResume, registMyResume, changeAutoApply };
+export {
+  myCareerList,
+  getResume,
+  registMyResume,
+  modifyMyResume,
+  changeAutoApply,
+};

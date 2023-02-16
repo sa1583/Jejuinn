@@ -4,7 +4,6 @@ import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { deleteComment, updateComment } from '../../api/comment';
 import { images } from '../../assets/images';
-import { deepOrange } from '@mui/material/colors';
 
 export default function CommentList({
   comment,
@@ -32,14 +31,10 @@ export default function CommentList({
 
   const profileImage = () => {
     const purl = comment.profileImgUrl;
-    if (purl) {
-      if (purl.slice(0, 4) == 'http') {
-        return purl;
-      } else {
-        return `${images.defalut_url}${purl}`;
-      }
+    if (purl.slice(0, 4) == 'http') {
+      return purl;
     } else {
-      return '';
+      return `${images.defalut_url}${purl}`;
     }
   };
 
@@ -52,21 +47,34 @@ export default function CommentList({
           paddingLeft: '0.5rem',
         }}
       >
-        <Avatar
-          src={profileImage()}
-          sx={{
-            width: '2rem',
-            height: '2rem',
-            marginTop: '0.5rem',
-            bgcolor: deepOrange[500],
-          }}
-        ></Avatar>
+        {comment.profileImgUrl ? (
+          <Avatar
+            src={profileImage()}
+            sx={{
+              width: '2rem',
+              height: '2rem',
+              marginTop: '0.5rem',
+              bgcolor: '#FF7600',
+            }}
+          ></Avatar>
+        ) : (
+          <Avatar
+            sx={{
+              backgroundColor: 'primary.main',
+              width: '2rem',
+              height: '2rem',
+              fontSize: '1rem',
+            }}
+          >
+            {comment.nickname[0]}
+          </Avatar>
+        )}
         <Box sx={{ width: '100%' }}>
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              width: '95%',
+              width: '100%%',
             }}
           >
             <Typography sx={{ fontWeight: 'bolder' }}>
@@ -80,7 +88,8 @@ export default function CommentList({
                 }}
               >
                 <Button
-                  sx={{ margin: 0, padding: 0 }}
+                  variant="outlined"
+                  sx={{ margin: 0, padding: 0, marginRight: '5px' }}
                   onClick={() => {
                     setChangeStatus((prev) => !prev);
                     changeStatus && setPutComment(comment.content);
@@ -88,7 +97,11 @@ export default function CommentList({
                 >
                   수정
                 </Button>
-                <Button sx={{ margin: 0, padding: 0 }} onClick={commentDelete}>
+                <Button
+                  variant="outlined"
+                  sx={{ margin: 0, padding: 0 }}
+                  onClick={commentDelete}
+                >
                   삭제
                 </Button>
               </Box>
@@ -109,13 +122,6 @@ export default function CommentList({
                 width: '100%',
               }}
             >
-              {/* <Typography
-                variant="p"
-                sx={{ marginTop: '0.3rem', width: '95%' }}
-              >
-                {comment.content}
-              </Typography> */}
-
               {changeStatus ? (
                 <Box
                   sx={{
@@ -129,27 +135,34 @@ export default function CommentList({
                     id=""
                     style={{
                       width: '85%',
+                      height: '2rem',
                       paddingTop: '0.5rem',
+                      paddingLeft: 0,
                       marginTop: '0.5rem',
                       resize: 'none',
+                      border: 'none',
+                      fontFamily: 'SUIT-Regular',
+                      fontSize: '17px',
+                      outline: 'none',
                     }}
                     rows="4"
                     placeholder="댓글을 입력해주세요. (최대 255자)"
                     maxLength={255}
+                    autoFocus
                     value={putComment}
                     onChange={(e) => setPutComment(e.target.value)}
                   ></textarea>
                   <Box sx={{ display: 'flex' }}>
                     <Button
                       sx={{
-                        fontWeight: 'bolder',
-                        height: '3rem',
+                        // fontWeight: 'bolder',
+                        // height: '3rem',
                         alignSelf: 'center',
                       }}
                       variant="contained"
                       onClick={changeComment}
                     >
-                      수정
+                      완료
                     </Button>
                   </Box>
                 </Box>

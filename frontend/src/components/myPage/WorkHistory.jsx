@@ -5,23 +5,20 @@ export default function WorkHistory({
   history: { endDate, guestHouseName, startDate, workName },
 }) {
   return (
-    <Box width="150px">
+    <Box width="200px">
       <WhiteBox
         cpn={
-          <Box padding="15px" minHeight="120px">
+          <Box padding="15px" minHeight="100px">
             <Typography
               sx={{
-                fontFamily: 'Inter',
-                fontStyle: 'normal',
-                fontWeight: '700',
                 fontSize: '20px',
-                lineHeight: '24px',
+                fontWeight: 'bold',
                 color: 'primary.main',
               }}
             >
               {guestHouseName}
             </Typography>
-            <Typography>{workName}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>{workName}</Typography>
             <Typography>
               {startDate} ~ {endDate}
             </Typography>

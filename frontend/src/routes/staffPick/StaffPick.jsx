@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MapApi from '../../components/mapApi/MapApi';
 import StaffPickFilter from '../../components/staffPickComponent/StaffPickFilter';
 import StaffPickSpotList from '../../components/staffPickComponent/StaffPickSpotList';
@@ -7,6 +7,7 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import StaffPickReviews from '../../components/staffPickComponent/StaffPickReviews';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -60,7 +61,12 @@ export default function StaffPick() {
   };
 
   // 명소 정보 받아오기
-  const [selectedSpot, setSelectedSpot] = useState(false);
+  const [selectedSpot, setSelectedSpot] = useState({
+    uid: '',
+    name: '',
+    address: '',
+    starRatingAvg: 0,
+  });
 
   const selectSpot = async () => {
     const data = (await getSpotInfo(pageId)).data.travelPlace;
@@ -86,6 +92,7 @@ export default function StaffPick() {
 
   const [spotImgs, setSpotImgs] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+
   const getNextSpotImgs = async () => {
     const data = (await getSpotsImg(pageNum)).data.content;
     setSpotImgs((prev) => prev.concat(data));
@@ -99,8 +106,8 @@ export default function StaffPick() {
     setPageNum((prev) => prev + 1);
   };
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-      <SpeedDialComponent actions={actions} />
+    <Box sx={{ paddingY: '3rem', paddingX: '19%' }}>
+      {islogined && <SpeedDialComponent actions={actions} />}
 
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
@@ -121,30 +128,62 @@ export default function StaffPick() {
                 spots={spots}
                 handlePinClick={handlePinClick}
                 pickedId={pageId}
+                high={'23rem'}
               />
             }
           />
         </Grid>
 
         {pageId && (
-          <Grid item xs={4}>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: 'flex',
+                direction: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <p
+                style={{
+                  color: '#FF7600',
+                  fontWeight: 'bold',
+                  fontSize: '1.5rem',
+                  paddingTop: '2vh',
+                  paddingLeft: '10px',
+                }}
+              >
+                | {selectedSpot.name}
+              </p>
+              <ArrowBackIcon
+                onClick={() => {
+                  navigate('/staffpicklist');
+                }}
+                sx={{
+                  cursor: 'pointer',
+                  color: '#FF7600',
+                  paddingTop: '4.5vh',
+                  paddingRight: '5px',
+                }}
+                fontSize="large"
+              />
+            </Box>
+          </Grid>
+        )}
+        {pageId && (
+          <Grid item xs={4} style={{ paddingTop: 0 }}>
             <WhiteBox cpn={<StaffPickSpotInfo selectedSpot={selectedSpot} />} />
           </Grid>
         )}
         {pageId && (
-          <Grid item xs={8}>
+          <Grid item xs={8} style={{ paddingTop: 0 }}>
             <WhiteBox cpn={<StaffPickReviews spotname={selectedSpot.name} />} />
           </Grid>
         )}
         {!pageId && (
           <Grid item xs={12} md={12}>
-            <WhiteBox
-              cpn={
-                <StaffPickSpotList
-                  spotImgs={spotImgs}
-                  plusPageNum={() => plusPageNum()}
-                />
-              }
+            <StaffPickSpotList
+              spotImgs={spotImgs}
+              plusPageNum={() => plusPageNum()}
             />
           </Grid>
         )}

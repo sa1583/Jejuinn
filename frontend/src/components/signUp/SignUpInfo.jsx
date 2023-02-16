@@ -2,7 +2,6 @@ import { TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { checkEmail } from '../../api/user';
 import {
   getNormalAuthTokenInSignUp,
@@ -26,7 +25,6 @@ const CustomTextField = styled(TextField)({
 
 export default function SignUpInfo({ handleNext }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [signUpForm, setSignUpForm] = useState({
     email: '',
@@ -58,15 +56,12 @@ export default function SignUpInfo({ handleNext }) {
   const [emailReceiveAllow, setEmailReceiveAllow] = useState(false);
 
   const getEmailCheck = async () => {
-    const emailAllowed = (await checkEmail(signUpForm.email)).status;
-    switch (emailAllowed) {
-      case 200:
-        setEmailReceiveAllow(true);
-        alert('중복 확인 완료');
-        break;
-      default:
-        alert('이미 존재하는 이메일입니다.');
-        break;
+    try {
+      await checkEmail(signUpForm.email);
+      setEmailReceiveAllow(true);
+      alert('중복 확인 완료');
+    } catch (err) {
+      alert('이미 존재하는 이메일입니다.');
     }
   };
 
@@ -115,7 +110,7 @@ export default function SignUpInfo({ handleNext }) {
     },
     '&.Mui-error': {
       color: !condition && '#ff0000',
-      fontWeight: 'bolder',
+      fontWeight: 500,
     },
   });
 
@@ -126,8 +121,8 @@ export default function SignUpInfo({ handleNext }) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '3rem',
-        width: '90%',
+        marginTop: '1.3rem',
+        width: '93%',
         gap: '1rem',
       }}
     >
@@ -140,6 +135,7 @@ export default function SignUpInfo({ handleNext }) {
         label="이메일"
         type="email"
         name="email"
+        variant="standard"
         value={signUpForm.email}
         onChange={handleSignUpForm}
         placeholder="example@example.com"
@@ -147,15 +143,19 @@ export default function SignUpInfo({ handleNext }) {
         helperText="이메일 형식 / 중복확인 필요"
         InputLabelProps={{
           sx: completedLabelStyle(emailReceiveAllow),
+          style: { fontSize: 20 },
         }}
         InputProps={{
+          style: { fontSize: 18 },
           endAdornment: (
             <Button
               position="end"
               variant="contained"
               size="small"
               sx={{
-                fontSize: '0.6rem',
+                fontSize: '0.8rem',
+                width: '80px',
+                boxShadow: 'none',
                 // fontWeight: 'bo',
               }}
               onClick={getEmailCheck}
@@ -173,10 +173,13 @@ export default function SignUpInfo({ handleNext }) {
         )}
         InputLabelProps={{
           sx: completedLabelStyle(nickNameTestResult()),
+          style: { fontSize: 20 },
         }}
+        inputProps={{ style: { fontSize: 18 } }}
         required
         label="닉네임"
         name="nickname"
+        variant="standard"
         value={signUpForm.nickname}
         onChange={handleSignUpForm}
         size="small"
@@ -189,11 +192,14 @@ export default function SignUpInfo({ handleNext }) {
         sx={completedBoxStyle(passwordTestResult())}
         InputLabelProps={{
           sx: completedLabelStyle(passwordTestResult()),
+          style: { fontSize: 20 },
         }}
+        inputProps={{ style: { fontSize: 18 } }}
         required
         label="비밀번호"
         type="password"
         name="password"
+        variant="standard"
         value={signUpForm.password}
         onChange={handleSignUpForm}
         helperText="소문자, 숫자 포함 7 ~ 15글자"
@@ -206,11 +212,14 @@ export default function SignUpInfo({ handleNext }) {
         sx={completedBoxStyle(passwordCheckResult())}
         InputLabelProps={{
           sx: completedLabelStyle(passwordCheckResult()),
+          style: { fontSize: 20 },
         }}
+        inputProps={{ style: { fontSize: 18 } }}
         required
         label="비밀번호 확인"
         type="password"
         name="checkPassword"
+        variant="standard"
         value={checkPassword}
         onChange={handleCheckPassword}
         size="small"
@@ -222,18 +231,18 @@ export default function SignUpInfo({ handleNext }) {
       <Button
         onClick={handleSignUp}
         sx={{
-          width: '70%',
-          height: '3rem',
+          width: '300px',
+          height: '50px',
           background: '#FF7600',
-          borderRadius: '38px',
+          borderRadius: '50px',
           color: 'white',
           '&:hover': {
             color: 'white',
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5rem',
-          marginTop: '2vh',
+          fontSize: '1rem',
+          marginTop: '1.3rem',
         }}
         disabled={
           !(

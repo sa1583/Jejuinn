@@ -1,24 +1,34 @@
-import { Stack, Avatar, Typography } from '@mui/material';
+import { Stack, Typography, Rating } from '@mui/material';
 import { images } from '../../../assets/images';
+
 export default function MyMainArticle({ post }) {
+  const getUrl = () => {
+    return `${images.defalut_url}${post.imgUrl}`;
+  };
+
   return (
-    <Stack direction="row" sx={{ p: '2%' }} spacing={7}>
-      <Avatar
-        src={post.imageUrl ? post.imageUrl : images.sample_profile}
-        sx={{ width: '75px', height: '75px' }}
+    <Stack direction="row" sx={{ p: '3%', px: '4%' }} alignItems="center">
+      <img
+        src={getUrl()}
+        style={{
+          width: '60px',
+          height: '60px',
+          objectFit: 'cover',
+          borderRadius: '50px',
+          marginRight: '30px',
+        }}
       />
-      <Stack justifyContent="center">
-        <Typography
-          sx={{
-            fontFamily: 'Lato',
-            fontStyle: 'normal',
-            fontWeight: 600,
-            fontSize: '24px',
-          }}
-        >
-          {post.name}
-        </Typography>
-      </Stack>
+      <Typography
+        variant="h6"
+        sx={{
+          marginRight: '30px',
+          minWidth: '130px',
+          maxWidth: '130px',
+        }}
+      >
+        {post.title}
+      </Typography>
+      <Rating value={post.starRatingAvg} readOnly />
     </Stack>
   );
 }

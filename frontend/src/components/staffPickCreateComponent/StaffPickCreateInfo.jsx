@@ -7,23 +7,26 @@ export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
   const handleClose = () => setOpen(false);
 
   const inline = (title, content) => (
-    <Typography variant="h6" sx={{ fontWeight: '800' }}>
-      <Box component="span" sx={{ color: 'primary.main' }}>
-        {title}
-      </Box>{' '}
-      : {content}
+    <Typography variant="h6">
+      <Box component="span" sx={{ color: 'black' }}>
+        {title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </Box>
+      <Box component="span" sx={{ color: 'black', fontWeight: 'bold' }}>
+        {content}
+      </Box>
     </Typography>
   );
 
   return (
     <Box
       sx={{
-        height: '23rem',
+        // height: '23rem',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
         position: 'relative',
+        paddingX: '20px',
       }}
     >
       <Box
@@ -44,11 +47,30 @@ export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
         />
         <Typography
           variant="h5"
-          sx={{ fontWeight: 'bold', marginBottom: '1rem' }}
+          style={{ fontSize: 23, color: 'black', marginBottom: '5px' }}
         >
-          기존 명소에 리뷰 등록
+          선택한 명소에 대한 정보입니다
         </Typography>
-        <Button onClick={handleOpen}>+ 새로운 명소 등록</Button>
+        <Typography
+          variant="h5"
+          style={{ fontSize: 17, color: '#FF7600', marginBottom: '10px' }}
+        >
+          (만약 지도에 원하는 핀이 없다면 아래 버튼을 눌러 새로운 명소를
+          등록해주세요)
+        </Typography>
+
+        <Button
+          variant="contained"
+          sx={{
+            '&:hover': {
+              background: '#FF7600',
+            },
+          }}
+          onClick={handleOpen}
+        >
+          새로운 명소 등록하기
+        </Button>
+        <br />
         <Box
           sx={{
             width: '90%',
@@ -61,15 +83,6 @@ export default function StaffPickCreateInfo({ nowPick, getSpotsPins }) {
           {inline('이름', nowPick?.name)}
           {inline('유형', nowPick?.category)}
           {inline('주소', nowPick?.address)}
-        </Box>
-        <Box
-          sx={{
-            width: '90%',
-          }}
-        >
-          <Typography sx={{ fontWeight: '100', textAlign: 'center' }}>
-            * 지도에서 명소를 선택한 후 리뷰를 등록해주세요.
-          </Typography>
         </Box>
       </Box>
     </Box>

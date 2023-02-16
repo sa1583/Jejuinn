@@ -1,9 +1,7 @@
-import { apiInstance } from './index';
-
-const api = apiInstance();
+import instance from '.';
 
 const allGuestHouseList = (pageNumber) => {
-  return api.get(`/api/guest-houses?pageNumber=${pageNumber}`);
+  return instance.get(`/api/guest-houses?pageNumber=${pageNumber}`);
 };
 
 const getMyGuestHouses = (token, userUid) => {
@@ -12,9 +10,7 @@ const getMyGuestHouses = (token, userUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(`/auth/my-guest-houses/${userUid}`, config);
-  // return { data: [{ uid: 1 , title:'간장남'}] };
-  // return { data: [{ uid: 1 , guestHouseName:'간장남'}, { uid: 2 , guestHouseName:'게토'}] };
+  return instance.get(`/auth/my-guest-houses/${userUid}`, config);
 };
 
 const getApplicantByUid = async (uid, token) => {
@@ -23,11 +19,11 @@ const getApplicantByUid = async (uid, token) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return await api.get(`/auth/job-search/${uid}`, config);
+  return await instance.get(`/auth/job-search/${uid}`, config);
 };
 
 const guestHouseDetail = (guestHouseUid) => {
-  return api.get(`/api/guest-houses/${guestHouseUid}`);
+  return instance.get(`/api/guest-houses/${guestHouseUid}`);
 };
 
 const guestHouseCreate = (token, body) => {
@@ -37,7 +33,7 @@ const guestHouseCreate = (token, body) => {
       'Content-Type': 'multipart/form-data',
     },
   };
-  return api.post(`/auth/guest-house`, body, config);
+  return instance.post(`/auth/guest-house`, body, config);
 };
 
 const guestHouseUpdate = (token, guestHouseUid, body) => {
@@ -48,7 +44,7 @@ const guestHouseUpdate = (token, guestHouseUid, body) => {
     },
   };
   console.log('body', body);
-  return api.put(`/auth/guest-houses/${guestHouseUid}`, body, config);
+  return instance.put(`/auth/guest-houses/${guestHouseUid}`, body, config);
 };
 
 const guestHouseDelete = (token, guestHouseUid) => {
@@ -57,7 +53,7 @@ const guestHouseDelete = (token, guestHouseUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.delete(`/auth/guest-houses/${guestHouseUid}`, config);
+  return instance.delete(`/auth/guest-houses/${guestHouseUid}`, config);
 };
 
 const myGuestHouseList = (token, userUid) => {
@@ -66,7 +62,7 @@ const myGuestHouseList = (token, userUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(`/auth/my-guest-houses/${userUid}`, config);
+  return instance.get(`/auth/my-guest-houses/${userUid}`, config);
 };
 
 const myStaffList = (token, guestHouseUid) => {
@@ -75,14 +71,27 @@ const myStaffList = (token, guestHouseUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(
+  return instance.get(
     `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}`,
     config,
   );
 };
 
+// 현재 게스트 하우스에서 일하는 직원목록
+const myActiveStaffList = (token, guestHouseUid) => {
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.get(
+    `/auth/guest-house/staff/active?guestHouseUid=${guestHouseUid}`,
+    config,
+  );
+};
+
 const myJobOfferList = (guestHouseUid) => {
-  return api.get(`/api/on-recruitment/${guestHouseUid}`);
+  return instance.get(`/api/on-recruitment/${guestHouseUid}`);
 };
 
 const myApplicantList = (token, workUid) => {
@@ -91,17 +100,100 @@ const myApplicantList = (token, workUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(`/auth/recruitment/${workUid}`, config);
+  return instance.get(`/auth/recruitment/${workUid}`, config);
 };
 
-// 아직 api 구현 안됨
-const myRecommendList = (token, workUid) => {
-  const config = {
+// guestHouse검색
+const getGuestHouses = (info) => {
+  let query = `/api/guest-house/search?areaName=${info.areaName}&pageNumber=${info.pageNumber}&`;
+  if (info.styles.length === 0) query += 'styles=&';
+  info.styles.map((style) => {
+    query += `styles=${style}&`;
+  });
+  query += `word=${info.word}`;
+  return instance.get(query);
+};
+
+// 내가 좋아요 한 게스트 하우스 목록
+const getMyLikedGuestHouseList = (token) => {
+  const header = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(`/auth/recommend/${workUid}`, config);
+  return instance.get('/auth/guest-house-list/like', header);
+};
+
+// 게스트 하우스 좋아요
+const likeGuestHouse = (token, id) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.put(`/auth/guest-house/like/${id}`, {}, header);
+};
+
+// 게스트 하우스 좋아요 취소
+const dislikeGuestHouse = (token, id) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.put(`/auth/guest-house/dislike/${id}`, {}, header);
+};
+
+// 문자 보내기
+const sendMessage = (token, guestHouseUid, userUid) => {
+  console.log(guestHouseUid, userUid);
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  const body = {
+    guestHouseUid,
+    userUid,
+  };
+  return instance.post('/auth/interview/phone', body, header);
+};
+
+// 직무 id로 게스트하우스 id조회
+const getGuestHouseUidByWorkUid = (workUid, token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.get(`/auth/get-guest-house/${workUid}`, header);
+};
+
+// 스태프 채용
+const hireStaff = (guestHouseUid, staffUid, workName, token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.post(
+    `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}&userUid=${staffUid}&workName=${workName}`,
+    {},
+    header,
+  );
+};
+
+// 스태프 업무 종료
+const fireStaff = (guestHouseUid, staffUid, token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.delete(
+    `/auth/guest-house/staff?guestHouseUid=${guestHouseUid}&staffUid=${staffUid}`,
+    header,
+  );
 };
 
 export {
@@ -113,8 +205,16 @@ export {
   guestHouseDelete,
   myGuestHouseList,
   myStaffList,
+  myActiveStaffList,
   myJobOfferList,
   myApplicantList,
-  myRecommendList,
   getMyGuestHouses,
+  getGuestHouses,
+  getMyLikedGuestHouseList,
+  likeGuestHouse,
+  dislikeGuestHouse,
+  sendMessage,
+  getGuestHouseUidByWorkUid,
+  hireStaff,
+  fireStaff,
 };

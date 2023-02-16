@@ -1,27 +1,23 @@
-import { apiInstance } from './index';
-import { useSelector } from 'react-redux';
-import { selectAccessToken, selectUserInfo } from '../store/user';
-
-const api = apiInstance();
-
-const Access_token = () => {
-  const token = useSelector(selectAccessToken);
-  return token;
-};
+import instance from './index';
 
 // 특정 게스트하우스에 대한 모집공고 리스트 확인
 const getMyRecruitments = (guestHouseUid) => {
-  return api.get(`/api/guest-house-recruitment/${guestHouseUid}`);
+  return instance.get(`/api/guest-house-recruitment/${guestHouseUid}`);
 };
 
 // 모집중인 직무 모두 보기
 const allWorkList = () => {
-  return api.get(`/api/job-offer?pageNumber=${1}`);
+  return instance.get(`/api/job-offer?pageNumber=${1}`);
 };
 
 // recruitmentUid를 통해 모집공고 세부 정보 제공
 const recruitmentDetail = (recruitmentUid) => {
-  return api.get(`/api/job-offer/${recruitmentUid}`, {}, {});
+  return instance.get(`/api/job-offer/${recruitmentUid}`, {}, {});
+};
+
+// 직무 디테일 조회
+const getWorkDetail = (workUid) => {
+  return instance.get(`/api/work/${workUid}`);
 };
 
 // 직무 필터 조회
@@ -32,17 +28,33 @@ const filteredWorkList = (filterValues) => {
       filterValues,
     },
   };
-  return api.post('/api/job-offer/search', config, {});
+  return instance.post('/api/job-offer/search', config, {});
 };
 
-// 모집공고 작성
+// 공고 작성
 const createRecruitment = (body, token) => {
+  console.log('공고 작성 바디 간다!!!!!!!!!!!!');
+  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
-  return api.post('/auth/job-offer', body, config);
+  return instance.post('/auth/job-offer', body, config);
+};
+
+// 공고 수정
+const updateRecruitment = (body, token, recruitmentUid) => {
+  console.log(recruitmentUid);
+
+  const config = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  return instance.put(`/auth/job-offer/${recruitmentUid}`, body, config);
 };
 
 // 특정 게스트하우스에 대한 직무 리스트 확인
@@ -52,7 +64,7 @@ const getMyWorks = (token, guestHouseUid) => {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.get(`/auth/recruitment-work-list/${guestHouseUid}`, config);
+  return instance.get(`/auth/recruitment-work-list/${guestHouseUid}`, config);
   // return [{ uid: 1 }, { uid: 2 }, { uid: 3 }];
 };
 
@@ -63,18 +75,20 @@ function createWork(body, token) {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.post('/auth/work', body, config);
+  return instance.post('/auth/work', body, config);
 }
 
 // 직무 수정
-function updateWork(body, token) {
+const updateWork = (body, token) => {
+  console.log('바디 간다!!!!!!!!!!!!');
+  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.put('/auth/work', body, config);
-}
+  return instance.put('/auth/work', body, config);
+};
 
 // 직무 삭제
 function deleteWork(workUid, token) {
@@ -83,19 +97,8 @@ function deleteWork(workUid, token) {
       accessToken: `Bearer ${token}`,
     },
   };
-  return api.delete(`/auth/work/${workUid}`, config);
+  return instance.delete(`/auth/work/${workUid}`, config);
 }
-
-// 공고 수정 정민이가 만들어줄 예정
-const updateRecruitment = (body, token) => {
-  console.log(body);
-  const config = {
-    headers: {
-      accessToken: `Bearer ${token}`,
-    },
-  };
-  return api.put('/auth/job-offer', body, config);
-};
 
 export {
   recruitmentDetail,
@@ -105,6 +108,7 @@ export {
   updateWork,
   deleteWork,
   getMyWorks,
+  getWorkDetail,
   getMyRecruitments,
   createRecruitment,
   updateRecruitment,

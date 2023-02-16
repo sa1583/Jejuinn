@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -8,17 +8,22 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import SendSMS from '../../sendSMS/SendSMS';
 import { images } from '../../../assets/images';
 import WorkHistory from '../WorkHistory';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
-import { getApplicantByUid } from '../../../api/guestHouse';
+import {
+  getGuestHouseUidByWorkUid,
+  hireStaff,
+  sendMessage,
+} from '../../../api/guestHouse';
 import { useSelector } from 'react-redux';
-import { selectAccessToken } from '../../../store/user';
+import { selectAccessToken, selectUserInfo } from '../../../store/user';
+import { getApplicantDetail } from '../../../api/recommand';
+import { getWorkDetail } from '../../../api/work';
 
 const style = {
   position: 'absolute',
@@ -29,27 +34,76 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
-  borderRadius: '39px',
+  borderRadius: '20px',
 };
 
-export default function MyApplicantDetail({ id, handleClose }) {
+export default function MyApplicantDetail({
+  resumeUid,
+  workUid,
+  handleCloseModal,
+  handlePrev,
+  handleForward,
+}) {
   const navigate = useNavigate();
-  const [myApplicant, setMyApplicant] = React.useState();
+  const location = useLocation();
   const accessToken = useSelector(selectAccessToken);
+  const userInfo = useSelector(selectUserInfo);
+
+  const [applicant, setApplicant] = useState();
+
+  const getGuestHouseUid = async () => {
+    const { data } = await getGuestHouseUidByWorkUid(workUid, accessToken);
+    console.log('uid', data);
+    return data;
+  };
+
+  const sendMessageToApplicant = async () => {
+    const guestHouseUid = await getGuestHouseUid();
+    // console.log(applicant);
+    await sendMessage(accessToken, guestHouseUid, applicant.writerUid);
+  };
+
+  function generateRandomString(length) {
+    let result = '';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  const moveToInterview = () => {
+    const sessionId = userInfo.uid + '-' + generateRandomString(30);
+    navigate(`/interview/${sessionId}`);
+  };
+
+  const getApplicantDetailInfo = async () => {
+    const { data } = await getApplicantDetail(resumeUid, workUid, accessToken);
+    console.log('data', data);
+    setApplicant(data);
+  };
+
+  const handleHireStaff = async () => {
+    console.log(location.pathname);
+    const guestHouseUid = await getGuestHouseUid();
+    const { data } = await getWorkDetail(workUid);
+    await hireStaff(
+      guestHouseUid,
+      applicant.writerUid,
+      data.workName,
+      accessToken,
+    );
+  };
 
   useEffect(() => {
-    let user;
-    async function getData() {
-      user = await getApplicantByUid(id, accessToken);
-      setMyApplicant(user.data);
-    }
-    getData();
-    // setMyApplicant(applicant());
-  }, []);
+    getApplicantDetailInfo();
+  }, [resumeUid]);
 
   return (
     <div>
-      {myApplicant ? (
+      {applicant ? (
         <Box sx={style}>
           <Stack direction="row">
             <Stack direction="column" justifyContent="space-between">
@@ -57,6 +111,7 @@ export default function MyApplicantDetail({ id, handleClose }) {
               <ArrowBackIosNewIcon
                 fontSize="large"
                 color="primary"
+                onClick={handlePrev}
                 sx={{
                   transform: 'scaleY(1.5)',
                   ':hover': {
@@ -68,63 +123,53 @@ export default function MyApplicantDetail({ id, handleClose }) {
             </Stack>
             <Box margin="60px" width="fit-content">
               <Stack direction="column" spacing={3}>
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" alignItems="center" spacing={4}>
                   <Avatar
                     src={
-                      myApplicant.profileImageUrl
-                        ? myApplicant.profileImageUrl
+                      applicant.profileImageUrl
+                        ? applicant.profileImageUrl
                         : images.sample_profile
                     }
                     style={{
                       width: '15rem',
                       height: '15rem',
+                      marginTop: '20px',
                       marginBottom: '20px',
-                      cursor: 'pointer',
                     }}
                   />
                   <Box>
                     <Stack direction="row" spacing={3} alignItems="center">
                       <Typography
                         component="h2"
-                        style={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 600,
-                          fontSize: '48px',
+                        sx={{
+                          fontWeight: 'bold',
+                          fontSize: '30px',
                           lineHeight: '58px',
                         }}
                       >
-                        {myApplicant.name ? myApplicant.name : '장정민'}
+                        {applicant.userName ? applicant.userName : '장정민'}
                       </Typography>
                       <Typography
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '300',
-                          fontSize: '32px',
+                          fontSize: '20px',
                         }}
                       >
-                        {myApplicant.gender ? myApplicant.gender : '남자'} |{' '}
-                        {myApplicant.age ? myApplicant.age : 20}
+                        {applicant.gender ? applicant.gender : '남자'} |{' '}
+                        {applicant.age ? applicant.age : 20}세
                       </Typography>
-                      <a href={myApplicant.instagramLink}>
+                      <a href={applicant.instagramLink}>
                         <img src={images.instagram_logo} width="39px" />
                       </a>
                     </Stack>
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      marginLeft="20px"
-                      marginTop="10px"
-                    >
-                      {myApplicant.personTypes?.map((tag) => {
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      {applicant.personTypes?.map((tag) => {
                         return (
                           <Chip
                             label={'#' + tag.type}
                             sx={{
-                              background: '#FF9B44',
+                              background: '#FF7600',
                               color: 'secondary.main',
                             }}
                           />
@@ -138,26 +183,25 @@ export default function MyApplicantDetail({ id, handleClose }) {
                         marginTop: '10px',
                       }}
                     >
-                      <Typography
-                        style={{
-                          display: 'inline',
-                          marginLeft: '20px',
-                          marginRight: '30px',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '100',
-                          fontSize: '20px',
-                          lineHeight: '29px',
-                        }}
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        alignItems="center"
+                        marginTop="15px"
                       >
-                        선호 스타일
-                      </Typography>
-                      <Stack direction="row" spacing={1} display="inline">
-                        {myApplicant.guestHouseType ? (
-                          myApplicant.guestHouseType?.map((type) => {
+                        <Typography
+                          style={{
+                            marginRight: '7px',
+                            fontSize: '18px',
+                          }}
+                        >
+                          선호 스타일
+                        </Typography>
+                        {applicant.guestHouseTypes ? (
+                          applicant.guestHouseTypes?.map((type) => {
                             return (
                               <Chip
-                                label={type}
+                                label={'#' + type}
                                 sx={{
                                   background: '#FF9B44',
                                   color: 'secondary.main',
@@ -185,30 +229,20 @@ export default function MyApplicantDetail({ id, handleClose }) {
                     >
                       <Typography
                         style={{
-                          display: 'inline',
-                          marginLeft: '20px',
-                          marginRight: '51px',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '100',
-                          fontSize: '20px',
-                          lineHeight: '29px',
+                          marginRight: '30px',
+                          fontSize: '18px',
                         }}
                       >
                         선호 지역
                       </Typography>
                       <Stack direction="row" spacing={1} display="inline">
-                        {myApplicant.interestAreas?.map((area) => {
-                          return (
-                            <Chip
-                              label={area.areaName}
-                              sx={{
-                                background: '#FF9B44',
-                                color: 'secondary.main',
-                              }}
-                            />
-                          );
-                        })}
+                        <Chip
+                          label={'#' + applicant.interestArea}
+                          sx={{
+                            background: '#FF9B44',
+                            color: 'secondary.main',
+                          }}
+                        />
                       </Stack>
                     </Box>
                     <Box
@@ -220,41 +254,64 @@ export default function MyApplicantDetail({ id, handleClose }) {
                     >
                       <Typography
                         style={{
-                          display: 'inline',
-                          marginLeft: '20px',
-                          marginRight: '31px',
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: '100',
-                          fontSize: '20px',
-                          lineHeight: '29px',
+                          marginRight: '15px',
+                          fontSize: '18px',
                         }}
                       >
                         입도 가능일
                       </Typography>
                       <Chip
+                        width="90%"
                         icon={<CalendarMonthIcon color="white" />}
                         sx={{ background: '#FF9B44', color: 'white' }}
-                        label={myApplicant.possibleStartDate}
+                        label={applicant.possibleStartDate}
                       />
                     </Box>
                   </Box>
                 </Stack>
+                <Box marginTop="30px">
+                  <Stack direction="row" justifyContent="center" spacing={8}>
+                    <Typography
+                      sx={{
+                        fontSize: '20px',
+                        display: 'inline',
+                      }}
+                    >
+                      자기 소개
+                    </Typography>
+                    <Box width="400px" display="flex" alignItems="center">
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={4}
+                        variant="standard"
+                        color="primary"
+                        focused
+                        inputProps={{
+                          readOnly: true,
+                        }}
+                        value={applicant.content}
+                      />
+                    </Box>
+                  </Stack>
+                </Box>
                 <Box
                   sx={{
-                    marginTop: '33px',
+                    marginTop: '30px',
+                    marginX: '20px',
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: '30px',
-                      display: 'inline',
-                    }}
-                  >
-                    근무 이력
-                  </Typography>
-                  <Stack direction="row" spacing={1} marginLeft="170px">
-                    {myApplicant?.staffRecordDetail?.map((history) => {
+                  <Stack direction="row" spacing={8} minHeight="150px">
+                    <Typography
+                      sx={{
+                        fontSize: '20px',
+                        display: 'inline',
+                        marginLeft: '12px',
+                      }}
+                    >
+                      근무 이력
+                    </Typography>
+                    {applicant?.staffRecordDetail?.map((history) => {
                       if (history.onDuty === 'true') return null;
                       return (
                         <WorkHistory key={history.uid} history={history} />
@@ -262,36 +319,7 @@ export default function MyApplicantDetail({ id, handleClose }) {
                     })}
                   </Stack>
                 </Box>
-                <Box marginTop="30px">
-                  <Stack direction="row" spacing={8}>
-                    <Typography
-                      sx={{
-                        fontSize: '30px',
-                        display: 'inline',
-                      }}
-                    >
-                      자기 소개
-                    </Typography>
-                    <Box
-                      width="400px"
-                      minHeight="150px"
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <TextField
-                        fullWidth
-                        multiline
-                        variant="standard"
-                        color="primary"
-                        focused
-                        inputProps={{
-                          readOnly: true,
-                        }}
-                        value={myApplicant.content}
-                      />
-                    </Box>
-                  </Stack>
-                </Box>
+
                 <Box
                   sx={{
                     display: 'flex',
@@ -302,9 +330,35 @@ export default function MyApplicantDetail({ id, handleClose }) {
                   <Stack direction="row" spacing={5}>
                     <Button
                       variant="contained"
-                      sx={{ borderRadius: '25px', width: '205px' }}
+                      sx={{
+                        height: '3rem',
+                        fontSize: '1.6vh',
+                        fontColor: 'white',
+                        borderRadius: '50px',
+                        width: '205px',
+                        '&:hover': {
+                          background: '#FF7600',
+                        },
+                      }}
+                      onClick={sendMessageToApplicant}
                     >
-                      <SendSMS />
+                      문자 보내기
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        height: '3rem',
+                        fontSize: '1.6vh',
+                        fontColor: 'white',
+                        borderRadius: '50px',
+                        width: '205px',
+                        '&:hover': {
+                          background: '#FF7600',
+                        },
+                      }}
+                      onClick={moveToInterview}
+                    >
+                      화상 면접
                     </Button>
                     <Button
                       variant="contained"
@@ -313,9 +367,9 @@ export default function MyApplicantDetail({ id, handleClose }) {
                         borderRadius: '25px',
                         width: '205px',
                       }}
-                      onClick={() => navigate('/interview')}
+                      onClick={handleHireStaff}
                     >
-                      화상 면접
+                      채용
                     </Button>
                   </Stack>
                 </Box>
@@ -331,12 +385,13 @@ export default function MyApplicantDetail({ id, handleClose }) {
                       cursor: 'pointer',
                     },
                   }}
-                  onClick={handleClose}
+                  onClick={handleCloseModal}
                 />
               </Box>
               <ArrowForwardIosIcon
                 color="primary"
                 fontSize="large"
+                onClick={handleForward}
                 sx={{
                   transform: 'scaleY(1.5)',
                   ':hover': {

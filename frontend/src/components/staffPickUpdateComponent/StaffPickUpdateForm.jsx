@@ -77,11 +77,22 @@ export default function StaffPickUpdateForm() {
       style={{ display: 'flex', flexDirection: 'column', padding: '5%' }}
     >
       <Typography
-        variant="h3"
-        sx={{ marginBottom: '1rem', fontWeight: 'bolder' }}
+        variant="h5"
+        style={{
+          fontSize: 22,
+          color: 'black',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+        }}
       >
-        사진 (최대 10개)
+        ② &nbsp;선택된 명소에 대한 리뷰를 작성해주세요!
       </Typography>
+      <label
+        htmlFor="image"
+        style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
+      >
+        명소 관련 이미지를 업로드 해주세요.(최대 10개)
+      </label>
 
       <ImageUploader
         preImages={preImages}
@@ -91,12 +102,14 @@ export default function StaffPickUpdateForm() {
         handlePreImages={handlePreImages}
       />
 
-      <Typography
-        variant="h3"
-        sx={{ marginBottom: '1rem', marginTop: '2rem', fontWeight: 'bolder' }}
+      <br />
+      <br />
+      <label
+        htmlFor="content"
+        style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
       >
-        글 내용
-      </Typography>
+        명소를 리뷰하는 내용을 입력해주세요.
+      </label>
 
       <MarkDownInput
         name="content"
@@ -109,14 +122,17 @@ export default function StaffPickUpdateForm() {
       <Box
         sx={{
           alignSelf: 'center',
-          marginTop: '5rem',
+          marginTop: '7rem',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3" sx={{ fontWeight: 'bolder' }}>
-          평점
+        <Typography
+          variant="h5"
+          style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
+        >
+          해당 명소에 대한 평점을 매겨주세요
         </Typography>
         <Rating
           value={starRating}
@@ -134,13 +150,18 @@ export default function StaffPickUpdateForm() {
           onClick={(e) => submit(e)}
           sx={{
             marginTop: '5rem',
+            height: '3.5rem',
             width: '40%',
-            color: 'white',
-            fontSize: '1.5rem',
+            fontSize: '1.8vh',
+            fontColor: 'white',
+            borderRadius: '50px',
+            '&:hover': {
+              background: '#FF7600',
+            },
           }}
           variant="contained"
         >
-          글 작성
+          수정 완료
         </Button>
       </Box>
     </form>
