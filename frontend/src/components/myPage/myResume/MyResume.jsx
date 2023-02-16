@@ -40,7 +40,9 @@ export default function MyResume() {
   return (
     <>
       <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
-        <h1 style={{ fontSize: '1.7rem', marginBottom: '2rem' }}>지원서</h1>
+        <h1 style={{ fontSize: '1.7rem', marginBottom: '2rem' }}>
+          지원서 관리
+        </h1>
         <Divider sx={{ marginBottom: '7px' }} />
         <br />
         {isAuth ? (
