@@ -3,7 +3,7 @@ import { Box, Grid, Stack, Typography } from '@mui/material';
 export default function WorkInfo({ work }) {
   console.log(work);
   return (
-    <Stack p="2rem" mt="1rem" mr="1rem" direction="column" spacing={2}>
+    <Stack p="2rem" direction="column" spacing={2}>
       <Typography variant="h5" color="primary">
         {work.workName}
       </Typography>
