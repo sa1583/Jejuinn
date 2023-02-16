@@ -23,4 +23,8 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
             "and r.guestHouseUid in (:guestHouseUidList)")
     Page<Work> findByGuestHouseUidAndEntryDate(@Param("guestHouseUidList") List<Long> guestHouseUidList,
                                                @Param("entryDate") LocalDate entryDate, Pageable pageable);
+
+    @Query("select g.uid from Work w left outer join Recruitment r on w.recruitment.uid = r.uid left outer join " +
+            "GuestHouse g on g.uid = r.guestHouseUid where w.uid = :workUid")
+    Long findGuestHouseUidByWorkUid(@Param("workUid") Long workUid);
 }

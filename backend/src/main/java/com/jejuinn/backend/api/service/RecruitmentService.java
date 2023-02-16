@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,7 +36,7 @@ public class RecruitmentService {
         System.out.println("여기까지 옴");
         Long writerUid = recruitmentRepository.findUserUidByRecruitmentUid(recruitmentUid);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentUid).get();
-        if(userUid != writerUid) throw new UnAuthorizationException("작성자가 아닙니다.");
+        if(Objects.equals(userUid, writerUid)) throw new UnAuthorizationException("작성자가 아닙니다.");
         for(Work work : recruitment.getWorks()) {
             workResumeInfoRepository.deleteByWorkUid(work.getUid());
         }
