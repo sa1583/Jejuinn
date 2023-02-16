@@ -9,6 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Box } from '@mui/system';
+import { useNavigate } from 'react-router';
 const CustomTextField = styled(TextField)({
   '& label': {
     color: '#000000',
@@ -21,8 +22,8 @@ const CustomTextField = styled(TextField)({
     '& fieldset': {
       borderColor: '#d1d1d1',
       opacity: '83%',
-      height: '4rem',
-      borderRadius: '62px',
+      height: '6vh',
+      borderRadius: '20px',
       margin: 'auto',
     },
     '&:hover fieldset': {
@@ -35,7 +36,7 @@ const CustomTextField = styled(TextField)({
 });
 
 const CustomButton = styled(Button)({
-  height: '3rem',
+  height: '6vh',
   color: 'white',
   '&:hover': {
     backgroundColor: '#FF7600',
@@ -65,25 +66,14 @@ export default function StaffPickFilter({
     '우도면',
   ];
 
-  // const [pickForm, setPickForm] = useState(filter);
-  // const handlePickForm = (e) => {
-  //   const name = e.target.name;
-  //   const value = e.target.value;
-  //   setPickForm({ ...pickForm, [name]: value });
-  // };
-
   return (
-    <form
-      style={{
-        height: '23rem',
-      }}
-    >
+    <form style={{ height: '23rem' }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          padding: '3vh 3vh 3vh 3vh',
-          gap: '2rem',
+          padding: '4vh 3vh 3vh 3vh',
+          gap: '2.3vh',
         }}
       >
         <CustomTextField
@@ -101,9 +91,6 @@ export default function StaffPickFilter({
           onChange={handlePickForm}
           name="category"
           defaultValue={'전체'}
-          // 여이가 라벨 사이즈 조정하는곳
-          // 근데 라벨 들어가는 칸은 조정이 안됨 ㅋ
-          // InputLabelProps={{ style: { fontSize: '18px' } }}
         >
           {selectedTypes.map((selectedtype) => (
             <MenuItem key={uuidv4()} value={selectedtype}>
@@ -151,16 +138,16 @@ export default function StaffPickFilter({
         <CustomButton
           variant="contained"
           sx={{
-            borderRadius: '62px',
+            borderRadius: '20px',
             backgroundColor: '#FF7600',
-            fontFamily: 'border',
+            marginBottom: '1vh',
           }}
           size="large"
           startIcon={<SearchIcon />}
           onClick={(e) => {
             e.preventDefault();
-            //여기에 필터 검색 로직
             getFilterdSpots();
+            // navigate('/staffpicklist');
           }}
         >
           조건 검색

@@ -1,53 +1,143 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import GuestHouseInfo from '../../components/guestHouseDetail/GuestHouseInfo';
 import GuestHouseContent from '../../components/guestHouseDetail/GuestHouseContent';
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import SpeedDialComponent from '../../components/speedDial/SpeedDialComponent';
 import MapApi from '../../components/mapApi/MapApi';
+import {
+  guestHouseDetail,
+  guestHouseDelete,
+  getMyLikedGuestHouseList,
+  likeGuestHouse,
+  dislikeGuestHouse,
+} from '../../api/guestHouse';
+import { selectAccessToken, selectUserInfo } from '../../store/user';
 
 export default function GuestHouseDetail() {
-  // 여기서 useEffect로 url 끝 번호를 따서
-  // 글 번호로 axios 요청보내서 글 디테일 정보 받아와야함
   const location = useLocation();
-  const [id, setId] = useState('');
+  const guestHouseUid = location.pathname.split('detail/')[1];
+  const accessToken = useSelector(selectAccessToken);
+  const userInfo = useSelector(selectUserInfo);
+
+  const [spots, setSpots] = useState([]);
+  const [guestHouse, setGuestHouse] = useState([]);
+  const [likedGuestHouses, setLikedGuestHouses] = useState([]);
+  const [likeState, setLikeState] = useState(0);
+
+  async function getGuestHouseDetail() {
+    const data = (await guestHouseDetail(guestHouseUid)).data;
+    setGuestHouse(data);
+    const info = data.guestHouse;
+    console.log(info);
+    setSpots([
+      {
+        id: info.uid,
+        lat: info.lat,
+        lng: info.lng,
+      },
+    ]);
+  }
+
+  const getLikedGuestHouses = async () => {
+    if (!accessToken) return;
+    const { data } = await getMyLikedGuestHouseList(accessToken);
+    setLikedGuestHouses(data);
+  };
+
   useEffect(() => {
-    setId(location.pathname.split('detail/')[1]);
+    getGuestHouseDetail();
+    getLikedGuestHouses();
   }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      const exist = likedGuestHouses.find((elem) => elem.uid == guestHouseUid);
+      if (exist) setLikeState(2);
+      else setLikeState(1);
+    }
+  }, [likedGuestHouses]);
 
   const navigate = useNavigate();
   const goModifiy = () => {
-    navigate('create');
+    navigate(`/guesthouse/update/${guestHouseUid}`);
+  };
+
+  async function DeleteGuestHouse() {
+    await guestHouseDelete(accessToken, guestHouseUid);
+    alert('게스트하우스가 삭제되었습니다.');
+    navigate('/guesthouse');
+  }
+
+  const handleLikeGuestHouse = async () => {
+    await likeGuestHouse(accessToken, guestHouseUid);
+    getLikedGuestHouses();
+  };
+
+  const handleCancleLikeGuestHouse = async () => {
+    await dislikeGuestHouse(accessToken, guestHouseUid);
+    getLikedGuestHouses();
   };
 
   const actions = [
     { icon: <ModeEditOutlinedIcon />, name: '글 수정', handle: goModifiy },
+    {
+      icon: <DeleteOutlineIcon />,
+      name: '글 삭제',
+      handle: DeleteGuestHouse,
+    },
   ];
 
-  const spots = [{ id: 1, lat: 33.4485, lng: 126.5631 }];
-  
   return (
     <>
-      <SpeedDialComponent actions={actions} />
-      <Box sx={{ paddingY: '2rem', paddingX: '10%' }}>
-        <h1 style={{ color: '#FF7600' }}>| 간장남게스트하우스</h1>
+      {userInfo?.uid === guestHouse?.guestHouse?.representativeUid && (
+        <SpeedDialComponent actions={actions} />
+      )}
+      <Box sx={{ paddingY: '2rem', paddingX: '19%' }}>
+        <Typography
+          variant="h4"
+          color="primary"
+          sx={{
+            paddingLeft: '10px',
+            marginTop: '20px',
+            marginBottom: '24px',
+            fontWeight: 'bold',
+            fontSize: '1.8rem',
+          }}
+        >
+          | {guestHouse?.guestHouse?.guestHouseName}
+        </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Grid item xs={12}>
-              <WhiteBox cpn={<GuestHouseInfo />} />
+              <WhiteBox
+                cpn={<GuestHouseInfo guestHouse={guestHouse.guestHouse} />}
+              />
             </Grid>
             <Grid item xs={12}>
-              <WhiteBox cpn={<MapApi spots={spots} startSpot={spots} />} />
+              <WhiteBox
+                cpn={<MapApi spots={spots} startSpot={spots} high={'23rem'} />}
+              />
             </Grid>
           </Grid>
           <Grid item xs={12} md={8}>
             <Grid item xs={12}>
-              <WhiteBox cpn={<GuestHouseContent />} />
+              <WhiteBox
+                cpn={
+                  <GuestHouseContent
+                    guestHouse={guestHouse.guestHouse}
+                    images={guestHouse.images}
+                    likeState={likeState}
+                    handleLikeGuestHouse={handleLikeGuestHouse}
+                    handleCancleLikeGuestHouse={handleCancleLikeGuestHouse}
+                  />
+                }
+              />
             </Grid>
           </Grid>
         </Grid>
