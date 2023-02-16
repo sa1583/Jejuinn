@@ -53,7 +53,7 @@ public class StaffService {
         if(!staff.getGuestHouseUid().equals(guestHouseUid))
             throw new UnAuthorizationException("해당 게스트 하우스의 스태프가 아닙니다.");
 
-        if(!guestHouse.getRepresentativeUid().equals(userUid) || !staff.getUserUid().equals(userUid))
+        if(!guestHouse.getRepresentativeUid().equals(userUid))
             throw new UnAuthorizationException("업무 종료 권한이 없습니다.");
         staff.setEndDate(LocalDate.now());
         staff.setActive(false);
