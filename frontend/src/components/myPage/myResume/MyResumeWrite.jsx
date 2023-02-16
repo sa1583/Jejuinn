@@ -25,16 +25,14 @@ import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { useNavigate } from 'react-router-dom';
 
 const CustomButton = styled(Button)({
-  border: '1px solid #FF7600',
-  variant: 'outlined',
-  color: '#FF7600',
-  width: '70%',
-  borderRadius: '62px',
-  height: '5vh',
+  marginTop: '3rem',
+  height: '3.5rem',
+  width: '40%',
+  fontSize: '1.8vh',
+  fontColor: 'white',
+  borderRadius: '50px',
   '&:hover': {
-    color: '#FFFFFF',
-    border: '1px solid #FFFFFF',
-    backgroundColor: '#FF7600',
+    background: '#FF7600',
   },
 });
 
@@ -51,7 +49,7 @@ const CustomTextField = styled(TextField)({
       borderColor: '#d1d1d1',
       opacity: '83%',
       height: '100%',
-      borderRadius: '62px',
+      borderRadius: '20px',
       margin: 'auto',
     },
     '&:hover fieldset': {
@@ -71,7 +69,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
   const [instagramUrl, setInstagramUrl] = useState('');
   const [myStyleTag, setMyStyleTags] = useState([]);
   const [guestHouseStyleTag, setGuestHouseStyleTags] = useState([]);
-  const [minWorkPeriod, setMinWorkPeriod] = useState(0);
+  const [minWorkPeriod, setMinWorkPeriod] = useState(1);
   const [intro, setIntro] = useState('');
 
   const userInfo = useSelector(selectUserInfo);
@@ -132,37 +130,53 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
   }, []);
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
+    <Box sx={{ padding: '3%' }} spacing={4}>
       <Stack direction="column" spacing={2}>
-        <Stack direction="row" alignItems="center">
-          <Typography minWidth={minWidth}>내 스타일</Typography>
+        <Typography sx={{ fontSize: 23, fontWeight: 'bold' }}>
+          지원서 작성
+        </Typography>
+        <br />
+        <Stack direction="row" alignItems="center" spacing={8}>
+          <Typography minWidth={minWidth} sx={{ fontSize: 20 }}>
+            내 스타일
+          </Typography>
           <FilterStyle value={myStyleTag} setValue={setMyStyleTags} />
         </Stack>
-        <Stack direction="row" alignItems="center">
-          <Typography minWidth={minWidth}>인스타그램 주소</Typography>
+        <Stack direction="row" alignItems="center" spacing={8}>
+          <Typography minWidth={minWidth} sx={{ fontSize: 20 }}>
+            인스타그램 주소
+          </Typography>
           <CustomTextField
             sx={{ width: '100%' }}
             value={instagramUrl}
             onChange={writeInstagramUrl}
           />
         </Stack>
-        <Stack direction="row" alignItems="center">
-          <Typography minWidth={minWidth}>선호하는 스타일</Typography>
+        <Stack direction="row" alignItems="center" spacing={8}>
+          <Typography minWidth={minWidth} sx={{ fontSize: 20 }}>
+            선호하는 스타일
+          </Typography>
           <FilterGuestHouseStyle
             value={guestHouseStyleTag}
             setValue={setGuestHouseStyleTags}
           />
         </Stack>
-        <Stack direction="row" alignItems="center">
-          <Typography minWidth={minWidth}>선호 지역</Typography>
+        <Stack direction="row" alignItems="center" spacing={8}>
+          <Typography minWidth={minWidth} sx={{ fontSize: 20 }}>
+            선호 지역
+          </Typography>
           <FilterArea value={area} setValue={setArea} />
         </Stack>
-        <Stack direction="row" alignItems="center">
-          <Typography minWidth={minWidth}>입도 가능일</Typography>
+        <Stack direction="row" alignItems="center" spacing={8}>
+          <Typography minWidth={minWidth} sx={{ fontSize: 20 }}>
+            입도 가능일
+          </Typography>
           <FilterDate value={startDate} setValue={setStartDate} />
         </Stack>
-        <Stack direction="row" alignItems="center">
-          <Typography minWidth={minWidth}>최소 근무 기간</Typography>
+        <Stack direction="row" alignItems="center" spacing={8}>
+          <Typography minWidth={minWidth} sx={{ fontSize: 20 }}>
+            최소 근무 기간
+          </Typography>
           <CustomTextField
             value={minWorkPeriod}
             onChange={writeMinWorkPeriod}
@@ -175,10 +189,14 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
             type="number"
           />
         </Stack>
-        <Stack direction="row" alignItems="center">
-          <Typography minWidth={minWidth}>자기소개</Typography>
+        <br />
+        <Stack direction="row" spacing={8}>
+          <Typography minWidth={minWidth} sx={{ fontSize: 20 }}>
+            자기소개
+          </Typography>
           <CustomTextField
             value={intro}
+            placeholder="자기소개 내용을 입력해주세요"
             onChange={writeIntro}
             variant="standard"
             sx={{ width: '100%' }}
@@ -186,9 +204,11 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
             rows={3}
           />
         </Stack>
+        <br />
         <Box display="flex" justifyContent="center">
           <CustomButton
             onClick={submitResume}
+            variant="contained"
             disabled={
               !area ||
               !startDate ||
