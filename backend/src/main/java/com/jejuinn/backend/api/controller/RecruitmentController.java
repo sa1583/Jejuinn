@@ -258,7 +258,7 @@ public class RecruitmentController {
     public ResponseEntity<?> deleteWork(@PathVariable Long workUid, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         Long writerUid = workRepository.findUserUidByWorkUid(workUid);
-        if(Objects.equals(userUid,writerUid)) {
+        if(!Objects.equals(userUid,writerUid)) {
             return ResponseEntity.status(401).build();
         }
         workRepository.deleteById(workUid);
@@ -288,7 +288,7 @@ public class RecruitmentController {
     public ResponseEntity<?> modifyWork(@RequestBody ModifyWorkPutReq modifyWorkPutReq, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         Long writerUid = workRepository.findUserUidByWorkUid(modifyWorkPutReq.getWorkUid());
-        if(Objects.equals(userUid, writerUid)) {
+        if(!Objects.equals(userUid, writerUid)) {
             return ResponseEntity.status(401).build();
         }
         workRepository.save(modifyWorkPutReq.toWork());
