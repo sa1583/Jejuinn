@@ -68,12 +68,16 @@ function FilterArea({ value, setValue }) {
     '우도면',
   ];
 
+  useEffect(() => {
+    if (!value || value === '') setValue('전체');
+  }, [value]);
+
   return (
     <Autocomplete
       sx={{ width: '100%' }}
       options={areas}
       defaultValue="전체"
-      value={!value ? '전체' : value}
+      value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
       }}
