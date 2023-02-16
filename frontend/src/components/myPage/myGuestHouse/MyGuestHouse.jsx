@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import { styled } from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
@@ -90,17 +90,13 @@ export default function MyGuestHouse() {
   return (
     <>
       <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <h1 style={{ fontSize: '1.8rem' }}>게스트하우스 관리</h1>
-          <Box sx={{ flexDirection: 'column' }}></Box>
-        </Box>
-        <Box>
+        <h1 style={{ fontSize: '1.7rem', marginBottom: '2rem' }}>
+          게스트하우스 관리
+        </h1>
+        <Divider sx={{ marginBottom: '7px' }} />
+        <br />
+
+        <Box sx={{ px: '3%' }}>
           <Box
             sx={{
               display: 'flex',

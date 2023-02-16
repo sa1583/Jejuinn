@@ -1,4 +1,4 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectUserInfo } from '../../../store/user';
 
@@ -7,34 +7,41 @@ export default function MyResumeInfo() {
   const userInfo = useSelector(selectUserInfo);
 
   return (
-    <Box p="3%">
-      <h1>지원서</h1>
-      <Grid container spacing={2}>
-        <Grid item md={4}>
+    <Box px="3%">
+      <Grid container spacing={4}>
+        <Grid
+          item
+          md={12}
+          sx={{ fontSize: 23, fontWeight: 'bold', marginBottom: '10px' }}
+        >
+          개인정보
+        </Grid>
+
+        <Grid item md={4} sx={{ fontSize: 20 }}>
           이름
         </Grid>
-        <Grid item md={8}>
+        <Grid item md={8} sx={{ fontSize: 20, color: '#FF7600' }}>
           {userInfo?.username}
         </Grid>
 
-        <Grid item md={4}>
+        <Grid item md={4} sx={{ fontSize: 20 }}>
           나이 (성별)
         </Grid>
-        <Grid item md={8}>
-          {userInfo?.age} ({userInfo?.gender})
+        <Grid item md={8} sx={{ fontSize: 20, color: '#FF7600' }}>
+          {userInfo?.age}세 ({userInfo?.gender})
         </Grid>
 
-        <Grid item md={4}>
+        <Grid item md={4} sx={{ fontSize: 20 }}>
           휴대폰번호
         </Grid>
-        <Grid item md={8}>
+        <Grid item md={8} sx={{ fontSize: 20, color: '#FF7600' }}>
           {userInfo?.phone}
         </Grid>
 
-        <Grid item md={4}>
+        <Grid item md={4} sx={{ fontSize: 20 }}>
           이메일
         </Grid>
-        <Grid item md={8}>
+        <Grid item md={8} sx={{ fontSize: 20, color: '#FF7600' }}>
           {userInfo?.email}
         </Grid>
       </Grid>

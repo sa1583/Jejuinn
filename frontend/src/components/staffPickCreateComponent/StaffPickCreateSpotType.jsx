@@ -66,7 +66,7 @@ export default function StaffPickCreateSpotType({
         <Typography sx={{ fontSize: 20 }}>명소 사진을 등록해주세요.</Typography>
         <Box
           sx={{
-            // width: '600px',
+            width: '600px',
             maxWidth: '470px',
             height: '300px',
           }}
@@ -75,7 +75,7 @@ export default function StaffPickCreateSpotType({
             files={file}
             handleFiles={handleFile}
             maxNum={1}
-            style={{ padding: 0 }}
+            // style={{ padding: 0 }}
           />
         </Box>
       </Box>
