@@ -23,7 +23,7 @@ export default function Profile() {
   useEffect(() => {});
 
   return (
-    <Stack direction="column">
+    <Stack direction="column" alignItems="center">
       <Avatar
         src={userInfo?.profileImageUrl ? profileImage() : images.sample_profile}
         alt="프로필 사진 들어가용~"
@@ -34,7 +34,7 @@ export default function Profile() {
           boxShadow: 'rgba(0, 0, 0, 0.15) 0px 15px 25px',
         }}
       />
-      <h1 style={{ marginTop: 0 }}>{userInfo?.username}</h1>
+      <h1 style={{ marginTop: 0 }}>{userInfo?.nickname}</h1>
     </Stack>
   );
 }
