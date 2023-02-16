@@ -4,6 +4,7 @@ import com.jejuinn.backend.db.entity.Recruitment;
 import com.jejuinn.backend.db.entity.Work;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
@@ -12,26 +13,36 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WorkPostReq {
+    @NotNull
     private Long recruitmentUid;
 
+    @NotNull
     private String workName;
 
+    @NotNull
     private int intake;
 
+    @NotNull
     private String gender;
 
+    @NotNull
     private int minWorkPeriod;
 
+    @NotNull
     private String workTime;
 
+    @NotNull
     private int workDays;
 
+    @NotNull
     private int daysOff;
 
     private String workDescription;
 
+    @NotNull
     private String salary;
 
+    @NotNull
     private LocalDate entryDate;
 
     public Work toWork() {
