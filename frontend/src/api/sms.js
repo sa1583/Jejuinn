@@ -9,4 +9,14 @@ const sendMessageByIds = (body, token) => {
   return instance.post('/auth/interview/phone', body, header);
 };
 
-export { sendMessageByIds };
+// 화상채팅 url 메일로 전송
+const snedVideoInterviewUrl = (guestHouseUid, userUid, url) => {
+  const body = {
+    guestHouseUid,
+    url,
+    userUid,
+  };
+  return instance.post('/api/openvidu/link', body);
+};
+
+export { sendMessageByIds, snedVideoInterviewUrl };
