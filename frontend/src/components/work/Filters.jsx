@@ -105,6 +105,12 @@ function FilterDate({ value, setValue }) {
     const dateFormat = dayjs(event.$d.toString()).format('YYYY-MM-DD');
     setValue(dateFormat);
   };
+
+  useEffect(() => {
+    const defaultValue = new Date();
+    setValue(dayjs(defaultValue).format('YYYY-MM-DD'));
+  }, []);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
