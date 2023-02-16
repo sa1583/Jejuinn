@@ -1,12 +1,12 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.service.oauth.GoogleService;
+import com.jejuinn.backend.api.service.social.GoogleService;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.repository.SocialLoginRepository;
-import com.jejuinn.backend.api.service.oauth.KakaoService;
+import com.jejuinn.backend.api.service.social.KakaoService;
 import com.jejuinn.backend.api.service.UserService;
-import com.jejuinn.backend.api.service.oauth.NaverService;
+import com.jejuinn.backend.api.service.social.NaverService;
 import com.jejuinn.backend.db.entity.SocialLogin;
 import com.jejuinn.backend.db.entity.User;
 import com.jejuinn.backend.db.enums.SocialType;
@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +32,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SocialController {
 
-    private static final String TOKEN_HEADER = "access_token";
+    private static final String TOKEN_HEADER = "socialToken";
     private final UserService userService;
     private final SocialLoginRepository socialLoginRepository;
     private final UserRepository userRepository;
@@ -103,7 +103,7 @@ public class SocialController {
         if(code == null || state == null) return ResponseEntity.status(400).build();
 
         //2. 인증코드로 토큰 전달
-        User user = naverService.getUserInfoFromNaver(code.substring(7), state);
+        User user = naverService.getUserInfoFromNaver(code.substring(7));
 
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
 
@@ -141,7 +141,6 @@ public class SocialController {
         User user = userRepository.findOneByEmailAndSocialLogin_Type(socialInfo.getUser().getEmail(),SocialType.valueOf("GOOGLE").ordinal()).get();
 
         HttpHeaders httpHeaders = userService.getHttpHeaders(user, null);
-        logger.info("KAKAO_USER_INFO : {}", user);
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
@@ -156,12 +155,16 @@ public class SocialController {
     })
     public ResponseEntity<?> getNaverAuth(HttpServletRequest request){
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
+        logger.info("accessToken : {}", accessToken);
         Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
         String uid = authentication.getName();
+        logger.info("uid : {}", uid);
 
         Optional<User> user = userRepository.findById(Long.parseLong(uid));
+        logger.info("userUid : {}", user.get().getUid());
         if (user.isEmpty()) return ResponseEntity.status(400).build();
-        naverService.getUserInfoFromNaver(request.getHeader(TOKEN_HEADER).substring(7), request.getHeader("state"));
+        logger.info("유저의 이름은 : {}", user.get().getNickname());
+        naverService.myUserInfoFromNaver(request.getHeader(TOKEN_HEADER).substring(7), userService.getUserUidFromAccessToken(request));
 
         return ResponseEntity.status(200).build();
     }

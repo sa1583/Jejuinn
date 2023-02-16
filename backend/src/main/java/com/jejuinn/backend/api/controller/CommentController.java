@@ -1,27 +1,34 @@
 package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.InsertCommentPostReq;
+import com.jejuinn.backend.api.dto.response.comment.GetCommentListPostRes;
 import com.jejuinn.backend.api.service.CommentService;
 import com.jejuinn.backend.api.service.UserService;
+import com.jejuinn.backend.db.entity.Comment;
 import com.jejuinn.backend.db.enums.PostType;
 import com.jejuinn.backend.db.repository.CommentRepository;
+import com.jejuinn.backend.db.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @Api(tags = "댓글 관련 기능 API")
 @RequiredArgsConstructor
+@Slf4j
 public class CommentController {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
     private final CommentService commentService;
     private final UserService userService;
 
@@ -39,27 +46,27 @@ public class CommentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> insertComment(HttpServletRequest request, @RequestBody InsertCommentPostReq req){
+        log.info("댓글 추가 요청");
         Long userUid = userService.getUserUidFromAccessToken(request);
 
         // 타입 체크
-        if(PostType.valueOf(req.getPostType()) == null) return ResponseEntity.status(400).build();
+        System.out.println(req.getPostType());
+        if(req.getPostType() == null || req.getPostType().equals("")) return ResponseEntity.status(400).build();
 
-        // userUid 정보를 통해 staff 여부를 확인 차후 구현
-        boolean isStaff = false;
-        commentRepository.save(req.toComment(userUid, isStaff));
+        commentRepository.save(req.toComment(userUid));
 
         return ResponseEntity.status(200).build();
     }
 
-    @DeleteMapping("/auth/comment/{uid}")
+    @DeleteMapping("/auth/comments/{uid}")
     @ApiOperation(value = "댓글 삭제", notes = "<strong>댓글의 uid</strong>을 입력받아 댓글을 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> deleteComment(@PathVariable String uid){
-        commentRepository.deleteById(Long.parseLong(uid));
+    public ResponseEntity<?> deleteComment(@PathVariable Long uid){
+        commentRepository.deleteById(uid);
         return ResponseEntity.status(200).build();
     }
 
@@ -70,8 +77,40 @@ public class CommentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> updateComment(@RequestParam String uid, @RequestParam String content){
-        commentService.update(Long.parseLong(uid), content);
+    public ResponseEntity<?> updateComment(@RequestParam Long uid, @RequestParam String content){
+        commentService.update(uid, content);
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/api/comment/{postType}/{postUid}")
+    @ApiOperation(value = "댓글 리스트 조회", notes = "postType과 postUid를 입력받아 댓글을 리스트를 불러옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getCommentList(@PathVariable String postType, @PathVariable Long postUid) {
+        return ResponseEntity.status(200).body(
+                commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(postType, postUid).stream().map(
+                        comment -> GetCommentListPostRes.of(comment, userRepository.findById(comment.getUserUid()).get())
+                )
+        );
+    }
+
+    @GetMapping("/auth/comment")
+    @ApiOperation(value = "내가 쓴 댓글 리스트 조회", notes = "Header의 userUid를 통해 내가 쓴 댓글 리스트를 불러옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 204, message = "데이터가 없습니다"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getMyCommentList(HttpServletRequest request) {
+        Long userUid = userService.getUserUidFromAccessToken(request);
+        List<Comment> commentList = commentRepository.findAllByUserUidOrderByDateCreatedDesc(userUid);
+        if(commentList == null || commentList.size() == 0) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(
+                commentList
+        );
     }
 }

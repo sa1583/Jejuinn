@@ -18,11 +18,11 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addExposedHeader("accessToken");
         config.addExposedHeader("refreshToken");
+        config.addExposedHeader("access_token");
         config.addExposedHeader("yutae"); // test 용
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

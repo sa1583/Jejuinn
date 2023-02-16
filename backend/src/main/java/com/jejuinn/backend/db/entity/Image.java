@@ -5,6 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 이미지 엔티티
+ */
 @Entity
 @Table(name = "images")
 @Getter
@@ -18,7 +21,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
-    @Column(name = "post_type")
+    @Column(name = "post_type", length = 25)
     @NotNull
     private String postType;
 

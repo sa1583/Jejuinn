@@ -1,6 +1,8 @@
 package com.jejuinn.backend.api.dto.response.guesthouse;
 
+import com.jejuinn.backend.api.dto.GuestHouseDto;
 import com.jejuinn.backend.db.entity.Comment;
+import com.jejuinn.backend.db.entity.Favorite;
 import com.jejuinn.backend.db.entity.GuestHouse;
 import com.jejuinn.backend.db.entity.Image;
 import lombok.*;
@@ -14,15 +16,13 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class GetGuestHouseDetailPostRes {
-    private GuestHouse guestHouse;
+    private GuestHouseDeatilDto guestHouse;
     private List<Image> images;
-    private List<Comment> comments;
 
-    public static GetGuestHouseDetailPostRes of(GuestHouse guestHouse, List<Image> images, List<Comment> comments){
+    public static GetGuestHouseDetailPostRes of(GuestHouseDeatilDto guestHouseDetailDto, List<Image> images){
         return GetGuestHouseDetailPostRes.builder()
-                .guestHouse(guestHouse)
+                .guestHouse(guestHouseDetailDto)
                 .images(images)
-                .comments(comments)
                 .build();
     }
 
