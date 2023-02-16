@@ -13,18 +13,6 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
   const access_token = useSelector(selectAccessToken);
 
   const [checked, setChecked] = useState(true);
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
 
   const [myStaffs, setMyStaffs] = useState([]);
   async function getMyStaff() {

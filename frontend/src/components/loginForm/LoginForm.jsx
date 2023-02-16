@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import KakaoLoginBtn from './KakaoLogin';
 import NaverLoginBtn from './NaverLogin';
 import GoogleLoginBtn from './GoogleLogin';
-import FacebookLoginBtn from './FacebookLogin';
 import { useState } from 'react';
 import { getNormalAuthToken, getUserInfoByToken } from '../../store/user';
 import { useDispatch } from 'react-redux';
@@ -127,11 +126,10 @@ export default function LoginForm() {
       </p>
 
       {/* 소셜 로그인 부분 */}
-      <Box sx={{ display: 'flex', gap: '1rem' }}>
+      <Box sx={{ display: 'flex', gap: '3rem' }}>
         <NaverLoginBtn />
         <GoogleLoginBtn />
         <KakaoLoginBtn />
-        <FacebookLoginBtn />
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
