@@ -1,16 +1,16 @@
 package com.jejuinn.backend.api.controller;
 
-import com.jejuinn.backend.api.dto.request.LoginPostReq;
-import com.jejuinn.backend.api.dto.request.SimpleEmailReq;
-import com.jejuinn.backend.api.dto.response.GetUserInfoPostRes;
-import com.jejuinn.backend.api.dto.request.SignupPostReq;
-import com.jejuinn.backend.api.dto.response.SimpleCodeRes;
+import com.jejuinn.backend.api.dto.request.user.ChangePwReq;
+import com.jejuinn.backend.api.dto.request.user.LoginPostReq;
+import com.jejuinn.backend.api.dto.request.user.SimpleEmailReq;
+import com.jejuinn.backend.api.dto.response.user.GetUserInfoPostRes;
+import com.jejuinn.backend.api.dto.request.user.SignupPostReq;
+import com.jejuinn.backend.api.dto.response.user.SimpleCodeRes;
 import com.jejuinn.backend.api.service.EmailService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.entity.User;
-import com.jejuinn.backend.db.enums.SocialType;
 import com.jejuinn.backend.db.repository.UserRepository;
 import com.jejuinn.backend.db.repository.UserRepositorySupport;
 import io.swagger.annotations.*;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Enumeration;
 import java.util.Optional;
 
 @RestController
@@ -54,7 +55,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> signUp(
-            @ApiParam(value = "userId, password, nickname, email, emailReceiveAllow")
+            @ApiParam(value = "email, password, nickname")
             @Valid @RequestBody SignupPostReq userRegisterPostReq){
 
         // email로 social 로그인이 아닌 user 가져오기
@@ -80,12 +81,11 @@ public class UserController {
     public ResponseEntity<?> login(
             @ApiParam(value = "email, password")
             @Valid @RequestBody LoginPostReq loginPostReq){
-
         // email로 social 로그인이 아닌 user 가져오기
         Optional<User> user = userRepository.findOneByEmailAndSocialLogin(loginPostReq.getEmail(), null);
 
-        // 해당 email의 아이디가 없거나 패스워드가 다른 경우
         if(user.isEmpty() || !passwordEncoder.matches(loginPostReq.getPassword(), user.get().getPassword())){
+            logger.info("로그인 실패 : 아이디 일치 여부 = {}", user.isEmpty());
             return ResponseEntity.status(400).build();
         }
 
@@ -131,18 +131,29 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request){
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                System.out.println("Header: " + request.getHeader(headerNames.nextElement()));
+            }
+        }
+
         String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
+        logger.info("리프레시 토큰 : {}", refreshToken);
         Authentication authentication = tokenProvider.getAuthentication(refreshToken.substring(7));
         String uid = authentication.getName();
         Optional<User> user = userRepository.findById(Long.parseLong(uid));
-
+        logger.info("현재 사용자 uid : {}", user.get().getUid());
 
         if(user.isEmpty() // 검색 결과가 없거나
-                || !tokenProvider.validateToken(refreshToken) // refresh 토큰이 유효하지 않거나
-                || !user.get().getRefreshToken().equals(refreshToken)) // refresh 토큰이 동일하지 않다면
+                || !tokenProvider.validateToken(refreshToken.substring(7)) // refresh 토큰이 유효하지 않거나
+                || !user.get().getRefreshToken().equals(refreshToken.substring(7))) // refresh 토큰이 동일하지 않다면
             return ResponseEntity.status(401).build();
 
-        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get(), refreshToken); // access 토큰만 재발급
+        logger.info("재발급 하러 갑시다 ");
+        HttpHeaders httpHeaders = userService.getHttpHeaders(user.get(), refreshToken.substring(7)); // access 토큰만 재발급
 
         return ResponseEntity.status(200).headers(httpHeaders).build();
     }
@@ -161,10 +172,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> checkDuplicateEmail(@Valid @RequestBody SimpleEmailReq simpleEmailReq){
-        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null) == null){
-            return ResponseEntity.status(409).build();
+        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null).isEmpty()){
+            return ResponseEntity.status(200).build();
         }
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(409).build();
     }
 
     /**
@@ -180,8 +191,8 @@ public class UserController {
             @ApiResponse(code = 400, message = "BAD REQUEST(로그아웃 실패)"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> logout(@PathVariable String uid){
-        userRepositorySupport.saveRefreshToken(Long.parseLong(uid), null);
+    public ResponseEntity<?> logout(@PathVariable Long uid){
+        userRepositorySupport.saveRefreshToken(uid, null);
         return ResponseEntity.status(200).build();
     }
 
@@ -200,8 +211,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getPasswordResetCode(@Valid @RequestBody SimpleEmailReq simpleEmailReq){
-
-        if(userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null) == null){
+        Optional<User> user = userRepository.findOneByEmailAndSocialLogin(simpleEmailReq.getEmail(), null);
+        if(!user.isPresent()){
             return ResponseEntity.status(400).build();
         }
 
@@ -209,6 +220,7 @@ public class UserController {
         try {
             res = SimpleCodeRes.builder()
                     .code(emailService.sendMessage(simpleEmailReq.getEmail()))
+                    .userUid(user.get().getUid())
                     .build();
         } catch (Exception e) {
             return ResponseEntity.status(401).build();
@@ -239,6 +251,22 @@ public class UserController {
                 ||passwordEncoder.matches(request.getHeader("password"), user.get().getPassword()))
             return ResponseEntity.status(400).build();
 
+        return ResponseEntity.status(200).build();
+    }
+
+    @PostMapping("/api/users/pw-change")
+    @ApiOperation(value = "비밀번호 변경", notes = "비밀번호<를 입력받아 입력받은 비밀번호 변경합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(비밀번호 변경 완료)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> changePassword(@RequestBody ChangePwReq changePwReq){
+        Optional<User> user = userRepository.findById(changePwReq.getUserUid());
+        if(user.isPresent()) {
+            user.get().setPassword(passwordEncoder.encode(changePwReq.getPassword()));
+            userRepository.save(user.get());
+        }
         return ResponseEntity.status(200).build();
     }
 

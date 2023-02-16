@@ -38,8 +38,16 @@ public class SwaggerConfig {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey(SECURITY_SCHEMA_NAME, "Authorization", "header");
+        return new ApiKey(SECURITY_SCHEMA_NAME, "accessToken", "header");
     }
+
+//    private ApiKey apiKeySocial() {
+//        return new ApiKey(SECURITY_SCHEMA_NAME+" SOCIAL", "access_token", "header");
+//    }
+//
+//    private ApiKey apiKeyRefresh() {
+//        return new ApiKey(SECURITY_SCHEMA_NAME+" REFRESH", "refreshToken", "header");
+//    }
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()

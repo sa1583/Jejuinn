@@ -1,9 +1,11 @@
 package com.jejuinn.backend.api.controller;
 
+import com.jejuinn.backend.api.dto.request.TestReq;
 import com.jejuinn.backend.api.service.s3.S3Uploader;
 import com.jejuinn.backend.config.jwt.JwtFilter;
 import com.jejuinn.backend.config.jwt.TokenProvider;
 import com.jejuinn.backend.db.repository.UserRepository;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "테스트 API")
 //@RequestMapping("/api")
 public class TestController {
     private final TokenProvider tokenProvider;
@@ -26,6 +29,7 @@ public class TestController {
     private final S3Uploader s3Uploader;
 
     @GetMapping("/api/test")
+    @ApiOperation(value = "헤더 반환 테스트")
     public ResponseEntity<?> test2(){
         System.out.println(Paths.get(System.getProperty("user.home"), ".kurento","config.properties"));
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -33,7 +37,14 @@ public class TestController {
         return ResponseEntity.status(200).headers(httpHeaders).body("hello");
     }
 
+    @PostMapping("/api/test3")
+    @ApiOperation(value = "JSON 입력 테스트")
+    public ResponseEntity<?> test3(@RequestBody TestReq testReq){
+        return ResponseEntity.status(200).body(testReq.getMsg());
+    }
+
     @GetMapping("/auth/test")
+    @ApiOperation(value = "auth 정보 테스트")
     public ResponseEntity<?> test(HttpServletRequest request){
         String accessToken = request.getHeader(JwtFilter.ACCESS_HEADER);
         Authentication authentication = tokenProvider.getAuthentication(accessToken.substring(7));
@@ -50,24 +61,6 @@ public class TestController {
             System.out.println(authority.toString());
         }
         System.out.println("=============================================");
-        return ResponseEntity.status(200).build();
-    }
-
-    @PostMapping("/api/image/test")
-    @ApiOperation(value = "이미지 저장", notes = "<strong>이미지, 타입</strong>을 통해 이미지를 저장한다.")
-    public ResponseEntity<?> saveImageTest(@RequestParam(value="image") MultipartFile image,
-                                           @RequestParam(value="type") String type){
-        System.out.println("??");
-        System.out.println(image);
-        if(!image.isEmpty()) {
-            try {
-                String storedFileName = s3Uploader.upload(image, type);
-                System.out.println(storedFileName);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ResponseEntity.status(500).build();
-            }
-        }
         return ResponseEntity.status(200).build();
     }
 }
