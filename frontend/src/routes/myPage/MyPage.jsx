@@ -51,7 +51,6 @@ export default function MyPage({ content }) {
   };
 
   useEffect(() => {
-    console.log(isLogin);
     if (!isLogin) {
       navigate('/login');
     }

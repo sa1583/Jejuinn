@@ -6,6 +6,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import GroupsIcon from '@mui/icons-material/Groups';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -66,10 +67,13 @@ function FilterArea({ value, setValue }) {
     '대정읍',
     '우도면',
   ];
+
   return (
     <Autocomplete
       sx={{ width: '100%' }}
       options={areas}
+      defaultValue="전체"
+      value={!value ? '전체' : value}
       onChange={(event, newValue) => {
         setValue(newValue);
       }}
