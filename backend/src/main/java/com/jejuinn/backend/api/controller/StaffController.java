@@ -2,6 +2,7 @@ package com.jejuinn.backend.api.controller;
 
 import com.jejuinn.backend.api.dto.request.staff.EvaluationStaffPostReq;
 import com.jejuinn.backend.api.dto.response.staff.StaffListRes;
+import com.jejuinn.backend.api.service.ResumeInfoService;
 import com.jejuinn.backend.api.service.StaffService;
 import com.jejuinn.backend.api.service.UserService;
 import com.jejuinn.backend.db.entity.StaffRecord;
@@ -27,6 +28,7 @@ public class StaffController {
     private final UserService userService;
     private final StaffService staffService;
     private final StaffRecordRepository staffRecordRepository;
+    private final ResumeInfoService resumeInfoService;
 
 
     @GetMapping("/auth/guest-house/staff")
@@ -94,6 +96,7 @@ public class StaffController {
                                         HttpServletRequest request){
         Long representativeUid = userService.getUserUidFromAccessToken(request);
         staffService.addMyStaff(guestHouseUid, representativeUid, userUid, workName);
+        resumeInfoService.update(userUid);
         return ResponseEntity.status(200).build();
     }
 
