@@ -6,15 +6,18 @@ export default function LogIn() {
   return (
     <div
       style={{
-        background: '#FF7600',
+        background: 'rgba(255, 118, 0, 0.04)',
         width: '100%',
-        height: '92vh',
+        height: '555px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: '10rem',
+        paddingBottom: '10rem',
       }}
     >
       <BoxLoginSignup content={content}></BoxLoginSignup>
+      {/* <LoginForm /> */}
     </div>
   );
 }

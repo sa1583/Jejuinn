@@ -14,7 +14,6 @@ export default function GoogleRedirect() {
     const access_token = (await getGoogleAccessToken(auth_code)).data
       .access_token;
     const payload = (await dispatch(getGoogleToken(access_token))).payload;
-    console.log('왜 않돼?');
     dispatch(getUserInfoByToken(payload.accesstoken));
     navigate('/');
   }

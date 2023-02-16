@@ -1,6 +1,4 @@
-import { apiInstance } from './index';
-
-const api = apiInstance();
+import instance from '.';
 
 const getTokenHeader = (token) => {
   return {
@@ -17,11 +15,11 @@ const getOurTokens = (token, state) => {
       state,
     },
   };
-  return api.post('/api/users/social/naver', {}, config);
+  return instance.post('/api/users/social/naver', {}, config);
 };
 
 const getUserInfo = (token) => {
-  return api.post('/auth/users', {}, getTokenHeader(token));
+  return instance.post('/auth/users', {}, getTokenHeader(token));
 };
 
 function loginGoogle(token) {
@@ -30,7 +28,7 @@ function loginGoogle(token) {
       socialToken: `Bearer ${token}`,
     },
   };
-  return api.post('/api/users/social/google', {}, header);
+  return instance.post('/api/users/social/google', {}, header);
 }
 
 function loginKakao(token) {
@@ -39,7 +37,7 @@ function loginKakao(token) {
       socialToken: `Bearer ${token}`,
     },
   };
-  return api.post('/api/users/social/kakao', {}, header);
+  return instance.post('/api/users/social/kakao', {}, header);
 }
 
 function loginFacebook(token) {
@@ -48,27 +46,67 @@ function loginFacebook(token) {
       socialToken: `Bearer ${token}`,
     },
   };
-  return api.post('/api/users/social/facebook', {}, header);
+  return instance.post('/api/users/social/facebook', {}, header);
 }
 
 // 기본 로그인 토큰 받기
 function loginNormal(body) {
-  return api.post('/api/users/login', body);
+  return instance.post('/api/users/login', body);
 }
 
 // 회원가입 시 이메일 중복 여부 체크
 function checkEmail(body) {
-  return api.post('/api/users/email-check', body);
+  return instance.post('/api/users/email-check', body);
 }
 
 // 회원가입
 function signUpApi(body) {
-  return api.post('/api/users', body);
+  return instance.post('/api/users', body);
 }
 
 // 비밀번호 찾기 인증 코드 발급
 function getPasswordCode(body) {
-  return api.post('/api/users/pw/reset', body);
+  return instance.post('/api/users/pw/reset', body);
+}
+
+const processNaverAuth = (accessToken, socialToken) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${accessToken}`,
+      socialToken: `Bearer ${socialToken}`,
+    },
+  };
+  return instance.post('/api/users/social/auth/users/naver-auth', {}, header);
+};
+
+// refreshToken으로 accessToken 재발급
+/**
+ * freshToken으로 accessToken 재발급
+ * @param {refreshTOken} refreshToken
+ * @returns
+ */
+const renewAccessToken = (refreshToken) => {
+  const header = {
+    headers: {
+      refreshToken: `Bearer ${refreshToken}`,
+    },
+  };
+  return instance.post('/api/users/refresh', {}, header);
+};
+
+// 로그아웃
+function userLogout(accessToken, uid) {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${accessToken}`,
+    },
+  };
+  return instance.post(`/auth/users/logout/${uid}`, {}, header);
+}
+
+// 비밀번호 초기화
+function resetPassword(body) {
+  return instance.post('api/users/pw-change', body);
 }
 
 export {
@@ -81,4 +119,9 @@ export {
   checkEmail,
   getPasswordCode,
   signUpApi,
+  processNaverAuth,
+  getTokenHeader,
+  renewAccessToken,
+  userLogout,
+  resetPassword,
 };

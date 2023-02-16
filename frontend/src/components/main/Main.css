@@ -10,7 +10,7 @@
   position: relative;
   width: 2em;
   height: 4em;
-  border: 0.2em solid #dedede;
+  border: 0.2em solid #ffffff;
   border-radius: 2em;
 }
 
@@ -20,7 +20,7 @@
   top: 15%;
   width: 0.5em;
   height: 0.5em;
-  background-color: #dedede;
+  background-color: #ffffff;
   transform: translate(-50%, 0);
   border-radius: 0.6em;
   animation: ex-1-wheel 1s ease-in-out infinite;
