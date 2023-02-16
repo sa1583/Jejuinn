@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectUserInfo, selectAccessToken } from '../../store/user';
 import { getMyGuestHouses } from '../../api/guestHouse';
 import { getMyWorks, getMyRecruitments } from '../../api/work';
@@ -30,7 +30,7 @@ export default function MyWorkList() {
   async function Recruitment(ghUid) {
     const huoseRecruitment = (await getMyRecruitments(ghUid)).data;
     huoseRecruitment.length === 0
-      ? navigate(`/work-recruitment-write/${ghUid}`)
+      ? navigate(`/recruitment/create/${ghUid}`)
       : navigate(`/work/create/${huoseRecruitment[0].uid}/${ghUid}`);
   }
 

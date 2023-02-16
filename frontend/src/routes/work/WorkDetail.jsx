@@ -51,7 +51,10 @@ export default function WorkDetail() {
   }
 
   const onClick = () => {
-    navigate(`/recruitment/update/${recruitmentInfo.uid}`);
+    console.log(recruitmentInfo);
+    navigate(
+      `/recruitment/update/${recruitmentInfo.uid}/${recruitmentInfo.guestHouseUid}`,
+    );
   };
 
   useEffect(() => {
