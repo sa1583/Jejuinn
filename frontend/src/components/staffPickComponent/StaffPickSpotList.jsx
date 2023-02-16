@@ -71,8 +71,24 @@ export default function StaffPickSpotList({ spotImgs, plusPageNum }) {
                     id={item.travelPlaceUid}
                     name={item.travelPlaceName}
                   />
-                  <CardContent>
-                    <Typography gutterBottom variant="h6" component="div">
+                  <CardContent
+                    sx={{
+                      width: 'auto',
+                    }}
+                  >
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      component="div"
+                      sx={{
+                        width: '100%',
+                        height: 32,
+                        overflow: 'hidden',
+                        overflowX: 'hidden',
+                        // overflow: 'hidden',
+                        // whiteSpace: 'nowrap',
+                      }}
+                    >
                       {item.travelPlaceName}
                     </Typography>
                   </CardContent>

@@ -118,7 +118,12 @@ export default function ReviewContent({ reviewContent, pageId, islogined }) {
       />
 
       <div
-        style={{ fontSize: '20px' }}
+        style={{
+          fontSize: '20px',
+          width: '100%',
+          overflowY: 'auto',
+          wordWrap: 'break-word',
+        }}
         dangerouslySetInnerHTML={{ __html: reviewContent?.content }}
       />
 
