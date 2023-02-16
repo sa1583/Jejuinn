@@ -6,7 +6,10 @@ import SignUp from './routes/signUp/SignUp';
 import GuestHouse from './routes/guestHouse/GuestHouse';
 import GuestHouseDetail from './routes/guestHouseDetail/GuestHouseDetail';
 import WorkList from './routes/work/WorkList';
-import RecruitmentDetail from './routes/work/RecruitmentDetail';
+import WorkRecruitmentWrite from './routes/work/WorkRecruitmentWrite';
+import WorkWrite from './routes/work/WorkWrite';
+import RecruitmentUpdate from './routes/work/RecruitmentUpdate';
+import WorkDetail from './routes/work/WorkDetail';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
 import KakaoRedirect from './routes/logIn/KakaoRedirect';
@@ -20,14 +23,18 @@ import StaffPickCreate from './routes/staffPickCreate/StaffPickCreate';
 import SendSMS from './components/sendSMS/SendSMS';
 import { createTheme, ThemeProvider } from '@mui/material';
 import MyPage from './routes/myPage/MyPage';
-import MyMain from './components/myPage/MyMain';
-import MyResume from './components/myPage/MyResume';
-import MyGuestHouse from './components/myPage/MyGuestHouse';
+import MyMain from './components/myPage/main/MyMain';
+import MyResume from './components/myPage/myResume/MyResume';
+import MyGuestHouse from './components/myPage/myGuestHouse/MyGuestHouse';
 import SignUpBox from './components/signUp/SignUpBox';
 import FindPassword from './routes/logIn/FindPassword';
-import MyApplicantList from './components/myPage/MyApplicantList';
+import MyApplicantList from './components/myPage/myGuestHouse/MyApplicantList';
 import GuestHouseCreate from './routes/guestHouseCreate/GuestHouseCreate';
 import VideoInterview from './routes/videoInterview/VideoInterview';
+import StaffPickUpdate from './routes/staffPickUpdate/StaffPickUpdate';
+import MyRecommendList from './components/myPage/myGuestHouse/MyRecommendList';
+import NaverAuthRedirect from './routes/naverAuth/NaverAuthRedirect';
+import GuestHouseUpdate from './components/guestHouseDetail/GuestHouseUpdate';
 
 const router = createBrowserRouter([
   {
@@ -43,7 +50,7 @@ const router = createBrowserRouter([
         element: <LogIn />,
       },
       {
-        path: 'signup1',
+        path: 'signup',
         element: <SignUp content={<SignUpBox />} />,
       },
       {
@@ -71,12 +78,32 @@ const router = createBrowserRouter([
         element: <GuestHouseDetail />,
       },
       {
+        path: 'guesthouse/update/:id',
+        element: <GuestHouseUpdate />,
+      },
+      {
         path: 'worklist',
         element: <WorkList />,
       },
       {
-        path: 'worklist/detail/:recruitmentUid',
-        element: <RecruitmentDetail />,
+        path: 'recruitment/create/:guesthouseUid',
+        element: <WorkRecruitmentWrite />,
+      },
+      {
+        path: 'recruitment/update/:recruitmentUid/:guesthouseUid',
+        element: <RecruitmentUpdate />,
+      },
+      {
+        path: 'work/create/:recruitmentUid/:guesthouseUid',
+        element: <WorkWrite />,
+      },
+      {
+        path: 'work/update/:workUid/:recruitmentUid',
+        element: <WorkWrite />,
+      },
+      {
+        path: 'worklist/detail/:recruitmentUid/:workUid',
+        element: <WorkDetail />,
       },
       {
         path: 'staffpicklist',
@@ -93,6 +120,10 @@ const router = createBrowserRouter([
       {
         path: 'staffpicklist/create',
         element: <StaffPickCreate />,
+      },
+      {
+        path: 'staffpicklist/update/:id',
+        element: <StaffPickUpdate />,
       },
       {
         path: 'sendSMS',
@@ -115,6 +146,10 @@ const router = createBrowserRouter([
         element: <MyPage content={<MyApplicantList />} />,
       },
       {
+        path: 'mypage/guesthouse/recommendlist/:id',
+        element: <MyPage content={<MyRecommendList />} />,
+      },
+      {
         path: 'login/findpassword',
         element: <FindPassword />,
       },
@@ -123,8 +158,12 @@ const router = createBrowserRouter([
         element: <GuestHouseCreate />,
       },
       {
-        path: 'interview',
+        path: 'interview/:sessionId',
         element: <VideoInterview />,
+      },
+      {
+        path: 'auth/naver',
+        element: <NaverAuthRedirect />,
       },
     ],
   },

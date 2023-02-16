@@ -5,9 +5,6 @@ import SettingsVoiceIcon from '@mui/icons-material/SettingsVoice';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import MicOffIcon from '@mui/icons-material/MicOff';
 
-const MAX_WIDTH = 1900;
-const MAX_HEIGHT = 790;
-
 export default function UserVideoComponent({
   streamManager,
   main,

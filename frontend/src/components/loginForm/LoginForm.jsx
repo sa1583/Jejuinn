@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import KakaoLoginBtn from './KakaoLogin';
 import NaverLoginBtn from './NaverLogin';
 import GoogleLoginBtn from './GoogleLogin';
-import FacebookLoginBtn from './FacebookLogin';
 import { useState } from 'react';
 import { getNormalAuthToken, getUserInfoByToken } from '../../store/user';
 import { useDispatch } from 'react-redux';
@@ -24,8 +23,8 @@ const CustomTextField = styled(TextField)({
       borderColor: '#FF7600',
     },
   },
-  marginTop: '2vh',
-  width: '80%',
+  marginTop: '2rem',
+  width: '300px',
 });
 
 export default function LoginForm() {
@@ -34,16 +33,11 @@ export default function LoginForm() {
   const bottomData = [
     {
       name: '회원가입',
-      url: '../signup1',
+      url: '../signup',
     },
     null,
     {
-      name: '아이디 찾기',
-      url: '',
-    },
-    null,
-    {
-      name: '비밀번호 찾기',
+      name: '비밀번호 재발급',
       url: '/login/findpassword',
     },
   ];
@@ -61,8 +55,12 @@ export default function LoginForm() {
     e.preventDefault();
     const body = { email: logInForm.email, password: logInForm.password };
     const data = await dispatch(getNormalAuthToken(body));
-    dispatch(getUserInfoByToken(data.payload.accesstoken));
-    navigate('../');
+    const res = await dispatch(getUserInfoByToken(data.payload.accesstoken));
+    if (res.error) {
+      return alert('이메일과 비밀번호를 확인해주세요.');
+    } else {
+      return navigate('../');
+    }
   };
 
   return (
@@ -73,16 +71,20 @@ export default function LoginForm() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '3vh',
+        marginTop: '5vh',
       }}
     >
-      <h1>로그인</h1>
+      <h2>로그인</h2>
       <CustomTextField
         onChange={handleLogInForm}
         label="이메일"
         name="email"
         value={logInForm.email}
         type="email"
+        variant="standard"
+        placeholder="이메일을 입력하세요"
+        inputProps={{ style: { fontSize: 20 } }}
+        InputLabelProps={{ style: { fontSize: 20 } }}
       />
       <CustomTextField
         onChange={handleLogInForm}
@@ -90,36 +92,44 @@ export default function LoginForm() {
         name="password"
         value={logInForm.password}
         type="password"
+        variant="standard"
+        placeholder="비밀번호를 입력하세요"
+        inputProps={{ style: { fontSize: 20 } }}
+        InputLabelProps={{ style: { fontSize: 20 } }}
       />
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
       <Button
         onClick={login}
         sx={{
-          width: '80%',
-          height: '6vh',
+          width: '300px',
+          height: '50px',
           background: '#FF7600',
-          borderRadius: '38px',
+          borderRadius: '50px',
           color: 'white',
           '&:hover': {
             color: 'white',
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5rem',
-          marginTop: '6vh',
+          fontSize: '1rem',
+          marginTop: '2.8rem',
         }}
       >
         로그인
       </Button>
+      <p
+        style={{ paddingTop: '55px', paddingBottom: '15px', fontSize: '10px' }}
+      >
+        ------------------------------ &nbsp; 또는 &nbsp;
+        ------------------------------
+      </p>
 
       {/* 소셜 로그인 부분 */}
-      <h3 style={{ marginTop: '4vh', color: '#FF7600' }}>소셜 로그인</h3>
-      <Box sx={{ display: 'flex', gap: '1.5vw' }}>
+      <Box sx={{ display: 'flex', gap: '3rem' }}>
         <NaverLoginBtn />
         <GoogleLoginBtn />
         <KakaoLoginBtn />
-        <FacebookLoginBtn />
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -128,7 +138,7 @@ export default function LoginForm() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: '4vh',
+          marginTop: '1.5rem',
         }}
       >
         {bottomData.map((data) => {
@@ -137,9 +147,9 @@ export default function LoginForm() {
               <Link
                 to={data.url}
                 style={{
-                  fontSize: '1vw',
+                  fontSize: '1.1rem',
                   textDecoration: 'none',
-                  color: 'black',
+                  color: 'grey',
                 }}
                 key={uuidv4()}
               >
@@ -148,7 +158,7 @@ export default function LoginForm() {
             );
           } else {
             return (
-              <p style={{ margin: '1vw', fontSize: '1vw' }} key={uuidv4()}>
+              <p style={{ margin: '1rem', fontSize: '1.2rem' }} key={uuidv4()}>
                 |
               </p>
             );

@@ -26,12 +26,11 @@ export default function SignAgree({ handleNext }) {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '3rem',
-        gap: '3vh',
         width: '100%',
       }}
     >
       <FormGroup>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', marginTop: '1rem' }}>
           <FormControlLabel
             sx={{
               width: '100%',
@@ -95,32 +94,41 @@ export default function SignAgree({ handleNext }) {
       <div
         style={{
           width: '65%',
-          marginTop: '1vh',
+          marginTop: '3rem',
           textAlign: 'center',
           color: '#FF7600',
           fontSize: '14px',
         }}
       >
-        약관 동의 체크는 해당 약관을 모두 숙지하였으며, 이에 동의함을
-        의미합니다.
+        약관 동의 체크는 해당 약관을 모두 숙지하였으며,
+      </div>
+      <div
+        style={{
+          width: '65%',
+          textAlign: 'center',
+          color: '#FF7600',
+          fontSize: '14px',
+        }}
+      >
+        이에 동의함을 의미합니다.
       </div>
       <Button
         onClick={() => {
           handleNext();
         }}
         sx={{
-          width: '70%',
-          height: '3rem',
+          width: '300px',
+          height: '50px',
           background: '#FF7600',
-          borderRadius: '38px',
+          borderRadius: '50px',
           color: 'white',
           '&:hover': {
             color: 'white',
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5vw',
-          marginTop: '2vh',
+          fontSize: '1rem',
+          marginTop: '2.8rem',
         }}
         disabled={agree.first === true && agree.second === true ? false : true}
       >
