@@ -91,11 +91,52 @@ function GetWorkText({ label, value, setValue, placeholder }) {
   );
 }
 
+// 근무일수, 휴무일 선택하는
+function GetWorkWorkDays({ value, setValue }) {
+  const days = [1, 2, 3, 4, 5];
+
+  return (
+    <Autocomplete
+      sx={{ width: '6vh' }}
+      options={days}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}
+      value={value}
+      type="number"
+      renderInput={(params) => (
+        <CustomTextField
+          {...params}
+          label=""
+          InputProps={{
+            ...params.InputProps,
+          }}
+        />
+      )}
+    />
+  );
+}
+
+function MySelect({ value, setValue, options, label, sx }) {
+  return (
+    <TextField
+      select
+      label={label}
+      value={value}
+      options={options}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}
+    />
+  );
+}
+
 function GetWorkOptions({ value, setValue, options, label, sx }) {
   return (
     <Autocomplete
       sx={{ width: '100%' }}
       options={options}
+      value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
       }}
@@ -204,29 +245,6 @@ function GetWorkIntake({ value, setValue }) {
         onInput={handelOnInput}
       />
     </Box>
-  );
-}
-
-function GetWorkWorkDays({ value, setValue }) {
-  const days = ['1', '2', '3', '4', '5'];
-
-  return (
-    <Autocomplete
-      sx={{ width: '6vh' }}
-      options={days}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      renderInput={(params) => (
-        <CustomTextField
-          {...params}
-          label=""
-          InputProps={{
-            ...params.InputProps,
-          }}
-        />
-      )}
-    />
   );
 }
 
@@ -529,4 +547,5 @@ export {
   GetWorkText,
   GetWorkTime,
   GetWorkOptions,
+  MySelect,
 };

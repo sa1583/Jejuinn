@@ -1,17 +1,15 @@
 import { Grid, Box, styled, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-
-import { useLocation, useNavigate, useParams } from 'react-router';
-import { selectAccessToken, selectUserInfo } from '../../store/user';
+import { useLocation } from 'react-router';
 import {
   GetWorkEntryDate,
   GetWorkTime,
   GetWorkOptions,
+  GetWorkWorkDays,
 } from './WorkWriteForms';
 
-// api 들..
+import { getWorkDetail } from '../../api/work';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -39,10 +37,6 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function WorkCreateForm({ handleInput }) {
-  // const accessToken = useSelector(selectAccessToken);
-  // const userInfo = useSelector(selectUserInfo);
-  // const navigate = useNavigate();
-
   const [isCreate, setIsCreate] = useState();
   const [postUid, setPostUid] = useState();
 
@@ -52,10 +46,22 @@ export default function WorkCreateForm({ handleInput }) {
   const [workTime, setWorkTime] = useState('');
   const [workDescription, setWorkDescription] = useState('');
   const [intake, setIntake] = useState(1);
-  const [workDays, setWorkDays] = useState(2);
-  const [daysOff, setDaysOff] = useState(2);
+  const [workDays, setWorkDays] = useState('2');
+  const [daysOff, setDaysOff] = useState('2');
   const [minWorkPeriod, setMinWorkPeriod] = useState(1);
   const [entryDate, setEntryDate] = useState('');
+  const [workInfo, setWorkInnfo] = useState({
+    workName,
+    gender,
+    salary,
+    workTime,
+    workDescription,
+    intake,
+    workDays,
+    daysOff,
+    minWorkPeriod,
+    entryDate,
+  });
 
   const handleSetInput = () => {
     handleInput(
@@ -109,151 +115,141 @@ export default function WorkCreateForm({ handleInput }) {
   }, []);
 
   // 이전직무 조회하는 api 만들어 달라해야함..
-  // const getWorkInfo = async () => {
-  //    const { data } = await workDetail(postUid);
-  //    setWorkName(data.work.workName)
-  //    setGender(data.work.gender)
-  //    setSalary(data.work.salary)
-  //    setWorkTime(data.work.workTime)
-  //    setWorkDescription(data.work.workDescription)
-  //    setIntake(data.work.intake)
-  //    setWorkDays(data.work.workDays)
-  //    setDaysOff(data.work.daysOff)
-  //    setMinWorkPeriod(data.work.)
-  //    setEntryDate(data.work.minWorkPeriod)};
+  const getWorkInfo = async () => {
+    const { data } = await getWorkDetail(postUid);
+    console.log(data);
+    setWorkName(data.workName);
+    setGender(data.gender);
+    setSalary(data.salary);
+    setWorkTime(data.workTime);
+    setWorkDescription(data.workDescription);
+    setIntake(data.intake);
+    setWorkDays(data.workDays);
+    setDaysOff(data.daysOff);
+    setMinWorkPeriod(data.minWorkPeriod);
+    setEntryDate(data.entryDate);
+  };
 
   useEffect(() => {
     if (postUid) {
-      // getWorkInfo();
+      getWorkInfo();
     }
   }, [postUid]);
 
   return (
     <Box sx={{ paddingTop: '1rem', height: '100%' }}>
-      <form>
-        <Grid container spacing={2}>
-          <Grid item md={12}>
-            <CustomTextField
-              label="직무명"
-              placeholder="필요한 직무명을 입력해 주세요"
-              value={workName}
-              onChange={(e) => setWorkName(e.target.value)}
-              variant="standard"
-              sx={{
-                width: '50%',
-              }}
-            />
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item md={12}>
+          <CustomTextField
+            required
+            label="직무명"
+            placeholder="필요한 직무명을 입력해 주세요"
+            value={workName}
+            onChange={(e) => setWorkName(e.target.value)}
+            variant="standard"
+            sx={{
+              width: '50%',
+            }}
+          />
+        </Grid>
 
-          <Grid item md={6}>
-            <Grid container spacing={3}>
-              <Grid item md={4}>
-                <GetWorkOptions
-                  value={workDays}
-                  setValue={setWorkDays}
-                  options={[1, 2, 3, 4, 5]}
+        <Grid item md={6}>
+          <Grid container spacing={3}>
+            <Grid item md={4}>
+              <GetWorkWorkDays value={workDays} setValue={setWorkDays} />
+            </Grid>
+            <Grid item md={2}>
+              일 근무
+            </Grid>
+            <Grid item md={4}>
+              <GetWorkWorkDays value={daysOff} setValue={setDaysOff} />
+            </Grid>
+            <Grid item md={2}>
+              일 휴무
+            </Grid>
+            <Grid item md={12}>
+              <GetWorkOptions
+                sx={{ width: '50%' }}
+                value={gender}
+                setValue={setGender}
+                options={['여자', '남자', '무관']}
+                label="성별"
+              />
+            </Grid>
+            <Grid item md={12}>
+              <Grid container>
+                <CustomTextField
+                  sx={{ width: '40%' }}
+                  label="채용인원"
+                  type="number"
+                  value={intake}
+                  onChange={(e) => setIntake(parseInt(e.target.value))}
                 />
-              </Grid>
-              <Grid item md={2}>
-                일 근무
-              </Grid>
-              <Grid item md={4}>
-                <GetWorkOptions
-                  value={daysOff}
-                  setValue={setDaysOff}
-                  options={[1, 2, 3, 4, 5]}
+                <CustomTextField
+                  sx={{ width: '40%' }}
+                  label="최소근무기간(개월)"
+                  type="number"
+                  value={minWorkPeriod}
+                  onChange={(e) => setMinWorkPeriod(parseInt(e.target.value))}
                 />
-              </Grid>
-              <Grid item md={2}>
-                일 휴무
-              </Grid>
-              <Grid item md={12}>
-                <GetWorkOptions
-                  sx={{ width: '50%' }}
-                  value={gender}
-                  setValue={setGender}
-                  options={['여자', '남자', '무관']}
-                  label="성별"
-                />
-              </Grid>
-              <Grid item md={12}>
-                <Grid container>
-                  <CustomTextField
-                    sx={{ width: '40%' }}
-                    label="채용인원"
-                    type="number"
-                    value={intake}
-                    onChange={(e) => setIntake(parseInt(e.target.value))}
-                  />
-                  <CustomTextField
-                    sx={{ width: '40%' }}
-                    label="최소근무기간(개월)"
-                    type="number"
-                    value={minWorkPeriod}
-                    onChange={(e) => setMinWorkPeriod(parseInt(e.target.value))}
-                  />
-                </Grid>
-              </Grid>
-              <Grid item md={12}>
-                <Grid container>
-                  <Grid item md={5}>
-                    <GetWorkTime
-                      value={workStartTime}
-                      setValue={setWorkStartTime}
-                    />
-                  </Grid>
-                  <Grid item md={2}>
-                    ~
-                  </Grid>
-
-                  <Grid item md={5}>
-                    <GetWorkTime
-                      value={workEndTime}
-                      setValue={setWorkEndTime}
-                    />
-                  </Grid>
-                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+            <Grid item md={12}>
+              <Grid container>
+                <Grid item md={5}>
+                  <GetWorkTime
+                    value={workStartTime}
+                    setValue={setWorkStartTime}
+                  />
+                </Grid>
+                <Grid item md={2}>
+                  ~
+                </Grid>
 
-          <Grid item md={6}>
-            <Grid container spacing={2}>
-              <Grid item md={12}>
-                <GetWorkEntryDate value={entryDate} setValue={setEntryDate} />
-              </Grid>
-              <Grid item md={12}>
-                <CustomTextField
-                  label="급여"
-                  placeholder="급여조건을 입력하세요"
-                  value={salary}
-                  onChange={(e) => setSalary(e.target.value)}
-                  sx={{
-                    width: '100%',
-                  }}
-                />
-              </Grid>
-              <Grid item md={12}>
-                <CustomTextField
-                  multiline
-                  label="직무상세"
-                  value={workDescription}
-                  onChange={(e) => setWorkDescription(e.target.value)}
-                  sx={{
-                    width: '100%',
-                    '& .MuiOutlinedInput-root': {
-                      height: '20vh',
-                      '& fieldset': {
-                        borderRadius: '30px',
-                      },
-                    },
-                  }}
-                />
+                <Grid item md={5}>
+                  <GetWorkTime value={workEndTime} setValue={setWorkEndTime} />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </form>
+
+        <Grid item md={6}>
+          <Grid container spacing={2}>
+            <Grid item md={12}>
+              <GetWorkEntryDate value={entryDate} setValue={setEntryDate} />
+            </Grid>
+            <Grid item md={12}>
+              <CustomTextField
+                label="급여"
+                placeholder="급여조건을 입력하세요"
+                value={salary}
+                onChange={(e) => setSalary(e.target.value)}
+                sx={{
+                  width: '100%',
+                }}
+              />
+            </Grid>
+            <Grid item md={12}>
+              <CustomTextField
+                multiline
+                label="직무상세"
+                value={workDescription}
+                onChange={(e) => setWorkDescription(e.target.value)}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    height: '20vh',
+                    '& fieldset': {
+                      borderRadius: '30px',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
