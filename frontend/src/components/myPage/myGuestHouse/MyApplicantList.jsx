@@ -1,10 +1,12 @@
-import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { selectAccessToken } from '../../../store/user';
-import { Box } from '@mui/material';
+import { Box, Modal, Stack } from '@mui/material';
+import MyApplicantCom from './MyApplicantCom';
 import { myApplicantList } from '../../../api/guestHouse';
+import MyApplicantDetail from './MyApplicantDetail';
+import WhiteBox from '../../whiteBox/WhiteBox';
 
 export default function MyApplicantList() {
   const access_token = useSelector(selectAccessToken);
@@ -12,30 +14,46 @@ export default function MyApplicantList() {
   const workUid = location.pathname.split('applicantlist/')[1];
 
   const [myApplicants, setMyApplicants] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [userUid, setUserUid] = useState();
+
+  const handleOpenModal = (userUid) => {
+    console.log(userUid);
+    setOpen(true);
+    setUserUid(userUid);
+  };
+
+  const handleCloseModal = () => setOpen(false);
+
+  const findUserIndex = () => {
+    let index;
+    myApplicants.forEach((elem, idx) => {
+      if (elem.userUid === userUid) {
+        index = idx;
+      }
+    });
+    return index;
+  };
+
+  const handlePrev = () => {
+    let index = findUserIndex();
+    if (index === 0) index = myApplicants?.length - 1;
+    else index = index - 1;
+    setUserUid(myApplicants[index].userUid);
+  };
+
+  const handleForward = () => {
+    let index = findUserIndex();
+    if (index === myApplicants?.length - 1) index = 0;
+    else index = index + 1;
+    setUserUid(myApplicants[index].userUid);
+  };
+
   async function getMyApplicants() {
-    const data = await myApplicantList(access_token, workUid);
-    console.log(data);
+    const { data } = await myApplicantList(access_token, workUid);
+    console.log('list', data);
     setMyApplicants(data);
   }
-
-  // const myApplicants = [
-  //   {
-  //     uid: '1',
-  //     userUid: '5',
-  //     name: '장정민',
-  //     age: '23',
-  //     tags: '#활발 #유쾌',
-  //     gender: '남자',
-  //   },
-  //   {
-  //     uid: '2',
-  //     userUid: '6',
-  //     name: '최다은',
-  //     age: '24',
-  //     tags: '#꼼꼼 #성실',
-  //     gender: '여자',
-  //   },
-  // ];
 
   useEffect(() => {
     getMyApplicants();
@@ -47,19 +65,38 @@ export default function MyApplicantList() {
         <h1 style={{ fontSize: '1.8rem', paddingBottom: '15px' }}>
           지원자 목록
         </h1>
-        <Box sx={{ width: '100%', typography: 'body1' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {/* {myApplicants.map((myApplicant) => {
+        <Stack direction="row">
+          {myApplicants &&
+            myApplicants?.map((myApplicant) => {
               return (
-                <WhiteBox
+                <Box
                   key={myApplicant.uid}
-                  cpn={<MyApplicantCom myApplicant={myApplicant} />}
-                />
+                  onClick={() => handleOpenModal(myApplicant.uid)}
+                  sx={{ cursor: 'pointer' }}
+                  width="100%"
+                >
+                  <WhiteBox
+                    cpn={<MyApplicantCom myApplicant={myApplicant} />}
+                  />
+                </Box>
               );
-            })} */}
-          </Box>
-        </Box>
+            })}
+        </Stack>
       </Box>
+      <Modal
+        open={open}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <MyApplicantDetail
+          userUid={userUid}
+          workUid={workUid}
+          handleClose={handleCloseModal}
+          handlePrev={handlePrev}
+          handleForward={handleForward}
+        />
+      </Modal>
     </div>
   );
 }

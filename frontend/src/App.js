@@ -7,6 +7,8 @@ import GuestHouse from './routes/guestHouse/GuestHouse';
 import GuestHouseDetail from './routes/guestHouseDetail/GuestHouseDetail';
 import WorkList from './routes/work/WorkList';
 import WorkRecruitmentWrite from './routes/work/WorkRecruitmentWrite';
+import WorkWrite from './routes/work/WorkWrite';
+import RecruitmentUpdate from './routes/work/RecruitmentUpdate';
 import WorkDetail from './routes/work/WorkDetail';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store/index';
@@ -83,10 +85,21 @@ const router = createBrowserRouter([
         path: 'worklist',
         element: <WorkList />,
       },
-
       {
-        path: 'work-recruitment-write/:recruitmentUid/:workUid',
+        path: 'recruitment/create/:guesthouseUid',
         element: <WorkRecruitmentWrite />,
+      },
+      {
+        path: 'recruitment/update/:recruitmentUid/:guesthouseUid',
+        element: <RecruitmentUpdate />,
+      },
+      {
+        path: 'work/create/:recruitmentUid/:guesthouseUid',
+        element: <WorkWrite />,
+      },
+      {
+        path: 'work/update/:workUid/:recruitmentUid',
+        element: <WorkWrite />,
       },
       {
         path: 'worklist/detail/:recruitmentUid/:workUid',
@@ -145,7 +158,7 @@ const router = createBrowserRouter([
         element: <GuestHouseCreate />,
       },
       {
-        path: 'interview',
+        path: 'interview/:sessionId',
         element: <VideoInterview />,
       },
       {

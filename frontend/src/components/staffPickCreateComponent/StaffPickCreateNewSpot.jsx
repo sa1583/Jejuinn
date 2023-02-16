@@ -130,9 +130,13 @@ export default function StaffPickCreateNewSpot({
               alignItems: 'center',
             }}
           >
-            <h3>명소의 위치를 선택해주세요.</h3>
-            <div style={{ width: '100%' }}>
-              <MapApi setNewPin={setNewPin} startSpot={nowPick} />{' '}
+            <p style={{ fontSize: 24 }}>명소의 위치를 선택해주세요.</p>
+            <div style={{ width: '85%' }}>
+              <MapApi
+                setNewPin={setNewPin}
+                startSpot={nowPick}
+                high={'23rem'}
+              />{' '}
             </div>
           </Box>
         );
@@ -185,8 +189,14 @@ export default function StaffPickCreateNewSpot({
           minWidth: '700px',
         }}
       >
+        <br />
+
         <Typography
-          sx={{ fontSize: '2vw', color: 'primary.main', fontWeight: 'bolder' }}
+          sx={{
+            fontFamily: 'GmarketSansBold',
+            fontSize: '2.5rem',
+            color: 'primary.main',
+          }}
         >
           새로운 명소 등록
         </Typography>
@@ -199,12 +209,13 @@ export default function StaffPickCreateNewSpot({
             setNewType('');
             setSpotName('');
             getSpotsPins();
+            setFile([]);
           }}
           sx={{ position: 'absolute', right: 5, top: 5 }}
         >
           <HighlightOffIcon sx={{ color: 'primary.main', fontSize: '3rem' }} />
         </Button>
-        <div style={{ width: '80%', marginTop: '3rem' }}>
+        <div style={{ width: '80%', marginTop: '1.5rem' }}>
           <Stepper
             activeStep={activeStep}
             alternativeLabel

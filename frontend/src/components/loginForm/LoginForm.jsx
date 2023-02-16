@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import KakaoLoginBtn from './KakaoLogin';
 import NaverLoginBtn from './NaverLogin';
 import GoogleLoginBtn from './GoogleLogin';
-import FacebookLoginBtn from './FacebookLogin';
 import { useState } from 'react';
 import { getNormalAuthToken, getUserInfoByToken } from '../../store/user';
 import { useDispatch } from 'react-redux';
@@ -25,7 +24,7 @@ const CustomTextField = styled(TextField)({
     },
   },
   marginTop: '2rem',
-  width: '80%',
+  width: '300px',
 });
 
 export default function LoginForm() {
@@ -72,16 +71,20 @@ export default function LoginForm() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '3vh',
+        marginTop: '5vh',
       }}
     >
-      <h1>로그인</h1>
+      <h2>로그인</h2>
       <CustomTextField
         onChange={handleLogInForm}
         label="이메일"
         name="email"
         value={logInForm.email}
         type="email"
+        variant="standard"
+        placeholder="이메일을 입력하세요"
+        inputProps={{ style: { fontSize: 20 } }}
+        InputLabelProps={{ style: { fontSize: 20 } }}
       />
       <CustomTextField
         onChange={handleLogInForm}
@@ -89,35 +92,44 @@ export default function LoginForm() {
         name="password"
         value={logInForm.password}
         type="password"
+        variant="standard"
+        placeholder="비밀번호를 입력하세요"
+        inputProps={{ style: { fontSize: 20 } }}
+        InputLabelProps={{ style: { fontSize: 20 } }}
       />
 
       {/* 아래 인풋은 버튼 컴포넌트로 바꿀거임 */}
       <Button
         onClick={login}
         sx={{
-          width: '80%',
+          width: '300px',
+          height: '50px',
           background: '#FF7600',
-          borderRadius: '38px',
+          borderRadius: '50px',
           color: 'white',
           '&:hover': {
             color: 'white',
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5rem',
-          marginTop: '3.2rem',
+          fontSize: '1rem',
+          marginTop: '2.8rem',
         }}
       >
         로그인
       </Button>
+      <p
+        style={{ paddingTop: '55px', paddingBottom: '15px', fontSize: '10px' }}
+      >
+        ------------------------------ &nbsp; 또는 &nbsp;
+        ------------------------------
+      </p>
 
       {/* 소셜 로그인 부분 */}
-      <h3 style={{ marginTop: '3.5rem', color: '#FF7600' }}>소셜 로그인</h3>
-      <Box sx={{ display: 'flex', gap: '1rem' }}>
+      <Box sx={{ display: 'flex', gap: '3rem' }}>
         <NaverLoginBtn />
         <GoogleLoginBtn />
         <KakaoLoginBtn />
-        <FacebookLoginBtn />
       </Box>
 
       {/* 회원가입 및 유저 정보 찾기 부분 */}
@@ -126,7 +138,7 @@ export default function LoginForm() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: '3rem',
+          marginTop: '1.5rem',
         }}
       >
         {bottomData.map((data) => {
@@ -135,9 +147,9 @@ export default function LoginForm() {
               <Link
                 to={data.url}
                 style={{
-                  fontSize: '1.2rem',
+                  fontSize: '1.1rem',
                   textDecoration: 'none',
-                  color: 'black',
+                  color: 'grey',
                 }}
                 key={uuidv4()}
               >

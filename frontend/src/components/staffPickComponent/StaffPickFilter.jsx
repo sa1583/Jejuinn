@@ -22,8 +22,8 @@ const CustomTextField = styled(TextField)({
     '& fieldset': {
       borderColor: '#d1d1d1',
       opacity: '83%',
-      height: '4rem',
-      borderRadius: '62px',
+      height: '6vh',
+      borderRadius: '20px',
       margin: 'auto',
     },
     '&:hover fieldset': {
@@ -36,7 +36,7 @@ const CustomTextField = styled(TextField)({
 });
 
 const CustomButton = styled(Button)({
-  height: '3rem',
+  height: '6vh',
   color: 'white',
   '&:hover': {
     backgroundColor: '#FF7600',
@@ -66,20 +66,14 @@ export default function StaffPickFilter({
     '우도면',
   ];
 
-  const navigate = useNavigate();
-
   return (
-    <form
-      style={{
-        height: '23rem',
-      }}
-    >
+    <form style={{ height: '23rem' }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          padding: '3vh 3vh 3vh 3vh',
-          gap: '2rem',
+          padding: '4vh 3vh 3vh 3vh',
+          gap: '2.3vh',
         }}
       >
         <CustomTextField
@@ -144,16 +138,16 @@ export default function StaffPickFilter({
         <CustomButton
           variant="contained"
           sx={{
-            borderRadius: '62px',
+            borderRadius: '20px',
             backgroundColor: '#FF7600',
-            fontFamily: 'border',
+            marginBottom: '1vh',
           }}
           size="large"
           startIcon={<SearchIcon />}
           onClick={(e) => {
             e.preventDefault();
             getFilterdSpots();
-            navigate('/staffpicklist');
+            // navigate('/staffpicklist');
           }}
         >
           조건 검색

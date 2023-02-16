@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
 import { styled, TextField, InputAdornment, MenuItem } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import { v4 as uuidv4 } from 'uuid';
 import SearchIcon from '@mui/icons-material/Search';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import GroupsIcon from '@mui/icons-material/Groups';
+import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 const CustomTextField = styled(TextField)({
   '& label': {
@@ -20,7 +21,7 @@ const CustomTextField = styled(TextField)({
       borderColor: '#d1d1d1',
       opacity: '83%',
       height: '100%',
-      borderRadius: '62px',
+      borderRadius: '20px',
       margin: 'auto',
     },
     '&:hover fieldset': {
@@ -66,10 +67,16 @@ function FilterArea({ value, setValue }) {
     '대정읍',
     '우도면',
   ];
+
+  useEffect(() => {
+    if (!value || value === '') setValue('전체');
+  }, [value]);
+
   return (
     <Autocomplete
       sx={{ width: '100%' }}
       options={areas}
+      defaultValue="전체"
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
@@ -78,16 +85,13 @@ function FilterArea({ value, setValue }) {
         <CustomTextField
           {...params}
           label="선호하는 지역"
-          placeholder={value ? null : '원하는 지역을 입력하세요'}
+          // placeholder="선호하는 지역을 선택하세요"
           InputProps={{
             ...params.InputProps,
             startAdornment: (
-              <>
-                <InputAdornment position="start">
-                  <FmdGoodOutlinedIcon color="primary" />
-                </InputAdornment>
-                {params.InputProps.startAdornment}
-              </>
+              <InputAdornment position="start">
+                <FmdGoodOutlinedIcon color="primary" />
+              </InputAdornment>
             ),
           }}
         />
@@ -98,8 +102,15 @@ function FilterArea({ value, setValue }) {
 
 function FilterDate({ value, setValue }) {
   const handelOnChange = (event) => {
-    setValue(event.$d.toISOString().split('T')[0]);
+    const dateFormat = dayjs(event.$d.toString()).format('YYYY-MM-DD');
+    setValue(dateFormat);
   };
+
+  useEffect(() => {
+    const defaultValue = new Date();
+    setValue(dayjs(defaultValue).format('YYYY-MM-DD'));
+  }, []);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
@@ -134,12 +145,16 @@ function FilterStyle({ value, setValue }) {
     '활발한 성격',
   ];
 
+  const maxSelections = 5;
   return (
     <Autocomplete
       sx={{ width: '100%' }}
       multiple
       limitTags={3}
-      options={wishStyles.map((option) => option)}
+      getOptionDisabled={(option) =>
+        value.length === maxSelections || value.includes(option) ? true : false
+      }
+      options={wishStyles}
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
@@ -157,18 +172,23 @@ function FilterStyle({ value, setValue }) {
 
 function FilterGuestHouseStyle({ value, setValue }) {
   const wishStyles = [
-    '꼼꼼',
-    '대처 능력',
-    '빠른 습득',
-    '빠른 일처리',
-    '스탭 경험자',
-    '아침형 인간',
-    '열정',
-    '의사소통 기술',
-    '저녁형 인간',
-    '책임감',
-    '친절함',
-    '활발한 성격',
+    '파티',
+    '오션뷰',
+    '조용한 게하',
+    '재밌는 게하',
+    '교통 편리',
+    '픽업 가능',
+    '꿀잼',
+    '서핑 가능',
+    '깨끗한 게하',
+    '마운틴뷰',
+    '여성 전용',
+    '댕댕이 보유',
+    '냥냥이 보유',
+    '이색동물 보유',
+    '힐링',
+    '늦은 체크아웃',
+    '빠른 체크인',
   ];
 
   const maxSelections = 5;
@@ -176,7 +196,7 @@ function FilterGuestHouseStyle({ value, setValue }) {
   return (
     <Autocomplete
       sx={{ width: '100%' }}
-      multiple={3}
+      multiple
       limitTags={3}
       options={wishStyles}
       getOptionDisabled={(option) =>
@@ -190,7 +210,18 @@ function FilterGuestHouseStyle({ value, setValue }) {
         <CustomTextField
           {...params}
           label="스타일"
-          placeholder="원하는 스타일을 입력하세요"
+          placeholder="원하는 스타일을 선택하세요"
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: (
+              <>
+                <InputAdornment position="start">
+                  <GroupsIcon color="primary" />
+                </InputAdornment>
+                {params.InputProps.startAdornment}
+              </>
+            ),
+          }}
         />
       )}
     />

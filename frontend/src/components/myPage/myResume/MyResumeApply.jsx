@@ -6,70 +6,59 @@ import {
   Typography,
   Stack,
   Chip,
+  Box,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import React from 'react';
 import WorkHistory from '../WorkHistory';
 import { changeAutoApply } from '../../../api/resume';
 import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
+import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 // resume.autoApply
 
 export default function MyResumeApply({ resume, changeApplyComp }) {
   const accessToken = useSelector(selectAccessToken);
   const userInfo = useSelector(selectUserInfo);
+  const navigate = useNavigate();
+  const anchorRef = useRef(null);
 
-  const [anchorEl, setAnchorEl] = useState(false);
-  const [historyList, setHistoryList] = useState([
-    {
-      uid: 1,
-      guestHouseName: '가토 게스트하우스',
-      startDate: '22-01-22',
-      endDate: '23-4-14',
-    },
-    {
-      uid: 15,
-      guestHouseName: '정민 게스트하우스',
-      startDate: '22-01-22',
-      endDate: '23-4-14',
-    },
-  ]);
+  const [open, setOpen] = useState(false);
+  const [apply, setApply] = useState(false);
+  const [historyList, setHistoryList] = useState([]);
 
   const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
+    setOpen((prev) => !prev);
   };
 
   const handleChangeAutoApply = async () => {
     await changeAutoApply(accessToken, userInfo.uid);
-    setAnchorEl((prev) => !prev);
+    setApply((prev) => !prev);
   };
 
   useEffect(() => {
-    setAnchorEl(resume.autoApply);
+    setApply(resume.autoApply);
+    setHistoryList(resume.staffRecordDetial);
   }, []);
 
-  const open = Boolean(anchorEl);
   return (
-    <Stack p="3%" spacing={3}>
-      <Stack direction="row" alignItems="center">
+    <Stack p="3%" spacing={4}>
+      <Stack direction="row" alignItems="center" sx={{ marginLeft: 'auto' }}>
         <HelpOutlineOutlinedIcon
+          ref={anchorRef}
           color="primary"
           onMouseEnter={handlePopoverOpen}
-          onMouseLeave={handlePopoverClose}
+          onMouseLeave={handlePopoverOpen}
         />
         <Popover
-          id="mouse-over-popover"
           sx={{
             pointerEvents: 'none',
           }}
           open={open}
-          anchorEl={anchorEl}
+          anchorEl={anchorRef.current}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',
@@ -78,7 +67,6 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
             vertical: 'top',
             horizontal: 'left',
           }}
-          onClose={handlePopoverClose}
           disableRestoreFocus
         >
           <Typography sx={{ p: 1, width: '300px' }}>
@@ -87,50 +75,97 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
           </Typography>
         </Popover>
         <FormControlLabel
-          value="start"
           control={
             <Switch
               color="primary"
               onChange={handleChangeAutoApply}
-              checked={anchorEl}
+              checked={apply}
             />
           }
           label="자동추천"
           labelPlacement="start"
         />
-        <Button onClick={changeApplyComp}>수정</Button>
       </Stack>
-      <Stack direction="row" alignItems="center">
-        <Typography minWidth="100px">선호 스타일</Typography>
-        <Stack direction="row" spacing={1}>
-          {resume.personTypes.map(({ type }) => {
-            return <Chip key={type} label={'#' + type} color="primary" />;
+      <Stack direction="column" spacing={3} sx={{ marginTop: 0 }}>
+        <Box display="flex" justifyContent="space-between">
+          <Typography sx={{ fontSize: 23, fontWeight: 'bold' }}>
+            내 지원서
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={changeApplyComp}
+            sx={{ marginLeft: '15px' }}
+          >
+            수정
+          </Button>
+        </Box>
+        <br />
+        <Stack direction="row" alignItems="center" spacing={15}>
+          <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+            내 스타일
+          </Typography>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            {resume?.personTypes?.map(({ type }) => {
+              return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
+            })}
+          </Stack>
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={15}>
+          <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+            인스타그램
+          </Typography>
+          <Typography sx={{ fontSize: 20, color: '#FF7600' }}>
+            {resume.instagramLink}
+          </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={15}>
+          <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+            선호 스타일
+          </Typography>
+          {resume?.guestHouseTypes?.map((type) => {
+            return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
           })}
         </Stack>
       </Stack>
-      <Stack direction="row" alignItems="center">
-        <Typography minWidth="100px">선호 지역</Typography>
-        <Stack direction="row" alignItems="center">
-          {resume.interestAreas.map((area) => {
-            return (
-              <Chip key={area} label={'#' + area.areaName} color="primary" />
-            );
-          })}
+      <Stack direction="row" alignItems="center" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          선호 지역
+        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Chip label={'#' + resume.interestArea} color="primary" />
         </Stack>
       </Stack>
-      <Stack direction="row">
-        <Typography minWidth="100px">입도 가능일</Typography>
-        <Typography>{resume.possibleStartDate}</Typography>
+      <Stack direction="row" alignItems="center" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          입도 가능일
+        </Typography>
+        <Typography sx={{ fontSize: 20, color: '#FF7600' }}>
+          {resume.possibleStartDate}
+        </Typography>
       </Stack>
-      <Stack direction="row">
-        <Typography minWidth="100px">자기소개</Typography>
-        <Typography>{resume.content}</Typography>
+      <Stack direction="row" alignItems="center" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          자기소개
+        </Typography>
+        <Typography sx={{ fontSize: 20, color: '#FF7600' }}>
+          {resume.content}
+        </Typography>
       </Stack>
-      <Stack direction="row">
-        <Typography minWidth="100px">근무이력</Typography>
+      <Stack direction="row" spacing={15}>
+        <Typography minWidth="100px" sx={{ fontSize: 20 }}>
+          근무이력
+        </Typography>
         <Stack direction="row" spacing={2}>
-          {historyList.map((history) => {
-            return <WorkHistory key={history.uid} history={history} />;
+          {historyList?.map((history) => {
+            return (
+              <Box
+                key={uuidv4()}
+                sx={{ cursor: 'pointer' }}
+                onClick={() => navigate()}
+              >
+                <WorkHistory key={history.uid} history={history} />
+              </Box>
+            );
           })}
         </Stack>
       </Stack>

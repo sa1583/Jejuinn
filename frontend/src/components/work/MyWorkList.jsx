@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectUserInfo, selectAccessToken } from '../../store/user';
 import { getMyGuestHouses } from '../../api/guestHouse';
 import { getMyWorks, getMyRecruitments } from '../../api/work';
@@ -20,20 +20,18 @@ export default function MyWorkList() {
   const [myGuestHouses, setMyGuestHouses] = useState([]);
 
   const onSelect = (input) => {
-    writeRecruitment(input);
+    Recruitment(input);
   };
 
   const OnClick = () => {
-    writeRecruitment(myGuestHouses[0].uid);
+    Recruitment(myGuestHouses[0].uid);
   };
 
-  async function writeRecruitment(ghuid) {
-    const selectedRecruitment = (await getMyRecruitments(ghuid)).data[0];
-    if (selectedRecruitment) {
-      navigate(`/work-recruitment-write/${selectedRecruitment.uid}/undefined`);
-    } else {
-      navigate(`/work-recruitment-write/undefined/undefined`);
-    }
+  async function Recruitment(ghUid) {
+    const huoseRecruitment = (await getMyRecruitments(ghUid)).data;
+    huoseRecruitment.length === 0
+      ? navigate(`/recruitment/create/${ghUid}`)
+      : navigate(`/work/create/${huoseRecruitment[0].uid}/${ghUid}`);
   }
 
   async function setHouseAndWork() {
@@ -44,7 +42,7 @@ export default function MyWorkList() {
         ...prevArray,
         ...myGuestHousesFromServer,
       ]);
-      myGuestHousesFromServer.map((myGuestHouse) => {
+      myGuestHousesFromServer?.map((myGuestHouse) => {
         getWorks(myGuestHouse.uid);
       });
     }

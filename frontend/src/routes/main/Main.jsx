@@ -1,5 +1,4 @@
 import { SectionsContainer, Section } from 'react-fullpage';
-import MainOne from '../../components/main/MainOne';
 import MainTwo from '../../components/main/MainTwo';
 import MainThree from '../../components/main/MainThree';
 import MainFour from '../../components/main/MainFour';

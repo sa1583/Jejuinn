@@ -14,27 +14,30 @@ export default function SignUpComplete() {
         width: '100%',
       }}
     >
-      <h1>가입완료</h1>
-      <div style={{ width: '80%', marginTop: '3vh', textAlign: 'center' }}>
-        가입을 환영합니다
+      <h2>가입완료</h2>
+      <div style={{ width: '80%', textAlign: 'center', color: '#FF7600' }}>
+        가입을 환영합니다!
+      </div>
+      <div style={{ width: '80%', textAlign: 'center', color: '#FF7600' }}>
+        제주인 될 준비 되셨나요?
       </div>
       <Button
         onClick={() => {
           navigate('..');
         }}
         sx={{
-          width: '80%',
-          height: '3rem',
+          width: '300px',
+          height: '50px',
           background: '#FF7600',
-          borderRadius: '38px',
+          borderRadius: '50px',
           color: 'white',
           '&:hover': {
             color: 'white',
             background: '#FF7600',
           },
           border: 'none',
-          fontSize: '1.5vw',
-          marginTop: '20%',
+          fontSize: '1rem',
+          marginTop: '5rem',
         }}
       >
         홈으로 이동

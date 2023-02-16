@@ -12,7 +12,6 @@ const CustomButton = styled(Button)({
   color: '#FFFFFF',
   borderRadius: '62px',
   backgroundColor: '#FF7600',
-  fontFamily: 'border',
   size: 'large',
   '&:hover': {
     backgroundColor: '#FF7600',
@@ -38,18 +37,6 @@ export default function WorkFilterBox({ onSearch }) {
   //   onSearch(filterValue);
   // }, [filterValue]);
 
-  const onName = (imp) => {
-    setName(imp.target.value);
-  };
-  const onArea = (imp) => {
-    setArea(imp);
-  };
-  const onStartDate = (imp) => {
-    setStartDate(imp);
-  };
-  const onStyleTags = (imp) => {
-    setStyleTags(imp);
-  };
   useEffect(() => {
     console.log(name, area, startDate, styleTags);
   }, [name, area, startDate, styleTags]);
@@ -59,19 +46,19 @@ export default function WorkFilterBox({ onSearch }) {
       <form>
         <Grid container spacing={1} justifyContent="space-between">
           <Grid item md={4}>
-            <FilterName onName={onName} />
+            <FilterName value={name} setValue={setName} />
           </Grid>
 
           <Grid item md={4}>
-            <FilterArea onArea={onArea} />
+            <FilterArea value={area} setValue={setArea} />
           </Grid>
 
           <Grid item md={4}>
-            <FilterDate onStartDate={onStartDate} />
+            <FilterDate value={startDate} setValue={setStartDate} />
           </Grid>
 
           <Grid item md={7}>
-            <FilterStyle onStyleTags={onStyleTags} />
+            <FilterStyle value={styleTags} setValue={setStyleTags} />
           </Grid>
 
           <Grid item md={4}>

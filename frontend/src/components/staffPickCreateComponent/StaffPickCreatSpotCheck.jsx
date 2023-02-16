@@ -12,17 +12,16 @@ export default function StaffPickCreatSpotCheck({ spotName, startSpot }) {
       }}
     >
       <Typography
-        variant="h5"
-        sx={{ marginTop: '1.5rem', marginBottom: '1rem' }}
+        sx={{ fontSize: 24, marginTop: '1.5rem', marginBottom: '1rem' }}
       >
         등록하려는 명소가 {spotName}이(가) 맞습니까?
       </Typography>
       <Box
         sx={{
-          width: '100%',
+          width: '85%',
         }}
       >
-        <MapApi startSpot={startSpot} spots={startSpot} />
+        <MapApi startSpot={startSpot} spots={startSpot} high={'23rem'} />
       </Box>
     </Box>
   );

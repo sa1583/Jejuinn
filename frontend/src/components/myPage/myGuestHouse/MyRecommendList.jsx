@@ -3,41 +3,68 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { selectAccessToken } from '../../../store/user';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Backdrop,
+  CircularProgress,
+  Stack,
+  Modal,
+  Divider,
+} from '@mui/material';
 import WhiteBox from '../../whiteBox/WhiteBox';
 import MyApplicantCom from './MyApplicantCom';
-import { myRecommendList } from '../../../api/guestHouse';
+import { getRecommandedList } from '../../../api/recommand';
+import MyApplicantDetail from './MyApplicantDetail';
 
-export default function MyRecommendList() {
+export default function MyRecommendList({ guestHouseUid }) {
   const access_token = useSelector(selectAccessToken);
   const location = useLocation();
   const workUid = location.pathname.split('recommendlist/')[1];
 
+  const [loading, setLoading] = useState(true);
   const [myRecommends, setMyRecommends] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [resumeUid, setResumeUid] = useState();
+
+  const handleOpenModal = (uid) => {
+    console.log(uid);
+    setOpen(true);
+    setResumeUid(uid);
+  };
+
+  const handleCloseModal = () => setOpen(false);
+
+  const findUserIndex = () => {
+    let index;
+    myRecommends.forEach((elem, idx) => {
+      if (elem.resumeInfoUid === resumeUid) {
+        index = idx;
+      }
+    });
+    return index;
+  };
+
+  const handlePrev = () => {
+    let index = findUserIndex();
+    console.log(index);
+    if (index === 0) index = myRecommends.length - 1;
+    else index = index - 1;
+    setResumeUid(myRecommends[index].resumeInfoUid);
+  };
+
+  const handleForward = () => {
+    let index = findUserIndex();
+    if (index === myRecommends.length - 1) index = 0;
+    else index = index + 1;
+    setResumeUid(myRecommends[index].resumeInfoUid);
+  };
+
   async function getMyRecommends() {
-    const data = await myRecommendList(access_token, workUid);
+    const { data } = await getRecommandedList(workUid);
     console.log(data);
     setMyRecommends(data);
+    setLoading(false);
   }
-
-  // const myApplicants = [
-  //   {
-  //     uid: '1',
-  //     userUid: '5',
-  //     name: '장정민',
-  //     age: '23',
-  //     tags: '#활발 #유쾌',
-  //     gender: '남자',
-  //   },
-  //   {
-  //     uid: '2',
-  //     userUid: '6',
-  //     name: '최다은',
-  //     age: '24',
-  //     tags: '#꼼꼼 #성실',
-  //     gender: '여자',
-  //   },
-  // ];
 
   useEffect(() => {
     getMyRecommends();
@@ -46,22 +73,51 @@ export default function MyRecommendList() {
   return (
     <div>
       <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
-        <h1 style={{ fontSize: '1.8rem', paddingBottom: '15px' }}>
+        <h1 style={{ fontSize: '1.7rem', marginBottom: '2rem' }}>
           추천스탭 목록
         </h1>
+        <Divider sx={{ marginBottom: '7px' }} />
+        <br />
         <Box sx={{ width: '100%', typography: 'body1' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {/* {myApplicants.map((myApplicant) => {
+          <Stack direction="column" alignItems="center" spacing={2}>
+            <CircularProgress
+              sx={{
+                color: 'grey',
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+                display: !loading && 'none',
+              }}
+            />
+            {myRecommends.map((myApplicant) => {
               return (
-                <WhiteBox
+                <Box
                   key={myApplicant.uid}
-                  cpn={<MyApplicantCom myApplicant={myApplicant} />}
-                />
+                  onClick={() => handleOpenModal(myApplicant.resumeInfoUid)}
+                  sx={{ cursor: 'pointer', width: '100%' }}
+                >
+                  <Box
+                    sx={{
+                      borderRadius: '50px',
+                      boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                      background: '#FFFFFF',
+                    }}
+                  >
+                    <MyApplicantCom myApplicant={myApplicant} />
+                  </Box>
+                </Box>
               );
-            })} */}
-          </Box>
+            })}
+          </Stack>
         </Box>
       </Box>
+      <Modal open={open} onClose={handleCloseModal}>
+        <MyApplicantDetail
+          resumeUid={resumeUid}
+          workUid={workUid}
+          handleCloseModal={handleCloseModal}
+          handlePrev={handlePrev}
+          handleForward={handleForward}
+        />
+      </Modal>
     </div>
   );
 }

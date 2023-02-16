@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../store/user';
 import { createSpotReview } from '../../api/staffPick';
 import { useNavigate } from 'react-router';
+
 export default function StaffPickCreateForm({ nowPickId }) {
   const [content, setContent] = useState('');
   const acces_token = useSelector(selectAccessToken);
@@ -51,19 +52,32 @@ export default function StaffPickCreateForm({ nowPickId }) {
     >
       <Typography
         variant="h5"
-        sx={{ marginBottom: '1rem', fontWeight: 'bolder' }}
+        style={{
+          fontSize: 22,
+          color: 'black',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+        }}
       >
-        사진 (최대 10개)
+        ② &nbsp;선택된 명소에 대한 리뷰를 작성해주세요!
       </Typography>
+      <label
+        htmlFor="image"
+        style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
+      >
+        명소 관련 이미지를 업로드 해주세요.(최대 10개)
+      </label>
 
       <ImageUploader handleFiles={handleFiles} files={files} maxNum={10} />
 
-      <Typography
-        variant="h5"
-        sx={{ marginBottom: '1rem', marginTop: '4rem', fontWeight: 'bolder' }}
+      <br />
+      <br />
+      <label
+        htmlFor="content"
+        style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
       >
-        글 내용
-      </Typography>
+        명소를 리뷰하는 내용을 입력해주세요.
+      </label>
 
       <MarkDownInput
         name="content"
@@ -82,8 +96,11 @@ export default function StaffPickCreateForm({ nowPickId }) {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: 'bolder' }}>
-          평점
+        <Typography
+          variant="h5"
+          style={{ fontSize: 20, color: 'grey', marginBottom: '10px' }}
+        >
+          해당 명소에 대한 평점을 매겨주세요
         </Typography>
         <Rating
           value={starRating}
@@ -101,16 +118,21 @@ export default function StaffPickCreateForm({ nowPickId }) {
           onClick={submit}
           sx={{
             marginTop: '5rem',
+            height: '3.5rem',
             width: '40%',
-            color: 'white',
-            fontSize: '1.5rem',
+            fontSize: '1.8vh',
+            fontColor: 'white',
+            borderRadius: '50px',
+            '&:hover': {
+              background: '#FF7600',
+            },
           }}
           variant="contained"
           disabled={
             files.length === 0 || content.length === 0 || nowPickId === ''
           }
         >
-          글 작성
+          작성 완료
         </Button>
       </Box>
     </form>

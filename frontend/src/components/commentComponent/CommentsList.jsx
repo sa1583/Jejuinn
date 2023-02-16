@@ -2,7 +2,6 @@ import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getCommentList } from '../../api/comment';
-import CommentBox from './CommentBox';
 import { v4 as uuidv4 } from 'uuid';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
@@ -33,41 +32,59 @@ export default function CommentsList() {
   return (
     <>
       <h2 style={{ color: '#FF7600' }}>댓글</h2>
-      <CommentBox
-        cpn={
-          <CommentInput
-            postType={postType}
-            postUid={postUid}
-            getComments={getComments}
-            accessToken={accessToken}
-            userInfo={userInfo}
-            isLogined={isLogined}
-          />
-        }
+      <CommentInput
+        postType={postType}
+        postUid={postUid}
+        getComments={getComments}
+        accessToken={accessToken}
+        userInfo={userInfo}
+        isLogined={isLogined}
       />
-      <div
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          borderBottom: '3px solid #FF7600',
-          margin: '10px 0 10px',
-          borderRadius: '50px',
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '1vh',
+          marginTop: '2vh',
         }}
-      ></div>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        {comments.map((comment) => {
+      >
+        {comments.length ? (
+          ''
+        ) : (
+          <p
+            style={{
+              fontSize: '2.1vh',
+              color: 'grey',
+              margin: 'auto',
+              marginTop: '2vh',
+            }}
+          >
+            작성된 댓글이 없습니다
+          </p>
+        )}
+        {comments.map((comment, index) => {
           return (
-            <CommentBox
-              key={uuidv4()}
-              cpn={
-                <Comment
-                  comment={comment}
-                  accessToken={accessToken}
-                  getComments={getComments}
-                  userInfo={userInfo}
-                />
-              }
-            />
+            <div key={uuidv4()}>
+              {index ? (
+                <div
+                  style={{
+                    width: '100%',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #DEDEDE',
+                    margin: '0px 0',
+                    borderRadius: '50px',
+                  }}
+                ></div>
+              ) : (
+                ''
+              )}
+              <Comment
+                comment={comment}
+                accessToken={accessToken}
+                getComments={getComments}
+                userInfo={userInfo}
+              />
+            </div>
           );
         })}
       </Box>
