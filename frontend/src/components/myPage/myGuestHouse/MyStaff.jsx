@@ -1,34 +1,29 @@
-import { Box } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
+import { useSelector } from 'react-redux';
+import { fireStaff } from '../../../api/guestHouse';
 import { images } from '../../../assets/images';
+import { selectAccessToken } from '../../../store/user';
 
-export default function MyStaff({ myStaff }) {
+export default function MyStaff({ myStaff, guestHouseUid, loadMyStaff }) {
+  const accessToken = useSelector(selectAccessToken);
+
+  const handleFireStaff = async () => {
+    await fireStaff(guestHouseUid, myStaff.uid, accessToken);
+    loadMyStaff();
+  };
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        paddingX: '2vh',
-      }}
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-evenly"
+      spacing={2}
     >
-      <Avatar
-        sx={{ width: '3rem', height: '3rem', marginRight: '10px' }}
-        alt="스탭 사진 받아올 수 있남"
-        src={images.sample_profile}
-      />
-      <Box>
-        <h4 style={{ color: '#FF7600', marginBottom: '2px' }}>
-          {myStaff.workName}
-        </h4>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <h3 style={{ marginTop: '0', marginRight: '10px' }}>
-            {myStaff.name}
-          </h3>
-          <p style={{ marginTop: '0px' }}>
-            {myStaff.startDate} - {myStaff.endDate}
-          </p>
-        </Box>
-      </Box>
-    </Box>
+      <Typography variant="h5">{myStaff.username}</Typography>
+      <Typography variant="h6">{myStaff.workName}</Typography>
+      <Typography variant="h6">{myStaff.startDate} ~</Typography>
+      <Button onClick={handleFireStaff}>종료</Button>
+    </Stack>
   );
 }
