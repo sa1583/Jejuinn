@@ -47,7 +47,6 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
 
   return (
     <div>
-      <h3>나는 게하 uid: {guestHouseUid}</h3>
       {/* 스탭 정보 */}
       <Box>
         <Typography style={{ fontSize: '1.3rem' }}>스탭 정보</Typography>
@@ -90,10 +89,16 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
         >
           {myJobOffers.map((myJobOffer) => {
             return (
-              <WhiteBox
+              <Box
                 key={uuidv4()}
-                cpn={<MyJobOffer myJobOffer={myJobOffer} checked={checked} />}
-              />
+                sx={{
+                  borderRadius: '50px',
+                  boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                  background: '#FFFFFF',
+                }}
+              >
+                <MyJobOffer myJobOffer={myJobOffer} checked={checked} />
+              </Box>
             );
           })}
         </Box>

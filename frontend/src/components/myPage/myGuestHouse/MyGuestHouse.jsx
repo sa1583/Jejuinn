@@ -104,7 +104,9 @@ export default function MyGuestHouse() {
               justifyContent: 'space-between',
             }}
           >
-            <p style={{ fontSize: '1.3rem' }}>내 게스트하우스</p>
+            <p style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>
+              내 게스트하우스
+            </p>
             <Link
               to="/guesthouse/create"
               style={{ textDecoration: 'none', color: '#FF7600' }}

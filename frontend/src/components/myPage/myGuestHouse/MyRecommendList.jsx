@@ -3,7 +3,14 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { selectAccessToken } from '../../../store/user';
-import { Box, Backdrop, CircularProgress, Stack, Modal } from '@mui/material';
+import {
+  Box,
+  Backdrop,
+  CircularProgress,
+  Stack,
+  Modal,
+  Divider,
+} from '@mui/material';
 import WhiteBox from '../../whiteBox/WhiteBox';
 import MyApplicantCom from './MyApplicantCom';
 import { getRecommandedList } from '../../../api/recommand';
@@ -66,9 +73,11 @@ export default function MyRecommendList() {
   return (
     <div>
       <Box sx={{ paddingX: '4vh', paddingY: '2vh', paddingBottom: '50px' }}>
-        <h1 style={{ fontSize: '1.8rem', paddingBottom: '15px' }}>
+        <h1 style={{ fontSize: '1.7rem', marginBottom: '2rem' }}>
           추천스탭 목록
         </h1>
+        <Divider sx={{ marginBottom: '7px' }} />
+        <br />
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <Stack direction="column" alignItems="center" spacing={2}>
             <CircularProgress
@@ -85,9 +94,15 @@ export default function MyRecommendList() {
                   onClick={() => handleOpenModal(myApplicant.resumeInfoUid)}
                   sx={{ cursor: 'pointer', width: '100%' }}
                 >
-                  <WhiteBox
-                    cpn={<MyApplicantCom myApplicant={myApplicant} />}
-                  />
+                  <Box
+                    sx={{
+                      borderRadius: '50px',
+                      boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                      background: '#FFFFFF',
+                    }}
+                  >
+                    <MyApplicantCom myApplicant={myApplicant} />
+                  </Box>
                 </Box>
               );
             })}
