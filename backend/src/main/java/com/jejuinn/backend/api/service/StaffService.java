@@ -31,7 +31,7 @@ public class StaffService {
     public List<StaffRecord> getMyStaffList(Long guestHouseUid, Long representativeUid){
         GuestHouse guestHouse = guestHouseRepository.findById(guestHouseUid)
                 .orElseThrow(()-> new NoContentException("등록되지 않은 게스트하우스 입니다."));
-        if(guestHouse.getRepresentativeUid().equals(representativeUid))
+        if(!guestHouse.getRepresentativeUid().equals(representativeUid))
             throw new UnAuthorizationException("게스트 하우스의 권한이 없습니다.");
         return staffRecordRepository.findAllByGuestHouseUidOrderByStartDateDesc(guestHouseUid);
     }
