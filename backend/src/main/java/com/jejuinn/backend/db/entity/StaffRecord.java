@@ -66,6 +66,7 @@ public class StaffRecord {
                 .username(staff.getUsername())
                 .userEmail(staff.getEmail())
                 .workName(workName)
+                .isActive(true)
                 .build();
     }
 }
