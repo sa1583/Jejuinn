@@ -81,7 +81,8 @@ public class StaffController {
     }
 
     @PostMapping("/auth/guest-house/staff")
-    @ApiOperation(value = "스태프 채용(자동 매칭의 경우)", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 업무를 종료합니다.")
+    @ApiOperation(value = "스태프 채용(자동 매칭의 경우)", notes = "<strong>게스트하우스 uid, userUid, workName</strong>를 입력받아" +
+            " 스태프를 채용합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK(삭제 성공)"),
             @ApiResponse(code = 400, message = "BAD REQUEST(데이터가 없음)"),
@@ -96,16 +97,4 @@ public class StaffController {
         return ResponseEntity.status(200).build();
     }
 
-    @PostMapping("/auth/guest-house/staff/evaluation")
-    @ApiOperation(value = "스태프 채용(자동 매칭의 경우)", notes = "<strong>게스트하우스 uid</strong>를 입력받아 스태프 업무를 종료합니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK(삭제 성공)"),
-            @ApiResponse(code = 400, message = "BAD REQUEST(데이터가 없음)"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<?> evalStaff(@Valid @RequestBody EvaluationStaffPostReq data, HttpServletRequest request){
-        Long representativeUid = userService.getUserUidFromAccessToken(request);
-        staffService.updateStaffScore(data);
-        return ResponseEntity.status(200).build();
-    }
 }

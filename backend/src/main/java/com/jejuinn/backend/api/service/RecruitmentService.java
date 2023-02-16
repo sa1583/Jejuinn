@@ -36,7 +36,7 @@ public class RecruitmentService {
         System.out.println("여기까지 옴");
         Long writerUid = recruitmentRepository.findUserUidByRecruitmentUid(recruitmentUid);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentUid).get();
-        if(Objects.equals(userUid, writerUid)) throw new UnAuthorizationException("작성자가 아닙니다.");
+        if(!Objects.equals(userUid, writerUid)) throw new UnAuthorizationException("작성자가 아닙니다.");
         for(Work work : recruitment.getWorks()) {
             workResumeInfoRepository.deleteByWorkUid(work.getUid());
         }
