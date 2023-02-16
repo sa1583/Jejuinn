@@ -87,8 +87,8 @@ export default function MyApplicantDetail({
   const handleHireStaff = async () => {
     console.log(location.pathname);
     const guestHouseUid = await getGuestHouseUid();
-    const { data } = await getWorkInfo(workUid);
-    await hireStaff(guestHouseUid, applicant.writerUid, data.workName);
+    // const { data } = await getWorkInfo(workUid);
+    // await hireStaff(guestHouseUid, applicant.writerUid, data.workName);
   };
 
   useEffect(() => {

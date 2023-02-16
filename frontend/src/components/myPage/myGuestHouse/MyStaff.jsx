@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { useSelector } from 'react-redux';
 import { fireStaff } from '../../../api/guestHouse';
@@ -14,20 +14,15 @@ export default function MyStaff({ myStaff, guestHouseUid, loadMyStaff }) {
   };
 
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
-      <Box>
-        <h4 style={{ color: '#FF7600', marginBottom: '2px' }}>
-          {myStaff.username}
-        </h4>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <h3 style={{ marginTop: '0', marginRight: '10px' }}>
-            {myStaff.workName}
-          </h3>
-          <p style={{ marginTop: '0px' }}>
-            {myStaff.startDate} - {myStaff.endDate}
-          </p>
-        </Box>
-      </Box>
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-evenly"
+      spacing={2}
+    >
+      <Typography variant="h5">{myStaff.username}</Typography>
+      <Typography variant="h6">{myStaff.workName}</Typography>
+      <Typography variant="h6">{myStaff.startDate} ~</Typography>
       <Button onClick={handleFireStaff}>종료</Button>
     </Stack>
   );
