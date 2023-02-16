@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -256,7 +258,7 @@ public class RecruitmentController {
     public ResponseEntity<?> deleteWork(@PathVariable Long workUid, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         Long writerUid = workRepository.findUserUidByWorkUid(workUid);
-        if(userUid != writerUid) {
+        if(Objects.equals(userUid,writerUid)) {
             return ResponseEntity.status(401).build();
         }
         workRepository.deleteById(workUid);
@@ -286,11 +288,26 @@ public class RecruitmentController {
     public ResponseEntity<?> modifyWork(@RequestBody ModifyWorkPutReq modifyWorkPutReq, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         Long writerUid = workRepository.findUserUidByWorkUid(modifyWorkPutReq.getWorkUid());
-        if(userUid != writerUid) {
+        if(Objects.equals(userUid, writerUid)) {
             return ResponseEntity.status(401).build();
         }
         workRepository.save(modifyWorkPutReq.toWork());
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/api/work/{workUid}")
+    @ApiOperation(value = "직무 하나 조회", notes = "workUid를 이용해 직무 하나를 받아옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getOneWork(@PathVariable Long workUid) {
+        return ResponseEntity.status(200).body(
+                workRepository.findById(workUid).map(
+                        work -> WorkRes.of(work,
+                                workRepository.findUserUidByWorkUid(work.getUid())
+                        )));
     }
 
     @GetMapping("/api/job-offer/search")
@@ -314,6 +331,19 @@ public class RecruitmentController {
                         work -> WorkRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid()))
                 )
+        );
+    }
+
+    @GetMapping("/auth/get-guest-house/{workUid}")
+    @ApiOperation(value = "직무 uid로 게스트하우스 uid 조회", notes = "workUid를 통해 guestHouseUid를 받아옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK(조회 성공)"),
+            @ApiResponse(code = 400, message = "BAD REQUEST(검색 조건에 맞는 직무가 없습니다.)"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getGuestHouseUid(@PathVariable Long workUid) {
+        return ResponseEntity.status(200).body(
+                workRepository.findGuestHouseUidByWorkUid(workUid)
         );
     }
 }

@@ -25,7 +25,7 @@ public class EmailService{
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to);//보내는 대상
-        message.setSubject("[movook] 비밀번호 초기화 안내 메일입니다.");//제목
+        message.setSubject("[Jejuinn] 비밀번호 초기화 안내 메일입니다.");//제목
 
         String msgg="";
         msgg+= "<div style='margin:20px;'>";

@@ -43,7 +43,7 @@ public class TravelPlaceReviewService {
         Optional<User> user = userRepository.findById(userUid);
 
         for (TravelPlaceReview like : user.get().getLikes()) {
-            if(like.getUid() == reviewUid)
+            if(Objects.equals(like.getUid(), reviewUid))
                 throw new DuplicateDataException("이미 좋아요를 누른 리뷰 입니다.");
         }
         travelPlaceReviewRepository.increaseLikeCount(reviewUid);
