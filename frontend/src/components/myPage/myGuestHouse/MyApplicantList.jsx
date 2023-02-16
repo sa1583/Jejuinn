@@ -8,7 +8,7 @@ import { myApplicantList } from '../../../api/guestHouse';
 import MyApplicantDetail from './MyApplicantDetail';
 import WhiteBox from '../../whiteBox/WhiteBox';
 
-export default function MyApplicantList() {
+export default function MyApplicantList({ guestHouseUid }) {
   const access_token = useSelector(selectAccessToken);
   const location = useLocation();
   const workUid = location.pathname.split('applicantlist/')[1];

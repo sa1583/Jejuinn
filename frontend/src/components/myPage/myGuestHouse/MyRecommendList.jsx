@@ -9,7 +9,7 @@ import MyApplicantCom from './MyApplicantCom';
 import { getRecommandedList } from '../../../api/recommand';
 import MyApplicantDetail from './MyApplicantDetail';
 
-export default function MyRecommendList() {
+export default function MyRecommendList({ guestHouseUid }) {
   const access_token = useSelector(selectAccessToken);
   const location = useLocation();
   const workUid = location.pathname.split('recommendlist/')[1];
