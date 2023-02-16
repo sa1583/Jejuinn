@@ -12,11 +12,21 @@ export default function MyApplicantCom({ myApplicant }) {
           alt="image"
           src={images.sample_profile}
         />
-        <Typography minWidth="70px" mx="10px" variant="h6">
+        <Typography
+          minWidth="60px"
+          mx="10px"
+          variant="h6"
+          sx={{ fontSize: '20', fontWeight: 'bold', color: '#FF7600' }}
+        >
           {myApplicant.userName}
         </Typography>
-        <Typography minWidth="100px" mx="10px" variant="h6">
-          {myApplicant.gender} | {myApplicant.age}
+        <Typography
+          minWidth="150px"
+          mx="10px"
+          variant="h6"
+          sx={{ fontSize: '18px ' }}
+        >
+          {myApplicant.gender} | {myApplicant.age}세
         </Typography>
         <Stack direction="row" spacing={1}>
           {myApplicant.personTypes.map((tag) => {
