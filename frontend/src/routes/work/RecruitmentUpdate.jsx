@@ -9,6 +9,7 @@ import { useState } from 'react';
 import ImageUploader from '../../components/articleCreateComponent/ImageUploader';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import RecruitmentCreateForm from '../../components/work/RecruitmentCreateForm';
 
 const CustomButton = styled(Button)({
   variant: 'contained',
@@ -31,26 +32,28 @@ const CustomButton = styled(Button)({
 
 export default function RecruitmentUpdate() {
   const { recruitmentUid } = useParams();
+  const { guesthouseUid } = useParams();
   const navigate = useNavigate();
 
   const accessToken = useSelector(selectAccessToken);
   const [preImages, setPreImages] = useState([]);
   const [deleteImages, setDeleteImages] = useState([]);
   const [files, setFiles] = useState([]);
-  const [recruitmentInfo, setRecruimentInfo] = useState({});
-
-  const [preRecruitmentInfo, setPreRecruimentInfo] = useState({});
+  const [recruimentInfo, setRecruimentInfo] = useState({
+    title: '',
+    welfare: '',
+    wanted: [],
+    addInfo: '',
+    guestHouseUid: parseInt(guesthouseUid),
+  });
+  console.log(guesthouseUid);
+  const RecruitInfoInput = (title, welfare, wanted, addInfo) => {
+    setRecruimentInfo({ ...recruimentInfo, title, welfare, wanted, addInfo });
+  };
 
   const getRecruitmentDetail = async () => {
     const data = (await recruitmentDetail(recruitmentUid)).data;
-    // console.log(data);
     setPreImages(data.images);
-    setPreRecruimentInfo(data.recruitment);
-  };
-
-  const onRecruitmentWrite = (input) => {
-    console.log(input);
-    setRecruimentInfo(input);
   };
 
   const handlePreImages = (id) => {
@@ -63,14 +66,10 @@ export default function RecruitmentUpdate() {
   };
 
   const onClick = () => {
-    setRecruimentInfo({
-      ...recruitmentInfo,
-      guestHouseUid: preRecruitmentInfo.guestHouseUid,
-    });
     const formData = new FormData();
     const recruitmentBody = {
       // works: [workInfo],
-      recruitment: recruitmentInfo,
+      recruitment: recruimentInfo,
     };
 
     const recruitmentBodyBlob = new Blob([JSON.stringify(recruitmentBody)], {
@@ -83,6 +82,7 @@ export default function RecruitmentUpdate() {
     });
 
     console.log(recruitmentBody);
+
     fetch(updateRecruitment(formData, accessToken, recruitmentUid));
 
     navigate(`/worklist/`);
@@ -91,8 +91,6 @@ export default function RecruitmentUpdate() {
   useEffect(() => {
     getRecruitmentDetail();
   }, []);
-
-  console.log(recruitmentInfo);
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
@@ -104,10 +102,7 @@ export default function RecruitmentUpdate() {
           maxNum={10}
           handlePreImages={handlePreImages}
         />
-        <RecruitmentUpdateComponent
-          onRecruitmentWrite={onRecruitmentWrite}
-          currentRecruitmentInfo={preRecruitmentInfo}
-        />
+        <RecruitmentCreateForm handleInput={RecruitInfoInput} />
       </form>
       <br />
       <CustomButton type="submit" onClick={onClick}>
