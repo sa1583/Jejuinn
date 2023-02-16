@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -70,7 +71,7 @@ public class ResumeController {
     public ResponseEntity<?> deleteResumeInfo(@PathVariable Long resumeInfoUid, HttpServletRequest request) {
         Long userUid = userService.getUserUidFromAccessToken(request);
         Long writeUid = resumeInfoRepository.findById(resumeInfoUid).get().getUser().getUid();
-        if(userUid != writeUid) return ResponseEntity.status(401).build();
+        if(Objects.equals(userUid, writeUid)) return ResponseEntity.status(401).build();
         ResumeInfo resumeInfo = resumeInfoRepository.findById(resumeInfoUid).get();
         resumeInfo.setDeleted(true);
         resumeInfoRepository.save(resumeInfo);

@@ -54,8 +54,8 @@ public class RecommenderController {
             return resumeInfoService.getMyApplicant(resumeInfoUid);
         }).collect(Collectors.toList());
 
-        if(result.size() > 10){
-            return ResponseEntity.status(200).body(result.subList(0,10));
+        if(result.size() > 3){
+            return ResponseEntity.status(200).body(result.subList(0,3));
         }
         return ResponseEntity.status(200).body(result);
     }
