@@ -6,6 +6,7 @@ import com.jejuinn.backend.db.entity.ResumeInfo;
 import com.jejuinn.backend.db.entity.User;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,26 +17,36 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateResumeInfoPutReq {
+    @NotNull
     private Long uid;
 
+    @NotNull
     private String content;
 
+    @NotNull
     private LocalDate possibleStartDate;
 
+    @NotNull
     private int minWorkPeriod;
 
+    @NotNull
     private boolean autoApply;
 
+    @NotNull
     private List<String> personTypes;
 
+    @NotNull
     private String interestArea;
 
+    @NotNull
     private Long userUid;
 
+    @NotNull
     private LocalDate dateCreated;
 
     private String instagramLink;
 
+    @NotNull
     private List<String> guestHouseTypes;
 
     public String toGuestHouseType() {
