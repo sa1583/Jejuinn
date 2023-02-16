@@ -58,16 +58,20 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
         >
           {myStaffs.map((myStaff) => {
             return (
-              <WhiteBox
+              <Box
                 key={uuidv4()}
-                cpn={
-                  <MyStaff
-                    myStaff={myStaff}
-                    guestHouseUid={guestHouse.guestHouse.uid}
-                    loadMyStaff={getMyStaff}
-                  />
-                }
-              />
+                sx={{
+                  borderRadius: '50px',
+                  boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                  background: '#FFFFFF',
+                }}
+              >
+                <MyStaff
+                  myStaff={myStaff}
+                  guestHouseUid={guestHouse.guestHouse.uid}
+                  loadMyStaff={getMyStaff}
+                />
+              </Box>
             );
           })}
         </Box>
