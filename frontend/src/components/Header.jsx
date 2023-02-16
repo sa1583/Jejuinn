@@ -8,9 +8,15 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
-import { logout, selectIsLogin, selectUserInfo } from '../store/user';
+import {
+  logout,
+  selectAccessToken,
+  selectIsLogin,
+  selectUserInfo,
+} from '../store/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { images } from '../assets/images';
 
 const pages = [
   { name: '게스트하우스', url: 'guesthouse' },
@@ -35,6 +41,9 @@ export default function ButtonAppBar() {
     for (let i = 1; i <= 3; i++) {
       toolbarRef.current.childNodes[i].childNodes[0].style.color = 'black';
     }
+    if (!isLogin) {
+      toolbarRef.current.childNodes[4].childNodes[0].style.color = 'black';
+    }
     switch (name) {
       case 'guesthouse':
         toolbarRef.current.childNodes[1].childNodes[0].style.color = '#FF7600';
@@ -44,6 +53,14 @@ export default function ButtonAppBar() {
         break;
       case 'staffpicklist':
         toolbarRef.current.childNodes[3].childNodes[0].style.color = '#FF7600';
+        break;
+      case 'login':
+      case '':
+      case 'signup':
+        if (!isLogin) {
+          toolbarRef.current.childNodes[4].childNodes[0].style.color =
+            '#FF7600';
+        }
         break;
     }
   });
@@ -61,11 +78,27 @@ export default function ButtonAppBar() {
     return navigate('mypage');
   };
 
+  const accessToken = useSelector(selectAccessToken);
+
   const handleLogout = () => {
-    dispatch(logout());
+    const info = {
+      accessToken,
+      uid: userInfo.uid,
+    };
+    dispatch(logout(info));
     handleCloseUserMenu();
     return navigate('/');
   };
+
+  const profileImage = () => {
+    const purl = userInfo.profileImageUrl;
+    if (purl.slice(0, 4) == 'http') {
+      return purl;
+    } else {
+      return `${images.defalut_url}${purl}`;
+    }
+  };
+
   return (
     <Box height="95px">
       <AppBar
@@ -73,10 +106,13 @@ export default function ButtonAppBar() {
         sx={{
           background: '#FFFFFF',
           height: '95px',
-          boxShadow: '0px 2px 6px -1px rgb(0 0 0 / 10%)',
+          boxShadow: 'none',
+          borderStyle: 'solid',
+          borderColor: '#e5e7eb',
+          borderWidth: 1,
         }}
       >
-        <Toolbar sx={{ width: '80%', margin: 'auto' }} ref={toolbarRef}>
+        <Toolbar sx={{ width: '60%', margin: 'auto' }} ref={toolbarRef}>
           <div
             style={{
               flexGrow: 25,
@@ -106,10 +142,7 @@ export default function ButtonAppBar() {
               }}
               key={page.name}
             >
-              <Link
-                to={page.url}
-                style={{ textDecoration: 'none', color: 'black' }}
-              >
+              <Link to={page.url} style={{ textDecoration: 'none' }}>
                 {page.name}
               </Link>
             </Typography>
@@ -125,7 +158,6 @@ export default function ButtonAppBar() {
                 to={'login'}
                 style={{
                   textDecoration: 'none',
-                  color: '#FF7600',
                 }}
               >
                 로그인
@@ -133,15 +165,23 @@ export default function ButtonAppBar() {
             </Typography>
           )}
           {isLogin && (
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, flexGrow: 1 }}>
-              {userInfo.profileImg ? (
-                <Avatar alt="Remy Sharp" src={userInfo.profileImg} />
+            <Box
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0, flexGrow: 1, cursor: 'pointer' }}
+            >
+              {userInfo.profileImageUrl ? (
+                <Avatar alt="Remy Sharp" src={profileImage()} />
               ) : (
-                <Avatar sx={{ backgroundColor: 'primary.main' }}>
+                <Avatar
+                  sx={{
+                    color: 'white',
+                    backgroundColor: 'primary.main',
+                  }}
+                >
                   {userInfo.nickname[0].toUpperCase()}
                 </Avatar>
               )}
-            </IconButton>
+            </Box>
           )}
 
           <Menu

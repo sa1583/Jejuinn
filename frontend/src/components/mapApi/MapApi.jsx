@@ -1,6 +1,5 @@
 import { Box } from '@mui/system';
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 import { images } from '../../assets/images';
 
 // HandlePinClick: 지도에 있는 핀을 클릭했을 때 발생시키고 싶은 매서드 넣으면 됨
@@ -19,6 +18,7 @@ export default function MapApi({
   setNewPin,
   startSpot,
   pickedId,
+  high,
 }) {
   const mapElement = useRef(null);
   /// 여기 spots를 axois로 전체 리스트 받아오면 됨
@@ -29,9 +29,6 @@ export default function MapApi({
   //   { id: 3, lat: 33.4664, lng: 126.6694 },
   //   { id: 4, lat: 33.2856, lng: 126.4449 },
   // ];
-  // const location = useLocation();
-  // const page = location.pathname.split('/');
-  // const pageId = page[page.length - 1];
 
   useEffect(() => {
     const { naver } = window;
@@ -102,9 +99,7 @@ export default function MapApi({
           id: id,
           map: map,
           position: position,
-          // animation: naver.maps.Animation.DROP,
           icon: pickedId == id ? pickedIcon : notPickedIcon,
-          // icon: notPickedIcon,
         });
         markers.push(marker);
       }
@@ -114,12 +109,6 @@ export default function MapApi({
       return function () {
         if (handlePinClick) {
           const marker = markers[seq];
-          const markerBefore = markers[pickedMarker];
-          pickedMarker = seq;
-
-          marker.setIcon(pickedIcon);
-          markerBefore.setIcon(notPickedIcon);
-          // 여기
           handlePinClick(marker);
         }
       };
@@ -150,19 +139,20 @@ export default function MapApi({
       });
     }
   }, [spots, pickedId]);
+
+  const style = {
+    height: high,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  };
+
   return (
-    <Box
-      sx={{
-        height: '23rem',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-      }}
-    >
+    <Box sx={style}>
       <div
         ref={mapElement}
-        style={{ height: '100%', width: '100%', borderRadius: '39px' }}
+        style={{ height: '100%', width: '100%', borderRadius: '15px' }}
       />
     </Box>
   );

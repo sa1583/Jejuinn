@@ -1,10 +1,17 @@
 import React from 'react';
+import axios from 'axios';
 import { Button } from '@mui/material';
 import DaumPostcode from 'react-daum-postcode';
+import { getPosByAddress } from '../../api/address';
 
-const PopupPostCode = (props) => {
+const PopupPostCode = ({
+  setAddress,
+  setDetailAddress,
+  setAreaName,
+  setPos,
+  onClose,
+}) => {
   // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
-  const setAddress = props.setAddress;
 
   const handlePostCode = (data) => {
     let fullAddress = data.address;
@@ -20,12 +27,24 @@ const PopupPostCode = (props) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    console.log(data);
-    console.log(fullAddress);
-    console.log(data.zonecode);
-    setAddress(fullAddress);
+    setAddress(data.address);
+    setDetailAddress(extraAddress);
+    setAreaName(data.bname1 ? data.bname1 : data.sigungu);
 
-    props.onClose();
+    handleComplete(data);
+
+    onClose();
+  };
+
+  const handleComplete = async ({ address }) => {
+    const {
+      data: { documents },
+    } = await getPosByAddress(address);
+    setPos({
+      id: 1,
+      lat: documents[0].y,
+      lng: documents[0].x,
+    });
   };
 
   const postCodeStyle = {
@@ -45,9 +64,17 @@ const PopupPostCode = (props) => {
         onComplete={handlePostCode}
       />
       <Button
-        style={{ display: 'absolute' }}
+        variant="contained"
+        sx={{
+          display: 'absolute',
+          width: '100%',
+          height: '50px',
+          '&:hover': {
+            background: '#FF7600',
+          },
+        }}
         onClick={() => {
-          props.onClose();
+          onClose();
         }}
       >
         닫기

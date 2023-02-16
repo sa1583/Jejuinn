@@ -1,64 +1,131 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Rating, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { deepOrange } from '@mui/material/colors';
 import ImageSlider from '../imageSlider/ImageSlider';
-import CommentBox from '../commentComponent/CommentBox';
-import CommentInput from '../commentComponent/CommentInput';
-import CommentList from '../commentComponent/CommentList';
-import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
+import {
+  dislikeReview,
+  likedReviewLikst,
+  likeReview,
+} from '../../api/staffPick';
+import { useSelector } from 'react-redux';
+import { selectAccessToken } from '../../store/user';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CommentsList from '../commentComponent/CommentsList';
+import { images } from '../../assets/images';
+export default function ReviewContent({ reviewContent, pageId, islogined }) {
+  const access_token = useSelector(selectAccessToken);
 
-export default function ReviewContent({ reviewContent }) {
-  const comments = [
-    {
-      img: 'J',
-      name: 'JangJeongMin',
-      comment:
-        '나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하나는 코로나의 황제다 후하하하하',
-    },
-    {
-      img: 'L',
-      name: 'LeeJaeWook',
-      comment: '정민이 케익 개꿀맛 엌',
-    },
-  ];
+  const getLikedReviews = async () => {
+    const data = (await likedReviewLikst(access_token)).data;
+    data.forEach((review) => {
+      review.uid === pageId && setLiked(true);
+    });
+  };
 
-  // 리뷰에서 댓글만 뽑아서 comments로 저장하는 로직
-  // const [comments, setComments] = useState([])
-  // useEffect(() => {
-  //   setComments(review.comments)
-  // },[review])
+  useState(() => {
+    if (islogined) {
+      getLikedReviews();
+    }
+  }, []);
+
+  const [liked, setLiked] = useState(false);
+
+  // 좋아요 보내긔
+  const goLike = async () => {
+    if (islogined) {
+      await likeReview(access_token, pageId);
+      setLiked((prev) => !prev);
+    } else {
+      alert('로그인이 필요합니다.');
+    }
+  };
+
+  // 좋아요 취소 보내긔
+  const goDisLike = async () => {
+    await dislikeReview(access_token, pageId);
+    setLiked((prev) => !prev);
+  };
+
+  const profileImage = () => {
+    const purl = reviewContent.profileImageUrl;
+    if (purl.slice(0, 4) === 'http') {
+      return purl;
+    } else {
+      return `${images.defalut_url}${purl}`;
+    }
+  };
+
+  const heart = () => {
+    if (islogined) {
+      if (liked) {
+        return (
+          <FavoriteIcon
+            sx={{ fontSize: '2rem', color: '#FF7600', cursor: 'pointer' }}
+            onClick={goDisLike}
+          />
+        );
+      } else {
+        return (
+          <FavoriteBorderIcon
+            sx={{ color: '#FF7600', fontSize: '2rem', cursor: 'pointer' }}
+            onClick={goLike}
+          />
+        );
+      }
+    } else {
+      return <FavoriteIcon sx={{ color: 'grey', fontSize: '2rem' }} />;
+    }
+  };
 
   return (
     <Box sx={{ padding: '5%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ width: '100%', alignSelf: 'center' }}>
+      <Box sx={{ width: '100%', alignSelf: 'center', marginBottom: '2rem' }}>
         <ImageSlider items={reviewContent?.images} />
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <Avatar sx={{ bgcolor: deepOrange[500] }}>Cho</Avatar>
-        <p style={{ fontSize: '1.5vw', fontWeight: 'bolder' }}>초이유태</p>
-      </Box>
-      <div dangerouslySetInnerHTML={{ __html: reviewContent?.content }} />
-      <h2 style={{ color: '#FF7600' }}>댓글</h2>
-      <CommentBox cpn={<CommentInput />} />
-      <div
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          borderBottom: '3px solid #FF7600',
-          margin: '10px 0 10px',
-          borderRadius: '50px',
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+          marginBottom: '1rem',
         }}
-      ></div>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        {comments.map((comment) => {
-          return (
-            <CommentBox
-              key={uuidv4()}
-              cpn={<CommentList comment={comment} />}
-            />
-          );
-        })}
+      >
+        {reviewContent.profileImageUrl ? (
+          <Avatar
+            src={profileImage()}
+            sx={{ width: '2.8rem', height: '2.8rem', bgcolor: '#FF7600' }}
+          ></Avatar>
+        ) : (
+          <Avatar
+            sx={{
+              backgroundColor: 'primary.main',
+              fontSize: '1rem',
+            }}
+          >
+            {reviewContent.writer_nickname[0]}
+          </Avatar>
+        )}
+
+        <Typography sx={{ fontSize: '1.1vw', fontWeight: 'bolder' }}>
+          {reviewContent.writer_nickname}
+        </Typography>
       </Box>
+      <Rating
+        value={reviewContent?.starRating}
+        readOnly
+        // sx={{ marginBottom: '1rem' }}
+      />
+
+      <div
+        style={{ fontSize: '20px' }}
+        dangerouslySetInnerHTML={{ __html: reviewContent?.content }}
+      />
+
+      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }}>
+        {heart()}
+      </Box>
+      <CommentsList />
     </Box>
   );
 }

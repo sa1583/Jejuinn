@@ -1,8 +1,8 @@
 import { SectionsContainer, Section } from 'react-fullpage';
-import MainOne from '../../components/main/MainOne';
 import MainTwo from '../../components/main/MainTwo';
 import MainThree from '../../components/main/MainThree';
 import MainFour from '../../components/main/MainFour';
+import MainFive from '../../components/main/MainFive';
 
 export default function Main() {
   let options = {
@@ -12,9 +12,9 @@ export default function Main() {
 
   return (
     <SectionsContainer {...options}>
-      <Section>
+      {/* <Section>
         <MainOne />
-      </Section>
+      </Section> */}
       <Section>
         <MainTwo />
       </Section>
@@ -23,6 +23,9 @@ export default function Main() {
       </Section>
       <Section>
         <MainFour />
+      </Section>
+      <Section>
+        <MainFive />
       </Section>
     </SectionsContainer>
   );

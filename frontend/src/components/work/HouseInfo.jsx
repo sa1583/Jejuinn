@@ -1,24 +1,24 @@
 import { Grid } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, height } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { guestHouseDetail } from '../../api/guestHouse';
 import WhiteBox from '../whiteBox/WhiteBox';
 import MapApi from '../mapApi/MapApi';
+import ImageSlider from '../imageSlider/ImageSlider';
 
 export default function HouseInfo({ images, geustHouseId }) {
-  console.log(images, geustHouseId);
   const [guestHouse, setGuestHouse] = useState({});
+  // if images null : images= guesthouse.image
 
   async function getGuestHouse() {
     const data = (await guestHouseDetail(geustHouseId)).data.guestHouse;
     setGuestHouse(data);
   }
-  console.log(guestHouse);
 
   useEffect(() => {
     getGuestHouse();
   }, [geustHouseId]);
-
+  // console.log(guestHouse);
   return (
     <Box sx={{ paddingY: '3%', paddingX: '3%' }}>
       <Grid container spacing={2}>
@@ -26,11 +26,20 @@ export default function HouseInfo({ images, geustHouseId }) {
           <h2>{guestHouse.guestHouseName}</h2>
         </Grid>
         <Grid item md={4}>
-          <Box>{guestHouse.tags}</Box>
-          <WhiteBox cpn={<MapApi />} />
+          <Grid container spacing={2}>
+            <Grid item md={12}>
+              <Box>{guestHouse.address}</Box>
+            </Grid>
+            <Grid item md={12}>
+              <WhiteBox cpn={<MapApi />} />
+            </Grid>
+            <Grid item md={12}>
+              <Box>{guestHouse.guestHouseTypes?.map((tag) => `#${tag} `)}</Box>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item md={8}>
-          <img src={images} alt="리크루먼트 사진 들어갈꺼임~" />
+          <ImageSlider items={images} />
           <Box>{guestHouse.introduction}</Box>
         </Grid>
       </Grid>
