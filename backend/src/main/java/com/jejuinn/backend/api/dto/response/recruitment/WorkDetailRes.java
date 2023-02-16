@@ -40,6 +40,7 @@ public class WorkDetailRes {
     public static List<WorkDetailRes> ofDetail(List<Work> works) {
         List<WorkDetailRes> result = new ArrayList<>();
         for(Work work : works) {
+            if(work == null) continue;
             WorkDetailRes workDetailRes = WorkDetailRes.builder()
                     .uid(work.getUid())
                     .workName(work.getWorkName())
