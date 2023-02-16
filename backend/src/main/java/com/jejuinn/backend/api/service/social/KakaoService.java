@@ -80,12 +80,16 @@ public class KakaoService {
                 .authorityName("ROLE_USER")
                 .build();
         String gender2 = null;
-        if(getFromOptional(gender).equals("male")) {
-            gender2 = "남자";
-        } else if(getFromOptional(gender).equals("female")) {
-            gender2 = "여자";
-        } else {
+        if(getFromOptional(gender) == null) {
             gender2 = "무관";
+        } else {
+            if(getFromOptional(gender).equals("male")) {
+                gender2 = "남자";
+            } else if(getFromOptional(gender).equals("female")) {
+                gender2 = "여자";
+            } else {
+                gender2 = "무관";
+            }
         }
         User user = User.builder()
                         .email(getFromOptional(email))
