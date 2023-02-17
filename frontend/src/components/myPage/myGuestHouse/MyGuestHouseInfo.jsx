@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../store/user';
 import { v4 as uuidv4 } from 'uuid';
-import { Box, Typography, Popover, Switch } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { myActiveStaffList, myJobOfferList } from '../../../api/guestHouse';
 import { guestHouseDetail } from '../../../api/guestHouse';
 import MyStaff from './MyStaff';
