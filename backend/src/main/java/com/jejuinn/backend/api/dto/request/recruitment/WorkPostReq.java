@@ -13,36 +13,27 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WorkPostReq {
-    @NotNull
+
     private Long recruitmentUid;
 
-    @NotNull
     private String workName;
 
-    @NotNull
     private int intake;
 
-    @NotNull
     private String gender;
 
-    @NotNull
     private int minWorkPeriod;
 
-    @NotNull
     private String workTime;
 
-    @NotNull
     private int workDays;
 
-    @NotNull
     private int daysOff;
 
     private String workDescription;
 
-    @NotNull
     private String salary;
 
-    @NotNull
     private LocalDate entryDate;
 
     public Work toWork() {
