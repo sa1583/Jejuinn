@@ -71,7 +71,7 @@ export default function MyApplicantList() {
               return (
                 <Box
                   key={myApplicant.uid}
-                  onClick={() => handleOpenModal(myApplicant.uid)}
+                  onClick={() => handleOpenModal(myApplicant.resumeInfoUid)}
                   sx={{ cursor: 'pointer' }}
                   width="100%"
                 >
@@ -92,7 +92,7 @@ export default function MyApplicantList() {
         <MyApplicantDetail
           resumeUid={resumeUid}
           workUid={workUid}
-          handleClose={handleCloseModal}
+          handleCloseModal={handleCloseModal}
           handlePrev={handlePrev}
           handleForward={handleForward}
         />
