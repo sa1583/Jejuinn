@@ -78,7 +78,7 @@ export default function MyApplicantDetail({
     const guestHouseUid = await getGuestHouseUid();
     const sessionId = userInfo.uid + '-' + generateRandomString(30);
     const link = `jejuinn.com/interveiw/${sessionId}`;
-    await snedVideoInterviewUrl(guestHouseUid, userInfo.uid, link);
+    await snedVideoInterviewUrl(guestHouseUid, applicant.writerUid, link);
     navigate(`/interview/${sessionId}`);
   };
 
