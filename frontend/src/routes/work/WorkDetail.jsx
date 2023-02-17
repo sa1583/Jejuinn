@@ -27,7 +27,6 @@ export default function WorkDetail() {
 
   async function getRecruitmentDetail() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
-    console.log(data);
     setImages(data.images);
     setWorks(data.works);
     setRecruitmentInfo(data.recruitment);
@@ -51,7 +50,6 @@ export default function WorkDetail() {
   }
 
   const onClick = () => {
-    console.log(recruitmentInfo);
     navigate(
       `/recruitment/update/${recruitmentInfo.uid}/${recruitmentInfo.guestHouseUid}`,
     );

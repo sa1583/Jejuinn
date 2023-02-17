@@ -14,9 +14,7 @@ export default function WorkList() {
   const [works, setWorks] = useState([]);
 
   async function getWorks() {
-    console.log(filter);
     const { data } = await filterWorks(filter);
-    console.log(data);
     if (filter.pageNumber === 1) setWorks(data.content);
     else setWorks((prev) => prev.concat(data.content));
   }
@@ -38,7 +36,6 @@ export default function WorkList() {
   };
 
   useEffect(() => {
-    console.log(filter);
     getWorks();
   }, [filter]);
 

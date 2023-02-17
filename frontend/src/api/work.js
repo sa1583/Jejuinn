@@ -22,8 +22,6 @@ const getWorkDetail = (workUid) => {
 
 // 공고 작성
 const createRecruitment = (body, token) => {
-  console.log('공고 작성 바디 간다!!!!!!!!!!!!');
-  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
@@ -35,8 +33,6 @@ const createRecruitment = (body, token) => {
 
 // 공고 수정
 const updateRecruitment = (body, token, recruitmentUid) => {
-  console.log(recruitmentUid);
-
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
@@ -54,7 +50,6 @@ const getMyWorks = (token, guestHouseUid) => {
     },
   };
   return instance.get(`/auth/recruitment-work-list/${guestHouseUid}`, config);
-  // return [{ uid: 1 }, { uid: 2 }, { uid: 3 }];
 };
 
 // 직무 작성
@@ -69,8 +64,6 @@ function createWork(body, token) {
 
 // 직무 수정
 const updateWork = (body, token) => {
-  console.log('바디 간다!!!!!!!!!!!!');
-  console.log(body);
   const config = {
     headers: {
       accessToken: `Bearer ${token}`,
