@@ -65,7 +65,7 @@ export default function MyApplicantList() {
         <h1 style={{ fontSize: '1.8rem', paddingBottom: '15px' }}>
           지원자 목록
         </h1>
-        <Stack direction="row">
+        <Stack direction="column" spacing={2}>
           {myApplicants &&
             myApplicants?.map((myApplicant) => {
               return (
