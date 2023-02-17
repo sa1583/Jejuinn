@@ -99,7 +99,6 @@ export default function WorkWrite() {
   useEffect(() => {
     getGuesthouseUid();
   }, []);
-  console.log(workInfo);
 
   return (
     <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>

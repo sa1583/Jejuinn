@@ -43,7 +43,6 @@ const guestHouseUpdate = (token, guestHouseUid, body) => {
       'Content-Type': 'multipart/form-data',
     },
   };
-  console.log('body', body);
   return instance.put(`/auth/guest-houses/${guestHouseUid}`, body, config);
 };
 
@@ -146,7 +145,6 @@ const dislikeGuestHouse = (token, id) => {
 
 // 문자 보내기
 const sendMessage = (token, guestHouseUid, userUid) => {
-  console.log(guestHouseUid, userUid);
   const header = {
     headers: {
       accessToken: `Bearer ${token}`,
