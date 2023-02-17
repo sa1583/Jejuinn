@@ -87,7 +87,7 @@ export default function MyResumeWrite({ resume, changeApplyComp }) {
 
   const submitResume = async () => {
     const body = {
-      autoApply: resume.autoApply,
+      autoApply: resume?.autoApply ? resume.autoApply : false,
       content: intro,
       instagramLink: instagramUrl,
       guestHouseTypes: guestHouseStyleTag,
