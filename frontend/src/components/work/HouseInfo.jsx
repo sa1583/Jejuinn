@@ -59,14 +59,6 @@ export default function HouseInfo({ images, geustHouseId }) {
               cpn={
                 <Box sx={{ p: '5%' }}>
                   <ImageSlider items={images} />
-                  <h2 style={{ color: '#FF7600', marginTop: '30px' }}>
-                    소개글
-                  </h2>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: guestHouse?.introduction,
-                    }}
-                  />
                 </Box>
               }
             />

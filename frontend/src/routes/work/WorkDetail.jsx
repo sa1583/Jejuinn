@@ -71,13 +71,13 @@ export default function WorkDetail() {
     <Box sx={{ paddingY: '2rem', paddingX: '19%' }}>
       <HouseInfo geustHouseId={recruitmentInfo.guestHouseUid} images={images} />
       <Stack direction="row">
-        <Box sx={{ pt: '5%', pr: '5%' }} width="400px">
+        <Box sx={{ pt: '5%', pr: '5%' }} width="450px">
           <WhiteBox cpn={<RecruitmentInfo recruitmentUid={recruitmentUid} />} />
           {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
             <Button onClick={onClick}> 공고수정</Button>
           ) : null}
         </Box>
-        <Box sx={{ pt: '5%', pr: '5%' }} width="400px">
+        <Box sx={{ pt: '5%', pr: '5%' }} width="450px">
           <WhiteBox cpn={<WorkInfo work={work} />} />
         </Box>
       </Stack>
