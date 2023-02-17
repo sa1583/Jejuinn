@@ -40,11 +40,20 @@ public class FavoriteController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> likeGuestHouse(@PathVariable Long guestHouseUid, HttpServletRequest request) {
+        // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
+
+        // 해당 게스트 하우스를 좋아요 했는지 체크해서 이미 했다면 202 Accepted status를 리턴합니다.
         if(favoriteRepository.findByUserUidAndTypeUidAndTypeName(userUid, guestHouseUid, GUEST_TYPE) != null) {
             return ResponseEntity.status(202).build();
         }
-        favoriteRepository.save(Favorite.builder().userUid(userUid).typeUid(guestHouseUid).typeName(GUEST_TYPE).build());
+
+        // 게스트하우스 좋아요를 등록합니다.
+        favoriteRepository.save(Favorite.builder()
+                .userUid(userUid)
+                .typeUid(guestHouseUid)
+                .typeName(GUEST_TYPE)
+                .build());
         return ResponseEntity.status(200).build();
     }
 
@@ -57,12 +66,19 @@ public class FavoriteController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> dislikeGuestHouse(@PathVariable Long guestHouseUid, HttpServletRequest request) {
+        // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
+
+        // 좋아요한 게스트 하우스 정보를 가져옵니다.
         Favorite favorite = favoriteRepository.findByUserUidAndTypeUidAndTypeName(userUid, guestHouseUid, GUEST_TYPE);
+
+        // 정보가 있다면
         if(favorite != null) {
+            // 좋아요 정보를 삭제합니다.
             favoriteRepository.delete(favorite);
             return ResponseEntity.status(200).build();
         } else {
+            // 정보가 없다면 202 accepted를 리턴합니다.
             return ResponseEntity.status(202).build();
         }
     }
@@ -75,7 +91,10 @@ public class FavoriteController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyLikeGuestHouse(HttpServletRequest request) {
+        // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
+
+        //
         List<Long> guestHouseUids = favoriteRepository.findByUserUidAndTypeName(userUid, GUEST_TYPE);
         System.out.println(guestHouseUids.size());
         return ResponseEntity.status(200).body(
