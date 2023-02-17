@@ -8,6 +8,7 @@ import com.jejuinn.backend.db.entity.Comment;
 import com.jejuinn.backend.db.enums.PostType;
 import com.jejuinn.backend.db.repository.CommentRepository;
 import com.jejuinn.backend.db.repository.UserRepository;
+import com.jejuinn.backend.exception.NoContentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -45,14 +47,11 @@ public class CommentController {
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> insertComment(HttpServletRequest request, @RequestBody InsertCommentPostReq req){
-        log.info("댓글 추가 요청");
+    public ResponseEntity<?> insertComment(HttpServletRequest request, @RequestBody @Valid InsertCommentPostReq req){
+        // accessToken에서 사용자의 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
 
-        // 타입 체크
-        System.out.println(req.getPostType());
-        if(req.getPostType() == null || req.getPostType().equals("")) return ResponseEntity.status(400).build();
-
+        // dto를 comment entity로 변환 후 저장합니다.
         commentRepository.save(req.toComment(userUid));
 
         return ResponseEntity.status(200).build();
@@ -91,6 +90,7 @@ public class CommentController {
     })
     public ResponseEntity<?> getCommentList(@PathVariable String postType, @PathVariable Long postUid) {
         return ResponseEntity.status(200).body(
+                // 포스트 타입, 포스트 uid -> comment entity -> 댓글 + user 정보를 가진 dto로 변환 후 반환
                 commentRepository.findAllByPostTypeAndPostUidOrderByDateCreatedDesc(postType, postUid).stream().map(
                         comment -> GetCommentListPostRes.of(comment, userRepository.findById(comment.getUserUid()).get())
                 )
@@ -106,11 +106,13 @@ public class CommentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyCommentList(HttpServletRequest request) {
+        // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
-        List<Comment> commentList = commentRepository.findAllByUserUidOrderByDateCreatedDesc(userUid);
-        if(commentList == null || commentList.size() == 0) return ResponseEntity.status(204).build();
-        return ResponseEntity.status(200).body(
-                commentList
-        );
+
+        // 나의 댓글 리스트를 가져옵니다.
+        List<Comment> commentList = commentRepository.findAllByUserUidOrderByDateCreatedDesc(userUid)
+                .orElseThrow(()-> new NoContentException("사용자가 작성한 댓글이 없습니다."));
+
+        return ResponseEntity.status(200).body(commentList);
     }
 }
