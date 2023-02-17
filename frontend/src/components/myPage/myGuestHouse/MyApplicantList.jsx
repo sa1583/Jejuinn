@@ -15,12 +15,11 @@ export default function MyApplicantList() {
 
   const [myApplicants, setMyApplicants] = useState([]);
   const [open, setOpen] = useState(false);
-  const [userUid, setUserUid] = useState();
+  const [resumeUid, setResumeUid] = useState();
 
-  const handleOpenModal = (userUid) => {
-    console.log(userUid);
+  const handleOpenModal = (resumeUid) => {
     setOpen(true);
-    setUserUid(userUid);
+    setResumeUid(resumeUid);
   };
 
   const handleCloseModal = () => setOpen(false);
@@ -28,7 +27,7 @@ export default function MyApplicantList() {
   const findUserIndex = () => {
     let index;
     myApplicants.forEach((elem, idx) => {
-      if (elem.userUid === userUid) {
+      if (elem.resumeInfoUid === resumeUid) {
         index = idx;
       }
     });
@@ -37,16 +36,17 @@ export default function MyApplicantList() {
 
   const handlePrev = () => {
     let index = findUserIndex();
-    if (index === 0) index = myApplicants?.length - 1;
+    console.log(index);
+    if (index === 0) index = myApplicants.length - 1;
     else index = index - 1;
-    setUserUid(myApplicants[index].userUid);
+    setResumeUid(myApplicants[index].resumeInfoUid);
   };
 
   const handleForward = () => {
     let index = findUserIndex();
-    if (index === myApplicants?.length - 1) index = 0;
+    if (index === myApplicants.length - 1) index = 0;
     else index = index + 1;
-    setUserUid(myApplicants[index].userUid);
+    setResumeUid(myApplicants[index].resumeInfoUid);
   };
 
   async function getMyApplicants() {
@@ -71,7 +71,7 @@ export default function MyApplicantList() {
               return (
                 <Box
                   key={myApplicant.uid}
-                  onClick={() => handleOpenModal(myApplicant.uid)}
+                  onClick={() => handleOpenModal(myApplicant.resumeInfoUid)}
                   sx={{ cursor: 'pointer' }}
                   width="100%"
                 >
@@ -90,9 +90,9 @@ export default function MyApplicantList() {
         aria-describedby="modal-modal-description"
       >
         <MyApplicantDetail
-          userUid={userUid}
+          resumeUid={resumeUid}
           workUid={workUid}
-          handleClose={handleCloseModal}
+          handleCloseModal={handleCloseModal}
           handlePrev={handlePrev}
           handleForward={handleForward}
         />

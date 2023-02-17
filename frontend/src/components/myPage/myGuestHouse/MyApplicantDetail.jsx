@@ -83,7 +83,9 @@ export default function MyApplicantDetail({
   };
 
   const getApplicantDetailInfo = async () => {
-    const { data } = await getApplicantDetail(resumeUid, workUid, accessToken);
+    const rid = resumeUid * 1;
+    console.log(resumeUid, rid);
+    const { data } = await getApplicantDetail(rid, workUid, accessToken);
     console.log('data', data);
     setApplicant(data);
   };

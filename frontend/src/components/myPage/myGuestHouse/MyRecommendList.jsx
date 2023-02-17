@@ -27,7 +27,6 @@ export default function MyRecommendList({ guestHouseUid }) {
   const [resumeUid, setResumeUid] = useState();
 
   const handleOpenModal = (uid) => {
-    console.log(uid);
     setOpen(true);
     setResumeUid(uid);
   };
