@@ -121,7 +121,6 @@ export const getNormalAuthTokenInSignUp = createAsyncThunk(
       let { accesstoken, refreshtoken } = (await signUpApi(body)).headers;
       accesstoken = accesstoken.split(' ')[1];
       refreshtoken = refreshtoken.split(' ')[1];
-      console.log(accesstoken);
 
       return { accesstoken, refreshtoken };
     } catch (e) {

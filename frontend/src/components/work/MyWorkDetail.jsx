@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 export default function MyWorkDetail({ work }) {
   const navigate = useNavigate();
   const accessToken = useSelector(selectAccessToken);
-  console.log(work);
 
   const onRecruitmentDetail = () => {
     navigate(`/worklist/detail/${work.recruitmentUid}/${work.workUid}`);

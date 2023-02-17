@@ -36,7 +36,6 @@ export default function MyApplicantList() {
 
   const handlePrev = () => {
     let index = findUserIndex();
-    console.log(index);
     if (index === 0) index = myApplicants.length - 1;
     else index = index - 1;
     setResumeUid(myApplicants[index].resumeInfoUid);
@@ -51,7 +50,6 @@ export default function MyApplicantList() {
 
   async function getMyApplicants() {
     const { data } = await myApplicantList(access_token, workUid);
-    console.log('list', data);
     setMyApplicants(data);
   }
 
@@ -65,7 +63,7 @@ export default function MyApplicantList() {
         <h1 style={{ fontSize: '1.8rem', paddingBottom: '15px' }}>
           지원자 목록
         </h1>
-        <Stack direction="row">
+        <Stack direction="column" spacing={2}>
           {myApplicants &&
             myApplicants?.map((myApplicant) => {
               return (

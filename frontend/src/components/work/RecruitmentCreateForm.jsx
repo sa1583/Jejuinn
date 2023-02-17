@@ -83,7 +83,6 @@ export default function RecruitmentCreateForm({ handleInput }) {
   // create가 아닐 때 이전 공고 id받아서 정보 세팅하기
   const getRecruitmentInfo = async () => {
     const { data } = await recruitmentDetail(postUid);
-    console.log(data);
     setTitle(data.recruitment.title);
     setWelfare(data.recruitment.welfare);
     setWanted(data.recruitment.wanted);

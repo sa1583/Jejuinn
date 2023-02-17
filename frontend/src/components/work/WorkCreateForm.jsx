@@ -107,7 +107,6 @@ export default function WorkCreateForm({ handleInput }) {
   // 이전직무 조회하는 api 만들어 달라해야함..
   const getWorkInfo = async () => {
     const { data } = await getWorkDetail(postUid);
-    console.log(data);
     setWorkName(data.workName);
     setGender(data.gender);
     setSalary(data.salary);

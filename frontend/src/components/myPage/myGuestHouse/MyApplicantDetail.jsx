@@ -54,7 +54,6 @@ export default function MyApplicantDetail({
 
   const getGuestHouseUid = async () => {
     const { data } = await getGuestHouseUidByWorkUid(workUid, accessToken);
-    console.log('uid', data);
     return data;
   };
 
@@ -84,14 +83,11 @@ export default function MyApplicantDetail({
 
   const getApplicantDetailInfo = async () => {
     const rid = resumeUid * 1;
-    console.log(resumeUid, rid);
     const { data } = await getApplicantDetail(rid, workUid, accessToken);
-    console.log('data', data);
     setApplicant(data);
   };
 
   const handleHireStaff = async () => {
-    console.log(location.pathname);
     const guestHouseUid = await getGuestHouseUid();
     const { data } = await getWorkDetail(workUid);
     await hireStaff(

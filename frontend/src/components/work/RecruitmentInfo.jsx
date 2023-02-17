@@ -14,8 +14,6 @@ export default function RecruitmentInfo({ recruitmentUid }) {
     getWork();
   }, []);
 
-  // console.log(recruitmentInfo);
-
   return (
     <Box sx={{ padding: '2rem', height: '100%' }}>
       <Stack direction="column" spacing={2}>
