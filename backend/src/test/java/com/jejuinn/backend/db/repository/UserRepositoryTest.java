@@ -1,53 +1,48 @@
 package com.jejuinn.backend.db.repository;
 
-import com.jejuinn.backend.db.entity.TravelPlaceReview;
-
-import com.jejuinn.backend.db.entity.User;
+import com.jejuinn.backend.api.dto.request.email.OpenViduLinkReq;
+import com.jejuinn.backend.db.entity.*;
+import com.jejuinn.backend.db.repository.GuestHouseRepository;
+import com.jejuinn.backend.db.repository.StaffRecordRepository;
+import com.jejuinn.backend.db.repository.UserRepository;
+import com.jejuinn.backend.exception.NoContentException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
-import java.util.List;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+@Rollback(value = false)
 class UserRepositoryTest {
-    @Autowired UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
-    @Rollback(value = false)
-    public void userLikeTest(){
-        User user = userRepository.findById(1L).get();
-        user.getLikes().add(TravelPlaceReview.builder().uid(4L).build());
+    @Transactional
+    public void test(){
+//        int u = 15;
+//        String[] genders = {"남자", "여자"};
+//        String name = "이현진";
+//        String phone = "010-6638-7338";
+//
+//
+//        User user = userRepository.findById(Long.valueOf(u)).get();
+//        user.setGender(genders[1]);
+//        user.setUsername(name);
+//        user.setNickname(name);
+//        user.setPhone(phone);
 
-        User user2 = userRepository.findById(1L).get();
-        for (TravelPlaceReview like : user2.getLikes()) {
-            System.out.println(like.getUid());
-            System.out.println(like.getContent());
-        }
-        assertThat(user.getLikes().size()).isEqualTo(user2.getLikes().size());
+
     }
 
-    @Test
-    public void deleteLikeTest(){
-        User user = userRepository.findById(1L).get();
-        user.setLikes(null);
-    }
-
-    @Test
-    public void getLikeTest(){
-        User user = userRepository.findById(1L).get();
-        List<TravelPlaceReview> likes = user.getLikes();
-        for (TravelPlaceReview like : likes) {
-            System.out.println(like.getUid());
-            System.out.println(like.getContent());
-            System.out.println(like.getLikeCount());
-        }
-    }
 
 }

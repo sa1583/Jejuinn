@@ -41,7 +41,6 @@ public class UpdateResumeInfoPutReq {
     @NotNull
     private Long userUid;
 
-    @NotNull
     private LocalDate dateCreated;
 
     private String instagramLink;
