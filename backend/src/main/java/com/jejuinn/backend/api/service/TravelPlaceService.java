@@ -29,7 +29,6 @@ public class TravelPlaceService {
             count++;
         }
         else if(method.equals("UPDATE")){
-            System.out.println("hi");
             avg = travelPlaceReviewRepository.getAvgStarRating(uid);
         }
         travelPlace.setReviewCount(count);
