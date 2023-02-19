@@ -82,7 +82,6 @@ export default function WorkUpdateComponent({ prework, onWorkWrite }) {
   };
 
   useEffect(() => {
-    console.log('이전 직무 정보점....');
     setWorkInfo(prework);
   }, [prework]);
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import HouseInfo from '../../components/work/HouseInfo';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import { useState, useEffect } from 'react';
@@ -27,7 +27,6 @@ export default function WorkDetail() {
 
   async function getRecruitmentDetail() {
     const data = (await recruitmentDetail(recruitmentUid)).data;
-    console.log(data);
     setImages(data.images);
     setWorks(data.works);
     setRecruitmentInfo(data.recruitment);
@@ -51,7 +50,6 @@ export default function WorkDetail() {
   }
 
   const onClick = () => {
-    console.log(recruitmentInfo);
     navigate(
       `/recruitment/update/${recruitmentInfo.uid}/${recruitmentInfo.guestHouseUid}`,
     );
@@ -61,38 +59,32 @@ export default function WorkDetail() {
     getRecruitmentDetail();
     getGuesthousesUidList();
   }, []);
+
   useEffect(() => {
     setOtherWorks([]);
     OtherWork();
-    console.log(recruitmentUid);
   }, [works, workUid]);
 
   return (
-    <Box sx={{ paddingY: '3rem', paddingX: '10%' }}>
-      {/* <h1 style={{ color: '#FF7600' }}>{recruitment.recruitment.title}</h1> */}
-      <WhiteBox
-        cpn={
-          <HouseInfo
-            geustHouseId={recruitmentInfo.guestHouseUid}
-            images={images}
-          />
-        }
-      />
-      <RecruitmentInfo recruitmentUid={recruitmentUid} />
-      {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
-        <Button onClick={onClick}>수정</Button>
-      ) : null}
-      <WorkInfo work={work} />
+    <Box sx={{ paddingY: '2rem', paddingX: '19%' }}>
+      <HouseInfo geustHouseId={recruitmentInfo.guestHouseUid} images={images} />
+      <Stack direction="row">
+        <Box sx={{ pt: '5%', pr: '5%' }} width="450px">
+          <WhiteBox cpn={<RecruitmentInfo recruitmentUid={recruitmentUid} />} />
+          {myGuestHousesUid.includes(recruitmentInfo.guestHouseUid) ? (
+            <Button onClick={onClick}> 공고수정</Button>
+          ) : null}
+        </Box>
+        <Box sx={{ pt: '5%', pr: '5%' }} width="450px">
+          <WhiteBox cpn={<WorkInfo work={work} />} />
+        </Box>
+      </Stack>
       <h2 style={{ color: '#FF7600' }}>
-        해당 게스트하우스에서 진행중인 다른 채용
+        {works && works.length > 1
+          ? '해당 게스트하우스에서 진행중인 다른 채용'
+          : '해당 게스트하우스에서 진행중인 다른 채용이 없습니다.'}
       </h2>
       <WorkListBox works={otherWorks} />
     </Box>
   );
 }
-
-// 공고
-// 직무 작성은 지금 만들어 놓은거에 그냥 공고 아이디 추가해서 요청 보내면 됨
-// 없을 때 - 이게 문제
-// 공고작성이랑 직무 작성을 컴포넌트 구성을 어떻게 할지...
-//

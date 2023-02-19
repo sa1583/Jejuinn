@@ -23,10 +23,7 @@ export default function VideoInterviewHeader({
   audioOff,
   leaveSession,
 }) {
-  useEffect(() => {
-    console.log(videoOff);
-    console.log(audioOff);
-  }, [videoOff, audioOff]);
+  useEffect(() => {}, [videoOff, audioOff]);
 
   return (
     <Box

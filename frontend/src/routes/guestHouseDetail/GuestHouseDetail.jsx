@@ -34,7 +34,6 @@ export default function GuestHouseDetail() {
     const data = (await guestHouseDetail(guestHouseUid)).data;
     setGuestHouse(data);
     const info = data.guestHouse;
-    console.log(info);
     setSpots([
       {
         id: info.uid,

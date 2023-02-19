@@ -126,7 +126,7 @@ export default function LoginForm() {
       </p>
 
       {/* 소셜 로그인 부분 */}
-      <Box sx={{ display: 'flex', gap: '3rem' }}>
+      <Box sx={{ display: 'flex', gap: '1.3rem' }}>
         <NaverLoginBtn />
         <GoogleLoginBtn />
         <KakaoLoginBtn />
