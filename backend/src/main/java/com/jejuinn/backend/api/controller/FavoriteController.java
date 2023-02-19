@@ -94,11 +94,13 @@ public class FavoriteController {
         // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
 
-        //
+        // userUid로 해당 사용자가 좋아요를 누른 게스트의 uid를 가져옵니다.
         List<Long> guestHouseUids = favoriteRepository.findByUserUidAndTypeName(userUid, GUEST_TYPE);
-        System.out.println(guestHouseUids.size());
+
+
         return ResponseEntity.status(200).body(
             guestHouseRepository.findAllByGuestHouseUid(guestHouseUids).stream().map(
+                    // 게스트하우스 정보 + 이력서 정보 + 이미지 정보
                     guestHouse -> GetFavoriteGuestHouseRes.of(
                             guestHouse,
                             recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(guestHouse.getUid()),
