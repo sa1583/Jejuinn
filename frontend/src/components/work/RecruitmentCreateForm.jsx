@@ -83,7 +83,6 @@ export default function RecruitmentCreateForm({ handleInput }) {
   // create가 아닐 때 이전 공고 id받아서 정보 세팅하기
   const getRecruitmentInfo = async () => {
     const { data } = await recruitmentDetail(postUid);
-    console.log(data);
     setTitle(data.recruitment.title);
     setWelfare(data.recruitment.welfare);
     setWanted(data.recruitment.wanted);
@@ -124,7 +123,7 @@ export default function RecruitmentCreateForm({ handleInput }) {
           </Grid>
 
           <Grid item md={6}>
-            <FilterStyle value={selectedValues} setValue={setSelectedValues} />
+            <FilterStyle value={wanted} setValue={setWanted} />
           </Grid>
 
           <Grid item md={12}>
@@ -132,6 +131,7 @@ export default function RecruitmentCreateForm({ handleInput }) {
               label="상세설명"
               multiline
               title={addInfo}
+              rows={7}
               onChange={(e) => setAddInfo(e.target.value)}
               sx={{
                 width: '100%',

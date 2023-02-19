@@ -27,7 +27,6 @@ export default function MyRecommendList({ guestHouseUid }) {
   const [resumeUid, setResumeUid] = useState();
 
   const handleOpenModal = (uid) => {
-    console.log(uid);
     setOpen(true);
     setResumeUid(uid);
   };
@@ -46,7 +45,6 @@ export default function MyRecommendList({ guestHouseUid }) {
 
   const handlePrev = () => {
     let index = findUserIndex();
-    console.log(index);
     if (index === 0) index = myRecommends.length - 1;
     else index = index - 1;
     setResumeUid(myRecommends[index].resumeInfoUid);
@@ -61,7 +59,6 @@ export default function MyRecommendList({ guestHouseUid }) {
 
   async function getMyRecommends() {
     const { data } = await getRecommandedList(workUid);
-    console.log(data);
     setMyRecommends(data);
     setLoading(false);
   }

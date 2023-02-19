@@ -46,7 +46,6 @@ export default function RecruitmentUpdate() {
     addInfo: '',
     guestHouseUid: parseInt(guesthouseUid),
   });
-  console.log(guesthouseUid);
   const RecruitInfoInput = (title, welfare, wanted, addInfo) => {
     setRecruimentInfo({ ...recruimentInfo, title, welfare, wanted, addInfo });
   };
@@ -80,8 +79,6 @@ export default function RecruitmentUpdate() {
     files.forEach((file) => {
       formData.append('uploadImages', file);
     });
-
-    console.log(recruitmentBody);
 
     fetch(updateRecruitment(formData, accessToken, recruitmentUid));
 

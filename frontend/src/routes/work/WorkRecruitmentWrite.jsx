@@ -41,7 +41,6 @@ export default function WorkRecruitmentWrite() {
   const navigate = useNavigate();
 
   const onRecruitmentWrite = (input) => {
-    console.log(input);
     setRecruimentInfo(input);
   };
 
@@ -109,7 +108,6 @@ export default function WorkRecruitmentWrite() {
       formData.append('uploadImages', file);
     });
 
-    console.log(workInfo, recruitmentInfo, recruitmentBody);
     fetch(createRecruitment(formData, accessToken));
 
     navigate(`/worklist/`);

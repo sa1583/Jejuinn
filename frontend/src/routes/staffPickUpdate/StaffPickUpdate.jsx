@@ -51,24 +51,6 @@ export default function StaffPickUpdate() {
         놀고먹기 수정
       </h1>
       <Box sx={{ paddingX: '5%', paddingBottom: '30px' }}>
-        <Typography
-          variant="h5"
-          style={{
-            fontSize: 22,
-            color: 'black',
-            fontWeight: 'bold',
-            marginBottom: '20px',
-          }}
-        >
-          ① &nbsp;리뷰를 남기고자 하는 장소의 핀을 아래 지도에서 선택해주세요!
-        </Typography>
-        <MapApi
-          handlePinClick={handlePinClick}
-          spots={spots}
-          pickedId={nowPickId}
-          high={'23rem'}
-        />
-        <br />
         <WhiteBox cpn={<StaffPickCreateInfo nowPick={nowPick} />} />
       </Box>
 

@@ -57,10 +57,13 @@ public class GuestHouseController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getGuestHouseList(@RequestParam("pageNumber") int pageNumber){
+        // 15개씩 pagnation 설정
         Pageable pageable = PageRequest.of(pageNumber-1, 15);
+
         return ResponseEntity.status(200)
                 .body(guestHouseRepository.findAll(pageable)
                         .map(guestHouse ->
+                                // 게스트 하우스 정보 + 게스트하우스의 이미지
                             GetGuestHouseListPostRes.of(guestHouse,
                                  imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid()))));
     }
@@ -77,6 +80,7 @@ public class GuestHouseController {
         return ResponseEntity.status(200)
                 .body(guestHouseRepository.findById(guestHouseUid)
                         .map(guestHouse ->
+                                // 게스트 하우스 정보 + 게스트하우스의 이미지
                                 GetGuestHouseDetailPostRes.of(GuestHouseDeatilDto.of(guestHouse),
                                         imageRepository.findAllByPostTypeAndPostUid(GUEST_TYPE, guestHouse.getUid())
                                 )));
@@ -163,28 +167,21 @@ public class GuestHouseController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteGuestHouse(@PathVariable Long guestHouseUid, HttpServletRequest request){
+        // 게스트하우스의 모든 이력서를 가져옵니다.
         List<Recruitment> recruitment = recruitmentRepository.findAllByGuestHouseUidOrderByDateCreatedDesc(guestHouseUid);
+
+        // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
+
+        // 게스트 하우스의 모든 이력서를 삭제합니다.
         if(recruitment != null && recruitment.size() > 0) {
             recruitmentService.deleteRecruitment(recruitment.get(0).getUid(), userUid);
         }
+
+        // 게스트하우스를 삭제합니다.
         guestHouseRepository.deleteById(guestHouseUid);
         return ResponseEntity.status(200).build();
     }
-//    @PostConstruct
-//    public void init(){
-//        for (int i = 0; i < 100; i++) {
-//            imageRepository.save(Image.builder()
-//                    .postType(ImageType.GUEST_HOUSE.name())
-//                    .postUid(i+0L)
-//                    .imgPath("image"+i+".png").build());
-//            guestHouseRepository.save(GuestHouse.builder()
-//                    .guestHouseName("name"+i)
-//                    .representativeUid(i+1L)
-//                    .address("서울특별시 "+i+"번로")
-//                    .addressDetail(i+"동").build());
-//        }
-//    }
 
     @GetMapping("/auth/my-guest-houses/{userUid}")
     @ApiOperation(value = "내 게스트하우스 리스트 보기", notes = "userUid를 입력받아 내 게스트하우스 리스트를 보여줍니다.")
@@ -196,6 +193,7 @@ public class GuestHouseController {
     public ResponseEntity<?> getMyGuestHouseList(@PathVariable Long userUid) {
         return ResponseEntity.status(200).body(
                 guestHouseRepository.findAllByRepresentativeUid(userUid).stream().map(
+                        // 게스트 하우스 -> dto 변환
                         guestHouse -> GuestHouseDto.of(guestHouse)
                 )
         );
