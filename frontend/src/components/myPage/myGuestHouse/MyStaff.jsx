@@ -17,13 +17,30 @@ export default function MyStaff({ myStaff, guestHouseUid, loadMyStaff }) {
     <Stack
       direction="row"
       alignItems="center"
-      justifyContent="space-evenly"
+      justifyContent="space-between"
       spacing={2}
+      sx={{ px: '3%', py: '2%' }}
     >
       <Typography variant="h5">{myStaff.username}</Typography>
       <Typography variant="h6">{myStaff.workName}</Typography>
       <Typography variant="h6">{myStaff.startDate} ~</Typography>
-      <Button onClick={handleFireStaff}>종료</Button>
+      <Button
+        onClick={handleFireStaff}
+        sx={{
+          background: '#FF7600',
+          borderRadius: '150px',
+          color: 'white',
+          border: 'none',
+          paddingX: '15px',
+          marginRight: '5px',
+          '&:hover': {
+            color: 'white',
+            background: '#FF7600',
+          },
+        }}
+      >
+        종료
+      </Button>
     </Stack>
   );
 }

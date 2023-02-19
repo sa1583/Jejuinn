@@ -46,9 +46,20 @@ const getMyReivewList = (accessToken) => {
   return instance.get('/auth/my-travel-place/review', header);
 };
 
+// 직무 지원하기
+const applyToWork = (body, token) => {
+  const header = {
+    headers: {
+      accessToken: `Bearer ${token}`,
+    },
+  };
+  return instance.post('/auth/job-search/apply', body, header);
+};
+
 export {
   getMyApplyList,
   getMyInterestGuestHouses,
   getMyInterestAttractions,
   getMyReivewList,
+  applyToWork,
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { recruitmentDetail } from '../../api/work';
-import { Box, Grid } from '@mui/material';
+import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
 
 export default function RecruitmentInfo({ recruitmentUid }) {
   const [recruitmentInfo, setRecruitmentInfo] = useState({});
@@ -12,42 +12,29 @@ export default function RecruitmentInfo({ recruitmentUid }) {
 
   useEffect(() => {
     getWork();
-    console.log(recruitmentUid);
   }, []);
 
-  // console.log(recruitmentInfo);
-
   return (
-    <Box sx={{ paddingY: '3vh', height: '100%' }}>
-      <Grid container>
-        <Grid item md={12}>
-          <h2 style={{ color: '#FF7600' }}>{recruitmentInfo.title}</h2>
-        </Grid>
-      </Grid>
-      <Box sx={{ paddingX: '2vh', height: '100%' }}>
-        <Grid container spacing={1}>
-          <Grid item md={2}>
-            복지
-          </Grid>
-          <Grid item md={10}>
-            {recruitmentInfo.welfare}
-          </Grid>
-
-          <Grid item md={2}>
-            인재상
-          </Grid>
-          <Grid item md={10}>
-            {/* {recruitmentInfo.wanted.map((person) => `#${person.type} `)} */}
-          </Grid>
-
-          <Grid item md={12}>
-            추가 정보
-          </Grid>
-          <Grid item md={12}>
-            {recruitmentInfo.addInfo}
-          </Grid>
-        </Grid>
-      </Box>
+    <Box sx={{ padding: '2rem', height: '100%' }}>
+      <Stack direction="column" spacing={2}>
+        <Typography variant="h4" sx={{ color: '#FF7600' }}>
+          {recruitmentInfo.title}
+        </Typography>
+        <Stack direction="row" spacing={2}>
+          <Typography minWidth="60px">복지</Typography>
+          <Typography>{recruitmentInfo.welfare}</Typography>
+        </Stack>
+        <Stack direction="row" spacing={1}>
+          <Typography minWidth="60px">인재상</Typography>
+          {recruitmentInfo.wanted?.map((person) => (
+            <Chip label={'#' + person.type} color="primary" />
+          ))}
+        </Stack>
+        <Stack direction="row" spacing={2}>
+          <Typography minWidth="60px">추가정보</Typography>
+          <Typography>{recruitmentInfo.addInfo}</Typography>
+        </Stack>
+      </Stack>
     </Box>
   );
 }

@@ -122,9 +122,11 @@ export default function MyResumeApply({ resume, changeApplyComp }) {
           <Typography minWidth="100px" sx={{ fontSize: 20 }}>
             선호 스타일
           </Typography>
-          {resume?.guestHouseTypes?.map((type) => {
-            return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
-          })}
+          <Stack direction="row" alignItems="center" spacing={1}>
+            {resume?.guestHouseTypes?.map((type) => {
+              return <Chip key={uuidv4()} label={'#' + type} color="primary" />;
+            })}
+          </Stack>
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={15}>

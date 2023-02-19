@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { selectAccessToken, selectUserInfo } from '../../../store/user';
 import { getApplicantDetail } from '../../../api/recommand';
 import { getWorkDetail } from '../../../api/work';
+import { snedVideoInterviewUrl } from '../../../api/sms';
 
 const style = {
   position: 'absolute',
@@ -53,13 +54,11 @@ export default function MyApplicantDetail({
 
   const getGuestHouseUid = async () => {
     const { data } = await getGuestHouseUidByWorkUid(workUid, accessToken);
-    console.log('uid', data);
     return data;
   };
 
   const sendMessageToApplicant = async () => {
     const guestHouseUid = await getGuestHouseUid();
-    // console.log(applicant);
     await sendMessage(accessToken, guestHouseUid, applicant.writerUid);
   };
 
@@ -74,19 +73,21 @@ export default function MyApplicantDetail({
     return result;
   }
 
-  const moveToInterview = () => {
+  const moveToInterview = async () => {
+    const guestHouseUid = await getGuestHouseUid();
     const sessionId = userInfo.uid + '-' + generateRandomString(30);
+    const link = `https://jejuinn.com/interview/${sessionId}`;
+    await snedVideoInterviewUrl(guestHouseUid, applicant.writerUid, link);
     navigate(`/interview/${sessionId}`);
   };
 
   const getApplicantDetailInfo = async () => {
-    const { data } = await getApplicantDetail(resumeUid, workUid, accessToken);
-    console.log('data', data);
+    const rid = resumeUid * 1;
+    const { data } = await getApplicantDetail(rid, workUid, accessToken);
     setApplicant(data);
   };
 
   const handleHireStaff = async () => {
-    console.log(location.pathname);
     const guestHouseUid = await getGuestHouseUid();
     const { data } = await getWorkDetail(workUid);
     await hireStaff(
