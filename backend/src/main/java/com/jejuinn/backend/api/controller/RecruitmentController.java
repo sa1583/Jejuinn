@@ -90,6 +90,7 @@ public class RecruitmentController {
                 .body(recruitmentRepository.findById(recruitmentUid)
                         .map(recruitment ->
                                 RecruitmentDetailRes.of(recruitment,
+                                        // 공고 + 직무들을 가져옵니다.
                                         WorkRes.ofs(workRepository.findAllByRecruitmentUid(recruitmentUid),
                                                 recruitmentRepository.findUserUidByRecruitmentUid(recruitment.getUid())),
                                         imageRepository.findAllByPostTypeAndPostUid(RECRUITMENT_TYPE, recruitmentUid),
@@ -108,12 +109,16 @@ public class RecruitmentController {
     })
     public ResponseEntity<?> insertRecruitment(@Valid @RequestPart(value="recruitmentBody") RecruitmentBodyDto recruitmentBodyDto,
                                                @RequestPart(value = "uploadImages") List<MultipartFile> uploadImages) {
+        // 공고를 저장합니다.
         Recruitment recruitment = recruitmentRepository.save(recruitmentBodyDto.getRecruitment().toRecruitment());
+
+        // 공고의 직무들을 저장합니다.
         List<InsertWorkPostReq> works = recruitmentBodyDto.getWorks();
         for(int i = 0 ; i < works.size() ; i++) {
             workRepository.save(works.get(i).toWork(recruitment));
         }
 
+        // 이미지 저장
         try {
             s3Uploader.uploadImages(uploadImages, RECRUITMENT_TYPE, recruitment.getUid());
         } catch (IOException e) {
@@ -179,13 +184,16 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyWorkList(@PathVariable Long guestHouseUid) {
+        // 게스트 하우스의 직무 리스트를 가져옵니다.
         List<Work> works = recruitmentRepository.findWorkByGuestHouseUid(guestHouseUid);
+
+        // 직무가 없다면 204 No Cotent
         if(works == null || works.size() == 0) return ResponseEntity.status(204).build();
-        System.out.println(works.size());
-        Long uid = workRepository.findUserUidByWorkUid(works.get(0).getUid());
-        System.out.println(uid);
+
+
         return ResponseEntity.status(200).body(
                 works.stream().map(
+                        // 직무 + 게스트하우스 사장 uid를 리턴
                         work -> WorkRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid())
                 )
@@ -216,9 +224,16 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getApplicant(@PathVariable Long workUid) {
+        // 직무의 이력서 uid 리스트를 가져옵니다.
         List<Long> resumeInfoUids = workResumeInfoRepository.findResumeInfoUidByWorkUid(workUid);
+
+        // 이력서 uid에서 이력서 정보를 가져옵니다.
         List<MyApplicantDetailRes> result = resumeInfoService.getMyApplicant(resumeInfoUids);
+
+        // 이력서가 없다면 204
         if(result.size() == 0) return ResponseEntity.status(204).build();
+
+
         return ResponseEntity.status(200).body(
                 result
         );
@@ -232,13 +247,23 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getMyResumeInfo(@PathVariable Long resumeInfoUid, @PathVariable Long workUid) {
+        //지원서 정보를 가져옵니다.
         Optional<ResumeInfo> resumeInfo = resumeInfoRepository.findById(resumeInfoUid);
+
+        //dto로 변환합니다.
         ResumeInfoDetail resumeInfoDetail = ResumeInfoDetail.of(resumeInfo);
+
+        //지원한 직무 정보를 가져옵니다.
         WorkResumeInfo workResumeInfo = workResumeInfoRepository.findByResumeInfoUidAndWorkUid(resumeInfoDetail.getUid(), workUid);
+
+        //정보가 있다면
         if(workResumeInfo != null) {
+            //이력서를 읽었음을 db에 저장합니다.
             workResumeInfo.setIsRead(LocalDateTime.now());
             workResumeInfoRepository.save(workResumeInfo);
         }
+
+        // 이력서 상세 정보, 사용자 정보, 근무 이력 정보를 리턴합니다.
         ResumeInfoDetailRes resumeInfoDetailRes = ResumeInfoDetailRes.of(
                 resumeInfoDetail,
                 UserDetail.of(userRepository.findById(resumeInfo.get().getUser().getUid())),
@@ -256,11 +281,18 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> deleteWork(@PathVariable Long workUid, HttpServletRequest request) {
+        // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
+
+        // 게스트하우스 사장의 userUid를 가져옵니다.
         Long writerUid = workRepository.findUserUidByWorkUid(workUid);
+
+        // 현재 접속한 사용자가 사장이 아니라면
         if(!Objects.equals(userUid,writerUid)) {
             return ResponseEntity.status(401).build();
         }
+
+        // 직무를 삭제합니다.
         workRepository.deleteById(workUid);
         workResumeInfoRepository.deleteByWorkUid(workUid);
         return ResponseEntity.status(200).build();
@@ -286,11 +318,18 @@ public class RecruitmentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> modifyWork(@RequestBody ModifyWorkPutReq modifyWorkPutReq, HttpServletRequest request) {
+        // accessToken에서 userUid를 가져옵니다.
         Long userUid = userService.getUserUidFromAccessToken(request);
+
+        // 직무를 작성한 userUid를 가져옵니다.
         Long writerUid = workRepository.findUserUidByWorkUid(modifyWorkPutReq.getWorkUid());
+
+        // 다르다면 삭제할 권한이 없음을 알립니다.
         if(!Objects.equals(userUid, writerUid)) {
             return ResponseEntity.status(401).build();
         }
+
+        // 수정합니다.
         workRepository.save(modifyWorkPutReq.toWork());
         return ResponseEntity.status(200).build();
     }
@@ -305,6 +344,7 @@ public class RecruitmentController {
     public ResponseEntity<?> getOneWork(@PathVariable Long workUid) {
         return ResponseEntity.status(200).body(
                 workRepository.findById(workUid).map(
+                        // 직무와 직무 작성자의 uid를 리턴합니다.
                         work -> WorkRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid())
                         )));
@@ -323,10 +363,17 @@ public class RecruitmentController {
                                              @RequestParam(value = "areaName") String areaName,
                                              @RequestParam(value = "word") String word,
                                              @RequestParam(value = "entryDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate entryDate) {
+        // 페이지네이션 size = 15
         Pageable pageable = PageRequest.of(pageNumber-1, 15);
+
+        // 스타일, 지역, 단어로 게스트하우스를 검색합니다.
         List<Long> guestHouseUidList = guestHouseRepositorySupport.searchGuestHouseUidWithFilter(styles, areaName, word);
+
+        // 게스트 하우스가 없다면 400 return
         if(guestHouseUidList.size() == 0 || guestHouseUidList == null) return ResponseEntity.status(400).build();
+
         return ResponseEntity.status(200).body(
+                // 게스트하우스의 직무와 사장의 uerUid를 가져옵니다.
                 workRepository.findByGuestHouseUidAndEntryDate(guestHouseUidList, entryDate, pageable).map(
                         work -> WorkRes.of(work,
                                 workRepository.findUserUidByWorkUid(work.getUid()))

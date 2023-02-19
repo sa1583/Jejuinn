@@ -37,13 +37,19 @@ public class EmailController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> openviduInviteMsg(@RequestBody @Valid OpenViduLinkReq req){
-        User user = userRepository.findById(req.getUserUid()).orElseThrow(()-> new UsernameNotFoundException("사용자 정보가 없습니다."));
+        // user 정보를 가져옵니다.
+        User user = userRepository.findById(req.getUserUid())
+                .orElseThrow(()-> new UsernameNotFoundException("사용자 정보가 없습니다."));
 
+        // user의 email이 없다면 400
         if(user.getEmail() == null) return ResponseEntity.status(400).build();
 
-        GuestHouse guestHouse = guestHouseRepository.findById(req.getGuestHouseUid()).orElseThrow(()->new NoContentException("게스트 하우스가 없습니다."));
+        // 게스트 하우스 정보를 가져옵니다.
+        GuestHouse guestHouse = guestHouseRepository.findById(req.getGuestHouseUid())
+                .orElseThrow(()->new NoContentException("게스트 하우스가 없습니다."));
 
         try {
+            // 면접 대상자에게 메일을 보냅니다.
             emailService.sendMessage(user.getEmail(), req.getUrl(), guestHouse);
         } catch (Exception e) {
             e.printStackTrace();
