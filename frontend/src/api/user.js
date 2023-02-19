@@ -40,15 +40,6 @@ function loginKakao(token) {
   return instance.post('/api/users/social/kakao', {}, header);
 }
 
-function loginFacebook(token) {
-  let header = {
-    headers: {
-      socialToken: `Bearer ${token}`,
-    },
-  };
-  return instance.post('/api/users/social/facebook', {}, header);
-}
-
 // 기본 로그인 토큰 받기
 function loginNormal(body) {
   return instance.post('/api/users/login', body);
@@ -114,7 +105,6 @@ export {
   getUserInfo,
   loginGoogle,
   loginKakao,
-  loginFacebook,
   loginNormal,
   checkEmail,
   getPasswordCode,
