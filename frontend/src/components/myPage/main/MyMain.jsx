@@ -77,25 +77,21 @@ export default function MyMain() {
 
   const loadMyApplyList = async () => {
     const { data } = await getMyApplyList(accessToken);
-    console.log('지원목록', data);
     setMyAppliedRecruitment(data);
   };
 
   const loadMyLikeRecruitment = async () => {
     const { data } = await getMyInterestGuestHouses(accessToken);
-    console.log('관심게하', data);
     setMyInterestGuestHouses(data);
   };
 
   const loadMyLikePlaceList = async () => {
     const { data } = await getMyInterestAttractions(accessToken);
-    console.log('mylikeplaces', data);
     setMyLikePlaceList(data);
   };
 
   const loadMyReveiwList = async () => {
     const { data } = await getMyReivewList(accessToken);
-    console.log('myReviews', data);
     setMyPosts(data);
   };
 

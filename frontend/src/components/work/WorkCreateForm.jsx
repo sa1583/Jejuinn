@@ -8,7 +8,7 @@ import {
   GetWorkOptions,
   GetWorkWorkDays,
 } from './WorkWriteForms';
-
+import { FilterDate } from './Filters';
 import { getWorkDetail } from '../../api/work';
 
 const CustomTextField = styled(TextField)({
@@ -50,18 +50,6 @@ export default function WorkCreateForm({ handleInput }) {
   const [daysOff, setDaysOff] = useState('2');
   const [minWorkPeriod, setMinWorkPeriod] = useState(1);
   const [entryDate, setEntryDate] = useState('');
-  const [workInfo, setWorkInnfo] = useState({
-    workName,
-    gender,
-    salary,
-    workTime,
-    workDescription,
-    intake,
-    workDays,
-    daysOff,
-    minWorkPeriod,
-    entryDate,
-  });
 
   const handleSetInput = () => {
     handleInput(
@@ -96,9 +84,11 @@ export default function WorkCreateForm({ handleInput }) {
   const [workStartTime, setWorkStartTime] = useState(
     dayjs('2018-01-01T00:00:00.000Z'),
   );
+
   const [workEndTime, setWorkEndTime] = useState(
     dayjs('2018-01-01T06:00:00.000Z'),
   );
+
   useEffect(() => {
     setWorkTime(`${workStartTime}~${workEndTime}`);
   }, [workEndTime, workStartTime]);
@@ -117,7 +107,6 @@ export default function WorkCreateForm({ handleInput }) {
   // 이전직무 조회하는 api 만들어 달라해야함..
   const getWorkInfo = async () => {
     const { data } = await getWorkDetail(postUid);
-    console.log(data);
     setWorkName(data.workName);
     setGender(data.gender);
     setSalary(data.salary);
@@ -217,7 +206,7 @@ export default function WorkCreateForm({ handleInput }) {
         <Grid item md={6}>
           <Grid container spacing={2}>
             <Grid item md={12}>
-              <GetWorkEntryDate value={entryDate} setValue={setEntryDate} />
+              <FilterDate value={entryDate} setValue={setEntryDate} />
             </Grid>
             <Grid item md={12}>
               <CustomTextField

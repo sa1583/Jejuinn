@@ -21,6 +21,7 @@ export default function ImageSlider({ items }) {
             style={{
               width: '100%',
               aspectRatio: '1/1',
+              height: '100%',
               borderRadius: '13px',
               overflow: 'hidden',
             }}
@@ -30,6 +31,7 @@ export default function ImageSlider({ items }) {
               alt="명소 사진"
               style={{
                 height: '100%',
+                width: '100%',
                 objectFit: 'cover',
               }}
             />

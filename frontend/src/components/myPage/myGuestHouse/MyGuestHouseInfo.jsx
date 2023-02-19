@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAccessToken } from '../../../store/user';
 import { v4 as uuidv4 } from 'uuid';
-import { Box, Typography, Popover, Switch } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { myActiveStaffList, myJobOfferList } from '../../../api/guestHouse';
 import { guestHouseDetail } from '../../../api/guestHouse';
-import WhiteBox from '../../whiteBox/WhiteBox';
 import MyStaff from './MyStaff';
 import MyJobOffer from './MyJobOffer';
 
@@ -19,13 +18,11 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
 
   async function getMyStaff() {
     const { data } = await myActiveStaffList(access_token, guestHouseUid);
-    console.log('my-staffs:', data);
     setMyStaffs(data);
   }
 
   const getGuestHouseInfo = async () => {
     const { data } = await guestHouseDetail(guestHouseUid);
-    console.log('guestHouse', data);
     setGuestHouse(data);
   };
 
@@ -33,7 +30,6 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
 
   async function getMyJobOffer() {
     const { data } = await myJobOfferList(guestHouseUid);
-    console.log('my-job-offers:', data);
     setMyJobOffers(data);
   }
 
@@ -58,16 +54,20 @@ export default function MyGuestHouseInfo({ guestHouseUid }) {
         >
           {myStaffs.map((myStaff) => {
             return (
-              <WhiteBox
+              <Box
                 key={uuidv4()}
-                cpn={
-                  <MyStaff
-                    myStaff={myStaff}
-                    guestHouseUid={guestHouse.guestHouse.uid}
-                    loadMyStaff={getMyStaff}
-                  />
-                }
-              />
+                sx={{
+                  borderRadius: '50px',
+                  boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                  background: '#FFFFFF',
+                }}
+              >
+                <MyStaff
+                  myStaff={myStaff}
+                  guestHouseUid={guestHouse?.guestHouse?.uid}
+                  loadMyStaff={getMyStaff}
+                />
+              </Box>
             );
           })}
         </Box>

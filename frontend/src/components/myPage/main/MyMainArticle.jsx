@@ -22,6 +22,8 @@ export default function MyMainArticle({ post }) {
         variant="h6"
         sx={{
           marginRight: '30px',
+          minWidth: '130px',
+          maxWidth: '130px',
         }}
       >
         {post.title}
