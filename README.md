@@ -1,4 +1,4 @@
-# 🧡 제주인(JEJUINN) - 제주도 게스트 하우스 스텝 매칭
+# 🧡 제주인(JEJUINN) - 제주도 게스트 하우스 스텝 매칭 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/55774589/219983823-acb2f176-568f-4b94-bcc2-7cef1f26a6f0.png" />
 </p>
